@@ -84,7 +84,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		initView();
 		getModeAndParkId();
 		getDeviceToken();
-		mCache = ACacheUtils.get(getActivity());
 		return view;
 	}
 
@@ -167,9 +166,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					CurbInfoBean.class);
 			ResultEntity result = fromJson.getResult();
 			rate = result.getRate();
-			Log.e("详情方法里面>>>>>", rate+":");
-			Log.e("详情方法里面>>>>>", rate+":");
-			Log.e("详情方法里面>>>>>", rate+":");
 			Message msg = mHandler.obtainMessage();
 			msg.what = 0;
 			msg.obj = result;
@@ -206,11 +202,17 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					setAdapter(hire_time, hire_price, hire_methodStr);
 					user = result.getUser();
 					Data.putData("ResultEntityUser", user);
+					Log.d("获取的user是:::", user+":");
+					Log.d("获取的user是:::", user+":");
+					Log.d("获取的user是:::", user+":");
 					Gson gson = new Gson();
 					UserBean userBean = gson.fromJson(user, UserBean.class);
 					/**
 					 * 租用的起始时间 需要判断当前模式是记时小时 还是其他
 					 */
+					Log.d("user_id", mCache.getAsString("user_id")+"<<");
+					Log.d("user_id", mCache.getAsString("user_id")+"<<");
+					Log.d("user_id", mCache.getAsString("user_id")+"<<");
 					payBean.setUser_id(mCache.getAsString("user_id"));
 					payBean.setHirer_id(userBean.getObjectId());
 					payBean.setPark_id(park_id);
@@ -354,6 +356,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		curbInfoListView = (ListView) view
 				.findViewById(R.id.curb_listview_Info);
 		curbInfoListView.setOnItemClickListener(this);
+		mCache = ACacheUtils.get(getActivity());
 	}
 	@Override
 	public void onClick(View v) {
@@ -680,7 +683,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				hire_method_id=fromJson.getHire_method_id();
 				field=fromJson.getHire_method_field();
 			}
-			
 			String data = (String) Data.getData("ResultEntityUser");
 			JSONObject user = new JSONObject(data);
 			String device_type = user.getString("device_type");

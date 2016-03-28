@@ -4,4 +4,4 @@
     <item android:state_focused="true" android:drawable="@drawable/bt_pre" />
     <item android:state_pressed="true" android:drawable="@drawable/bt_pre" />
     <item android:drawable="@drawable/bt_nor" />
-</selector> 
+</selector>

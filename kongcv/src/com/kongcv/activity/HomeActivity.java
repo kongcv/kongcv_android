@@ -76,7 +76,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 */			
 		}
 		setContentView(R.layout.activity_home);
-		
+		initLocation();
 		registerMessageReceiver();
 		newThreadToReset();
 		init();

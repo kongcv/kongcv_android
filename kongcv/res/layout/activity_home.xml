@@ -45,4 +45,5 @@
             android:text="@string/mine_fg"
             android:textColor="@color/home_text_color" />
     </RadioGroup>
-</LinearLayout>
+
+</LinearLayout>

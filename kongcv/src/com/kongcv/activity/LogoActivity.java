@@ -31,7 +31,6 @@ import android.view.animation.AnimationUtils;
 import cn.jpush.android.api.JPushInterface;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.model.LatLng;
@@ -55,14 +54,12 @@ import com.kongcv.utils.NormalPostRequest;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 
-public class LogoActivity extends Activity implements AMapLocationListener{
+public class LogoActivity extends Activity {
 	private ACacheUtils mCache;
 	private SharedPreferences preferences;
 	private Animation animation;
 	private static int TIME = 5000; 
 	private View view;
-	// 定位
-	private LocationManagerProxy mLocationManger;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,7 +71,7 @@ public class LogoActivity extends Activity implements AMapLocationListener{
 		MyApplication.getInstance().addActivity(this);
 		mCache = ACacheUtils.get(getApplicationContext());
 		if(HttpUtils.isNetworkConnected(getApplicationContext())) {
-			initLocation();//初始化定位
+		//	initLocation();//初始化定位
 			getData();// 预加载
 			preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
 			int count = preferences.getInt("count", 0);
@@ -236,7 +233,6 @@ public class LogoActivity extends Activity implements AMapLocationListener{
 	 * 预加道路和社区
 	 */
 	class ReadBtnTask extends PreReadTask<String, Void, Void> {
-	//	private List<String> list;
 		private List<ModeAndObjId> list;
 		@Override
 		protected Void doInBackground(String... arg0) {
@@ -323,20 +319,6 @@ public class LogoActivity extends Activity implements AMapLocationListener{
 			return null;
 		}
 	}
-	private void initLocation() {
-		// TODO Auto-generated method stub
-		mLocationManger = LocationManagerProxy
-				.getInstance(getApplicationContext());
-		mLocationManger.requestLocationData(LocationProviderProxy.AMapNetwork,
-				60 * 1000, 15, this);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				stopLocation();
-			}
-		}, 15000);//15秒 未定位成功
-	}
 	private void enterHome() {
 		// TODO Auto-generated method stub
 		handler.postAtTime(new Runnable() {
@@ -387,57 +369,6 @@ public class LogoActivity extends Activity implements AMapLocationListener{
 					}, TIME);
 				}
 			});
-	}
-	@Override
-	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-	}
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-	}
-	private LatLng latLng;
-	@Override
-	public void onLocationChanged(AMapLocation amapLocation) {
-		// TODO Auto-generated method stub
-		if (amapLocation != null) {
-			Double Latitude = amapLocation.getLatitude();
-			Double Longitude = amapLocation.getLongitude();
-			
-			Bundle bundle = amapLocation.getExtras();
-			String desc = "";
-			if (null != bundle) {
-				desc = bundle.getString("desc");
-			}
-			String address = amapLocation.getCity()
-					+ amapLocation.getDistrict();
-			String wk=amapLocation.getCity();
-			wk=wk.substring(0,wk.length()-1);
-			Data.putData("address", address);//城市
-			Data.putData("wk", wk);//地址
-			latLng = new LatLng(Latitude, Longitude);
-	//		Data.putData("LatLng", latLng);
-		}
-	}
-	/**
-	 * 销毁定位
-	 */
-	private void stopLocation() {
-		if (mLocationManger != null) {
-			mLocationManger.removeUpdates(this);
-			mLocationManger.destory();
-		}
-		mLocationManger = null;
 	}
 	@Override
 	protected void onResume() {
