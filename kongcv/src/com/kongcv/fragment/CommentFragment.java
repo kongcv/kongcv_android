@@ -101,7 +101,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 
 		listData = new ArrayList<Map<String, Object>>();
 		listView.setAMapListViewListener(this);
-	
 		
 		says = (Button) view.findViewById(R.id.says);
 		says.setOnClickListener(this);
@@ -186,7 +185,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 		String urlImage=null;
 		for(int i=0;i<result.size();i++){
 			String user = result.get(i).getUser();
-			Log.e("result.get(i):"+i, "user:"+user);
 			User userBean = gson.fromJson(user, User.class);
 			String username = userBean.getUsername();
 			ImageUser image = userBean.getImage();
