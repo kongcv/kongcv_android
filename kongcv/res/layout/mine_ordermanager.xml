@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 订单管理 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_publish_header"
+        android:layout_width="fill_parent"
+        android:layout_height="83dp"
+        android:background="@drawable/tag_header" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="28dp"
+            android:paddingLeft="10dp"
+            android:src="@drawable/iv_break" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp" >
+
+            <RadioGroup
+                android:id="@+id/radio"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/details_group"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/btn1"
+                    style="@style/radioButton"
+                    android:background="@drawable/detail_selector"
+                    android:checked="true"
+                    android:text="租用订单"
+                    android:textColor="@color/textcolor" />
+
+                <RadioButton
+                    android:id="@+id/btn2"
+                    style="@style/radioButton"
+                    android:background="@drawable/detail_selector"
+                    android:text="出租订单"
+                    android:textColor="@color/textcolor" />
+            </RadioGroup>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/rad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/item_one"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/btn_one"
+            style="@style/radioButton"
+            android:checked="true"
+            android:text="商业"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp" />
+        <RadioButton
+            android:id="@+id/btn_two"
+            style="@style/radioButton"
+            android:text="个人"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_xians" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

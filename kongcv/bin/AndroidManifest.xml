@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kongcv"
+    android:versionCode="100"
+    android:versionName="1.0.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="18" />
+
+    <permission
+        android:name="com.kongcv.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- ping++ -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 共用权限 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 读写权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- map权限 -->
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <!-- Required  一些系统要求的权限，如访问网络等 -->
+    <uses-permission android:name="com.kongcv.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!-- activitymanager与判断网络状态 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- 打电话权限 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!--  android:theme="@android:style/Theme.Light.NoTitleBar" -->
+    <application
+        android:name="com.kongcv.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        
+        <!-- <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="391b9f56d2369696ea162e6f63bde8db" /> -->
+       
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="d6de770d904051e27991c9a3cfe31568" />
+
+        <!-- android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" -->
+        <activity
+            android:name="com.kongcv.activity.LogoActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- For test only 测试的主程序 -->
+        <!-- android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen" -->
+        <!-- android:theme="@android:style/Theme.Light.NoTitleBar" -->
+        <activity
+            android:name="com.kongcv.activity.HomeActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            </intent-filter>
+        </activity>
+
+        <!-- For test only 测试状态通知栏，需要打开的Activity -->
+        <!-- android:name="com.kongcv.activity.TestActivity" -->
+        <activity
+            android:name="com.kongcv.activity.TestActivity"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="jpush.testAction" />
+
+                <category android:name="jpush.testCategory" />
+            </intent-filter>
+        </activity>
+        <!-- Required SDK核心功能 -->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.kongcv" />
+            </intent-filter>
+        </activity>
+        <!-- Required  SDK核心功能 -->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
+        <!-- Required SDK 核心功能 -->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+
+                <category android:name="com.kongcv" />
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter android:priority="1000" >
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+ <!-- Required  显示通知栏 -->
+                <category android:name="com.kongcv" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
+
+        <!-- User defined.  For test only  用户自定义的广播接收器 -->
+        <receiver
+            android:name="com.kongcv.jPush.MyReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+ <!-- Required  用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+ <!-- Required  用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+ <!-- Required  用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+ <!-- Required  用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
+ <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+ <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.kongcv" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required  . Enable it you can get statistics data with channel -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <!-- android:value="d8c9a0e1593e58f64cb17225" -->
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="ca9af5e8766e94552a733c1e" />
+ <!-- </>值来自开发者平台取得的AppKey -->
+
+        <activity
+            android:name="com.kongcv.activity.WelcomeActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
+        <activity android:name="com.kongcv.activity.LogInActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.AMapActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.SearchActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.SplashActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.NaviStartActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.NaviCustomActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.DetailsActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineInformationActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineWalletActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineCarmanagerActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineOrdermanagerActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineWithDrawCashActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineWalletCheckActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineSheZhiActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineWalletCreditActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineCreditAddActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineCreditType" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineInfofeedBack" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineAddNumber" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineChangePhoneNumber" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineAboutus" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineChangePhoneNext" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineCheckHistory" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineChangeSuccess" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineChangeFailure" >
+        </activity>
+        <activity android:name="com.kongcv.activity.MineCreditModifyActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.SearchPublishActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.WriteCommentActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.PayActivity" >
+        </activity>
+        <activity android:name="com.kongcv.activity.NickNameActivity" >
+        </activity>
+        <!-- Ping++ sdk -->
+        <activity
+            android:name="com.pingplusplus.android.PaymentActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 微信支付 sdk ，也是 Ping++ sdk 调用入口 -->
+        <!-- <category android:name="android.intent.category.DEFAULT"/> -->
+        <activity-alias
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.pingplusplus.android.PaymentActivity" >
+            <intent-filter>
+                <category android:name="com.pingplusplus.android.PaymentActivity" />
+            </intent-filter>
+        </activity-alias>
+        <!-- 支付宝 sdk -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+         <service android:name="com.kongcv.global.UpdateService"/>
+    </application>
+
+</manifest>

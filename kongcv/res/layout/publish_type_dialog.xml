@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_type"
+            android:textSize="24sp"
+            android:textColor="@color/txt"
+            android:layout_gravity="center_horizontal"
+            android:padding="20dp"
+            />
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            >
+            
+            <TextView
+                android:id="@+id/tv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/tv_day"
+                android:textSize="20sp"
+                android:textColor="@color/txt"
+                android:background="@drawable/type_date"
+                android:gravity="center"
+                />
+            <TextView 
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="@string/tv_time"
+                android:textSize="20sp"
+                android:textColor="@color/txt"
+                android:background="@drawable/type_date"
+                android:gravity="center"
+                />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            >
+            <View
+                android:id="@+id/tv_txt1"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:background="#FF9C00"
+                />
+            <View 
+                android:id="@+id/tv_txt2"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_weight="1"
+                android:background="#FF9C00"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
+        
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+	      android:layout_marginTop="20dp"
+          >
+	       <TextView 
+	           android:layout_marginLeft="@dimen/type_marginLeft"
+	           android:layout_width="100dp"
+	           android:layout_height="40dp"
+	           android:layout_weight="1"
+	           android:text="@string/tv_type"
+	           android:textSize="20sp"
+	           android:textColor="@color/txt"
+	           android:background="@drawable/type_car"
+	           android:gravity="center"
+	           />
+	       
+	       <Spinner
+		       android:id="@+id/spinnerAdapter"
+		       android:layout_width="180dp"
+		       android:layout_height="40dp"
+		       android:layout_weight="2"
+		       android:layout_marginLeft="@dimen/type_marginLeft"
+		       android:background="@drawable/type_car"
+		       android:gravity="center"
+		       />
+	       
+        </LinearLayout>
+        
+        
+        <LinearLayout 
+          android:id="@+id/ll"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          >
+            
+	       <TextView
+	           android:layout_width="100dp"
+	           android:layout_height="40dp"
+	           android:layout_marginLeft="@dimen/type_marginLeft"
+	           android:background="@drawable/type_car"
+	           android:gravity="center"
+	           android:text="@string/tv_date"
+	           android:textSize="20sp" 
+	           android:textColor="@color/txt"
+	           />
+	     
+ 			<TextView
+		          android:id="@+id/type_et_start"
+		          android:layout_marginLeft="@dimen/type_marginLeft"
+		          android:layout_width="86dp"
+		          android:layout_height="40dp"
+		          android:background="@drawable/type_car"
+		          android:gravity="center"
+		          android:text="00:00"
+		          android:textSize="20sp"
+		          android:textColor="@color/txt"
+		           />
+		      <TextView 
+		          android:layout_width="8dp"
+		          android:layout_height="40dp"
+		          />
+		        <TextView
+		          android:id="@+id/type_et_end"
+		          android:layout_width="86dp"
+		          android:layout_height="40dp"
+		          android:background="@drawable/type_car"
+		          android:gravity="center"
+		          android:text="00:00"
+		          android:textSize="20sp"
+		          android:textColor="@color/txt"
+		           />
+        </LinearLayout>
+        
+        
+        
+        <LinearLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+	      android:layout_marginTop="20dp"
+          >
+            
+	       <TextView 
+	           android:layout_marginLeft="@dimen/type_marginLeft"
+	           android:layout_width="100dp"
+	           android:layout_height="40dp"
+	           android:layout_weight="1"
+	           android:text="@string/tv_price"
+	           android:textSize="20sp"
+	           android:textColor="@color/txt"
+	           android:background="@drawable/type_car"
+	           android:gravity="center"
+	           />
+	       <EditText 
+	           android:id="@+id/et_price"
+	           android:layout_marginLeft="@dimen/type_marginLeft"
+	           android:layout_width="180dp"
+	           android:layout_height="40dp"
+	           android:layout_weight="2"
+	           android:textSize="20sp"
+	           android:textColor="@color/txt"
+	           android:background="@drawable/type_car"
+	           android:gravity="center"
+	           android:inputType="numberDecimal"
+	           />
+        </LinearLayout>
+        
+         <RelativeLayout 
+            android:layout_width="fill_parent" 
+            android:layout_height="300dp"
+             >
+            <ImageView 
+                android:id="@+id/iv_submit"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/type_submit"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                />
+         </RelativeLayout>
+        
+        
+</LinearLayout>

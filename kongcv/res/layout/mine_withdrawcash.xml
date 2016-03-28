@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 提现页面 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical"
+    android:id="@+id/withdraw_lin" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:src="@drawable/btn_mine_back_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/mine_cash"
+            android:textColor="@color/txt_color"
+            android:textSize="19sp" />
+
+        <Button
+            android:id="@+id/bt_checkHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="11dp"
+            android:text="提现记录"
+            android:background="@android:color/transparent"
+            android:textColor="#FF9C00"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#dcdcdc" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#FFFFFF" />
+
+    <!-- 储蓄卡 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/item_two" >
+
+        <TextView
+            android:id="@+id/tv_account"
+            style="@style/tv_mine"
+            android:layout_marginLeft="11dp"
+            android:text="@string/mine_debitcard"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="29dp"
+            android:layout_toRightOf="@id/tv_account"
+            android:text=":"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="21dp"
+            android:layout_toRightOf="@id/tv_balance"
+            android:text="请添加银行卡"
+             android:textColor="#EBEBEB"
+            android:textSize="16sp"  />
+    </RelativeLayout>
+    <!-- 金额 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/item_one" >
+
+        <TextView
+            android:id="@+id/tv_check"
+            style="@style/tv_mine"
+            android:layout_marginLeft="11dp"
+            android:text="@string/mine_money"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_checks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/tv_check"
+            android:text=":"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_checkmoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="21dp"
+            android:layout_toRightOf="@id/tv_checks"
+            android:background="@android:color/transparent"
+            android:hint="请输入您要提现的金额"
+            android:textColorHint="#EBEBEB"
+            android:textSize="16sp"
+            android:inputType="number" />
+    </RelativeLayout>
+    <!-- 密码 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/item_one" >
+
+        <TextView
+            android:id="@+id/tv_pwd"
+            style="@style/tv_mine"
+            android:layout_marginLeft="11dp"
+            android:text="密码"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_pwds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:layout_toRightOf="@id/tv_pwd"
+            android:text=":"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_checkpwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="21dp"
+            android:layout_toRightOf="@id/tv_pwds"
+            android:background="@android:color/transparent"
+            android:hint="请输入您要提现的密码"
+            android:inputType="number"
+            android:maxLength="6"
+            android:password="true"
+            android:textColorHint="#EBEBEB"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <Button
+         android:id="@+id/bt_commitdraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/item_txtmargin"
+        android:layout_marginRight="@dimen/item_txtmargin"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/mine_tixain_selector"
+        android:text="确 认 提 现"
+        android:textColor="@color/base_bg_color"
+        android:textSize="17sp" />
+
+</LinearLayout>

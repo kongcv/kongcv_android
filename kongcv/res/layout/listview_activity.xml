@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+     <RelativeLayout
+        android:id="@+id/rl_et"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+         >
+         
+        <EditText
+            android:id="@+id/txtfind"
+            android:layout_width="260dp"
+            android:layout_height="50dp"
+            android:paddingTop="5dp"
+            android:hint="请输入文字提示"
+            android:singleLine="true"
+            />
+      	<ImageView
+      	    android:id="@+id/iv_delete"
+      	    android:layout_width="wrap_content"
+      	    android:layout_height="wrap_content"
+      	    android:layout_alignRight="@+id/txtfind"
+      	    android:layout_centerVertical="true"
+      	    android:layout_marginRight="18dp"
+      	    android:src="@drawable/delete_item" />
+
+      	<ImageView
+      	    android:id="@+id/iv_search"
+      	    android:layout_width="wrap_content"
+      	    android:layout_height="40dp"
+      	    android:layout_centerVertical="true"
+      	    android:layout_centerHorizontal="true"
+      	    android:layout_toRightOf="@+id/txtfind"
+      	    android:layout_marginRight="5dp"
+      	    android:src="@drawable/ib_search"
+      	    android:layout_marginLeft="2dp" />
+
+    </RelativeLayout>
+    
+    
+    <ListView
+    	android:id="@+id/lv" 
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	/>   
+
+</LinearLayout>

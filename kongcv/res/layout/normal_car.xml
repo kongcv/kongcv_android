@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:kongcv="http://schemas.android.com/apk/res/com.kongcv"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/item_high"
+    android:background="@drawable/bg_community_header"
+    >
+
+      <TextView
+          android:id="@+id/tv_car_right"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center_horizontal"
+          android:padding="12dp"
+          android:paddingLeft="15dp"
+          android:text="@string/tv_car_right"
+          android:textColor="#353535"
+          android:textSize="18sp" />
+            
+  	<com.kongcv.view.MySwitch 
+  	    android:layout_marginRight="10dp"
+  	    android:layout_alignParentRight="true"
+  	    android:id="@+id/my_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+  	    kongcv:isChecked="false"
+        kongcv:slideDrawable="@drawable/slide_button" 
+        kongcv:setChecked="false"
+  	    />
+
+</RelativeLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rl_log"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/mkongcv_header" >
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/mkongcv_header"
+            android:background="@drawable/tag_header"
+            android:scaleType="fitStart" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/mcarw_fg"
+            android:textColor="@color/txt_pay"
+            android:textSize="@dimen/mkongcv_text_size" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llAdvertiseBoard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mkongcv_viewpager"
+        android:layout_below="@+id/rl_log"
+        android:orientation="vertical" />
+    
+
+    <LinearLayout
+        android:id="@+id/rl_qandp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llAdvertiseBoard" >
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/mkongcv_image_hight"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+             />
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/mkongcv_image_hight"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rl_qandp" >
+
+        <com.kongcv.view.KCVGridView
+            android:id="@+id/kcvgridview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="0.0dip"
+            android:listSelector="@null"
+            android:numColumns="4"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="0.0dip" />
+    </LinearLayout>
+
+</RelativeLayout>

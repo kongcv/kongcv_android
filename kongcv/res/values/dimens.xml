@@ -1,0 +1,112 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- Default screen margins, per the Android Design guidelines. -->
+	<dimen name="activity_horizontal_margin">16dp</dimen>
+	<dimen name="activity_vertical_margin">16dp</dimen>
+	<dimen name="et_searchMap">30dp</dimen>
+	<dimen name="et_Buttom">80dp</dimen>
+	<dimen name="et_width">180dp</dimen>
+	<!-- activity_splash.xml -->
+	<dimen name="tv_textSize">16sp</dimen>
+	<!-- activity_home.xml image_header -->
+	<dimen name="v4_Image_header">270dp</dimen>
+	<dimen name="et_textSize">20sp</dimen>
+	<dimen name="btn_marginLeft">10dip</dimen>
+		<dimen name="text_size">14sp</dimen>
+	<dimen name="home_log">180dp</dimen>
+	<dimen name="home_textSize">60sp</dimen>
+	
+	<!-- 图片小圆点的距离 -->
+	<dimen name="margin_Size10">6dp</dimen>
+	
+	<dimen name="amap_address">20sp</dimen>
+	<dimen name="amap_hire_price">15sp</dimen>
+	
+	<!-- 发布页面详细内容 -->
+	<dimen name="item_high">50dp</dimen>
+	<dimen name="item_padding">5dp</dimen>
+	<dimen name="item_item_margin">15dp</dimen>
+	
+	<dimen name="item_txt">28sp</dimen>
+	
+	<!-- type car -->
+	<dimen name="type_marginLeft">26dp</dimen>
+	
+	<!-- details -->
+	<dimen name="txt">16sp</dimen>
+	<dimen name="rdo1">0dp</dimen>
+    <dimen name="rdo2">100dp</dimen>
+	<!-- 评论页 -->
+    <dimen name="base_padding">16dp</dimen>
+    
+    <!-- 支付页 -->
+    <dimen name="pay_header">340dp</dimen>
+    <dimen name="header_pay">62dp</dimen>
+    <dimen name="pay_tag">278dp</dimen>
+    
+    
+    
+     <!-- 我的页面 -->
+     <dimen name="item_text_size">20dp</dimen>
+     <dimen name="item_height">33dp</dimen>
+     <dimen name="item_marginLeft">10dp</dimen>
+     <dimen name="item_txtSize">19dp</dimen>
+     <dimen name="item_txtSizeTwo">18dp</dimen>
+     <dimen name="item_txtSizeThree">16dp</dimen>
+     <dimen name="item_txtSizeFour">14dp</dimen>
+     <dimen name="item_txtSizeFive">9dp</dimen>
+     <dimen name="item_txtSizeSix">17dp</dimen>
+     
+     <!--账单页面  -->
+     <dimen name="item_txtmargin">11dp</dimen>
+     <dimen name="item_listtxt">12dp</dimen>
+     <dimen name="item_margintop">7dp</dimen>
+     <!--添加银行卡页面  -->
+     <dimen name="item_mineadd">49dp</dimen>
+     <dimen name="item_minelefts">29dp</dimen>
+     
+     <!-- 发布页面的listview -->
+     <dimen name="mkongcv_text_size">30dp</dimen>
+     <dimen name="mkongcv_header">55dp</dimen>
+     <dimen name="mkongcv_viewpager">280dp</dimen>
+     <dimen name="mkongcv_margintop">40dp</dimen>
+     
+     <dimen name="mkongcv_listview_height">90dp</dimen>
+     <dimen name="mkongcv_listview_weight">50dp</dimen>
+     <!-- minefragment页面布局上 -->
+     <dimen name="minefragment_header">230dp</dimen>
+     <dimen name="minefragment_txtSize">17dp</dimen>
+     <dimen name="item_hi">60dp</dimen>
+     <dimen name="item_marginbuttom">50dp</dimen>
+     <!-- homeactivity标题栏的字体-->
+	 <dimen name="homeactivity_item_textSize">12dp</dimen>
+	 <dimen name="homeactivity_item_imageview">18dp</dimen>
+	 <dimen name="homeactivity_item_textpaddingTop">5dp</dimen>
+	 <dimen name="homeactivity_item_ImagepaddingTop">2dp</dimen>
+	 <!-- 发布页面 -->
+	<dimen name="publish_txtSize">17dp</dimen>
+	<dimen name="public_header_paddingLeft">45dp</dimen>
+	<dimen name="public_header">120dp</dimen>
+	<dimen name="public_park_detail">45dp</dimen>
+	<dimen name="mkongcv_image_hight">65dp</dimen>
+	  <dimen name="item_margintop_logo">16dp</dimen>
+      <dimen name="item_txt_logo">20sp</dimen>  
+     <dimen name="item_margintopt_logo">50dp</dimen> 
+     <dimen name="item_heightf_logo">35dp</dimen> 
+     <dimen name="item_text_logo">10sp</dimen>
+     <dimen name="item_hei_logo">45dp</dimen>
+</resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

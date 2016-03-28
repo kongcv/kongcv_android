@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_bg_color"
+    android:orientation="vertical" 
+    android:id="@+id/log">
+
+    <TextView
+        android:id="@+id/tv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/item_margintop_logo"
+        android:text="@string/logo"
+        android:textSize="@dimen/item_text_size" />
+
+    <ImageView
+        android:id="@+id/iv_log"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/item_heightf_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/item_margintopt_logo"
+        android:src="@drawable/logos" />
+
+    <RelativeLayout
+        android:id="@+id/rl_down"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_hei_logo"
+        android:layout_marginLeft="@dimen/margin_Size10"
+        android:layout_marginRight="@dimen/margin_Size10"
+        android:layout_marginTop="100dp"
+        android:background="@color/dialog"
+        android:padding="8dp" >
+
+        <TextView
+            android:id="@+id/phones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="手机号"
+            android:textColor="@color/amap_address" />
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/phones"
+            android:background="@android:color/transparent"
+            android:ems="11"
+            android:hint="请输入您的手机号"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColor="@color/txt_detail"
+            android:textSize="@dimen/text_size" >
+        </EditText>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_downt"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_hei_logo"
+        android:layout_marginLeft="@dimen/margin_Size10"
+        android:layout_marginRight="@dimen/margin_Size10"
+        android:layout_marginTop="@dimen/margin_Size10"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/rl_downts"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_hei_logo"
+            android:layout_weight="4"
+            android:background="@color/dialog"
+            android:padding="8dp" >
+
+            <TextView
+                android:id="@+id/cords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:text="验证码"
+                android:textColor="@color/amap_address" />
+
+            <EditText
+                android:id="@+id/cord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/cords"
+                android:background="@android:color/transparent"
+                android:ems="6"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textColor="@color/txt_detail"
+                android:textSize="@dimen/text_size" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/getcord"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_Size10"
+            android:layout_toRightOf="@+id/rl_downts"
+            android:layout_weight="3"
+            android:background="@color/dialog"
+            android:gravity="center"
+            android:text="短信验证码"
+            android:textColor="@color/txt_detail"
+            android:textSize="@dimen/text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/item_text_logo" />
+
+        <Button
+            android:id="@+id/savecord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_Size10"
+            android:background="@drawable/btn_login_selector"
+            android:text="登 录"
+            android:textColor="@color/base_bg_color"
+            android:textSize="@dimen/item_txtSizeTwo" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="base_bg_color">#FFFFFF</color>
+    
+    <color name="amap_address">#353535</color>
+    <color name="amap_hire_price">#818181</color>
+    
+    
+    <!-- 日历颜色 -->
+    <color name="date_1">#F24949</color>
+    <color name="date_2">#40000000</color>
+    <color name="date_3">#40ffffff</color>
+    
+    <!-- dialog背景颜色 -->
+    <color name="dialog">#F7F7F7</color>
+    <color name="txt">#000000</color>
+    
+    <!-- details详情页 -->
+    <color name="txt_detail">#858585</color>
+    <color name="txt_date">#000000</color>
+    
+    <color name="textcolor">#FFD89B</color>
+    
+    <!-- 评论页图片颜色 -->
+    <color name="dark">#FF222222</color>
+    <color name="light">#FFEEEEEE</color>
+    
+    <color name="txt_comment">#5F5F5F</color>
+   
+    <!-- 支付颜色值 -->
+    <color name="bag_pay">#FF9C00</color>
+    <color name="txt_pay">#FFFFFF</color>
+    <!--我的页面 -->
+    <color  name="txt_color">#444444</color>
+    <!-- 钱包页面 -->
+    <color name="txt_money">#FFC263</color>
+    <!--账单 页面-->
+    <color  name="txt_check_color">#926600</color>
+    <color  name="list_item_txt">#A6A6A6</color>
+    <color  name="list_item_text">#EB4D4D</color>
+    <color name="list_item_black">#5A5A5A</color>
+    <!--添加银行卡页面  -->
+    <color name="mine_host">#514444</color>
+    <color name="mine_hint">#EBEBEB</color>
+    <color name="mine_credit">#196FC8</color>
+    <color name="mine_type">#282828</color>
+    <color name="cancel">#5E5E5E</color>
+    <color name="feedback">#D2D2D2</color>
+    
+   <!-- 空车位首页 -->
+   <color name="carwfragment_log">#000000</color>
+   <!-- 标题背景色 -->
+   <color name="top_bg_color">#FF9C00</color>
+   
+   <color name="line">#f7f7f7</color>
+</resources>
+
+
+
+
+
+
+
+
+
+

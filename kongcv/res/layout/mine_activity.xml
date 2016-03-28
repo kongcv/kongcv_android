@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 我的页面 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_logn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/minefragment_header"
+        android:background="@drawable/image_bg" >
+
+        <com.kongcv.view.CircleImageView
+            android:id="@+id/iv_mine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="89dp"
+            android:layout_marginTop="57dp"
+            android:src="@drawable/defaulto" />
+
+        <TextView
+            android:id="@+id/tv_logn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/item_marginbuttom"
+            android:text="@string/register"
+            android:textSize="@dimen/minefragment_txtSize"
+            />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <!-- 我的钱包 -->
+            <RelativeLayout
+                android:id="@+id/rl_wallet"
+                style="@style/relativelayout"
+                android:layout_marginTop="5dp" >
+
+                <ImageView
+                    android:id="@+id/iv_wallet"
+                    style="@style/imageview"
+                    android:src="@drawable/icon_qianbao" />
+
+                <TextView
+                    style="@style/textview"
+                    android:layout_toRightOf="@id/iv_wallet"
+                    android:text="@string/mine_wallet"
+                    android:textColor="@color/txt_detail"
+                    android:textSize="@dimen/minefragment_txtSize" />
+
+                <ImageView style="@style/iv" />
+            </RelativeLayout>
+            <!-- 车位管理 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_carmanager"
+                style="@style/relativelayout"
+                android:layout_marginTop="5dp" >
+
+                <ImageView
+                    android:id="@+id/iv_carmanager"
+                    style="@style/imageview"
+                    android:src="@drawable/icon_cheweiguanli" />
+
+                <TextView
+                    style="@style/textview"
+                    android:layout_toRightOf="@id/iv_carmanager"
+                    android:text="@string/mine_carmanager"
+                    android:textColor="@color/txt_detail"
+                    android:textSize="@dimen/minefragment_txtSize" />
+
+                <ImageView style="@style/iv" />
+            </RelativeLayout>
+            <!-- 订单管理 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_ordermanager"
+                style="@style/relativelayout"
+                android:layout_marginTop="5dp" >
+
+                <ImageView
+                    android:id="@+id/iv_ordermanager"
+                    style="@style/imageview"
+                    android:src="@drawable/icon_dingdanguanli" />
+
+                <TextView
+                    style="@style/textview"
+                    android:layout_toRightOf="@id/iv_ordermanager"
+                    android:text="@string/mine_ordermanager"
+                    android:textColor="@color/txt_detail"
+                    android:textSize="@dimen/minefragment_txtSize" />
+                <ImageView style="@style/iv" />
+            </RelativeLayout>
+            <!-- 消息通知 -->
+
+            <RelativeLayout
+                android:id="@+id/rl_infonotify"
+                style="@style/relativelayout"
+                android:layout_marginTop="5dp" >
+
+                <ImageView
+                    android:id="@+id/iv_infonotify"
+                    style="@style/imageview"
+                    android:src="@drawable/icon_tongzhi"
+                   />
+
+                <TextView
+                    style="@style/textview"
+                    android:layout_toRightOf="@id/iv_infonotify"
+                    android:text="消息通知"
+                    android:textColor="@color/txt_detail"
+                    android:textSize="@dimen/minefragment_txtSize" />
+
+                <ImageView style="@style/iv" />
+            </RelativeLayout>
+            <!-- 设置 -->
+            <RelativeLayout
+                android:id="@+id/rl_shezhi"
+                style="@style/relativelayout"
+                android:layout_marginTop="5dp" >
+
+                <ImageView
+                    android:id="@+id/iv_shezhi"
+                    style="@style/imageview"
+                    android:src="@drawable/icon_shezhi" />
+
+                <TextView
+                    style="@style/textview"
+                    android:layout_toRightOf="@id/iv_shezhi"
+                    android:text="设置"
+                    android:textColor="@color/txt_detail"
+                    android:textSize="@dimen/minefragment_txtSize" />
+                <ImageView style="@style/iv" />
+            </RelativeLayout>
+        </LinearLayout>
+        
+    </ScrollView>
+	<RelativeLayout 
+         	android:id="@+id/main"
+    		android:layout_width="match_parent"
+    		android:layout_height="match_parent"
+        	/>
+</LinearLayout>

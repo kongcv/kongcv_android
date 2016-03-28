@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:kongcv="http://schemas.android.com/apk/res/com.kongcv"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/rl_publish_header"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/public_header"
+            android:background="@drawable/bg_community_header" 
+            >
+            
+            <ImageView
+                android:id="@+id/community_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="80dp"
+                android:src="@drawable/community_light" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/mkongcv_header"
+                android:background="@drawable/tag_header" >
+
+                <TextView
+                    android:id="@+id/tv_community"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/mpublic_fg"
+                    android:textColor="@color/txt_pay"
+                    android:textSize="@dimen/mkongcv_text_size" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_getSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="@dimen/public_header_paddingLeft"
+                android:paddingTop="80dp"
+                android:singleLine="true"
+                android:text="我的位置"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <TextView
+                android:id="@+id/tv_City"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_getSearch"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:text="@string/tv_City"
+                android:textSize="@dimen/publish_txtSize" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/park_detail"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/et_adress"
+            android:hint="补充详细地址"
+            android:paddingLeft="@dimen/public_park_detail"
+            android:singleLine="true"
+            android:textColor="#c2c2c2"
+            android:textColorHint="#AAAAAA"
+            android:textSize="@dimen/publish_txtSize" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_community_header"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/iv_timerstart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/timer_start" />
+
+                <TextView
+                    android:id="@+id/pubnlish_txt_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/iv_timerstart"
+                    android:text="起始"
+                    android:textSize="@dimen/publish_txtSize" />
+
+                <TextView
+                    android:id="@+id/publish_tv_timerstart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="起租日期 "
+                    android:textColor="#858585"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/iv_timerend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/timer_end" />
+
+                <TextView
+                    android:id="@+id/publish_txt_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/iv_timerend"
+                    android:text="截止"
+                    android:textSize="@dimen/publish_txtSize" />
+
+                <TextView
+                    android:id="@+id/tv_timerend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="截止日期 "
+                    android:textColor="#858585"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_nodata"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_nodata"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <com.kongcv.view.MultiSpinner
+                android:id="@+id/tv_NoOr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:text="请选择周数"
+                android:textColor="#858585"
+                android:textSize="@dimen/publish_txtSize" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_area"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+   <!-- android:background="@drawable/publish_edittext" -->
+            <EditText
+                android:id="@+id/tv_car_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@null"
+                android:hint="/㎡ "
+                android:inputType="number"
+                android:maxLength="5"
+                android:textSize="18dp"
+                android:textColor="#858585"
+                android:gravity="right" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_high"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <EditText
+                android:id="@+id/tv_car_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:hint="数字/m"
+                android:inputType="number"
+                android:maxLength="4"
+                android:textSize="@dimen/publish_txtSize" 
+                android:background="@null"
+                android:textColor="#858585"
+                android:gravity="right"
+                />
+        </RelativeLayout>
+         
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="车牌尾号"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <EditText
+                android:id="@+id/tv_car_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:background="@null"
+                android:hint="车牌尾号"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="@dimen/publish_txtSize" 
+                android:textColor="#858585"
+                android:gravity="right"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:id="@+id/tv_car_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_right"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <com.kongcv.view.MySwitch
+                android:id="@+id/my_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="20dp"
+                kongcv:isChecked="false"
+                kongcv:slideDrawable="@drawable/slide_button" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="@dimen/item_padding" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:id="@+id/tv_car_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_address"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <TextView
+                android:id="@+id/tv_topOrbutm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:text="地上"
+                android:textColor="#858585"
+                android:textSize="@dimen/publish_txtSize" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="5dp" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:id="@+id/tv_card_system"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_card_system"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="102dp"
+                android:maxLength="80"
+                android:paddingTop="17dp"
+                android:text="(限80字以内)"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/gate_card "
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/bg_community_header"
+            android:hint="请输入信息"
+            android:maxLength="80"
+            android:paddingLeft="15dp"
+            android:textColor="#353535"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="5dp" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:id="@+id/tv_car_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_desc"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="85dp"
+                android:paddingTop="17dp"
+                android:text="(限100字以内)"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/park_description"
+            android:layout_width="fill_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/bg_community_header"
+            android:hint="请输入信息"
+            android:maxLength="100"
+            android:paddingLeft="15dp"
+            android:textColor="#353535"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_community_padding"
+            android:padding="5dp" >
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_community_header" >
+
+            <TextView
+                android:id="@+id/tv_car_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_type"
+                android:textColor="#353535"
+                android:textSize="@dimen/publish_txtSize" />
+
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center_horizontal"
+                android:padding="12dp"
+                android:src="@drawable/iv_type" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dp" >
+
+            <ImageView
+                android:id="@+id/iv_publish"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:background="@drawable/iv_publish_click" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

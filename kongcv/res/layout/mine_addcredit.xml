@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 添加银行卡 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" 
+    android:id="@+id/add_lin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_marginLeft" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:src="@drawable/btn_mine_back_selector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/mine_addcredit"
+            android:textColor="@color/txt_color"
+            android:textSize="@dimen/item_text_size" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="14dp"
+        android:background="#dcdcdc" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#FFFFFF" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_mineadd"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/item_two" >
+
+        <TextView
+            android:id="@+id/tv_host"
+            style="@style/tv_mine"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:text="@string/mine_hostcredit"
+            android:textSize="@dimen/item_txtSizeThree" />
+
+        <TextView
+            android:id="@+id/tv_hosts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:layout_toRightOf="@id/tv_host"
+            android:text=":"
+            android:textSize="@dimen/item_txtSize" />
+
+        <EditText
+            android:id="@+id/et_credithost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_text_size"
+            android:layout_toRightOf="@id/tv_hosts"
+            android:background="@android:color/transparent"
+            android:hint="请输入持卡人姓名"
+            android:inputType="textPersonName"
+            android:textColor="@color/amap_address"
+            android:textColorHint="@color/mine_hint"
+            android:textSize="@dimen/item_txtSizeThree" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_mineadd"
+        android:background="@drawable/item_one" >
+
+        <TextView
+            android:id="@+id/tv_number"
+            style="@style/tv_mine"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:text="@string/mine_creditnumber"
+            android:textSize="@dimen/item_txtSizeThree" />
+
+        <TextView
+            android:id="@+id/tv_numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="28dp"
+            android:layout_toRightOf="@id/tv_number"
+            android:text=":"
+            android:textSize="@dimen/item_txtSize" />
+
+        <EditText
+            android:id="@+id/et_creditnumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_text_size"
+            android:layout_toRightOf="@id/tv_numbers"
+            android:background="@android:color/transparent"
+            android:hint="请输入您的卡号"
+            android:inputType="number"
+            android:maxLength="19"
+            android:textColor="@color/amap_address"
+            android:textColorHint="@color/mine_hint"
+            android:textSize="@dimen/item_txtSizeThree" 
+            android:minEms="15"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_types"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_mineadd"
+        android:background="@drawable/item_one" >
+
+        <TextView
+            android:id="@+id/tv_type"
+            style="@style/tv_mine"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:text="@string/mine_credittype"
+            android:textSize="@dimen/item_txtSizeThree" />
+
+        <TextView
+            android:id="@+id/tv_types"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="28dp"
+            android:layout_toRightOf="@id/tv_type"
+            android:text=":"
+            android:textSize="@dimen/item_txtSize" />
+
+        <ImageView
+            android:id="@+id/iv_yuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_text_size"
+            android:layout_toRightOf="@id/tv_types" />
+
+        <TextView
+            android:id="@+id/tv_credittype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/iv_yuan"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginLeft="@dimen/item_marginLeft"
+        android:gravity="center_vertical"
+        android:text="请设置提现密码"
+        android:textColor="@color/txt_color"
+        android:textSize="@dimen/item_txtSizeFive" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_mineadd"
+        android:background="@drawable/item_two" >
+
+        <TextView
+            android:id="@+id/tv_input"
+            style="@style/tv_mine"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:text="@string/mine_input"
+            android:textSize="@dimen/item_txtSizeThree"
+       />
+
+        <TextView
+            android:id="@+id/tv_inputs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            android:layout_toRightOf="@id/tv_input"
+            android:text=":"
+            android:textSize="@dimen/item_txtSize" />
+
+        <EditText
+            android:id="@+id/et_creditinput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_text_size"
+            android:layout_toRightOf="@id/tv_inputs"
+            android:background="@android:color/transparent"
+            android:hint="请设置银行卡密码"
+            android:inputType="number"
+            android:password="true"
+            android:textColor="@color/amap_address"
+            android:textColorHint="@color/mine_hint"
+            android:textSize="@dimen/item_txtSizeThree"
+            android:maxLength="6" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_mineadd"
+        android:background="@drawable/item_one" >
+
+        <TextView
+            android:id="@+id/tv_againinput"
+            style="@style/tv_mine"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:text="@string/mine_againinput"
+            android:textSize="@dimen/item_txtSizeThree" />
+
+        <TextView
+            android:id="@+id/tv_againinputs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/tv_againinput"
+            android:text=":"
+            android:textSize="@dimen/item_txtSize" />
+
+        <EditText
+            android:id="@+id/et_creditagaininput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_text_size"
+            android:layout_toRightOf="@id/tv_againinputs"
+            android:background="@android:color/transparent"
+            android:hint="请再次输入银行卡密码"
+            android:password="true"
+            android:inputType="number"
+            android:textColor="@color/amap_address"
+            android:textColorHint="@color/mine_hint"
+            android:textSize="@dimen/item_txtSizeThree"
+           android:maxLength="6"  />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/bt_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/item_txtmargin"
+        android:layout_marginRight="@dimen/item_txtmargin"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/btn_login_selector"
+        android:text="提   交"
+        android:textColor="@color/base_bg_color"
+        android:textSize="@dimen/item_txtSizeTwo" />
+
+</LinearLayout>

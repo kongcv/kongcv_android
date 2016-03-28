@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/amap_tv_address"
+        android:paddingTop="10dp"
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/amap_address"
+        android:textColor="@color/amap_address"
+        android:text="小区"
+        />
+    
+    <TextView
+        android:id="@+id/amap_tv_detail"
+        android:paddingTop="5dp"
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="@dimen/amap_hire_price"
+        android:textColor="@color/amap_hire_price"
+        android:layout_below="@+id/amap_tv_address"
+        android:text="小区"
+        />
+    <TextView
+        android:id="@+id/amap_tv_rest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/amap_tv_detail"
+        android:layout_alignParentRight="true"
+        android:text="未租" 
+        android:layout_alignRight="@+id/amap_tv_price"  
+        android:layout_marginRight="15dp"
+        />
+    <TextView
+        android:id="@+id/amap_tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="¥ 59"
+        android:textColor="#f07c7c"
+        android:textSize="@dimen/amap_hire_price" 
+        android:layout_alignBottom="@+id/amap_tv_detail"
+        android:layout_marginRight="15dp"
+       />
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+

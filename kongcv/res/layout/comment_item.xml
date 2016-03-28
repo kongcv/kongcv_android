@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+    
+    <com.kongcv.view.CircleImageView
+        android:id="@+id/userimge"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/defaulto"
+        app:border_color="@color/light"
+        app:border_width="4dp" 
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        />
+    
+    <TextView
+        android:id="@+id/txtMs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="13717950391"
+        android:maxLength="11"
+        android:textSize="18dp" 
+        android:layout_alignTop="@+id/userimge"
+        android:layout_toRightOf="@+id/userimge"
+        android:paddingLeft="10dp"
+        />
+
+    <!--  android:numStars="5" -->
+     <RatingBar
+         android:layout_marginLeft="10dp"
+         android:id="@+id/myratingbar"
+         style="@style/myratingbar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/txtMs"
+         android:layout_below="@+id/txtMs"
+         android:isIndicator="true"
+         android:numStars="5"
+         />
+   
+   	<TextView
+          android:id="@+id/tv_says"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:text="02月29日 19:00"
+          android:textSize="14sp" 
+          android:layout_alignTop="@+id/userimge"
+          android:layout_marginBottom="5dp"
+          android:layout_marginRight="8dp"
+          />
+   	<TextView
+   	    android:id="@+id/tv_username"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignLeft="@+id/myratingbar"
+   	    android:layout_below="@+id/myratingbar"
+   	    android:maxLength="12"
+   	    android:paddingLeft="10dp"
+   	    android:text="评论字数" />
+
+</RelativeLayout>

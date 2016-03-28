@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 消息通知页面 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/tag_header" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/item_marginLeft"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/iv_break" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/mine_infonotify"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <RadioGroup
+        android:id="@+id/radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/item_one"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/btn1"
+            style="@style/radioButton"
+            android:checked="true"
+            android:text="@string/receive"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/btn2"
+            style="@style/radioButton"
+            android:text="@string/send"
+            android:textColor="@color/txt_color"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_xians" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rl_publish_header" >
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

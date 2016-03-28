@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical" >
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_detail_items" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:src="@drawable/community_light" />
+            <TextView
+                android:id="@+id/tv_curb_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="北京市聚龙花园"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_detail_items" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:src="@drawable/community_light" 
+                android:visibility="invisible"
+                />
+            <TextView
+                android:id="@+id/tv_curb_add_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="详细地址"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+        </LinearLayout>
+       
+ 		<RelativeLayout
+ 		    android:id="@+id/rl_time_pay_start"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_detail_items" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:text="@string/time_pay_start"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/curb_rent_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text=" 年  月  日"
+                android:textColor="@color/txt_date"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_time_pay_end"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:background="@drawable/bg_detail_item" >
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:text="@string/time_pay_end"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/curb_rent_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text=" 年  月  日"
+                android:textColor="@color/txt_date"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="105dp"
+            android:background="@drawable/bg_detail_item" >
+
+            <TextView
+                android:id="@+id/tv_curb_describe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:text="车位描述："
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_detail_items" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:text="@string/tv_car_type"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/detail_date"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/tv_price"
+                android:textColor="@color/txt_detail"
+                android:textSize="20sp" />
+        </LinearLayout>
+     
+        
+ 		<ListView
+            android:id="@+id/curb_listview_Info"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+             />
+		<ListView
+            android:id="@+id/detail_lv_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" 
+            android:visibility="invisible"/>
+		<RelativeLayout
+		    android:id="@+id/rl_reserveOrpay"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/item_high"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_detail_items" >
+
+            <TextView
+                android:id="@+id/tv_reserveOrpay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:text="金额"
+                android:textColor="#000000"
+                android:textSize="26sp" />
+            <TextView
+                android:id="@+id/tv_curb_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/txt_date"
+                android:textSize="26sp" />
+        </RelativeLayout>
+       
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200dp" >
+            <Button
+                android:id="@+id/curb_inform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               	android:layout_centerInParent="true"
+                android:background="@drawable/btn_pay_detail" 
+                android:text="订单确认"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                />
+            <Button
+                android:id="@+id/curb_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+               	android:layout_centerInParent="true"
+                android:background="@drawable/btn_pay_detail" 
+                android:text="支    付"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

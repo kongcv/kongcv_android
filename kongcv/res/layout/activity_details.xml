@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_white"
+    android:orientation="vertical" >
+
+     <RelativeLayout
+        android:id="@+id/rl_publish_header"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/tag_header" >
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/iv_break" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@+id/details_daoh"
+            android:layout_centerHorizontal="true" >
+
+            <RadioGroup
+                android:id="@+id/radio"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/details_group"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/btn1"
+                    style="@style/radioButton"
+                    android:background="@drawable/detail_selector"
+                    android:checked="true"
+                    android:text="详情"
+                    android:textColor="@drawable/bg_text_check_selector" 
+                    />
+
+                <RadioButton
+                    android:id="@+id/btn2"
+                    style="@style/radioButton"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/detail_selector"
+                    android:text="评论"
+                   android:textColor="@drawable/bg_text_check_selector" 
+                     />
+
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="100dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/details_daoh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_back"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/detail_daoh" />
+    </RelativeLayout>
+    
+	<android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rl_publish_header" >
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

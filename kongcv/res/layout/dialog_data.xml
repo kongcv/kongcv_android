@@ -1,0 +1,297 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:kongcv="http://schemas.android.com/apk/res/com.kongcv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/action_bar_bg"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/show_month_view"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="10dip"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="11月"
+            android:textColor="#fffffe"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toRightOf="@id/show_month_view"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/show_week_view"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="bottom|left"
+                android:paddingBottom="1dip"
+                android:text="周六"
+                android:textColor="#80ffffff"
+                android:textSize="12sp" />
+
+            <TextView
+                 android:id="@+id/show_year_view"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="top|left"
+                android:paddingTop="1dip"
+                android:text="2015"
+                android:textColor="#80ffffff"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="80dip"
+            android:layout_height="25dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/select_view_bg"
+            android:layout_marginRight="20dip"
+            android:orientation="horizontal"
+            >
+            <TextView 
+                android:id="@+id/month_calendar_button"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="月"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                />
+               <!--  android:clickable="@drawable/press_left_text_bg" -->
+            <View 
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:background="#80ffffff"
+                android:textColor="#ffffff"
+                />
+            <TextView 
+                android:id="@+id/week_calendar_button"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="周"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:clickable="@drawable/press_right_text_bg"
+                />
+            
+            </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:background="#fffffe"
+        android:orientation="vertical" >
+        
+ 		<View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_alignParentTop="true"
+            android:background="#20000000" >
+        </View>
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="20dip"
+            android:layout_marginBottom="2dip"
+            android:layout_marginTop="2dip" >
+
+            <TableRow>
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="日"
+                    android:textColor="@color/date_1" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="一"
+                    android:textColor="@color/date_2" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="二"
+                    android:textColor="@color/date_2" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="三"
+                    android:textColor="@color/date_2" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="四"
+                    android:textColor="@color/date_2" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="五"
+                    android:textColor="@color/date_2" />
+
+                <TextView
+                    style="@style/dateStyle"
+                    android:text="六"
+                    android:textColor="@color/date_1" />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_alignParentTop="true"
+            android:background="#20000000" >
+        </View>
+    </LinearLayout>
+    
+	<RelativeLayout
+   		 android:id="@+id/contentPager" 
+    	 android:layout_width="fill_parent"
+       	 android:layout_height="fill_parent"
+         android:layout_weight="1"
+         android:background="#fffffe"
+    	>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:paddingLeft="15dip"
+        android:paddingRight="10dip"
+        android:background="#F7F7F7" >
+    </android.support.v4.view.ViewPager>
+    
+    <SlidingDrawer 
+        android:id="@+id/sildingDrawer"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:orientation="vertical"
+        android:layout_alignBottom="@+id/viewpager"
+        android:handle="@+id/handlerText"
+        android:content="@+id/contentText"
+        >
+       <LinearLayout 
+            android:id="@+id/handlerText"
+            android:layout_height="wrap_content"
+            android:minHeight="100dip"
+             android:background="#fffffe"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+           <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#30000000" >
+        </View>  
+        <TextView   
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:paddingLeft="5dip"
+            android:text="根据车牌号合理安排出租哦"
+            android:textSize="16sp"
+            android:textColor="#90000000"
+            android:gravity="center_vertical"
+            />
+         <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#20000000" >
+        </View>
+       </LinearLayout>
+         <View  
+             android:id="@+id/contentText"
+             android:background="#fffffe"
+             android:layout_width="fill_parent" 
+             android:layout_height="wrap_content">
+         </View>   
+    </SlidingDrawer>
+</RelativeLayout>
+
+	
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="60dip"
+	    android:background="@drawable/bottom_bar_bg"
+	    android:orientation="horizontal"
+	    android:gravity="center"
+	    >
+
+		<TextView
+		    android:id="@+id/subscibe_circle_view"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:gravity="center"
+		    android:text="租"
+		    android:textSize="28sp" />
+
+	    <TextView 
+	        android:id="@+id/now_circle_view"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="今"
+	        android:textSize="28sp"
+	        android:gravity="center"
+	        />
+	    <TextView 
+	        android:id="@+id/add_circle_view"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="＋"
+	        android:textSize="28sp"
+	        android:gravity="center"
+	        />
+	</LinearLayout>
+<!-- <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="60dip"
+    android:background="@drawable/bottom_bar_bg" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_alignParentTop="true"
+            android:background="#20000000" >
+        </View>
+
+        <com.kongcv.calendar.CircleTextView
+            android:id="@+id/now_circle_view"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            kongcv:text="今" />
+
+       <com.kongcv.calendar.CircleTextView
+            android:id="@+id/subscibe_circle_view"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/now_circle_view"
+            kongcv:text="租" />
+
+      <com.kongcv.calendar.CircleTextView
+            android:id="@+id/add_circle_view"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/now_circle_view"
+            kongcv:text="＋" />
+    </RelativeLayout> -->
+
+</LinearLayout>
