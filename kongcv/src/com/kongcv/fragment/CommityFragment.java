@@ -137,7 +137,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		};
 	};
 
-	private OkHttpUtils okHttpUtils;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -146,10 +145,10 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		lv =  (AMapListView) view.findViewById(R.id.lv);
 		// pro = ProgressDialog.show(getActivity(), "", "正在获取获取数据，请稍候");
 		mCache = ACacheUtils.get(getActivity());
-		okHttpUtils = OkHttpUtils.getInstance();
 		init();
 		return view;
 	}
+	
 	private void init() {
 		// TODO Auto-generated method stub
 		mList = new ArrayList<HireStartEntity>();
@@ -295,6 +294,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		if (czdapter != null) {
 			czdapter.notifyDataSetChanged();
 		}
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

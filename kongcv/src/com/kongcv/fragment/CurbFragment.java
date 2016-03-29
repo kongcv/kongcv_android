@@ -396,7 +396,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		}, 2000);
 
 	}
-
 	@Override
 	public void onLoadMore() {
 		mHandler.postAtTime(new Runnable() {
