@@ -110,7 +110,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		}
 	}
 	private void updateUser() {
-		// TODO Auto-generated method stub
 		try {
 			JSONObject object = new JSONObject();
 			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
