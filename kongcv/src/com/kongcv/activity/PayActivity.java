@@ -178,30 +178,28 @@ public class PayActivity extends Activity implements OnClickListener {
 		try {
 			JSONObject object = new JSONObject();
 			object.put("trade_id", trade_id);
-			Log.v("PayActivity trade_id传递前 服务器给的反馈是：：", JsonStrUtils.JsonStr(object));
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_TRADE_BILLDATA,
 					JsonStrUtils.JsonStr(object));
-			Log.v("PayActivity trade_id传递之后 服务器给的反馈是：：", doHttpsPost);
 			JSONObject object2 = new JSONObject(doHttpsPost);
 			String string = object2.getString("result");
 			JSONObject object3 = new JSONObject(string);
 			String state = object3.getString("state");
 			if (state.equals("ok")) {
 				String bill_id = object3.getString("bill_id");
-				Log.v("bill_id的值是：：", bill_id);
-				/**
-				 * 传递 Pay_info信息
-				 */
 				if(params.equals(CHANNEL_UPACP)){
-					Log.v("params!", params+"");
 					new PaymentTask().execute(new PaymentRequest(CHANNEL_UPACP,
 							Double.parseDouble(price), bill_id,info));
 				}else if(params.equals(CHANNEL_ALIPAY)){
-					Log.v("params!!", params+"");
 					new PaymentTask().execute(new PaymentRequest(CHANNEL_ALIPAY,
 							Integer.parseInt(price), bill_id,info));
 				}
+				/**
+				 * 发送jpus消息
+				 */
+				
+				
+				
 			}
 
 		} catch (Exception e) {

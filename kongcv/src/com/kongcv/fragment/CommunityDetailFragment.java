@@ -180,7 +180,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 		JpushBean fromJson = gson.fromJson(stringExtra, JpushBean.class);
 		String own_mobile = fromJson.getOwn_mobile();
 		mListPhone.setVisibility(View.VISIBLE);
-		
 		phoneList = new ArrayList<String>();
 		phoneList.add(own_mobile);
 		if(phoneList!=null && phoneList.size()>0){
@@ -302,6 +301,10 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				user = result.getUser();
 				gson = new Gson();
 				userBean = gson.fromJson(user, UserBean.class);
+				
+				Log.d("user >>>实体类 结构", user+":::");
+				Log.d("user >>>实体类 结构", user+":::");
+				Log.d("user >>>实体类 结构", user+":::");
 				/**
 				 * 租用时间  租用时间这个 需要处理一部分
 				 */
@@ -960,7 +963,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 			pay(object);
 		}
 	}
-
 	/**
 	 * 支付
 	 */
@@ -1005,7 +1007,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 		try {
 			Gson gson=new Gson();
 			JpushBean fromJson =null;
-			
 			if(mineSendFragment!=null){
 				fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
 				mode=fromJson.getMode();
@@ -1220,7 +1221,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 		}*/
 		FormBody body = new FormBody.Builder()
 		.add("park_id", park_id).add("mode", mode).build();
-			
 		okhttp3.Request request=new okhttp3.Request.Builder()
 		  .url(Information.KONGCV_GET_PARK_INFO)
 		  .headers(Information.getHeaders())
@@ -1372,7 +1372,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 	/**
 	 * 插入通知接受数据
 	 */
-	private void InsertAccept() {
+	/*private void InsertAccept() {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 			@Override
@@ -1394,7 +1394,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				}
 			}
 		}).start();
-	}
+	}*/
 	
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {

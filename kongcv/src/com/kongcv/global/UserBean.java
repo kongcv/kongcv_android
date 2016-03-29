@@ -1,8 +1,9 @@
 package com.kongcv.global;
 
-public class UserBean {
 
-	private RoleEntity role;
+public class UserBean {
+	
+	private String role;
 	private CouponEntity coupon;
 	private String device_type;
 	private String username;
@@ -19,6 +20,12 @@ public class UserBean {
 	private String createdAt;
 	private String updatedAt;
 	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public String getLicense_plate() {
 		return license_plate;
 	}
@@ -26,9 +33,6 @@ public class UserBean {
 		this.license_plate = license_plate;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
-	}
 
 	public void setCoupon(CouponEntity coupon) {
 		this.coupon = coupon;
@@ -69,11 +73,7 @@ public class UserBean {
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
-	public RoleEntity getRole() {
-		return role;
-	}
-
+	
 	public CouponEntity getCoupon() {
 		return coupon;
 	}
@@ -119,7 +119,6 @@ public class UserBean {
 	public String getDevice_type() {
 		return device_type;
 	}
-
 	/**
 	 * @param device_type the device_type to set
 	 */
@@ -168,39 +167,7 @@ public class UserBean {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-
-
-
-
-	public static class RoleEntity {
-		private String __type;
-		private String className;
-		private String objectId;
-
-		public void set__type(String __type) {
-			this.__type = __type;
-		}
-
-		public void setClassName(String className) {
-			this.className = className;
-		}
-
-		public void setObjectId(String objectId) {
-			this.objectId = objectId;
-		}
-
-		public String get__type() {
-			return __type;
-		}
-
-		public String getClassName() {
-			return className;
-		}
-
-		public String getObjectId() {
-			return objectId;
-		}
-	}
+	
 
 	public static class CouponEntity {
 		private String __type;

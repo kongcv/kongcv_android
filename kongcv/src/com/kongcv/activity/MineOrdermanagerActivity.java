@@ -91,7 +91,6 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 		mRadioButton2.setOnClickListener(this);
 		btn_one.setOnClickListener(this);
 		btn_two.setOnClickListener(this);
-
 	}
 
 	private void initData() {

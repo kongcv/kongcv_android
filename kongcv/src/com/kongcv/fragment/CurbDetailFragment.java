@@ -202,25 +202,20 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					setAdapter(hire_time, hire_price, hire_methodStr);
 					user = result.getUser();
 					Data.putData("ResultEntityUser", user);
-					Log.d("获取的user是:::", user+":");
-					Log.d("获取的user是:::", user+":");
-					Log.d("获取的user是:::", user+":");
-					Gson gson = new Gson();
-					UserBean userBean = gson.fromJson(user, UserBean.class);
 					/**
 					 * 租用的起始时间 需要判断当前模式是记时小时 还是其他
 					 */
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
 					payBean.setUser_id(mCache.getAsString("user_id"));
-					payBean.setHirer_id(userBean.getObjectId());
 					payBean.setPark_id(park_id);
-					payBean.setLicense_plate(userBean.getLicense_plate());
 					payBean.setCurb_rate(rate);
+					payBean.setMode(mode);
+					
+					Gson gson = new Gson();
+					UserBean userBean = gson.fromJson(user, UserBean.class);
+					payBean.setHirer_id(userBean.getObjectId());
+					payBean.setLicense_plate(userBean.getLicense_plate());
 					// payBean.setUnit_price(unit_price);// 单位价格判断
 					// payBean.setPrice(0); //价格
-					payBean.setMode(mode);
 					/**
 					 * 需要判断当前模式是否为计时模式
 					 */
@@ -475,7 +470,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			dialog.show();
 			break;
 		case R.id.curb_inform:// 发送jPush
-			Log.e("toastOrNo!!", toastOrNo+"");
+			/*Log.e("toastOrNo!!", toastOrNo+"");
 			if (!toastOrNo) {
 				Log.e("!toastOrNo!!", !toastOrNo+"");
 				start = curbStart.getText().toString();
@@ -484,7 +479,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					ToastUtil.show(getActivity(), "请先选择出租日期！");
 					return;
 				}
-			} else {
+			} else {*/
 				if (mCache.getAsString("USER") != null
 						&& mCache.getAsString("sessionToken") != null) {
 					sendInform();
@@ -500,7 +495,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						}
 					}, 2000);
 				}
-			}
+		//	}
 			break;
 		case R.id.curb_pay:// 支付
 			// 获取订单号 接着跳转到支付页面
@@ -577,11 +572,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					payBean.setPrice(fromJson.getPrice());
 					payBean.setCurb_rate(rate);
 					String json = gson.toJson(payBean);
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", fromJson.getHire_start()+":");
-					Log.e("道边测试>>>>>>", fromJson.getHire_end()+":");
 					doPay(json);
 			}
 		} catch (Exception e) {

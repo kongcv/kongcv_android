@@ -144,6 +144,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	 */
 	private int skip=0;
 	public void getData1() {
+		
 		if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
 			initData1(skip, 10);
 		} else {
@@ -382,7 +383,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 
 			}
 		}).start();*/
-
 	}
 
 	@Override
