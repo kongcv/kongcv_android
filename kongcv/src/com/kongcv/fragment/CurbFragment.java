@@ -144,7 +144,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	 */
 	private int skip=0;
 	public void getData1() {
-		
 		if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
 			initData1(skip, 10);
 		} else {
@@ -163,8 +162,8 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		// TODO Auto-generated method stub
 		try {
 			JSONObject obj = new JSONObject();
-		    obj.put("user_id", mCache.getAsString("user_id"));
-	//		obj.put("user_id", "567a43d134f81a1d87870d62");
+		//    obj.put("user_id", mCache.getAsString("user_id"));
+			obj.put("user_id", "567a43d134f81a1d87870d62");
 			// 判断是租用订单还是出租订单
 			obj.put("role", "customer");
 			// 3代表所有数据

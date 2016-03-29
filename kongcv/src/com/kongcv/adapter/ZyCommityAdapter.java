@@ -68,16 +68,6 @@ public class ZyCommityAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
-		
-		Log.v("后台获取到的数据是：",resultBean.size()+"");
-		Log.v("getPark_community:"+position, resultBean.get(position).getPark_community());
-		Log.v("mList:"+position, mList.toString()+"集合");
-		
-		Log.v("list:"+position, list.get(position).getIso()+"集合");
-		Log.v("getObjectId:"+position, resultBean.get(position).getObjectId());
-		Log.v("getPrice:"+position, resultBean.get(position).getPrice() + "");
-		
 		holder.tv_username.setText(resultBean.get(position).getPark_community());
 		holder.tv_start.setText(mList.get(position).getIso());
 		holder.tv_end.setText(list.get(position).getIso());
