@@ -126,13 +126,11 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			finish();
 			break;
 		case R.id.btn1: 
-			Log.d("租用订单", "租用订单>>>>>>>>>>>>>>>>>>");
 			TYPEORDER = 1;
 			comf.getData1();
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn2: 
-			Log.d("出租清单", "出租订单>>>>>>>>>>>>>>>>>>");
 			TYPEORDER = 0;
 			comf.getData1();
 			pager.setCurrentItem(0);

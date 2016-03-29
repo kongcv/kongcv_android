@@ -47,15 +47,13 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private List<UserList> userBeans;
 	private ZyCurbAdapter zydapter;
 	private CzCommityAdapter czdapter;
-	// private ProgressDialog pro = null;
 	public int TAG = 1;
 	HireStartEntity startTime;
 	HireEndEntity endTime;
 	ResultEntity result;
 	UserList us;
 	private ACacheUtils mCache;
-	private Handler mHandler;
-	private Handler handler = new Handler() {
+	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
@@ -86,7 +84,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				czdapter = new CzCommityAdapter(getActivity(), mList, list,
 						resultBean, userBeans);
 				lv.setAdapter(czdapter);
-				// pro.dismiss();
 				// mAdapter.notifyDataSetChanged();
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -103,21 +100,17 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						}
 					}
 				});
-
 				break;
 			default:
 				break;
-
 			}
 		};
 	};
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.curbfragment, container, false);
 		lv = (AMapListView) view.findViewById(R.id.lv);
-		// pro = ProgressDialog.show(getActivity(), "", "正在获取获取数据，请稍候");
 		mCache = ACacheUtils.get(getActivity());
 		mList = new ArrayList<HireStartEntity>();
 		list = new ArrayList<HireEndEntity>();
@@ -134,7 +127,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	}
 
 	private void initView() {
-		mHandler = new Handler();
 		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
@@ -162,8 +154,8 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		// TODO Auto-generated method stub
 		try {
 			JSONObject obj = new JSONObject();
-		//    obj.put("user_id", mCache.getAsString("user_id"));
-			obj.put("user_id", "567a43d134f81a1d87870d62");
+		    obj.put("user_id", mCache.getAsString("user_id"));
+		//	obj.put("user_id", "567a43d134f81a1d87870d62");
 			// 判断是租用订单还是出租订单
 			obj.put("role", "customer");
 			// 3代表所有数据
@@ -174,14 +166,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_GET_TRADE_LIST,
 					JsonStrUtils.JsonStr(obj));
-			Log.i("doHttpsPostOrderqqqqqqqq", doHttpsPost);
 			JSONObject object = new JSONObject(doHttpsPost);
 			JSONArray array = object.getJSONArray("result");
 			for (int i = 0; i < array.length(); i++) {
 				// 开始时间
 				JSONObject ob = array.getJSONObject(i);
 				if (ob.has("hire_start")) {
-					Log.v("ssss", ob.has("hire_start") + "");
 					String start = GTMDateUtil.GTMToLocal(
 							ob.getJSONObject("hire_start").getString(
 									"iso"), true);
@@ -199,13 +189,11 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					endTime.setIso(end);
 					list.add(endTime);// 结束时间
 				} else {
-					Log.v("ssss", ob.has("hire_start") + "");
 					endTime.setIso("");
 					list.add(endTime);
 				}
 				// 价钱
 				double price =array.getJSONObject(i).getDouble("price");
-				
 				// 订单号
 				String objectId = array.getJSONObject(i).getString(
 						"objectId");
@@ -231,7 +219,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 			Message msg = Message.obtain();
 			msg.what = 0;
-			handler.sendMessage(msg);
+			mHandler.sendMessage(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -126,7 +126,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 						}
 					}
 				});
-
 				break;
 			default:
 				break;
@@ -148,9 +147,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	
 	private void init() {
 		// TODO Auto-generated method stub
-		/**
-		 * 废代码
-		 */
 		mList = new ArrayList<HireStartEntity>();
 		list = new ArrayList<HireEndEntity>();
 		resultBean = new ArrayList<ResultEntity>();
@@ -175,6 +171,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private int skip=0;
 	private int limit=10;
 	public void getData1() {
+		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
+		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
+		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
 		if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
 			initData1(skip, limit);
 		} else {
@@ -216,8 +215,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				zydapter.notifyDataSetChanged();
 			}
 			JSONObject params=new JSONObject();
-//			params.put("user_id", mCache.getAsString("user_id"));
-			params.put("user_id", "567a43d134f81a1d87870d62");
+			params.put("user_id", mCache.getAsString("user_id"));
+//			params.put("user_id", "567a43d134f81a1d87870d62");
 			params.put("role", "customer");	
 			params.put("trade_state", 3);	
 			params.put("skip", skipNum);	
@@ -233,16 +232,14 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	}
 	private final OkHttpClient client = new OkHttpClient();
 	private void postHttp(String json, final int skipNum){
-		Log.d("postHttp传递的参数是>>>", json);
-		Log.d("postHttp传递的参数是>>>", json);
-		Log.d("postHttp传递的参数是>>>", json);
-		Log.d("postHttp传递的参数是>>>", json);
-		Log.d("postHttp传递的参数是>>>", json);
+		/*Log.d("postHttp传递的参数是>>>", json);
+		Log.d("postHttp传递的参数是>>>", json);*/
 		okhttp3.Request request=new okhttp3.Request.Builder()
 		  .url(Information.KONGCV_GET_TRADE_LIST)
 		  .headers(Information.getHeaders())
 	      .post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, json))
 	      .build();
+		
 		client.newCall(request).enqueue(new okhttp3.Callback() {
 	
 			@Override
@@ -375,11 +372,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	}
 	private void doHtttpRequest(String data2) {
 		// TODO Auto-generated method stub
-		Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");
-		Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");
-		Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");
-		Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");
-		
+		/*Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");
+		Log.d("doHtttpRequest data2>>>><<<<",data2+":data2");*/
 		okhttp3.Request request=new okhttp3.Request.Builder()
 		  .url(Information.KONGCV_GET_TRADE_LIST)
 		  .headers(Information.getHeaders())
@@ -391,7 +385,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
 				// TODO Auto-generated method stub
 				if(response.isSuccessful()){
-					
+					/*Log.d("doHtttpRequest data2>>>><<<<",response.body().string()+":response");
+					Log.d("doHtttpRequest data2>>>><<<<",response.body().string()+":response");*/
 				}
 			}
 			@Override
@@ -407,8 +402,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		String data2=null;
 		try {
 			JSONObject obj=new JSONObject();
-			//	obj.put("user_id", mCache.getAsString("user_id"));
-			obj.put("user_id", "567a43d134f81a1d87870d62");
+			obj.put("user_id", mCache.getAsString("user_id"));
+		//	obj.put("user_id", "567a43d134f81a1d87870d62");
 			obj.put("role", "hirer");
 			// 需要判断订单类型
 			obj.put("trade_state", 3);
@@ -467,6 +462,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		private void doResponse(String string,int skipNum) {
 			// TODO Auto-generated method stub
 			try {
+				Log.d("postHttp返回的数据结果是>>>", string);
+				Log.d("postHttp返回的数据结果是>>>", string);
+				Log.d("postHttp返回的数据结果是>>>", string);
 				JSONObject object = new JSONObject(string);
 				JSONArray array = object.getJSONArray("result");
 				String address=null;
@@ -516,19 +514,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 								"objectId");
 						parkList.add(parkId);
 					}
-					// 租用方式
-					/*if(!array.getJSONObject(i).has("hire_method")){
-						Log.e("第几条没有hire_method字段", "i=i+_"+i);
-					}else{
-						String hire_method = array.getJSONObject(i).getString(
-								"hire_method");
-						JSONObject objStrs = new JSONObject(hire_method);
-						method= objStrs.getString("method");
-						result.setMethod(method);//租用方式
-						
-						String field = objStrs.getString("field");
-						fieldList.add(field);
-					}*/
 					if(array.getJSONObject(i).has("hire_method")){
 						String hire_method = array.getJSONObject(i).getString(
 								"hire_method");

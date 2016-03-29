@@ -72,13 +72,11 @@ public class SplashActivity extends Activity {
 		        @Override
 		        public void onErrorResponse(VolleyError error) {
 		            Log.e("TAG", error.getMessage(), error);
-		            
 		        }
 		    }, params);
 		requestQueue.add(request);
 	}
 	private Handler mHandler = new Handler() {
-
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -97,6 +95,7 @@ public class SplashActivity extends Activity {
 	 * 提示更新操作
 	 */
 	private int currentVersionCode;
+	private Builder builder;
 	private void BuilderReadInfo(final CheckUpdate fromJson){
 		try {
 			PackageManager packageManager = getPackageManager();
@@ -105,7 +104,7 @@ public class SplashActivity extends Activity {
 			currentVersionCode = packageInfo.versionCode; // 版本号
 			if(fromJson.getResult().get(0).getVersion_Num()>currentVersionCode){
 				if(fromJson.getResult().get(0).getMust()==0){
-					Builder builder = new AlertDialog.Builder(SplashActivity.this,AlertDialog.THEME_HOLO_DARK);
+					builder = new AlertDialog.Builder(SplashActivity.this,AlertDialog.THEME_HOLO_DARK);
 					builder.setTitle(fromJson.getResult().get(0).getApk().getName());
 					builder.setMessage("发现新版本:"+fromJson.getResult().get(0).getVersion()+",当前版本："+appVersion
 							+"\n"+"是否更新?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -127,13 +126,17 @@ public class SplashActivity extends Activity {
 							dialog.dismiss();
 							mHandler.sendEmptyMessage(0);
 						}
-					}).create().show();
+					});
+					 builder.setCancelable(false);
+					 builder.show();
 				}else{
 					//强制刷新 直接下载
 					Intent intent = new Intent(SplashActivity.this, UpdateService.class);
 					intent.putExtra("UpdateApk", fromJson.getResult().get(0).getApk().getUrl());
 					startService(intent);
 				}
+			}else if(fromJson.getResult().get(0).getVersion_Num()==currentVersionCode){
+				mHandler.sendEmptyMessage(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -143,7 +146,6 @@ public class SplashActivity extends Activity {
 	 * 跳到主页面
 	 */
 	protected void enterHome() {
-		
 		Intent intent = new Intent(this, HomeActivity.class);
 		startActivity(intent);
 		finish();
