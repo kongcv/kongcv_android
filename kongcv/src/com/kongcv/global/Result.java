@@ -15,7 +15,7 @@ public class Result {
     private double grade;
     private String user;
     private String objectid;
-    private String createdat;
+    private String createdAt;
     private String updatedat;
     public void setParkCommunity(ParkCommunity parkCommunity) {
          this.parkCommunity = parkCommunity;
@@ -45,18 +45,17 @@ public class Result {
          return user;
      }
 
-    public void setObjectid(String objectid) {
+    public String getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+	public void setObjectid(String objectid) {
          this.objectid = objectid;
      }
      public String getObjectid() {
          return objectid;
-     }
-
-    public void setCreatedat(String createdat) {
-         this.createdat = createdat;
-     }
-     public String getCreatedat() {
-         return createdat;
      }
 
     public void setUpdatedat(String updatedat) {

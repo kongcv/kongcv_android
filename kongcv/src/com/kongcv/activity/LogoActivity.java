@@ -196,8 +196,7 @@ public class LogoActivity extends Activity {
 	 * 加载获取id和url
 	 */
 	private void getData() {
-		if (mCache.getAsString("ReadImgTask") == null
-				&& mCache.getAsString("ReadBtnTask") == null) {
+		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
 			ReadImgTask task = new ReadImgTask();
 			task.execute();
 			ReadBtnTask task2 = new ReadBtnTask();

@@ -38,7 +38,6 @@ public class NickNameActivity extends Activity implements OnClickListener{
 	private LinearLayout nick_lin;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_nickname);
 		MyApplication.getInstance().addActivity(this);

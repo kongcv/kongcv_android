@@ -74,7 +74,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		if (view != null) {
 			ViewGroup parent = (ViewGroup) view.getParent();
 			if (parent != null) {
@@ -157,7 +156,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case 0:
 				@SuppressWarnings("unchecked")
@@ -181,21 +179,24 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	};
 	private void getInfo(List<Result> result){
 		Gson gson=new Gson();
-		HashMap<String, Object> map=new HashMap<String, Object>();
+		HashMap<String, Object> map;
 		String urlImage=null;
 		for(int i=0;i<result.size();i++){
+			map=new HashMap<String, Object>();
 			String user = result.get(i).getUser();
 			User userBean = gson.fromJson(user, User.class);
 			String username = userBean.getUsername();
 			ImageUser image = userBean.getImage();
-			String createdat = userBean.getCreatedat();
-			if(createdat!=null){
-				String gtmToLocal = GTMDateUtil.GTMToLocal(createdat, true);
-				map.put("tvTime", gtmToLocal);//时间
-			}
+//			String createdat = userBean.getCreatedat();
+//			if(createdat!=null){
+//				String gtmToLocal = GTMDateUtil.GTMToLocal(createdat, true);
+//				map.put("tvTime", gtmToLocal);//时间
+//			}
 			if(user.contains("url")){
 				urlImage=image.getUrl();
 			}
+			String gtmToLocal =	GTMDateUtil.GTMToLocal(result.get(i).getCreatedAt(),true);
+			map.put("tvTime", gtmToLocal);//时间
 			map.put("tvSay", result.get(i).getComment());//评论
 			map.put("userName",username);
 			map.put("myratingbar",(float) result.get(i).getGrade());//星评论
