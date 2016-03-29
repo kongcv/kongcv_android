@@ -127,12 +127,14 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			break;
 		case R.id.btn1: 
 			TYPEORDER = 1;
-			comf.getData1();
+	//		comf.getData1();
+			cubf.getData1();
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn2: 
 			TYPEORDER = 0;
-			comf.getData1();
+	//		comf.getData1();
+			cubf.getData1();
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn_one:// 社区按钮

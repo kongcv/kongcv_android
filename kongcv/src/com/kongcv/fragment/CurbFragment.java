@@ -166,6 +166,11 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_GET_TRADE_LIST,
 					JsonStrUtils.JsonStr(obj));
+			Log.d("doInitData1>>>>>>>>>>>>>>>>>>>", doHttpsPost);
+			Log.d("doInitData1>>>>>>>>>>>>>>>>>>>", doHttpsPost);
+			Log.d("doInitData1>>>>>>>>>>>>>>>>>>>", doHttpsPost);
+			
+			
 			JSONObject object = new JSONObject(doHttpsPost);
 			JSONArray array = object.getJSONArray("result");
 			for (int i = 0; i < array.length(); i++) {

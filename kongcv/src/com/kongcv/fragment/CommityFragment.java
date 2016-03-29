@@ -171,9 +171,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private int skip=0;
 	private int limit=10;
 	public void getData1() {
+		/*Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
 		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
-		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
-		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
+		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");*/
 		if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
 			initData1(skip, limit);
 		} else {
@@ -462,9 +462,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		private void doResponse(String string,int skipNum) {
 			// TODO Auto-generated method stub
 			try {
+				/*Log.d("postHttp返回的数据结果是>>>", string);
 				Log.d("postHttp返回的数据结果是>>>", string);
-				Log.d("postHttp返回的数据结果是>>>", string);
-				Log.d("postHttp返回的数据结果是>>>", string);
+				Log.d("postHttp返回的数据结果是>>>", string);*/
 				JSONObject object = new JSONObject(string);
 				JSONArray array = object.getJSONArray("result");
 				String address=null;
@@ -482,7 +482,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 						startTime.setIso(start);
 						mList.add(startTime);
 					} else {
-						Log.e("第条开始时间："+i, ob+"");
 						startTime.setIso("0000-00-00 00:00:00");
 						mList.add(startTime);
 					}
@@ -494,7 +493,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 						endTime.setIso(end);
 						list.add(endTime);
 					} else {
-						Log.e("第条结束时间："+i, ob+"");
 						endTime.setIso("0000-00-00 00:00:00");
 						list.add(endTime);
 					}
