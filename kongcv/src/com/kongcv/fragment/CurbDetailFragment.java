@@ -1,11 +1,17 @@
 package com.kongcv.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -86,7 +92,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		getDeviceToken();
 		return view;
 	}
-
 	/**
 	 * 一开始获取到mode和park_id
 	 */
@@ -202,25 +207,20 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					setAdapter(hire_time, hire_price, hire_methodStr);
 					user = result.getUser();
 					Data.putData("ResultEntityUser", user);
-					Log.d("获取的user是:::", user+":");
-					Log.d("获取的user是:::", user+":");
-					Log.d("获取的user是:::", user+":");
-					Gson gson = new Gson();
-					UserBean userBean = gson.fromJson(user, UserBean.class);
 					/**
 					 * 租用的起始时间 需要判断当前模式是记时小时 还是其他
 					 */
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
-					Log.d("user_id", mCache.getAsString("user_id")+"<<");
 					payBean.setUser_id(mCache.getAsString("user_id"));
-					payBean.setHirer_id(userBean.getObjectId());
 					payBean.setPark_id(park_id);
-					payBean.setLicense_plate(userBean.getLicense_plate());
 					payBean.setCurb_rate(rate);
+					payBean.setMode(mode);
+					
+					Gson gson = new Gson();
+					UserBean userBean = gson.fromJson(user, UserBean.class);
+					payBean.setHirer_id(userBean.getObjectId());
+					payBean.setLicense_plate(userBean.getLicense_plate());
 					// payBean.setUnit_price(unit_price);// 单位价格判断
 					// payBean.setPrice(0); //价格
-					payBean.setMode(mode);
 					/**
 					 * 需要判断当前模式是否为计时模式
 					 */
@@ -251,6 +251,23 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					Intent intent = new Intent(getActivity(), PayActivity.class);
 					intent.putExtras(bundle);
 					startActivity(intent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 2:
+				try {
+					String doHttpsPost=(String) msg.obj;
+					JSONObject obj2 = new JSONObject(doHttpsPost);
+					String str = obj2.getString("result");
+					JSONObject objStr = new JSONObject(str);
+					String state = objStr.getString("state");
+					if ("ok".equals(state)) {
+						ToastUtil.show(getActivity(), "订单成功确认！");
+					} else {
+						ToastUtil.show(getActivity(), "订单确认失败，请尝试重新操作！");
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -475,7 +492,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			dialog.show();
 			break;
 		case R.id.curb_inform:// 发送jPush
-			Log.e("toastOrNo!!", toastOrNo+"");
+			/*Log.e("toastOrNo!!", toastOrNo+"");
 			if (!toastOrNo) {
 				Log.e("!toastOrNo!!", !toastOrNo+"");
 				start = curbStart.getText().toString();
@@ -484,7 +501,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					ToastUtil.show(getActivity(), "请先选择出租日期！");
 					return;
 				}
-			} else {
+			} else {*/
 				if (mCache.getAsString("USER") != null
 						&& mCache.getAsString("sessionToken") != null) {
 					sendInform();
@@ -500,7 +517,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						}
 					}, 2000);
 				}
-			}
+		//	}
 			break;
 		case R.id.curb_pay:// 支付
 			// 获取订单号 接着跳转到支付页面
@@ -553,7 +570,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						}
 					
 					}
-					String hire_method_id = fromJson.getHire_method_id();
+					hire_method_id = fromJson.getHire_method_id();
 					String hire_method = result.getHire_method();
 					JSONArray array;
 					array = new JSONArray(hire_method);
@@ -577,11 +594,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					payBean.setPrice(fromJson.getPrice());
 					payBean.setCurb_rate(rate);
 					String json = gson.toJson(payBean);
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", json+":");
-					Log.e("道边测试>>>>>>", fromJson.getHire_start()+":");
-					Log.e("道边测试>>>>>>", fromJson.getHire_end()+":");
 					doPay(json);
 			}
 		} catch (Exception e) {
@@ -611,7 +623,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		public MyThread(String object) {
 			this.object = object;
 		}
-
 		@Override
 		public void run() {
 			pay(object);
@@ -652,18 +663,42 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	/**
 	 * 发送Jpush通知
 	 */
+	private OkHttpClient client = new OkHttpClient();
 	private void sendInform() {
 		// TODO Auto-generated method stub
-		new Thread(new Runnable() {
+		/*new Thread(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				JPushInform();// JPush通知
 			}
-		}).start();
+		}).start();*/
+		okhttp3.Request request=new okhttp3.Request.Builder()
+		  .url(Information.KONGCV_JPUSH_MESSAGE_P2P)
+		  .headers(Information.getHeaders())
+	      .post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, JPushInformBefore()))
+	      .build();
+		client.newCall(request).enqueue(new okhttp3.Callback() {
+	
+			@Override
+			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
+				// TODO Auto-generated method stub
+				if(response.isSuccessful()){
+					Message msg=mHandler.obtainMessage();
+					msg.what=2;
+					msg.obj=response.body().string();
+					mHandler.sendMessage(msg);
+				}
+			}
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+				Log.e("KONGCV_JPUSH_MESSAGE_P2P", arg1.toString());
+			}
+			});
 	}
 	private String hire_method_id;
-	private void JPushInform() {
+	/*private void JPushInform() {
 		try {
 			Gson gson=new Gson();
 			JpushBean fromJson =null;
@@ -696,26 +731,16 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			JSONObject obj = new JSONObject();
 			obj.put("mobilePhoneNumber", mobilePhoneNumber);// 对方手机号
 			obj.put("push_type", "verify_request");// 租用请求
-			/**
+			*//**
 			 * 写死
-			 */
-			
-	//		obj.put("device_token", "140fe1da9ea92b1aecd");
+			 *//*
 			obj.put("device_token", device_token);
-	//		obj.put("device_token", "100d8559094585faad4");
-	//		obj.put("device_token", JPushInterface.getRegistrationID(getActivity()));
 			obj.put("device_type", "android");
-			/*
-			 * obj.put("device_token", device_token); obj.put("device_type",
-			 * device_type);
-			 */
 			String asString = mCache.getAsString("user_id");
 			obj.put("user_id", asString);
-
 			JSONObject extras = new JSONObject();
 			extras.put("park_id", park_id);// 得到车位的objectId
 			extras.put("mode", mode);
-
 			extras.put("hire_method_id", hire_method_id);
 			extras.put("hire_method_field", field);
 			extras.put("address", tvAddress.getText().toString()
@@ -727,11 +752,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				extras.put("hire_start", "");// 出租截止时间和日期
 				extras.put("hire_end", "");
 			}
-			
 			extras.put("own_device_token", mCache.getAsString("RegistrationID"));
 			extras.put("own_device_type", "android");
 			extras.put("own_mobile", mCache.getAsString("USER"));
-
 			extras.put("push_type", "verify_request");
 			extras.put("price", Double.valueOf(tvCurbMoney.getText().toString()));// 价格需要计算 等会传递
 			obj.put("extras", extras);
@@ -757,7 +780,84 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}*/
+	
+	/**
+	 * 发送jpush请求参数
+	 */
+	private String JPushInformBefore(){
+		String jsonStr=null;
+		try {
+		Gson gson=new Gson();
+		JpushBean fromJson =null;
+		if (mineSendFragment != null) {
+			fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
+			mode=fromJson.getMode();
+			hire_method_id=fromJson.getHire_method_id();
+			field=fromJson.getHire_method_field();
+		}else if(strExtra!=null){
+			fromJson = gson.fromJson(strExtra, JpushBean.class);
+			mode=fromJson.getMode();
+			hire_method_id=fromJson.getHire_method_id();
+			field=fromJson.getHire_method_field();
+		}else if(CurbMineReceiver!=null){
+			fromJson = gson.fromJson(CurbMineReceiver, JpushBean.class);
+			mode=fromJson.getMode();
+			hire_method_id=fromJson.getHire_method_id();
+			field=fromJson.getHire_method_field();
+		}
+		String data = (String) Data.getData("ResultEntityUser");
+		JSONObject user = new JSONObject(data);
+		mobilePhoneNumber = user.getString("mobilePhoneNumber");
+		String device_token = user.getString("device_token");
+		JSONObject obj = new JSONObject();
+		obj.put("mobilePhoneNumber", mobilePhoneNumber);// 对方手机号
+		obj.put("push_type", "verify_request");// 租用请求
+		obj.put("device_token", device_token);
+		obj.put("device_type", "android");
+		String asString = mCache.getAsString("user_id");
+		obj.put("user_id", asString);
+		JSONObject extras = new JSONObject();
+		extras.put("park_id", park_id);// 得到车位的objectId
+		extras.put("mode", mode);
+		extras.put("hire_method_id", hire_method_id);
+		extras.put("hire_method_field", field);
+		extras.put("address", tvAddress.getText().toString()
+				+ tvAddressDetail.getText().toString());// 地址
+		if (!curbStart.getText().toString().equals(" 年  月  日") && !curbEnd.getText().toString().equals(" 年  月  日")) {
+			extras.put("hire_start", curbStart.getText().toString()+" 00:00:00");// 出租截止时间和日期
+			extras.put("hire_end", curbEnd.getText().toString()+" 00:00:00");
+		}else{
+			extras.put("hire_start", "");// 出租截止时间和日期
+			extras.put("hire_end", "");
+		}
+		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+		extras.put("own_device_type", "android");
+		extras.put("own_mobile", mCache.getAsString("USER"));
+		extras.put("push_type", "verify_request");
+		extras.put("price", Double.valueOf(tvCurbMoney.getText().toString()));// 价格需要计算 等会传递
+		obj.put("extras", extras);
+		Log.v("发送jPushJPUSH!!", JsonStrUtils.JsonStr(obj));
+		jsonStr=JsonStrUtils.JsonStr(obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonStr;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 点击选择
 	 */
@@ -769,7 +869,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		end = curbEnd.getText().toString();
 		if (!start.equals(" 年  月  日") && !end.equals(" 年  月  日")) {
 			adapter.setP(position);
-			ViewHolder holder = (ViewHolder) view.getTag();
+		//	ViewHolder holder = (ViewHolder) view.getTag();
 			adapter.notifyDataSetChanged();
 			String string = (String) dataList.get(position).get(KEY[2]);
 			String days = DateUtils.getDays(start, end, true);// 天数

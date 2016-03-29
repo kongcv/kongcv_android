@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -26,12 +27,11 @@ import com.kongcv.fragment.CurbFragment;
 
 /**
  * 订单管理页面
- * 
  * @author kcw
- * 
  */
 public class MineOrdermanagerActivity extends FragmentActivity implements
 		OnClickListener {
+	
 	private RadioGroup mRadioGroup;
 	private RadioButton mRadioButton1, mRadioButton2;
 	private RadioButton btn_one, btn_two;
@@ -44,7 +44,6 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 	private ImageView iv_back;
 	private CommityFragment comf;
 	private CurbFragment cubf;
-	private int currentItem;
 	/**
 	 * 0代表是租用订单，1代表是出租订单
 	 */
@@ -53,12 +52,11 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mine_ordermanager);
-		MyApplication.getInstance().addActivity(this);
 		initView();
 		initData();
 	}
-
 	private void initView() {
+		MyApplication.getInstance().addActivity(this);
 		mRadioGroup = (RadioGroup) findViewById(R.id.radio);
 		mRadioButton1 = (RadioButton) findViewById(R.id.btn1);
 		mRadioButton2 = (RadioButton) findViewById(R.id.btn2);
@@ -73,8 +71,6 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 		getWindow().getWindowManager().getDefaultDisplay()
 				.getMetrics(outMetrics);
 		screenWidth = outMetrics.widthPixels;
-		// 设置iv_line宽度
-		// 获取控件的(注意：一定要用父控件的LayoutParams写LinearLayout.LayoutParams)
 		LinearLayout.LayoutParams lp = (LayoutParams) iv_line.getLayoutParams();// 获取控件的布局参数对象
 		lp.width = screenWidth / 2;
 		iv_line.setLayoutParams(lp); // 设置该控件的layoutParams参数
@@ -82,32 +78,28 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 		cubf = new CurbFragment();
 		mFragments.add(cubf);
 		mFragments.add(comf);
-
 		pager = (ViewPager) findViewById(R.id.pager);
 		mAdapter = new OrederTabAdapter(getSupportFragmentManager(),
-				mFragments, currentItem);
+				mFragments);
 		pager.setAdapter(mAdapter);
 		mRadioButton1.setOnClickListener(this);
 		mRadioButton2.setOnClickListener(this);
 		btn_one.setOnClickListener(this);
 		btn_two.setOnClickListener(this);
-
 	}
-
 	private void initData() {
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
 			public void onPageSelected(int position) {
 				switch (position) {
 				case 0:
-					btn_two.setChecked(true);// 道路
 					cubf.getData1();
+					btn_two.setChecked(true);// 道路
 					break;
 				case 1:
-					btn_one.setChecked(true);
 					comf.getData1();
+					btn_one.setChecked(true);
 					break;
-
 				}
 			}
 			@Override
@@ -120,10 +112,9 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 						* screenWidth / 2);
 				iv_line.setLayoutParams(lp);
 			}
-
 			@Override
 			public void onPageScrollStateChanged(int state) {
-
+				
 			}
 		});
 	}
@@ -134,15 +125,17 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 		case R.id.iv_back:
 			finish();
 			break;
-		case R.id.btn1:
+		case R.id.btn1: 
+			Log.d("租用订单", "租用订单>>>>>>>>>>>>>>>>>>");
 			TYPEORDER = 1;
 			comf.getData1();
-			pager.setCurrentItem(0);// 出租订单
+			pager.setCurrentItem(0);
 			break;
-		case R.id.btn2:
+		case R.id.btn2: 
+			Log.d("出租清单", "出租订单>>>>>>>>>>>>>>>>>>");
 			TYPEORDER = 0;
 			comf.getData1();
-			pager.setCurrentItem(0);// 选择某一页,租用订单
+			pager.setCurrentItem(0);
 			break;
 		case R.id.btn_one:// 社区按钮
 			comf.getData1();

@@ -426,22 +426,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			Data.putData("wk", wk);//地址
 			LatLng latLng = new LatLng(Latitude, Longitude);
 			Data.putData("LatLng", latLng);
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
-			Log.d("定位latitude", latLng.latitude+"::");
-			Log.d("定位longitude", latLng.longitude+"::");
 		}
 	}
 	/**

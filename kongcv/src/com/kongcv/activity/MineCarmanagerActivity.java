@@ -84,7 +84,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 			}
 		}
 	};
-
 	private ACacheUtils mCache;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

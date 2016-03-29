@@ -46,9 +46,9 @@ public class PostCLientUtils {
         // 参数
         HttpParams httpParameters = new BasicHttpParams();
         // 设置连接超时
-        HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
         // 设置socket超时
-        HttpConnectionParams.setSoTimeout(httpParameters, 3000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 5000);
         // 获取HttpClient对象 （认证）
         HttpClient hc = MyInitHttpClient.initHttpClient(httpParameters);
         HttpPost post = new HttpPost(serverURL);
