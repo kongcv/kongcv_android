@@ -64,7 +64,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private ImageView btn1, btn2;
 	private RequestQueue mQueue;
 	private ImageLoader imageLoader;
-	
 	private LinearLayout llAdvertiseBoard;// 获取图片线性布局
 	private LayoutInflater inflater;
 	private View kongcvLayout;
@@ -78,7 +77,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			kongcvLayout = inflater.inflate(R.layout.mkongcv_activity, container,
 					false);
 			homeActivity = (HomeActivity) getActivity();
-	//		mFragmentManager = getActivity().getSupportFragmentManager();
 			mCache = ACacheUtils.get(homeActivity);
 			RequestManager.init(getActivity());
 			inflater = LayoutInflater.from(getActivity());
@@ -194,7 +192,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
-				Log.e("GridViewOkHttp", arg1.toString());
+				Log.e("KONGCV_GET_HIRE_METHOD", arg1.toString());
 			}
 			});
 	}
@@ -338,7 +336,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			mHandler.sendMessage(msg);
 		}
 	}
-	private ArrayList<JsonObjectRequest> mRequestQueue;
+	/*private ArrayList<JsonObjectRequest> mRequestQueue;
 	private void loadJson() {
 		// TODO Auto-generated method stub
 		Map<String, String> params = new HashMap<String, String>();  
@@ -411,28 +409,21 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	class CurbOrComm {
+	}*/
+	/*class CurbOrComm {
 		private List<String> mList;
 		private Map<Integer,String> map;
 		public CurbOrComm(List<String> list,Map<Integer,String> map){
 			this.mList=list;
 			this.map=map;
 		}
-	}
-	
+	}*/
 	private void getImage(String value, ImageView img) {
 		// TODO Auto-generated method stub
 		ImageListener listener = ImageLoader.getImageListener(img,
 				0, 0);//
 		imageLoader.get(value, listener);
 	}
-	@Override
-	public void onResume() {
-		super.onResume();
-	//	HomeActivity.curFragmentTag = getString(R.string.mcarw_fg);
-	}
-	
 	/**
 	 * 点击社区和道路出现类型图片
 	 */

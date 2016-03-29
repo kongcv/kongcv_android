@@ -85,7 +85,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 		String textStr4 = "<font color=\"#94cAE4\">隐私条款</font>";
 		now.setText(Html.fromHtml(textStr1 + textStr2 + textStr3 + textStr4));
 	}
-	
 	/**
 	 * 验证码倒计时
 	 */
@@ -104,12 +103,12 @@ public class LogInActivity extends Activity implements OnClickListener {
     
 	@Override
 	public void onClick(View v) {
-
 		switch (v.getId()) {
 		case R.id.getcord: // 获取验证码。
 			iPhone=phone.getText().toString();
 			if (StringUtils.isMobileNo(iPhone)) {
 				getCode();
+				
 				timer.start();
 			}else {
 				ToastUtil.show(getApplicationContext(), "手机号码格式不正确");
@@ -155,6 +154,10 @@ public class LogInActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
+		
 	}
 
 	/**

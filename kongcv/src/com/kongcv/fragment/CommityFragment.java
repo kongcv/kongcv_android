@@ -371,7 +371,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 
 			}
 		}).start();*/
-
+		
 	}
 	private void doHtttpRequest(String data2) {
 		// TODO Auto-generated method stub
