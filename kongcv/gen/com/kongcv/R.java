@@ -142,7 +142,7 @@ containing a value of this type.
         public static final int home_log=0x7f06000a;
         public static final int home_textSize=0x7f06000b;
         public static final int homeactivity_item_ImagepaddingTop=0x7f060036;
-        public static final int homeactivity_item_height=0x7f060043;
+        public static final int homeactivity_item_height=0x7f060042;
         public static final int homeactivity_item_imageview=0x7f060034;
         /**  homeactivity标题栏的字体
  homeactivity标题栏的字体
@@ -158,7 +158,6 @@ containing a value of this type.
          */
         public static final int item_high=0x7f06000f;
         public static final int item_item_margin=0x7f060011;
-        public static final int item_kongbai=0x7f060042;
         public static final int item_listtxt=0x7f060025;
         public static final int item_marginLeft=0x7f06001d;
         public static final int item_marginbuttom=0x7f060032;

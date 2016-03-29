@@ -118,7 +118,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private KCVGridView gridView;
 	private KCVGridAdapter gridAdapter;
 	private void initListView() {
-		// TODO Auto-generated method stub
 		gridView=(KCVGridView) kongcvLayout.findViewById(R.id.kcvgridview);
 		gridView.setOnItemClickListener(this);
 	}

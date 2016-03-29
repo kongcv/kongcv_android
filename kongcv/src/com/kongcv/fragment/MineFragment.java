@@ -63,10 +63,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 	private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
 	private static final int PHOTO_REQUEST_CUT = 3;// 结果
 	private Bitmap bitmap, bit;
-	/* 头像名称 */
-	// private static final String PHOTO_FILE_NAME =
-	// mCache.getAsString("USER")+".png";//手机号码
-	// private static final String PHOTO_FILE_NAME = "13717950391.png";// 手机号码
 	private File tempFile;
 
 	private View linearLayout;
@@ -76,9 +72,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 
 	private ACacheUtils mCache;
 	private String user_name;
-	/**
-	 * 自定義弹框类
-	 */
 	// 自定义的弹出框类
 	MinePopu menuWindow;
 	private String url;
@@ -127,7 +120,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case 0:
 				if (mCache.getAsString("USER") != null) {
@@ -149,7 +141,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 			}
 		}
 		private void updateUserImage(String userUrl) {
-			// TODO Auto-generated method stub
 			ReadType readType=new ReadType();
 			readType.execute(userUrl);
 		}
