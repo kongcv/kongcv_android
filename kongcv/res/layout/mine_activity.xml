@@ -143,6 +143,7 @@
                     android:text="设置"
                     android:textColor="@color/txt_detail"
                     android:textSize="@dimen/minefragment_txtSize" />
+
                 <ImageView style="@style/iv" />
             </RelativeLayout>
         </LinearLayout>

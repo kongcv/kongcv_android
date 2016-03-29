@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -11,38 +11,39 @@
         android:layout_weight="1" >
     </FrameLayout>
 
-     <View
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#EBEBEB" />
-     <RadioGroup
+
+    <RadioGroup
         android:id="@+id/main_rg"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:orientation="horizontal"
-        android:background="@drawable/tag_bg" 
-         >
+        android:background="@drawable/tag_bg"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/rb0"
             style="@style/main_tab_style"
             android:checked="true"
             android:drawableTop="@drawable/tab_01_bg"
-            android:text="消息"
+            android:text="@string/mcarw_fg"
             android:textColor="@color/home_text_color" />
 
         <RadioButton
             android:id="@+id/rb1"
             style="@style/main_tab_style"
             android:drawableTop="@drawable/tab_02_bg"
-            android:text="发布"
+            android:text="@string/mpublic_fg"
             android:textColor="@color/home_text_color" />
 
         <RadioButton
             android:id="@+id/rb2"
             style="@style/main_tab_style"
             android:drawableTop="@drawable/tab_03_bg"
-            android:text="我的"
+            android:text="@string/mine_fg"
             android:textColor="@color/home_text_color" />
     </RadioGroup>
-</LinearLayout> 
+
+</LinearLayout>

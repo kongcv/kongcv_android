@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:id="@+id/search"
-    >
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:id="@+id/rl_et"
         android:layout_width="fill_parent"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
-         >
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
          <ImageView 
              android:id="@+id/iv_back"
              android:layout_marginLeft="10dp"
@@ -24,13 +23,14 @@
             android:id="@+id/txtfind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="35dp"
             android:layout_toLeftOf="@+id/iv_search"
             android:hint="请输入文字提示"
-            android:paddingLeft="40dp"
+            android:paddingLeft="43dp"
             android:singleLine="true"
             android:textColor="#bbbbbb"
-            android:textSize="15dp" />
+            android:textSize="15dp" 
+        />
 
           <ImageView 
              android:layout_centerVertical="true"
@@ -39,27 +39,28 @@
              android:layout_alignLeft="@+id/txtfind"
              android:layout_width="wrap_content"
              android:layout_toRightOf="@+id/iv_back"
-             android:layout_height="wrap_content"
+             android:layout_height="40dp"
              android:src="@drawable/iv_et_search"
              />
       	<ImageView
       	    android:id="@+id/iv_delete"
       	    android:layout_width="wrap_content"
-      	    android:layout_height="wrap_content"
+      	    android:layout_height="25dp"
       	    android:layout_alignRight="@+id/txtfind"
       	    android:layout_centerVertical="true"
-      	    android:layout_marginRight="10dp"
+      	    android:layout_marginRight="6dp"
       	    android:paddingBottom="5dp"
       	    android:src="@drawable/delete_item" />
 
       	<ImageView
       	    android:id="@+id/iv_search"
-      	    android:layout_width="wrap_content"
-      	    android:layout_height="wrap_content"
+      	    android:layout_width="65dp"
+      	    android:layout_height="55dp"
       	    android:layout_alignBottom="@+id/txtfind"
       	    android:layout_alignParentRight="true"
       	    android:layout_alignTop="@+id/txtfind"
-      	    android:layout_marginRight="5dp"
+      	    android:layout_marginRight="3dp"
+      	    android:layout_marginLeft="3dp"
       	    android:paddingBottom="5dp"
       	    android:src="@drawable/ib_search" />
 

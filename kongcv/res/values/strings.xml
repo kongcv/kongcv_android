@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">空车位</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    
-	<!-- fragment -->
-	<string name="mcarw_fg">空 车 位</string>
-	<string name="mpublic_fg">发布</string>
-	<string name="mine_fg">我的</string>
-	
-	<!-- demo -->
-	<string name="pleaseInputPhoneNum">请输入您的手机号</string>
-	<string name="sendVerifySms">发送验证码</string>
-	<string name="pleaseInputVerifyCode">请输入验证码</string>
-	<string name="ok">确定</string>
-	
-	<!-- 反馈结果 -->
-	 <string name="error_network">搜索失败,请检查网络连接！</string>
+
+    <!-- fragment -->
+    <string name="mcarw_fg">空 车 位</string>
+    <string name="mpublic_fg">发布</string>
+    <string name="mine_fg">我的</string>
+
+    <!-- demo -->
+    <string name="pleaseInputPhoneNum">请输入您的手机号</string>
+    <string name="sendVerifySms">发送验证码</string>
+    <string name="pleaseInputVerifyCode">请输入验证码</string>
+    <string name="ok">确定</string>
+
+    <!-- 反馈结果 -->
+    <string name="error_network">搜索失败,请检查网络连接！</string>
     <string name="error_key">key验证无效！</string>
     <string name="error_other">未知错误，请稍后重试!错误码为</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
-	
-	<!-- home_log -->
-	<string name="home_text">首页</string>
-	<string name="logo">登录</string>
-	<color name="log_bg">#ffc400</color>
-	<string name="register">登 录</string>
-	<string name="user">昵 称</string>
 
-	<!--  -->
-	<string name="app_number">空车位</string>
-	<string name="app_download">下载</string>
-	
-    <!-- home_buttom -->
-    <string name="home_tcw"></string>
-    
+    <!-- home_log -->
+    <string name="home_text">首页</string>
+    <string name="logo">登录</string>
+
+    <color name="log_bg">#ffc400</color>
+
+    <string name="register">登 录</string>
+    <string name="user">昵 称</string>
+    <string name="app_number">空车位</string>
+    <string name="app_download">下载</string>
+
     <!-- 社区和道路 -->
     <string name="yourlife_text">社区</string>
     <string name="pullover_text">道路</string>
-    
+
     <!-- textCity -->
     <string name="tv_City">北京</string>
     <!-- mpublish页面 -->
@@ -52,30 +50,28 @@
     <string name="tv_car_desc">车位描述</string>
     <string name="tv_car_type">出租类型</string>
     <string name="checkhistory">提现记录</string>
-    
-     <string name="time_pay_end">租用结束时间</string>
+    <string name="time_pay_end">租用结束时间</string>
     <string name="time_pay_start">租用起始时间</string>
     <!-- amapactivity 触摸地图操作 -->
     <string name="tap_instructions">点击或者长按地图</string>
     <string name="move_the_camera">移动camera</string>
-    
-     <!-- 下拉刷新，上拉加载更多 -->
+
+    <!-- 下拉刷新，上拉加载更多 -->
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载...</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
-    
+
     <!-- map navi模块 -->
     <string name="preference_default_tts_role">xiaoyan</string>
     <string name="preference_key_tts_speed">tts_speed</string>
     <string name="preference_key_tts_volume">tts_volume</string>
     <string name="preference_key_tts_pitch">tts_pitch</string>
     <string name="app_id">56455ee1</string>
-    
-    
-    <!--类型页面 -->
+
+    <!-- 类型页面 -->
     <string name="tv_type">类型</string>
     <string name="tv_day">全时</string>
     <string name="tv_time">错时</string>
@@ -94,10 +90,10 @@
     <string name="mine_cash">提现</string>
     <string name="mine_debitcard">储蓄卡</string>
     <string name="mine_money">金额(元)</string>
-    <!--账单页面 -->
+    <!-- 账单页面 -->
     <string name="mine_rent">租用</string>
     <string name="mine_hire">出租</string>
-    <!--添加银行卡 -->
+    <!-- 添加银行卡 -->
     <string name="mine_addcredit">添加银行卡</string>
     <string name="mine_hostcredit">持卡人</string>
     <string name="mine_creditnumber">卡号</string>
@@ -120,15 +116,5 @@
     <string name="receive">我收到的</string>
     <string name="send">我发送的</string>
     <string name="carmanager">车位管理</string>
-    <string name="aboutus">fsidhf34533335566677</string>
-    
-    
+
 </resources>
-
-
-
-
-
-
-
-

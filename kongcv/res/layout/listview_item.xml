@@ -13,11 +13,11 @@
     	    />
     	<ImageView 
     	    android:id="@+id/iv_come"
-    	    android:paddingTop="10dp"
+    	    android:paddingTop="15dp"
     	    android:paddingLeft="50dp"
     	    android:paddingRight="7dp"
     	    android:layout_width="wrap_content"
-    	    android:layout_height="wrap_content"
+    	    android:layout_height="30dp"
     	    android:layout_alignParentRight="true"
     	    android:src="@drawable/iv_come"
     	    />
@@ -30,10 +30,13 @@
     	    android:layout_toRightOf="@+id/iv_daoh"
     	    android:ellipsize="end"
     	    android:maxLength="260"
-    	    android:padding="10dp"
+    	    android:padding="15dp"
     	    android:singleLine="true"
     	    android:text="textfind"
-    	    android:textSize="16dp" />
+    	    android:textSize="16dp"
+    	    android:textColor="#858585" 
+    	    android:layout_marginRight="3dp"
+    	    />
 
     	<TextView
     	    android:id="@+id/search_tv_city"
@@ -42,8 +45,9 @@
     	    android:layout_alignBottom="@+id/txtfind"
     	    android:layout_alignLeft="@+id/iv_come"
     	    android:text="城市"
-    	    android:textSize="12dp" />
-    	
+    	    android:textSize="12dp" 
+    	     />
+    	 
 </RelativeLayout>
 
 
