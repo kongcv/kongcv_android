@@ -77,7 +77,7 @@ public class LogoActivity extends Activity {
 			int count = preferences.getInt("count", 0);
 			if (0 == count) {
 				//版本更新提示
-				readServiceCode();
+				//readServiceCode();
 				Editor editor = preferences.edit();
 				editor.putInt("count", ++count);
 				editor.commit();
@@ -247,7 +247,6 @@ public class LogoActivity extends Activity {
 				list = doReadBtn(jsonStr);
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Data.putData("objectId", list);
@@ -324,7 +323,6 @@ public class LogoActivity extends Activity {
 		handler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				Intent intent=new Intent(LogoActivity.this,SplashActivity.class);
 				startActivity(intent);
 				finish();
