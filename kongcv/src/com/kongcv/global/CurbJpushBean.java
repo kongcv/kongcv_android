@@ -7,6 +7,7 @@ public class CurbJpushBean implements Serializable {
 	private String address;
 	private String park_id;
 	private double price;
+	private String trade_id;
 	private String own_mobile;
 	private String own_device_type;
 	private String hire_method_id;
@@ -17,8 +18,15 @@ public class CurbJpushBean implements Serializable {
 	private String push_type;
 	private String mode;
 	private String hire_method_field;
-	
 	private String objectId;
+	
+	public String getTrade_id() {
+		return trade_id;
+	}
+
+	public void setTrade_id(String trade_id) {
+		this.trade_id = trade_id;
+	}
 
 	public String getObjectId() {
 		return objectId;

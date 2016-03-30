@@ -10,8 +10,8 @@
         android:id="@+id/rl_publish_header"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:background="@drawable/tag_header" >
-
+        android:background="@drawable/tag_header"
+         >
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
@@ -35,7 +35,6 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/details_group"
                 android:orientation="horizontal" >
-
                 <RadioButton
                     android:id="@+id/btn1"
                     style="@style/radioButton"
@@ -43,7 +42,6 @@
                     android:checked="true"
                     android:text="租用订单"
                     android:textColor="@color/textcolor" />
-
                 <RadioButton
                     android:id="@+id/btn2"
                     style="@style/radioButton"
@@ -53,6 +51,7 @@
             </RadioGroup>
         </RelativeLayout>
     </RelativeLayout>
+
     <RadioGroup
         android:id="@+id/rad"
         android:layout_width="match_parent"

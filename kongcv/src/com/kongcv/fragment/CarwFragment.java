@@ -58,7 +58,7 @@ import com.kongcv.view.KCVGridView;
  */
 public class CarwFragment extends Fragment implements OnClickListener,
 		OnItemClickListener {
-
+	
 	private static final String TAG = "CarwFragment";
 	private HomeActivity homeActivity;
 	private ImageView btn1, btn2;
@@ -68,8 +68,8 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private LayoutInflater inflater;
 	private View kongcvLayout;
 	private ACacheUtils mCache;
-	private final OkHttpClient client = new OkHttpClient();
 	private String mode0,mode1;
+	private final OkHttpClient client = new OkHttpClient();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -174,7 +174,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	      .post(body)
 	      .build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-	
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
 				// TODO Auto-generated method stub

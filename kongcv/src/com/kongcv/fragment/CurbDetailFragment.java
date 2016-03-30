@@ -11,7 +11,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -39,7 +38,6 @@ import com.kongcv.activity.LogInActivity;
 import com.kongcv.activity.PayActivity;
 import com.kongcv.activity.SearchActivity;
 import com.kongcv.adapter.DetailFragmentAdapter;
-import com.kongcv.adapter.DetailFragmentAdapter.ViewHolder;
 import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.global.CurbInfoBean;
@@ -113,6 +111,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	/**
 	 * 打开jpush
 	 */
+	private String LastTradeId=null;
 	private void getDeviceToken() {
 		// TODO Auto-generated method stub
 		Intent intent = getActivity().getIntent();
@@ -133,9 +132,16 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			//	btnInform.setOnClickListener(null);
 			}else if(stringExtra!=null && 
 					"trade_charge".equals(fromJson.getPush_type())){
-				btnInform.setVisibility(View.GONE);
-				btnPayTo.setVisibility(View.VISIBLE);
-				btnPayTo.setOnClickListener(this);
+				if(fromJson.getPrice()!=0){
+					LastTradeId = fromJson.getTrade_id();
+					btnInform.setVisibility(View.GONE);
+					btnPayTo.setVisibility(View.VISIBLE);
+					btnPayTo.setOnClickListener(this);
+				}else{
+					btnInform.setVisibility(View.GONE);
+					btnPayTo.setVisibility(View.GONE);
+					btnPayTo.setOnClickListener(null);
+				}
 			}
 		}
 	}
@@ -521,80 +527,84 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			break;
 		case R.id.curb_pay:// 支付
 			// 获取订单号 接着跳转到支付页面
-			Log.d("点击支付>>>", "点击支付");
-			Log.d("点击支付>>>", "点击支付");
-			Log.d("点击支付>>>", "点击支付");
 			try {
-				if (payBean != null) {
-					Gson gson = new Gson();
-					JpushBean fromJson = null;
-					if (stringExtra != null) {
-						fromJson = gson.fromJson(stringExtra, JpushBean.class);
-					}else if(mineSendFragment!=null){
-						fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
-					}
-			//		if(mineSendFragment!=null){
-					if(fromJson!=null){
-			//			if(!fromJson.getHire_start().equals(" 年  月  日") && !fromJson.getHire_end().equals(" 年  月  日")){
-						String fromJsonStart=fromJson.getHire_start();
-						String fromJsonEnd=fromJson.getHire_end();
-					if(fromJsonStart!=null && fromJsonEnd!=null && !fromJsonStart.isEmpty() && !fromJsonEnd.isEmpty()){		
-							String days = DateUtils.getDays(fromJson.getHire_start(),
-									fromJson.getHire_end(), true);
-							int dayInt=0;
-							if(days!=null && !days.isEmpty()){
-								dayInt = Integer.parseInt(days);
-							}
-							if (dayInt > 0) {
-								payBean.setExtra_flag("1");
-							} else {
+				if(LastTradeId!=null ){
+					Message msg = mHandler.obtainMessage();
+					msg.what = 1;
+					msg.obj = LastTradeId;
+					mHandler.sendMessage(msg);
+				}else{
+					if (payBean != null) {
+						Gson gson = new Gson();
+						JpushBean fromJson = null;
+						if (stringExtra != null) {
+							fromJson = gson.fromJson(stringExtra, JpushBean.class);
+						}else if(mineSendFragment!=null){
+							fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
+						}
+				//		if(mineSendFragment!=null){
+						if(fromJson!=null){
+				//			if(!fromJson.getHire_start().equals(" 年  月  日") && !fromJson.getHire_end().equals(" 年  月  日")){
+							String fromJsonStart=fromJson.getHire_start();
+							String fromJsonEnd=fromJson.getHire_end();
+						if(fromJsonStart!=null && fromJsonEnd!=null && !fromJsonStart.isEmpty() && !fromJsonEnd.isEmpty()){		
+								String days = DateUtils.getDays(fromJson.getHire_start(),
+										fromJson.getHire_end(), true);
+								int dayInt=0;
+								if(days!=null && !days.isEmpty()){
+									dayInt = Integer.parseInt(days);
+								}
+								if (dayInt > 0) {
+									payBean.setExtra_flag("1");
+								} else {
+									payBean.setExtra_flag("0");
+								}
+							}else {
 								payBean.setExtra_flag("0");
 							}
 						}else {
-							payBean.setExtra_flag("0");
-						}
-					}else {
-						String start=curbStart.getText().toString();
-						String end=curbEnd.getText().toString();
-						if(!start.equals(" 年  月  日") && !end.equals(" 年  月  日")){
-							String days = DateUtils.getDays(start,
-									end, true);
-							int dayInt = Integer.parseInt(days);
-							if (dayInt > 0) {
-								payBean.setExtra_flag("1");
-							} else {
+							String start=curbStart.getText().toString();
+							String end=curbEnd.getText().toString();
+							if(!start.equals(" 年  月  日") && !end.equals(" 年  月  日")){
+								String days = DateUtils.getDays(start,
+										end, true);
+								int dayInt = Integer.parseInt(days);
+								if (dayInt > 0) {
+									payBean.setExtra_flag("1");
+								} else {
+									payBean.setExtra_flag("0");
+								}
+							}else {
 								payBean.setExtra_flag("0");
 							}
-						}else {
-							payBean.setExtra_flag("0");
+						
 						}
-					
-					}
-					hire_method_id = fromJson.getHire_method_id();
-					String hire_method = result.getHire_method();
-					JSONArray array;
-					array = new JSONArray(hire_method);
-					String string=null;
-					for (int i = 0; i < array.length(); i++) {
-						if (array.getJSONObject(i).getString("objectId")
-								.equals(hire_method_id)) {
-							string = result.getHire_price().get(i);
-							payBean.setUnit_price(string);//
+						hire_method_id = fromJson.getHire_method_id();
+						String hire_method = result.getHire_method();
+						JSONArray array;
+						array = new JSONArray(hire_method);
+						String string=null;
+						for (int i = 0; i < array.length(); i++) {
+							if (array.getJSONObject(i).getString("objectId")
+									.equals(hire_method_id)) {
+								string = result.getHire_price().get(i);
+								payBean.setUnit_price(string);//
+							}
 						}
-					}
-					String a[] = string.split("/");
-					if (a[1].equals("小时")) {
-						payBean.setHire_start("");
-						payBean.setHire_end("");
-					}else{
-						payBean.setHire_start(fromJson.getHire_start());
-						payBean.setHire_end(fromJson.getHire_end());
-					}
-					payBean.setHire_method_id(hire_method_id);
-					payBean.setPrice(fromJson.getPrice());
-					payBean.setCurb_rate(rate);
-					String json = gson.toJson(payBean);
-					doPay(json);
+						String a[] = string.split("/");
+						if (a[1].equals("小时")) {
+							payBean.setHire_start("");
+							payBean.setHire_end("");
+						}else{
+							payBean.setHire_start(fromJson.getHire_start());
+							payBean.setHire_end(fromJson.getHire_end());
+						}
+						payBean.setHire_method_id(hire_method_id);
+						payBean.setPrice(fromJson.getPrice());
+						payBean.setCurb_rate(rate);
+						String json = gson.toJson(payBean);
+						doPay(json);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
