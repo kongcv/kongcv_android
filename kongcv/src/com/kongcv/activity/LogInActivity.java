@@ -4,7 +4,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -25,6 +27,7 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
 import com.kongcv.R;
+import com.kongcv.ImageRun.GetImage;
 import com.kongcv.global.Information;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.AndroidUtil;
@@ -54,7 +57,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 	private Context context;
 	private ACacheUtils mCache;
 	private SharedPreferences preferences;
-
+	private Bitmap  bit;
+    private String url;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,17 +129,14 @@ public class LogInActivity extends Activity implements OnClickListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				doCode();
 			}
 		}).start();
 	}
 	private void getLogIn() {
-		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				doLogIn();
 			}
 
@@ -143,7 +144,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 	}
 
 	private void doCode() {
-		// TODO Auto-generated method stub
 		try {
 			iPhone = phone.getText().toString();
 				JSONObject obj = new JSONObject();
@@ -151,7 +151,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 				PostCLientUtils.doHttpsPost(Information.KONGCV_GET_SMSCODE,
 						JsonStrUtils.JsonStr(obj));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -164,7 +163,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 	 * 登录
 	 */
 	private void doLogIn() {
-		// TODO Auto-generated method stub
 		try {
 			iCord = cord.getText().toString();
 			iPhone = phone.getText().toString();
@@ -178,10 +176,12 @@ public class LogInActivity extends Activity implements OnClickListener {
 				String str = obj2.getString("result");
 				JSONObject objStr=new JSONObject(str);
 				String state = objStr.getString("state");
+				
 				if("ok".equals(state)){
 					String sessionToken = objStr.getString("sessionToken");
 					String user_id = objStr.getString("user_id");
-					mCache.put("USER", iPhone);//手机号码
+					//手机号码
+					mCache.put("USER", iPhone);
 					mCache.put("user_id", user_id);
 					mCache.put("sessionToken", sessionToken);
 					mCache.put("RegistrationID", JPushInterface.getRegistrationID(getApplicationContext()));
@@ -199,35 +199,65 @@ public class LogInActivity extends Activity implements OnClickListener {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	private void putUserInfo() {
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					JSONObject object = new JSONObject();
+					object.put("mobilePhoneNumber", mCache.getAsString("USER"));
+					object.put("user_id", mCache.getAsString("user_id"));
+					String jsoStr = PostCLientUtils.doHttpsPost2(
+							Information.KONGCV_GET_USERINFO,
+							JsonStrUtils.JsonStr(object),
+							mCache.getAsString("sessionToken"));
+					//得到用户名和用户头像
+					JSONObject js=new JSONObject(jsoStr);
+					String result = js.getString("result");
+					JSONObject objStr=new JSONObject(result);
+					String username = objStr.getString("username");
+					if(objStr.has("image")){
+							url = objStr.getJSONObject("image").getString("url");
+							bit = GetImage.getHttpBitmap(url);
+						} else {
+							url = "";
+							bit = null;
+						}
+					
+					mCache.put("USERNAME", username);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+
 	}
 	private Handler mHandler = new Handler() {
 		
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
 			case 0:
-				updateUser();
+			   putUserInfo();
+			   updateUser();
 				break;
-
 			default:
 				break;
 			}
 		}
 	};
 	private void updateUser() {
-		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					JSONObject obj=new JSONObject();
 					obj.put("mobilePhoneNumber", mCache.getAsString("USER"));
-					obj.put("user_name", mCache.getAsString("USER"));
+					obj.put("user_name", mCache.getAsString("USERNAME"));
 					obj.put("device_token", mCache.getAsString("RegistrationID"));
 					obj.put("device_type", "android");
 					obj.put("license_plate", "");
@@ -241,6 +271,11 @@ public class LogInActivity extends Activity implements OnClickListener {
 					JSONObject objStr=new JSONObject(result);
 					String state = objStr.getString("state");
 					if("ok".equals(state)){
+						//登录成功返回用户名和头像
+						Intent i = new Intent();
+						i.putExtra("nick", mCache.getAsString("USERNAME"));
+						i.putExtra("bit", bit);
+						setResult(10, i);
 						finish();
 					}else {
 						Looper.prepare();
@@ -248,7 +283,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 						Looper.loop();
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
