@@ -37,6 +37,7 @@ import com.kongcv.global.OrderCommityBean.ResultEntity;
 import com.kongcv.global.OrderCommityBean.ResultEntity.HireEndEntity;
 import com.kongcv.global.OrderCommityBean.ResultEntity.HireStartEntity;
 import com.kongcv.global.OrderCommityBean.ResultEntity.UserList;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
@@ -48,10 +49,11 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 /**
  * 社区的订单(通过判断是租用的，还是出租的)
+ * 
  * @author kcw
  */
 public class CommityFragment extends Fragment implements AMapListViewListener {
-	
+
 	private AMapListView lv;
 	private List<HireStartEntity> mList;
 	private List<HireEndEntity> list;
@@ -67,31 +69,36 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private List<String> fieldList;
 	private List<String> parkList;
 	private String[] str = new String[] { "customer", "hirer" };
-	private int skip=0,limit=0;
+	private int skip = 0, limit = 10;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				final FieldAndPark fieldAndPark=(FieldAndPark) msg.obj;
-				zydapter = new ZyCommityAdapter(getActivity(), mList, list,resultBean);
+				final FieldAndPark fieldAndPark = (FieldAndPark) msg.obj;
+				zydapter = new ZyCommityAdapter(getActivity(), mList, list,
+						resultBean);
 				lv.setAdapter(zydapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-				      	int state = resultBean.get(position-1).getTrade_state();
-				      	String field = fieldAndPark.fieldList.get(position-1);
-				      	String park_id = fieldAndPark.parkList.get(position-1);
-						if (0==state) {
-							Intent i = new Intent(getActivity(),DetailsActivity.class);
+						int state = resultBean.get(position - 1)
+								.getTrade_state();
+						String field = fieldAndPark.fieldList.get(position - 1);
+						String park_id = fieldAndPark.parkList
+								.get(position - 1);
+						if (0 == state) {
+							Intent i = new Intent(getActivity(),
+									DetailsActivity.class);
 							// 传递数据
 							i.putExtra("mode", "community");
 							i.putExtra("trade_state", state);
 							i.putExtra("park_id", park_id);
 							i.putExtra("getField", field);
 							startActivity(i);
-						}else if(1==state){
-							Intent i = new Intent(getActivity(),DetailsActivity.class);
+						} else if (1 == state) {
+							Intent i = new Intent(getActivity(),
+									DetailsActivity.class);
 							// 传递数据
 							i.putExtra("mode", "community");
 							i.putExtra("trade_state", state);
@@ -103,15 +110,37 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				});
 				break;
 			case 1:
-				czdapter = new CzCommityAdapter(getActivity(), mList, list,
+				/*czdapter = new CzCommityAdapter(getActivity(), mList, list,
 						resultBean, userBeans);
 				lv.setAdapter(czdapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						int state = resultBean.get(position-1).getTrade_state();
-						if (0==state) {
+						int state = resultBean.get(position - 1)
+								.getTrade_state();
+						if (0 == state) {
+							Intent i = new Intent(getActivity(),
+									DetailsActivity.class);
+							// 传递数据
+							i.putExtra("mode", "community");
+							i.putExtra("trade_state", state);
+							startActivity(i);
+						}
+					}
+				});*/
+				beansList=(List<ZyCommityAdapterBean>) msg.obj;
+				/*czdapter = new CzCommityAdapter(getActivity(), mList, list,
+						resultBean, userBeans);*/
+				czdapter = new CzCommityAdapter(getActivity(), beansList);
+				lv.setAdapter(czdapter);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						int state = resultBean.get(position - 1)
+								.getTrade_state();
+						if (0 == state) {
 							Intent i = new Intent(getActivity(),
 									DetailsActivity.class);
 							// 传递数据
@@ -129,6 +158,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	};
 
 	private View view;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -136,6 +166,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		init();
 		return view;
 	}
+
 	private void init() {
 		// TODO Auto-generated method stub
 		mList = new ArrayList<HireStartEntity>();
@@ -149,30 +180,34 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		initView();
 		refresh();
 	}
+
 	private void initView() {
-		lv =  (AMapListView) view.findViewById(R.id.lv);
+		lv = (AMapListView) view.findViewById(R.id.lv);
 		mCache = ACacheUtils.get(getActivity());
 		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
+
 	/**
 	 * 初始化数据和下拉刷新数据
 	 */
 	public void refresh() {
-		if(MineOrdermanagerActivity.TYPEORDER==0){
-			postHttp(info(str[0]),0);
-		}else{
-			postHttp(info(str[1]),1);
+		if (MineOrdermanagerActivity.TYPEORDER == 0) {
+			postHttp(info(str[0]), 0);
+		} else {
+			postHttp(info(str[1]), 1);
 		}
 	}
+
 	/**
 	 * 参数
+	 * 
 	 * @param skipNum
 	 * @param limitNum
 	 * @return
 	 */
-	private String info(String role){
-		String jsonStr=null;
+	private String info(String role) {
+		String jsonStr = null;
 		try {
 			if (zydapter != null) {
 				mList.clear();
@@ -180,13 +215,13 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				resultBean.clear();
 				zydapter.notifyDataSetChanged();
 			}
-			JSONObject params=new JSONObject();
+			JSONObject params = new JSONObject();
 			params.put("user_id", mCache.getAsString("user_id"));
-//			params.put("user_id", "567a43d134f81a1d87870d62");
-			params.put("role", role);	
-			params.put("trade_state", 3);	
-			params.put("skip", skip*10);	
-			params.put("limit", limit); 
+	//	    params.put("user_id", "567a43d134f81a1d87870d62");
+			params.put("role", role);
+			params.put("trade_state", 3);
+			params.put("skip", skip * 10);
+			params.put("limit", limit);
 			params.put("mode", "community");
 			jsonStr = JsonStrUtils.JsonStr(params);
 		} catch (Exception e) {
@@ -195,27 +230,30 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		}
 		return jsonStr;
 	}
+
 	private final OkHttpClient client = new OkHttpClient();
-	private void postHttp(String json, final int i){
-		Log.d("postHttp i==" + i, json + ":");
-		okhttp3.Request request=new okhttp3.Request.Builder()
-		  .url(Information.KONGCV_GET_TRADE_LIST)
-		  .headers(Information.getHeaders())
-	      .post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, json))
-	      .build();
-		
+	private void postHttp(String json, final int i) {
+		Log.d("个人社区请求参数 i==" + i, json + ":");
+		okhttp3.Request request = new okhttp3.Request.Builder()
+				.url(Information.KONGCV_GET_TRADE_LIST)
+				.headers(Information.getHeaders())
+				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, json))
+				.build();
+
 		client.newCall(request).enqueue(new okhttp3.Callback() {
 			@Override
-			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
+			public void onResponse(Call arg0, okhttp3.Response response)
+					throws IOException {
 				// TODO Auto-generated method stub
-				if(response.isSuccessful()){
-					if(i==0){
+				if (response.isSuccessful()) {
+					if (i == 0) {
 						doResponse(response.body().string());
-					}else{
+					} else {
 						doResponse2(response.body().string());
 					}
 				}
 			}
+
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
@@ -223,19 +261,21 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			}
 		});
 	}
+
 	@Override
 	public void onRefresh() {
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				skip=0;
+				skip = 0;
 				refresh();
 				onLoad();
 			}
 		}, 2000);
-		
+
 	}
+
 	@Override
 	public void onLoadMore() {
 		mHandler.postDelayed(new Runnable() {
@@ -248,78 +288,94 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			}
 		}, 2000);
 	}
-		/**
-		 * 停止刷新
-		 */
-		private void onLoad() {
-			lv.stopRefresh();
-			lv.stopLoadMore();
-			lv.setRefreshTime("刚刚");
+
+	/**
+	 * 停止刷新
+	 */
+	private void onLoad() {
+		lv.stopRefresh();
+		lv.stopLoadMore();
+		lv.setRefreshTime("刚刚");
+	}
+
+	class FieldAndPark {
+		List<String> fieldList;
+		List<String> parkList;
+
+		public FieldAndPark(List<String> field, List<String> park) {
+			this.fieldList = field;
+			this.parkList = park;
 		}
-		class FieldAndPark {
-			List<String> fieldList;
-			List<String> parkList;
-			public FieldAndPark(List<String> field,List<String> park){
-				this.fieldList=field;
-				this.parkList=park;
-			}
-		}
-		private String hire_method,method;
-		private void doResponse2(String string) {
-			// TODO Auto-generated method stub
-			try {
-				JSONObject object = new JSONObject(string);
-				JSONArray array = object.getJSONArray("result");
-				if(array!=null && array.length()>0){
+	}
+
+	private String hire_method, method;
+	private List<ZyCommityAdapterBean> beansList;
+	private void doResponse2(String string) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject object = new JSONObject(string);
+			JSONArray array = object.getJSONArray("result");
+			if (array != null && array.length() > 0) {
+				beansList=new ArrayList<ZyCommityAdapterBean>();
+				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
+					mCommBean = new ZyCommityAdapterBean();
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
-						String start = GTMDateUtil.GTMToLocal(
-								ob.getJSONObject("hire_start").getString(
-										"iso"), true);
+						String start = GTMDateUtil
+								.GTMToLocal(ob.getJSONObject("hire_start")
+										.getString("iso"), true);
 						startTime.setIso(start);
 						mList.add(startTime);
+						mCommBean.setHire_start(start);
 					} else {
 						startTime.setIso("");
 						mList.add(startTime);
 					}
 					if (ob.has("hire_end")) {
 						String end = GTMDateUtil.GTMToLocal(
-								ob.getJSONObject("hire_end").getString(
-										"iso"), true);
+								ob.getJSONObject("hire_end").getString("iso"),
+								true);
 						endTime.setIso(end);
 						list.add(endTime);// 结束时间
+						
+						mCommBean.setHire_end(end);
 					} else {
 						endTime.setIso("");
 						list.add(endTime);
 					}
-					// 价格
-					int price = array.getJSONObject(i).getInt("price");
+					double price = array.getJSONObject(i).getDouble("price");
 					// 订单号
 					String objectId = array.getJSONObject(i).getString(
 							"objectId");
 					// 租用方式
-					if(array.getJSONObject(i).has("hire_method")){
+					if (array.getJSONObject(i).has("hire_method")) {
 						hire_method = array.getJSONObject(i).getString(
 								"hire_method");
 						JSONObject objStrs = new JSONObject(hire_method);
 						method = objStrs.getString("method");
+						mCommBean.setMethod(method);
 					}
-					if(array.getJSONObject(i).has("user")){
+					if (array.getJSONObject(i).has("user")) {
 						// 用户名
 						String user = array.getJSONObject(i).getString("user");
 						JSONObject objStr = new JSONObject(user);
 						if (objStr.has("username")) {
 							String username = objStr.getString("username");
 							us.setUsername(username);// 用户名
+							mCommBean.setUsername(username);
+							
 						} else {
 							us.setUsername("");
 						}
 						// 头像
 						if (objStr.has("image")) {
-							String url = objStr.getJSONObject("image").getString("url");
+							String url = objStr.getJSONObject("image")
+									.getString("url");
 							Bitmap bitMap = GetImage.getImage(url);
 							us.setBitMap(bitMap);
+							mCommBean.setBitmap(bitMap);
+							mCommBean.setImage(url);
 						} else {
 							us.setBitMap(null);
 						}
@@ -328,6 +384,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 								.getString("mobilePhoneNumber");
 						Log.v("mobilePhoneNumber", mobilePhoneNumber);
 						us.setMobilePhoneNumber(mobilePhoneNumber);// 电话
+						
+						mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
 					}
 					// 订单状态
 					int trade_state = array.getJSONObject(i).getInt(
@@ -336,127 +394,105 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					result.setObjectId(objectId);// 订单号
 					result.setTrade_state(trade_state);// 订单状态
 					result.setMethod(method);// 租用方式
-					
 					resultBean.add(result);
 					userBeans.add(us);
+					
+					mCommBean.setPrice(price);
+					mCommBean.setObjectId(objectId);
+					mCommBean.setTrade_state(trade_state);
+					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();
 				msg.what = 1;
+				msg.obj=beansList;
 				mHandler.sendMessage(msg);
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		private void doResponse(String string) {
-			// TODO Auto-generated method stub
-			try {
-				JSONObject object = new JSONObject(string);
-				JSONArray array = object.getJSONArray("result");
-				String address=null;
-				String method=null;
-				fieldList=new ArrayList<String>();
-				parkList=new ArrayList<String>();
-				if(array!=null && array.length()>0){
-					for (int i = 0; i < array.length(); i++) {
-						// 开始时间
-						JSONObject ob = array.getJSONObject(i);
-						if (ob.has("hire_start")) {
-							String start = GTMDateUtil.GTMToLocal(
-									array.getJSONObject(i)
-											.getJSONObject("hire_start")
-											.getString("iso"), true);
-							startTime.setIso(start);
-							mList.add(startTime);
-						} else {
-							startTime.setIso("0000-00-00 00:00:00");
-							mList.add(startTime);
-						}
-						// 结束时间
-						if (ob.has("hire_end")) {
-							String end = GTMDateUtil.GTMToLocal(array
-									.getJSONObject(i).getJSONObject("hire_end")
-									.getString("iso"), true);
-							endTime.setIso(end);
-							list.add(endTime);
-						} else {
-							endTime.setIso("0000-00-00 00:00:00");
-							list.add(endTime);
-						}
-						// 价钱
-						double price = array.getJSONObject(i).getDouble("price");
-						// 订单号
-						String objectId = array.getJSONObject(i).getJSONObject("user").getString(
-								"objectId");
-						// 租用人的地址
-						if(array.getJSONObject(i).has("park_community")){
-							String park_community = array.getJSONObject(i)
-									.getString("park_community");//
-							JSONObject objStr = new JSONObject(park_community);
-							address = objStr.getString("address");
-							
-							String parkId = objStr.getString(
-									"objectId");
-							parkList.add(parkId);
-						}
-						if(array.getJSONObject(i).has("hire_method")){
-							String hire_method = array.getJSONObject(i).getString(
-									"hire_method");
-							JSONObject objStrs = new JSONObject(hire_method);
-							method= objStrs.getString("method");
-							result.setMethod(method);//租用方式
-							String field = objStrs.getString("field");
-							fieldList.add(field);
-						}
-						// 订单状态
-						int trade_state = array.getJSONObject(i).getInt(
-								"trade_state");
-						result.setPrice(price);// 价钱
-						
-						result.setObjectId(objectId);// 订单号
-						result.setTrade_state(trade_state);// 订单状态
-						if(address!=null)
-						result.setPark_community(address); // 租用人的地址
-						resultBean.add(result);
+	}
+
+	private void doResponse(String string) {
+		// TODO Auto-generated method stub
+		try {
+			Log.d("个人社区请求结果 i==" + 0, string + ":");
+			JSONObject object = new JSONObject(string);
+			JSONArray array = object.getJSONArray("result");
+			String address = null;
+			String method = null;
+			fieldList = new ArrayList<String>();
+			parkList = new ArrayList<String>();
+			if (array != null && array.length() > 0) {
+				for (int i = 0; i < array.length(); i++) {
+					// 开始时间
+					JSONObject ob = array.getJSONObject(i);
+					if (ob.has("hire_start")) {
+						String start = GTMDateUtil.GTMToLocal(array
+								.getJSONObject(i).getJSONObject("hire_start")
+								.getString("iso"), true);
+						startTime.setIso(start);
+						mList.add(startTime);
+					} else {
+						startTime.setIso("0000-00-00 00:00:00");
+						mList.add(startTime);
 					}
-					FieldAndPark fieldAndPark=new FieldAndPark(fieldList, parkList);
-					Message msg = Message.obtain();
-					msg.what = 0;
-					msg.obj=fieldAndPark;
-					mHandler.sendMessage(msg);
+					// 结束时间
+					if (ob.has("hire_end")) {
+						String end = GTMDateUtil.GTMToLocal(array
+								.getJSONObject(i).getJSONObject("hire_end")
+								.getString("iso"), true);
+						endTime.setIso(end);
+						list.add(endTime);
+					} else {
+						endTime.setIso("0000-00-00 00:00:00");
+						list.add(endTime);
+					}
+					// 价钱
+					double price = array.getJSONObject(i).getDouble("price");
+					// 订单号
+					String objectId = array.getJSONObject(i)
+							.getJSONObject("user").getString("objectId");
+					// 租用人的地址
+					if (array.getJSONObject(i).has("park_community")) {
+						String park_community = array.getJSONObject(i)
+								.getString("park_community");//
+						JSONObject objStr = new JSONObject(park_community);
+						address = objStr.getString("address");
+
+						String parkId = objStr.getString("objectId");
+						parkList.add(parkId);
+					}
+					if (array.getJSONObject(i).has("hire_method")) {
+						String hire_method = array.getJSONObject(i).getString(
+								"hire_method");
+						JSONObject objStrs = new JSONObject(hire_method);
+						method = objStrs.getString("method");
+						result.setMethod(method);// 租用方式
+						String field = objStrs.getString("field");
+						fieldList.add(field);
+					}
+					// 订单状态
+					int trade_state = array.getJSONObject(i).getInt(
+							"trade_state");
+					result.setPrice(price);// 价钱
+
+					result.setObjectId(objectId);// 订单号
+					result.setTrade_state(trade_state);// 订单状态
+					if (address != null)
+						result.setPark_community(address); // 租用人的地址
+					resultBean.add(result);
 				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				FieldAndPark fieldAndPark = new FieldAndPark(fieldList,
+						parkList);
+				Message msg = Message.obtain();
+				msg.what = 0;
+				msg.obj = fieldAndPark;
+				mHandler.sendMessage(msg);
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -68,8 +68,8 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private LayoutInflater inflater;
 	private View kongcvLayout;
 	private ACacheUtils mCache;
-	private final OkHttpClient client = new OkHttpClient();
 	private String mode0,mode1;
+	private final OkHttpClient client = new OkHttpClient();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

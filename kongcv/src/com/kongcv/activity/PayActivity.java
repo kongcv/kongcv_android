@@ -192,7 +192,7 @@ public class PayActivity extends Activity implements OnClickListener {
 							Double.parseDouble(price), bill_id,info));
 				}else if(params.equals(CHANNEL_ALIPAY)){
 					new PaymentTask().execute(new PaymentRequest(CHANNEL_ALIPAY,
-							Integer.parseInt(price), bill_id,info));
+							Double.parseDouble(price), bill_id,info));
 				}
 				/**
 				 * 发送jpus消息
@@ -349,7 +349,6 @@ public class PayActivity extends Activity implements OnClickListener {
 
 	class PaymentRequest {
 		String channel;
-//		int amount;
 		double amount;
 		String bill_id;
 		Pay_info pay_info;

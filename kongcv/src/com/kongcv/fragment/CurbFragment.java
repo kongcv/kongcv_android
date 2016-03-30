@@ -34,6 +34,7 @@ import com.kongcv.activity.MineOrdermanagerActivity;
 import com.kongcv.adapter.CzCommityAdapter;
 import com.kongcv.adapter.ZyCurbAdapter;
 import com.kongcv.global.Information;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.global.OrderCommityBean.ResultEntity;
 import com.kongcv.global.OrderCommityBean.ResultEntity.HireEndEntity;
 import com.kongcv.global.OrderCommityBean.ResultEntity.HireStartEntity;
@@ -50,7 +51,6 @@ import com.kongcv.view.AMapListView.AMapListViewListener;
  */
 public class CurbFragment extends Fragment implements AMapListViewListener {
 
-	
 	HireStartEntity startTime;
 	HireEndEntity endTime;
 	ResultEntity result;
@@ -93,8 +93,15 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				});
 				break;
 			case 1:
-				czdapter = new CzCommityAdapter(getActivity(), mList, list,
-						resultBean, userBeans);
+				List<ZyCommityAdapterBean> mListss = (ArrayList<ZyCommityAdapterBean>) msg.obj;
+				/*
+				 * czdapter = new CzCommityAdapter(getActivity(), mList, list,
+				 * resultBean, userBeans);
+				 */
+				for (int i = 0; i < mListss.size(); i++) {
+					Log.d("mList.size i=" + i, mListss.get(i).toString());
+				}
+				czdapter = new CzCommityAdapter(getActivity(), mListss);
 				lv.setAdapter(czdapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
@@ -111,6 +118,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						}
 					}
 				});
+
 				break;
 			default:
 				break;
@@ -126,16 +134,19 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		refresh();
 		return view;
 	}
+
 	private void initView() {
 		mCache = ACacheUtils.get(getActivity());
 		lv = (AMapListView) view.findViewById(R.id.lv);
 		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
+
 	/**
 	 * 初始化数据和下拉刷新数据
 	 */
 	private int skip = 0;
+
 	public void refresh() {
 		if (MineOrdermanagerActivity.TYPEORDER == 0) {
 			getCurbOrCommInfo(breakJsonStr(str[0]), 0);
@@ -143,10 +154,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			getCurbOrCommInfo(breakJsonStr(str[1]), 1);
 		}
 	}
+
 	/**
 	 * 网络请求
 	 */
 	private final OkHttpClient client = new OkHttpClient();
+
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
 		Log.d("i==" + i, jsonStr + ":");
@@ -172,13 +185,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
-				Log.e("KONGCV_GET_HIRE_METHOD", arg1.toString());
+				Log.e("KONGCV_GET_TRADE_LIST", arg1.toString());
 			}
 		});
 	}
 
 	private String mobilePhoneNumber;
-
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
@@ -194,6 +206,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				result = new ResultEntity();
 				us = new UserList();
 				for (int i = 0; i < array.length(); i++) {
+					// 开始时间
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
 						Log.v("ssss", ob.has("hire_start") + "");
@@ -206,6 +219,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						startTime.setIso("");
 						mList.add(startTime);
 					}
+					// 结束时间
 					if (ob.has("hire_end")) {
 						String end = GTMDateUtil.GTMToLocal(
 								ob.getJSONObject("hire_end").getString("iso"),
@@ -213,55 +227,38 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						endTime.setIso(end);
 						list.add(endTime);// 结束时间
 					} else {
-						Log.e("第条结束时间：" + i, ob + "");
+						Log.v("ssss", ob.has("hire_start") + "");
 						endTime.setIso("");
 						list.add(endTime);
 					}
+					// 价钱
 					double price = array.getJSONObject(i).getDouble("price");
+
 					// 订单号
 					String objectId = array.getJSONObject(i).getString(
 							"objectId");
+					// 租用人的地址
+					String park_curb = array.getJSONObject(i).getString(
+							"park_curb");
+					JSONObject objStr = new JSONObject(park_curb);
+					String address = objStr.getString("address");
 					// 租用方式
 					String hire_method = array.getJSONObject(i).getString(
 							"hire_method");
 					JSONObject objStrs = new JSONObject(hire_method);
 					String method = objStrs.getString("method");
-					// 用户名
-					String user = array.getJSONObject(i).getString("user");
-					JSONObject objStr = new JSONObject(user);
-					if (objStr.has("username")) {
-						String username = objStr.getString("username");
-						us.setUsername(username);// 用户名
-					} else {
-						us.setUsername("");
-					}
-					// 头像
-					if (objStr.has("image")) {
-						String url = objStr.getJSONObject("image").getString(
-								"url");
-						Bitmap bitMap = GetImage.getImage(url);
-						us.setBitMap(bitMap);
-					} else {
-						us.setBitMap(null);
-					}
-					if (objStr.has("mobilePhoneNumber")) {
-						// 电话
-						mobilePhoneNumber = objStr
-								.getString("mobilePhoneNumber");
-					}
 					// 订单状态
 					int trade_state = array.getJSONObject(i).getInt(
 							"trade_state");
 					result.setPrice(price);// 价钱
 					result.setObjectId(objectId);// 订单号
 					result.setTrade_state(trade_state);// 订单状态
+					result.setPark_curb(address); // 租用人的地址
 					result.setMethod(method);// 租用方式
-					us.setMobilePhoneNumber(mobilePhoneNumber);// 电话
 					resultBean.add(result);
-					userBeans.add(us);
 				}
 				Message msg = Message.obtain();
-				msg.what = 1;
+				msg.what = 0;
 				mHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
@@ -269,12 +266,19 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			e.printStackTrace();
 		}
 	}
+
+	private String method;
+	private List<ZyCommityAdapterBean> beansList;
+
 	private void doResponse2(String string) {
 		// TODO Auto-generated method stub
 		try {
+			Log.d("string", string+"<>");
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
+				beansList = new ArrayList<ZyCommityAdapterBean>();
+				ZyCommityAdapterBean mCommBean = null;
 				us = new UserList();
 				result = new ResultEntity();
 				endTime = new HireEndEntity();
@@ -284,6 +288,8 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				resultBean = new ArrayList<ResultEntity>();
 				userBeans = new ArrayList<UserList>();
 				for (int i = 0; i < array.length(); i++) {
+					mCommBean = new ZyCommityAdapterBean();
+
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
 						Log.v("ssss", ob.has("hire_start") + "");
@@ -292,6 +298,8 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 										.getString("iso"), true);
 						startTime.setIso(start);
 						mList.add(startTime);
+
+						mCommBean.setHire_start(start);
 					} else {
 						startTime.setIso("");
 						mList.add(startTime);
@@ -302,6 +310,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								true);
 						endTime.setIso(end);
 						list.add(endTime);// 结束时间
+						mCommBean.setHire_end(end);
 					} else {
 						endTime.setIso("");
 						list.add(endTime);
@@ -311,16 +320,20 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					String objectId = array.getJSONObject(i).getString(
 							"objectId");
 					// 租用方式
-					String hire_method = array.getJSONObject(i).getString(
-							"hire_method");
-					JSONObject objStrs = new JSONObject(hire_method);
-					String method = objStrs.getString("method");
+					if (array.getJSONObject(i).has("hire_method")) {
+						String hire_method = array.getJSONObject(i).getString(
+								"hire_method");
+						JSONObject objStrs = new JSONObject(hire_method);
+						method = objStrs.getString("method");
+						mCommBean.setMethod(method);
+					}
 					// 用户名
 					String user = array.getJSONObject(i).getString("user");
 					JSONObject objStr = new JSONObject(user);
 					if (objStr.has("username")) {
 						String username = objStr.getString("username");
 						us.setUsername(username);// 用户名
+						mCommBean.setUsername(username);
 					} else {
 						us.setUsername("");
 					}
@@ -330,6 +343,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								"url");
 						Bitmap bitMap = GetImage.getImage(url);
 						us.setBitMap(bitMap);
+
+						mCommBean.setBitmap(bitMap);
+						mCommBean.setImage(url);
 					} else {
 						us.setBitMap(null);
 					}
@@ -346,9 +362,16 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					us.setMobilePhoneNumber(mobilePhoneNumber);// 电话
 					resultBean.add(result);
 					userBeans.add(us);
+
+					mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
+					mCommBean.setPrice(price);
+					mCommBean.setObjectId(objectId);
+					mCommBean.setTrade_state(trade_state);
+					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();
 				msg.what = 1;
+				msg.obj = beansList;
 				mHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
@@ -356,6 +379,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 请求参数
 	 */
@@ -368,7 +392,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			obj.put("role", role);
 			// 3代表所有数据
 			obj.put("trade_state", 3);
-			obj.put("skip", skip*10);
+			obj.put("skip", skip * 10);
 			obj.put("limit", limit);
 			obj.put("mode", "curb");
 			jsonStr = JsonStrUtils.JsonStr(obj);
@@ -390,6 +414,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 		}, 2000);
 	}
+
 	@Override
 	public void onLoadMore() {
 		mHandler.postAtTime(new Runnable() {
@@ -401,6 +426,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 		}, 2000);
 	}
+
 	/**
 	 * 停止刷新
 	 */

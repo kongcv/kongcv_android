@@ -108,7 +108,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 			iPhone=phone.getText().toString();
 			if (StringUtils.isMobileNo(iPhone)) {
 				getCode();
-				
 				timer.start();
 			}else {
 				ToastUtil.show(getApplicationContext(), "手机号码格式不正确");
@@ -145,7 +144,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 	private void doCode() {
 		// TODO Auto-generated method stub
 		try {
-			iPhone = phone.getText().toString();
+				iPhone = phone.getText().toString();
 				JSONObject obj = new JSONObject();
 				obj.put("mobilePhoneNumber", iPhone);
 				PostCLientUtils.doHttpsPost(Information.KONGCV_GET_SMSCODE,
@@ -208,12 +207,12 @@ public class LogInActivity extends Activity implements OnClickListener {
 			case 0:
 				updateUser();
 				break;
-
 			default:
 				break;
 			}
 		}
 	};
+	
 	private void updateUser() {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() {
@@ -228,7 +227,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 					obj.put("device_type", "android");
 					obj.put("license_plate", "");
 					obj.put("version", AndroidUtil.getVersion(getApplicationContext()));
-					
 					String str = PostCLientUtils.doHttpsPost2(Information.KONGCV_PUT_USERINFO, 
 							JsonStrUtils.JsonStr(obj), mCache.getAsString("sessionToken"));
 					Log.v("发布登录成功", str);
