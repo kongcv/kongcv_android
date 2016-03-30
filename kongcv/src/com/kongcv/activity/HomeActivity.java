@@ -362,7 +362,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			manager.chAddFrag(mPublishFragment, "mPublishFragment", false);
 			break;
 		case R.id.rb2:
-//			mMineFragment = new MineFragment();
+			mMineFragment = new MineFragment();
 //			Bundle args=new Bundle();
 //			args.putString("userUrl", userUrl);
 //			args.putString("userName", userName);
