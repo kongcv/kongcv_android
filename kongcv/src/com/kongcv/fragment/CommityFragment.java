@@ -64,11 +64,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	ResultEntity result;
 	UserList us;
 	private ACacheUtils mCache;
-	private Handler mHandler;
 	private List<String> fieldList;
 	private List<String> parkList;
 	
-	// private ProgressDialog pro = null;
 	private Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
@@ -76,8 +74,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				final FieldAndPark fieldAndPark=(FieldAndPark) msg.obj;
 				zydapter = new ZyCommityAdapter(getActivity(), mList, list,resultBean);
 				lv.setAdapter(zydapter);
-				// pro.dismiss();
-				// mAdapter.notifyDataSetChanged();
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
@@ -109,8 +105,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				czdapter = new CzCommityAdapter(getActivity(), mList, list,
 						resultBean, userBeans);
 				lv.setAdapter(czdapter);
-				// pro.dismiss();
-				// mAdapter.notifyDataSetChanged();
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
@@ -133,14 +127,12 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		};
 	};
 
+	private View view;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater
+		view = inflater
 				.inflate(R.layout.commityfragment, container, false);
-		lv =  (AMapListView) view.findViewById(R.id.lv);
-		// pro = ProgressDialog.show(getActivity(), "", "正在获取获取数据，请稍候");
-		mCache = ACacheUtils.get(getActivity());
 		init();
 		return view;
 	}
@@ -155,13 +147,12 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		endTime = new HireEndEntity();
 		result = new ResultEntity();
 		us = new UserList();
-		
-		
 		initView();
 		getData1();
 	}
 	private void initView() {
-		mHandler = new Handler();
+		lv =  (AMapListView) view.findViewById(R.id.lv);
+		mCache = ACacheUtils.get(getActivity());
 		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
@@ -174,9 +165,15 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		/*Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
 		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");
 		Log.d("getActivity().typeorder", ((MineOrdermanagerActivity) getActivity()).TYPEORDER+":::");*/
-		if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
+		/*if (((MineOrdermanagerActivity) getActivity()).TYPEORDER == 0) {
 			initData1(skip, limit);
 		} else {
+			initData2(skip, limit);
+		}*/
+		
+		if(MineOrdermanagerActivity.TYPEORDER==0){
+			initData1(skip, limit);
+		}else{
 			initData2(skip, limit);
 		}
 	}
@@ -205,6 +202,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	 * @param limitNum
 	 * @return
 	 */
+	private String[] str=new String[]{};
 	private String data1(int skipNum, final int limitNum){
 		String jsonStr=null;
 		try {

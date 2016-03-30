@@ -58,7 +58,7 @@ import com.kongcv.view.KCVGridView;
  */
 public class CarwFragment extends Fragment implements OnClickListener,
 		OnItemClickListener {
-
+	
 	private static final String TAG = "CarwFragment";
 	private HomeActivity homeActivity;
 	private ImageView btn1, btn2;
@@ -174,7 +174,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	      .post(body)
 	      .build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-	
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
 				// TODO Auto-generated method stub

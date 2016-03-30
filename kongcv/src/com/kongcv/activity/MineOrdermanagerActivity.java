@@ -47,7 +47,7 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 	/**
 	 * 0代表是租用订单，1代表是出租订单
 	 */
-	public int TYPEORDER = 0;
+	public static int TYPEORDER;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +86,7 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 		mRadioButton2.setOnClickListener(this);
 		btn_one.setOnClickListener(this);
 		btn_two.setOnClickListener(this);
+		TYPEORDER=0;
 	}
 	private void initData() {
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
@@ -93,12 +94,12 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			public void onPageSelected(int position) {
 				switch (position) {
 				case 0:
-					cubf.getData1();
-					btn_two.setChecked(true);// 道路
+					cubf.refresh();
+					btn_one.setChecked(true);
 					break;
 				case 1:
 					comf.getData1();
-					btn_one.setChecked(true);
+					btn_two.setChecked(true);// 个人
 					break;
 				}
 			}
@@ -126,23 +127,26 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			finish();
 			break;
 		case R.id.btn1: 
-			TYPEORDER = 1;
+			TYPEORDER = 0;
 	//		comf.getData1();
-			cubf.getData1();
+			cubf.refresh();
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn2: 
-			TYPEORDER = 0;
+			/*TYPEORDER = 0;
 	//		comf.getData1();
 			cubf.getData1();
+			pager.setCurrentItem(0);*/
+			TYPEORDER = 1;
+			cubf.refresh();
 			pager.setCurrentItem(0);
 			break;
-		case R.id.btn_one:// 社区按钮
+		case R.id.btn_one:// 商业
+			cubf.refresh();
+			pager.setCurrentItem(0);
+			break;
+		case R.id.btn_two:// 个人
 			comf.getData1();
-			pager.setCurrentItem(0);
-			break;
-		case R.id.btn_two:// 道路按钮
-			cubf.getData1();
 			pager.setCurrentItem(1);
 			break;
 		default:
