@@ -124,7 +124,7 @@ public class SplashActivity extends Activity {
 						public void onClick(DialogInterface dialog, int which) {
 							ToastUtil.show(getBaseContext(), "取消更新！");
 							dialog.dismiss();
-							mHandler.sendEmptyMessage(0);
+							mHandler.sendEmptyMessageDelayed(0, 15000);
 						}
 					});
 					 builder.setCancelable(false);
@@ -136,7 +136,7 @@ public class SplashActivity extends Activity {
 					startService(intent);
 				}
 			}else if(fromJson.getResult().get(0).getVersion_Num()==currentVersionCode){
-				mHandler.sendEmptyMessage(0);
+				mHandler.sendEmptyMessageDelayed(0, 15000);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

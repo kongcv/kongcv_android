@@ -67,6 +67,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						Log.d("mHandler comm  i==0 position"+position, "<>");
+						Log.d("mHandler comm  i==0 position"+position, "<>");
+						Log.d("mHandler comm  i==0 position"+position, "<>");
 						trade_state = beansList.get(position - 1)
 								.getTrade_state();
 						field = beansList.get(position - 1).getField();
@@ -101,6 +104,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						Log.d("mHandler comm  i==1 position"+position, "<>");
+						Log.d("mHandler comm  i==1 position"+position, "<>");
+						Log.d("mHandler comm  i==1 position"+position, "<>");
 						trade_state = beansList.get(position - 1)
 								.getTrade_state();
 						if (0 == trade_state) {

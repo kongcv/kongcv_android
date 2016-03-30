@@ -70,7 +70,7 @@ public class MineChangePhoneNumber extends Activity implements OnClickListener {
 			//将新输入的手机号放入缓存
 			mCache.put("number", number);
 			startActivity(i);
-		finish();
+			finish();
 		}
 	}
 	@Override

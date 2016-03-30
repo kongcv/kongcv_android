@@ -67,6 +67,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						Log.d("mHandler Curb  i==0 position"+position, "<>");
+						Log.d("mHandler Curb  i==0 position"+position, "<>");
+						Log.d("mHandler Curb  i==0 position"+position, "<>");
 						if (beansList != null && beansList.size() > position) {
 							trade_state = beansList.get(position)
 									.getTrade_state();
@@ -90,18 +93,23 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						trade_state = beansList.get(position).getTrade_state();
-						if (0 == trade_state) {
-							Intent i = new Intent(getActivity(),
-									DetailsActivity.class);
-							// 传递数据
-							i.putExtra("mode", "curb");
-							i.putExtra("trade_state", trade_state);
-							startActivity(i);
+						Log.d("mHandler Curb  i==1 position"+position, "<>");
+						Log.d("mHandler Curb  i==1 position"+position, "<>");
+						Log.d("mHandler Curb  i==1 position"+position, "<>");
+						if (beansList != null && beansList.size() > position) {
+							trade_state = beansList.get(position)
+									.getTrade_state();
+							if (0 == trade_state) {
+								Intent i = new Intent(getActivity(),
+										DetailsActivity.class);
+								// 传递数据
+								i.putExtra("mode", "curb");
+								i.putExtra("trade_state", trade_state);
+								startActivity(i);
+							}
 						}
 					}
 				});
-
 				break;
 			default:
 				break;
