@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -28,21 +26,15 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
-import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
 import com.kongcv.activity.MineOrdermanagerActivity;
 import com.kongcv.adapter.CzCommityAdapter;
 import com.kongcv.adapter.ZyCurbAdapter;
 import com.kongcv.global.Information;
 import com.kongcv.global.ZyCommityAdapterBean;
-import com.kongcv.global.OrderCommityBean.ResultEntity;
-import com.kongcv.global.OrderCommityBean.ResultEntity.HireEndEntity;
-import com.kongcv.global.OrderCommityBean.ResultEntity.HireStartEntity;
-import com.kongcv.global.OrderCommityBean.ResultEntity.UserList;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
-import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -51,41 +43,39 @@ import com.kongcv.view.AMapListView.AMapListViewListener;
  */
 public class CurbFragment extends Fragment implements AMapListViewListener {
 
-	HireStartEntity startTime;
-	HireEndEntity endTime;
-	ResultEntity result;
-	UserList us;
-	private View view;
 	private int limit = 10;
 	private AMapListView lv;
 	private ACacheUtils mCache;
 	private ZyCurbAdapter zydapter;
-	private List<HireEndEntity> list;
-	private List<UserList> userBeans;
 	private CzCommityAdapter czdapter;
-	private List<HireStartEntity> mList;
-	private List<ResultEntity> resultBean;
+	private View view;
+	private double price;
+	private int trade_state;
+	private List<ZyCommityAdapterBean> beansList;
 	private String[] str = new String[] { "customer", "hirer" };
+	private String method, username, start, end, objectId, hire_method, user,
+			url, mobilePhoneNumber, park_curb, address;
 	private Handler mHandler = new Handler() {
+		@SuppressWarnings("unchecked")
 		public void handleMessage(android.os.Message msg) {
 			switch (msg.what) {
 			case 0:
-				zydapter = new ZyCurbAdapter(getActivity(), mList, list,
-						resultBean);
+				beansList = (List<ZyCommityAdapterBean>) msg.obj;
+				zydapter = new ZyCurbAdapter(getActivity(), beansList);
 				lv.setAdapter(zydapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						if (resultBean != null && resultBean.size() > position) {
-							int state = resultBean.get(position)
+						if (beansList != null && beansList.size() > position) {
+							trade_state = beansList.get(position)
 									.getTrade_state();
-							if (0 == state) {
+							if (0 == trade_state) {
 								Intent i = new Intent(getActivity(),
 										DetailsActivity.class);
 								// 传递数据
 								i.putExtra("mode", "cub");
-								i.putExtra("trade_state", state);
+								i.putExtra("trade_state", trade_state);
 								startActivity(i);
 							}
 						}
@@ -93,27 +83,20 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				});
 				break;
 			case 1:
-				List<ZyCommityAdapterBean> mListss = (ArrayList<ZyCommityAdapterBean>) msg.obj;
-				/*
-				 * czdapter = new CzCommityAdapter(getActivity(), mList, list,
-				 * resultBean, userBeans);
-				 */
-				for (int i = 0; i < mListss.size(); i++) {
-					Log.d("mList.size i=" + i, mListss.get(i).toString());
-				}
-				czdapter = new CzCommityAdapter(getActivity(), mListss);
+				beansList = (ArrayList<ZyCommityAdapterBean>) msg.obj;
+				czdapter = new CzCommityAdapter(getActivity(), beansList);
 				lv.setAdapter(czdapter);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						int state = resultBean.get(position).getTrade_state();
-						if (0 == state) {
+						trade_state = beansList.get(position).getTrade_state();
+						if (0 == trade_state) {
 							Intent i = new Intent(getActivity(),
 									DetailsActivity.class);
 							// 传递数据
 							i.putExtra("mode", "curb");
-							i.putExtra("trade_state", state);
+							i.putExtra("trade_state", trade_state);
 							startActivity(i);
 						}
 					}
@@ -190,75 +173,57 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		});
 	}
 
-	private String mobilePhoneNumber;
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
-				mList = new ArrayList<HireStartEntity>();
-				list = new ArrayList<HireEndEntity>();
-				resultBean = new ArrayList<ResultEntity>();
-				userBeans = new ArrayList<UserList>();
-				startTime = new HireStartEntity();
-				endTime = new HireEndEntity();
-				result = new ResultEntity();
-				us = new UserList();
+				beansList = new ArrayList<ZyCommityAdapterBean>();
+				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
+					mCommBean = new ZyCommityAdapterBean();
 					// 开始时间
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
-						Log.v("ssss", ob.has("hire_start") + "");
-						String start = GTMDateUtil
+						start = GTMDateUtil
 								.GTMToLocal(ob.getJSONObject("hire_start")
 										.getString("iso"), true);
-						startTime.setIso(start);
-						mList.add(startTime);
-					} else {
-						startTime.setIso("");
-						mList.add(startTime);
+						mCommBean.setHire_start(start);
 					}
 					// 结束时间
 					if (ob.has("hire_end")) {
-						String end = GTMDateUtil.GTMToLocal(
+						end = GTMDateUtil.GTMToLocal(
 								ob.getJSONObject("hire_end").getString("iso"),
 								true);
-						endTime.setIso(end);
-						list.add(endTime);// 结束时间
-					} else {
-						Log.v("ssss", ob.has("hire_start") + "");
-						endTime.setIso("");
-						list.add(endTime);
+						mCommBean.setHire_end(end);
 					}
 					// 价钱
-					double price = array.getJSONObject(i).getDouble("price");
-
+					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
-					String objectId = array.getJSONObject(i).getString(
-							"objectId");
+					objectId = array.getJSONObject(i).getString("objectId");
 					// 租用人的地址
-					String park_curb = array.getJSONObject(i).getString(
-							"park_curb");
+					park_curb = array.getJSONObject(i).getString("park_curb");
 					JSONObject objStr = new JSONObject(park_curb);
-					String address = objStr.getString("address");
+					address = objStr.getString("address");
 					// 租用方式
-					String hire_method = array.getJSONObject(i).getString(
+					hire_method = array.getJSONObject(i).getString(
 							"hire_method");
 					JSONObject objStrs = new JSONObject(hire_method);
-					String method = objStrs.getString("method");
+					method = objStrs.getString("method");
 					// 订单状态
-					int trade_state = array.getJSONObject(i).getInt(
-							"trade_state");
-					result.setPrice(price);// 价钱
-					result.setObjectId(objectId);// 订单号
-					result.setTrade_state(trade_state);// 订单状态
-					result.setPark_curb(address); // 租用人的地址
-					result.setMethod(method);// 租用方式
-					resultBean.add(result);
+					trade_state = array.getJSONObject(i).getInt("trade_state");
+					mCommBean.setPrice(price);
+					mCommBean.setObjectId(objectId);
+					mCommBean.setPark_curb(park_curb);
+					mCommBean.setAddress(address);
+					mCommBean.setMethod(method);
+					mCommBean.setTrade_state(trade_state);
+					beansList.add(mCommBean);
 				}
-				Message msg = Message.obtain();
+				Message msg = mHandler.obtainMessage();
 				msg.what = 0;
+				msg.obj = beansList;
 				mHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
@@ -267,109 +232,65 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		}
 	}
 
-	private String method;
-	private List<ZyCommityAdapterBean> beansList;
-
 	private void doResponse2(String string) {
 		// TODO Auto-generated method stub
 		try {
-			Log.d("string", string+"<>");
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
 				beansList = new ArrayList<ZyCommityAdapterBean>();
 				ZyCommityAdapterBean mCommBean = null;
-				us = new UserList();
-				result = new ResultEntity();
-				endTime = new HireEndEntity();
-				startTime = new HireStartEntity();
-				mList = new ArrayList<HireStartEntity>();
-				list = new ArrayList<HireEndEntity>();
-				resultBean = new ArrayList<ResultEntity>();
-				userBeans = new ArrayList<UserList>();
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
-
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
-						Log.v("ssss", ob.has("hire_start") + "");
-						String start = GTMDateUtil
+						start = GTMDateUtil
 								.GTMToLocal(ob.getJSONObject("hire_start")
 										.getString("iso"), true);
-						startTime.setIso(start);
-						mList.add(startTime);
-
 						mCommBean.setHire_start(start);
-					} else {
-						startTime.setIso("");
-						mList.add(startTime);
 					}
 					if (ob.has("hire_end")) {
-						String end = GTMDateUtil.GTMToLocal(
+						end = GTMDateUtil.GTMToLocal(
 								ob.getJSONObject("hire_end").getString("iso"),
 								true);
-						endTime.setIso(end);
-						list.add(endTime);// 结束时间
 						mCommBean.setHire_end(end);
-					} else {
-						endTime.setIso("");
-						list.add(endTime);
 					}
-					double price = array.getJSONObject(i).getDouble("price");
+					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
-					String objectId = array.getJSONObject(i).getString(
-							"objectId");
+					objectId = array.getJSONObject(i).getString("objectId");
 					// 租用方式
 					if (array.getJSONObject(i).has("hire_method")) {
-						String hire_method = array.getJSONObject(i).getString(
+						hire_method = array.getJSONObject(i).getString(
 								"hire_method");
 						JSONObject objStrs = new JSONObject(hire_method);
 						method = objStrs.getString("method");
 						mCommBean.setMethod(method);
 					}
 					// 用户名
-					String user = array.getJSONObject(i).getString("user");
+					user = array.getJSONObject(i).getString("user");
 					JSONObject objStr = new JSONObject(user);
 					if (objStr.has("username")) {
-						String username = objStr.getString("username");
-						us.setUsername(username);// 用户名
+						username = objStr.getString("username");// 用户名
 						mCommBean.setUsername(username);
-					} else {
-						us.setUsername("");
 					}
 					// 头像
 					if (objStr.has("image")) {
-						String url = objStr.getJSONObject("image").getString(
-								"url");
+						url = objStr.getJSONObject("image").getString("url");
 						Bitmap bitMap = GetImage.getImage(url);
-						us.setBitMap(bitMap);
-
 						mCommBean.setBitmap(bitMap);
 						mCommBean.setImage(url);
-					} else {
-						us.setBitMap(null);
 					}
 					// 电话
-					String mobilePhoneNumber = objStr
-							.getString("mobilePhoneNumber");
+					mobilePhoneNumber = objStr.getString("mobilePhoneNumber");
 					// 订单状态
-					int trade_state = array.getJSONObject(i).getInt(
-							"trade_state");
-					result.setPrice(price);// 价钱
-					result.setObjectId(objectId);// 订单号
-					result.setTrade_state(trade_state);// 订单状态
-					result.setMethod(method);// 租用方式
-					us.setMobilePhoneNumber(mobilePhoneNumber);// 电话
-					resultBean.add(result);
-					userBeans.add(us);
-
+					trade_state = array.getJSONObject(i).getInt("trade_state");
 					mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					beansList.add(mCommBean);
 				}
-				Message msg = Message.obtain();
+				Message msg = mHandler.obtainMessage();
 				msg.what = 1;
 				msg.obj = beansList;
 				mHandler.sendMessage(msg);
@@ -388,7 +309,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		try {
 			JSONObject obj = new JSONObject();
 			obj.put("user_id", mCache.getAsString("user_id"));
-			// obj.put("user_id", "567a43d134f81a1d87870d62");
 			obj.put("role", role);
 			// 3代表所有数据
 			obj.put("trade_state", 3);
