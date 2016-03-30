@@ -82,7 +82,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		init();
 	}
 	private void initLocation() {
-		// TODO Auto-generated method stub
 		mLocationManger = LocationManagerProxy
 				.getInstance(getApplicationContext());
 		mLocationManger.requestLocationData(LocationProviderProxy.AMapNetwork,
@@ -90,7 +89,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				stopLocation();
 			}
 		}, 15000);//15秒 未定位成功
@@ -98,39 +96,39 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	private Handler mHandler=new Handler(){
 	};
 	
-	private void updateUserInfo(){
-		ReadType readType = new ReadType();
-		readType.execute();
-	}
-	class ReadType extends PreReadTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... params) {
-			updateUser();
-			return null;
-		}
-	}
-	private void updateUser() {
-		try {
-			JSONObject object = new JSONObject();
-			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
-			object.put("user_id", mCache.getAsString("user_id"));
-			String jsoStr = PostCLientUtils.doHttpsPost2(
-					Information.KONGCV_GET_USERINFO,
-					JsonStrUtils.JsonStr(object),
-					mCache.getAsString("sessionToken"));
-			Log.v("更新用户数据", jsoStr);// 用户的注册id 用户名等信息
-			JSONObject obj = new JSONObject(jsoStr);
-			userName = obj.getJSONObject("result").getString("username");
-			Log.v("用户名称", jsoStr);// 用户的注册id 用户名等信息
-			if (obj.getJSONObject("result").has("image")) {
-				userUrl = obj.getJSONObject("result").getJSONObject("image")
-						.getString("url");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void updateUserInfo(){
+//		ReadType readType = new ReadType();
+//		readType.execute();
+//	}
+//	class ReadType extends PreReadTask<Void, Void, Void> {
+//		@Override
+//		protected Void doInBackground(Void... params) {
+//			updateUser();
+//			return null;
+//		}
+//	}
+//	private void updateUser() {
+//		try {
+//			JSONObject object = new JSONObject();
+//			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
+//			object.put("user_id", mCache.getAsString("user_id"));
+//			String jsoStr = PostCLientUtils.doHttpsPost2(
+//					Information.KONGCV_GET_USERINFO,
+//					JsonStrUtils.JsonStr(object),
+//					mCache.getAsString("sessionToken"));
+//			Log.v("更新用户数据", jsoStr);// 用户的注册id 用户名等信息
+//			JSONObject obj = new JSONObject(jsoStr);
+//			userName = obj.getJSONObject("result").getString("username");
+//			Log.v("用户名称", jsoStr);// 用户的注册id 用户名等信息
+//			if (obj.getJSONObject("result").has("image")) {
+//				userUrl = obj.getJSONObject("result").getJSONObject("image")
+//						.getString("url");
+//			}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	
 	
@@ -214,7 +212,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
 		
 		//更改用户信息
-		updateUserInfo();
+	//	updateUserInfo();
 		getDisplay();
 	}
 
@@ -227,7 +225,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	}
 
 	private void resetAliasAndTags() {
-		// TODO Auto-generated method stub
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("udid", Config.udid);
 		String userInfo = null;
@@ -316,9 +313,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	}
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
 		if (i == 0) {
-			// THEME_DEVICE_DEFAULT_DARK THEME_DEVICE_DEFAULT_LIGHT
 			Builder builder = new Builder(HomeActivity.this,
 					AlertDialog.THEME_HOLO_DARK);
 			builder.setMessage("确定要退出当前应用吗？")
@@ -327,7 +322,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub
 									dialog.dismiss();
 								}
 							})
@@ -336,7 +330,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub
 									finish();
 								}
 							}).show();
@@ -357,7 +350,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	private RadioButton rb1,rb0;
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub
 		switch (checkedId) {
 		case R.id.rb0:
 			manager.chHideFrag(mMineFragment);
@@ -371,11 +363,10 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			break;
 		case R.id.rb2:
 			mMineFragment = new MineFragment();
-			Bundle args=new Bundle();
-			args.putString("userUrl", userUrl);
-			args.putString("userName", userName);
-			
-			mMineFragment.setArguments(args);
+//			Bundle args=new Bundle();
+//			args.putString("userUrl", userUrl);
+//			args.putString("userName", userName);
+//			mMineFragment.setArguments(args);
 			manager.chHideFrag(mCarwFragment);
 			manager.chHideFrag(mPublishFragment);
 			manager.chAddFrag(mMineFragment, "mMineFragment", false);
@@ -389,27 +380,22 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	 */
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
 		
 	}
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
-		// TODO Auto-generated method stub
 		if (amapLocation != null) {
 			Double Latitude = amapLocation.getLatitude();
 			Double Longitude = amapLocation.getLongitude();

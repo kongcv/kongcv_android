@@ -31,8 +31,6 @@ import android.widget.Toast;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
-import com.kongcv.UI.AsyncImageLoader.PreReadTask;
-import com.kongcv.activity.HomeActivity;
 import com.kongcv.activity.LogInActivity;
 import com.kongcv.activity.MineCarmanagerActivity;
 import com.kongcv.activity.MineInformationActivity;
@@ -75,6 +73,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 	// 自定义的弹出框类
 	MinePopu menuWindow;
 	private String url;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 				false);
 		mCache = ACacheUtils.get(getActivity());
 		initView();
-	
+
 		mHandler.sendEmptyMessage(0);
 		return linearLayout;
 	}
@@ -113,7 +112,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 		mFace = (CircleImageView) linearLayout.findViewById(R.id.iv_mine);
 		mFace.setOnClickListener(this);
 	}
-	
+
 	/**
 	 * 更新用户信息
 	 */
@@ -123,47 +122,89 @@ public class MineFragment extends Fragment implements OnClickListener {
 			switch (msg.what) {
 			case 0:
 				if (mCache.getAsString("USER") != null) {
-					Bundle arguments = getArguments();
-					String userUrl = arguments.getString("userUrl");
-					String userName = arguments.getString("userName");
-					if(userUrl!=null && userUrl!=null){
-						uName.setText(userName);
-						updateUserImage(userUrl);
-					}
+//					Bundle arguments = getArguments();
+//					String userUrl = arguments.getString("userUrl");
+//					String userName = arguments.getString("userName");
+//					if (userUrl != null && userName != null) {
+//						uName.setText(userName);
+//						updateUserImage(userUrl);
+//					}
+					updateUser();
 				}
 				break;
 			case 1:
-				bit=(Bitmap) msg.obj;
-				mFace.setImageBitmap(bit);
+				String username = (String) msg.obj;
+				uName.setText(username);
+				try {
+					if (bit != null) {
+						mFace.setImageBitmap(bit);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 				break;
 			default:
 				break;
 			}
 		}
-		private void updateUserImage(String userUrl) {
-			ReadType readType=new ReadType();
-			readType.execute(userUrl);
-		}
 	};
-	class ReadType extends PreReadTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... params) {
-			bit = GetImage.getHttpBitmap(params[0]);
-			
-			Message msg=mHandler.obtainMessage();
-			msg.what=1;
-			msg.obj=bit;
-			mHandler.sendMessage(msg);
-			return null;
-		}
+
+//		private void updateUserImage(String userUrl) {
+//			ReadType readType = new ReadType();
+//			readType.execute(userUrl);
+//		}
+//	};
+//
+//	class ReadType extends PreReadTask<String, Void, Void> {
+//		@Override
+//		protected Void doInBackground(String... params) {
+//			bit = GetImage.getHttpBitmap(params[0]);
+//
+//			Message msg = mHandler.obtainMessage();
+//			msg.what = 1;
+//			msg.obj = bit;
+//			mHandler.sendMessage(msg);
+//			return null;
+//		}
+//	}
+	private void updateUser() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					JSONObject object = new JSONObject();
+					object.put("mobilePhoneNumber", mCache.getAsString("USER"));
+					object.put("user_id", mCache.getAsString("user_id"));
+					String jsoStr = PostCLientUtils.doHttpsPost2(Information.KONGCV_GET_USERINFO, JsonStrUtils.JsonStr(object), mCache.getAsString("sessionToken"));
+					JSONObject obj = new JSONObject(jsoStr);
+					String username = obj.getJSONObject("result").getString("username");
+					if (obj.getJSONObject("result").has("image")) {
+						url = obj.getJSONObject("result").getJSONObject("image").getString("url");
+						bit = GetImage.getHttpBitmap(url);
+					} else {
+						url = "";
+						bit = null;
+					}
+					Message msg = mHandler.obtainMessage();
+					msg.what = 1;
+					msg.obj = username;
+					mHandler.sendMessage(msg);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		String PHOTO_FILE_NAME = mCache.getAsString("USER") + ".png";
 		if (requestCode == PHOTO_REQUEST_GALLERY) {
 			if (data != null) {
@@ -185,7 +226,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				bitmap = data.getParcelableExtra("data");
 				this.mFace.setImageBitmap(bitmap);
 				upload(mFace);// 上传
-
 				boolean delete = tempFile.delete();
 				System.out.println("delete = " + delete);
 
@@ -200,6 +240,23 @@ public class MineFragment extends Fragment implements OnClickListener {
 				uName.setText(user_name);
 			}
 			break;
+		case 10:
+			if (data != null) {
+				user_name = data.getStringExtra("nick");
+				if(user_name!=null){
+				uName.setText(user_name);
+				}else{
+					uName.setText("登录");
+				}
+				Bitmap bit = data.getParcelableExtra("bit");
+				if (bit != null) {
+					mFace.setImageBitmap(bit);
+				}else{
+					mFace.setImageResource(R.drawable.defaulto);
+				}
+			}
+			break;
+
 		default:
 			break;
 		}
@@ -306,15 +363,16 @@ public class MineFragment extends Fragment implements OnClickListener {
 				mHandler.postAtTime(new Runnable() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
-						startActivity(intent);
+						//	startActivity(intent);
+						startActivityForResult(intent, 0);
 					}
 				}, 2000);
 				mHandler.sendEmptyMessage(1);
 			}
 			break;
+
 		case R.id.tv_logn:
 			// setDialog();
 			if (mCache.getAsString("USER") != null
@@ -327,7 +385,8 @@ public class MineFragment extends Fragment implements OnClickListener {
 					public void run() {
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
-						startActivity(intent);
+						//	startActivity(intent);
+						startActivityForResult(intent, 0);
 					}
 				}, 2000);
 			}
@@ -341,7 +400,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 	 * 修改用户名称
 	 */
 	private void setDialog() {
-		// TODO Auto-generated method stub
 		final Dialog mDialog = new Dialog(getActivity(), R.style.MyDialog);
 		mDialog.setContentView(R.layout.mydialog_user);
 		TextView oldUser = (TextView) mDialog.findViewById(R.id.old_name);
@@ -349,10 +407,8 @@ public class MineFragment extends Fragment implements OnClickListener {
 		EditText newUser = (EditText) mDialog.findViewById(R.id.new_name);
 		Button selectCancel = (Button) mDialog.findViewById(R.id.select_cancel);
 		selectCancel.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				mDialog.dismiss();
 			}
 		});
@@ -426,7 +482,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -440,15 +495,9 @@ public class MineFragment extends Fragment implements OnClickListener {
 							+ ".png";
 					JSONObject object = new JSONObject();
 					object.put("user_id", mCache.getAsString("user_id"));
-					// object.put("user_id", "566787fb00b09f857185af83");
 					object.put("file_base64", photo);
 					object.put("file_name", PHOTO_FILE_NAME);
 					object.put("image_id", "");// 旧的头像id，没有参数可以不传值或没有,
-					/*
-					 * String doHttpsPost = PostCLientUtils.doHttpsPost2(
-					 * Information.KONGCV_UPLOAD_IMAGE, String.valueOf(object),
-					 * "fkaoere1uvy0altxujrym67uz");
-					 */
 					String doHttpsPost = PostCLientUtils.doHttpsPost2(
 							Information.KONGCV_UPLOAD_IMAGE,
 							String.valueOf(object),
@@ -478,4 +527,5 @@ public class MineFragment extends Fragment implements OnClickListener {
 			}
 		}).start();
 	}
+
 }
