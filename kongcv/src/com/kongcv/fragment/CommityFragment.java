@@ -225,7 +225,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	}
 	@Override
 	public void onRefresh() {
-		mHandler.post(new Runnable() {
+		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -233,12 +233,12 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				refresh();
 				onLoad();
 			}
-		});
+		}, 2000);
 		
 	}
 	@Override
 	public void onLoadMore() {
-		mHandler.post(new Runnable() {
+		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -246,7 +246,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				refresh();
 				onLoad();
 			}
-		});
+		}, 2000);
 	}
 		/**
 		 * 停止刷新
