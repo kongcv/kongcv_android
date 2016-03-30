@@ -98,7 +98,7 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 					btn_one.setChecked(true);
 					break;
 				case 1:
-					comf.getData1();
+					comf.refresh();
 					btn_two.setChecked(true);// 个人
 					break;
 				}
@@ -128,15 +128,10 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			break;
 		case R.id.btn1: 
 			TYPEORDER = 0;
-	//		comf.getData1();
 			cubf.refresh();
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn2: 
-			/*TYPEORDER = 0;
-	//		comf.getData1();
-			cubf.getData1();
-			pager.setCurrentItem(0);*/
 			TYPEORDER = 1;
 			cubf.refresh();
 			pager.setCurrentItem(0);
@@ -146,7 +141,7 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			pager.setCurrentItem(0);
 			break;
 		case R.id.btn_two:// 个人
-			comf.getData1();
+			comf.refresh();
 			pager.setCurrentItem(1);
 			break;
 		default:

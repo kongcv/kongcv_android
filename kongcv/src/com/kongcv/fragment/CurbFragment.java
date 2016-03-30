@@ -368,7 +368,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			obj.put("role", role);
 			// 3代表所有数据
 			obj.put("trade_state", 3);
-			obj.put("skip", skip);
+			obj.put("skip", skip*10);
 			obj.put("limit", limit);
 			obj.put("mode", "curb");
 			jsonStr = JsonStrUtils.JsonStr(obj);
