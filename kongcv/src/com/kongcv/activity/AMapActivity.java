@@ -12,6 +12,7 @@ import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.animation.LayoutTransition;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,7 +77,7 @@ public class AMapActivity extends FragmentActivity implements
 		OnMapClickListener, AMapListViewListener, OnItemClickListener,
 		OnMapLongClickListener, OnCameraChangeListener, OnMarkerClickListener,
 		InfoWindowAdapter, OnItemSelectedListener, OnInfoWindowClickListener,
-		OnKeyListener, OnClickListener{
+		OnKeyListener, OnClickListener {
 
 	private AMap aMap;
 	private MapView mapView;
@@ -94,12 +95,14 @@ public class AMapActivity extends FragmentActivity implements
 	private List<PoiItem> poiItems;// poi数据
 	private Marker detailMarker;// 显示Marker的详情
 	private PoiResult poiResult; // poi返回的结果
-	private ArrayList addresslist,latLngList,restList,priceList;
+	private ArrayList addresslist, latLngList, restList, priceList;
 	private String temp;
 	private Bean beanList;
-	private int i=0;
-	private int numCheck=-1;
+	private int i = 0;
+	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
+
+	private LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -109,35 +112,31 @@ public class AMapActivity extends FragmentActivity implements
 		getInfo();
 		initHigh();// 获取屏幕宽高
 		mapView = (MapView) findViewById(R.id.map);
+		layout = (LinearLayout) findViewById(R.id.ll_mapview);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		loading();
 		init();
 	}
-	/**
-	 * 判断
-	 */
-	private int getHire_type(){
-		Bundle bundle =getIntent().getExtras();
-		if(bundle.getInt("hire_type")==2){
+	private int getHire_type() {
+		Bundle bundle = getIntent().getExtras();
+		if (bundle.getInt("hire_type") == 2) {
 			return bundle.getInt("hire_type");
-		}else {
+		} else {
 			return -1;
 		}
 	}
-	
+
 	private void getInfo() {
 		searchBean = (SearchBean) getIntent().getSerializableExtra("bean");
-		if(searchBean!=null){
-			Gson gson=new Gson();
-			numCheck=getHire_type();
-			if(numCheck==2){
+		if (searchBean != null) {
+			Gson gson = new Gson();
+			numCheck = getHire_type();
+			if (numCheck == 2) {
 				searchBean.setHire_field(null);
 				searchBean.setHire_method_id(null);
 			}
 			String json = gson.toJson(searchBean);
 			// TODO Auto-generated method stub
-			/*ReadInfo info=new ReadInfo();
-			info.execute(json);*/
 			doSearch(json);
 		}
 	}
@@ -149,55 +148,39 @@ public class AMapActivity extends FragmentActivity implements
 			return null;
 		}
 	}
-	private boolean loadOrNo=true;
-	
+
+	private boolean loadOrNo = true;
+
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
-		/*try {
-			String jsonStr = PostCLientUtils.doHttpsPost(
-					Information.KONGCV_LOCATION_SEARCH,
-					objFrom);
-			Log.v("amap doSearch//道边费率问题", jsonStr);
-			Log.v("amap doSearch//道边费率问题", jsonStr);
-			JSONObject object=new JSONObject(jsonStr);
-			if(object.getJSONArray("result")!=null && object.getJSONArray("result").length()>0){
-				Message msg=mHandler.obtainMessage();
-				msg.what=0;
-				msg.obj=jsonStr;
-				mHandler.sendMessage(msg);
-			}else{
-				loadOrNo=false;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-				// TODO Auto-generated method stub
-				okhttp3.Request request=new okhttp3.Request.Builder()
+		// TODO Auto-generated method stub
+		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_LOCATION_SEARCH)
 				.headers(Information.getHeaders())
-				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, objFrom))
-				.build();
-			client.newCall(request).enqueue(new okhttp3.Callback() {
-	
-				@Override
-				public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
-					// TODO Auto-generated method stub
-					if(response.isSuccessful()){
-						Message msg=mHandler.obtainMessage();
-						msg.what=0;
-						msg.obj=response.body().string();
-						mHandler.sendMessage(msg);
-					}
+				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
+						objFrom)).build();
+		client.newCall(request).enqueue(new okhttp3.Callback() {
+
+			@Override
+			public void onResponse(Call arg0, okhttp3.Response response)
+					throws IOException {
+				// TODO Auto-generated method stub
+				if (response.isSuccessful()) {
+					Message msg = mHandler.obtainMessage();
+					msg.what = 0;
+					msg.obj = response.body().string();
+					mHandler.sendMessage(msg);
 				}
-				@Override
-				public void onFailure(Call arg0, IOException arg1) {
-					// TODO Auto-generated method stub
-					Log.e("GridViewOkHttp", arg1.toString());
-				}
-				});
+			}
+
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+				Log.e("GridViewOkHttp", arg1.toString());
+			}
+		});
 	}
-	
+
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -205,66 +188,75 @@ public class AMapActivity extends FragmentActivity implements
 			switch (msg.what) {
 			case 0:
 				try {
-					String Str=(String) msg.obj;
+					String Str = (String) msg.obj;
 					JSONObject object = new JSONObject(Str);
-					if(object.getJSONArray("result")!=null && object.getJSONArray("result").length()>0){
+					if (object.getJSONArray("result") != null
+							&& object.getJSONArray("result").length() > 0) {
 						refresh(Str);
-					}else{
-						loadOrNo=false;
+					} else {
+						loadOrNo = false;
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
-			case 1://刷新handler
-				if(loadOrNo){
-					if(dlist!=null){
+			case 1:// 刷新handler
+				if (loadOrNo) {
+					if (dlist != null) {
 						dlist.clear();
 					}
-					priceList=(ArrayList) bean.getPriceList();
+					priceList = (ArrayList) bean.getPriceList();
 					addresslist = (ArrayList) bean.getAddressList();
 					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-							R.layout.amap_listview_item, new String[] { "tv_address",
-									"tv_detail","tv_rest","tv_price" }, new int[] { R.id.amap_tv_address,
-									R.id.amap_tv_detail,R.id.amap_tv_rest,R.id.amap_tv_price });
+							R.layout.amap_listview_item, new String[] {
+									"tv_address", "tv_detail", "tv_rest",
+									"tv_price" }, new int[] {
+									R.id.amap_tv_address, R.id.amap_tv_detail,
+									R.id.amap_tv_rest, R.id.amap_tv_price });
 					mListView.setAdapter(mAdapter1);
 					mAdapter1.notifyDataSetChanged();
-				}else{
+				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
 				break;
 			case 2:
-				if(loadOrNo){
-					priceList=(ArrayList) bean.getPriceList();
+				if (loadOrNo) {
+					priceList = (ArrayList) bean.getPriceList();
 					addresslist = (ArrayList) bean.getAddressList();
 					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-							R.layout.amap_listview_item, new String[] { "tv_address",
-									"tv_detail","tv_rest","tv_price" }, new int[] { R.id.amap_tv_address,
-									R.id.amap_tv_detail,R.id.amap_tv_rest,R.id.amap_tv_price });
+							R.layout.amap_listview_item, new String[] {
+									"tv_address", "tv_detail", "tv_rest",
+									"tv_price" }, new int[] {
+									R.id.amap_tv_address, R.id.amap_tv_detail,
+									R.id.amap_tv_rest, R.id.amap_tv_price });
 					mListView.setAdapter(mAdapter1);
 					mAdapter1.notifyDataSetChanged();
-				}else{
+				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
 				break;
 			case 3:
-				if(dlist!=null){
+				if (dlist != null) {
 					dlist.clear();
 				}
 				mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-						R.layout.amap_listview_item, new String[] { "tv_address",
-								"tv_detail","tv_rest","tv_price" }, new int[] { R.id.amap_tv_address,
-								R.id.amap_tv_detail,R.id.amap_tv_rest,R.id.amap_tv_price });
+						R.layout.amap_listview_item, new String[] {
+								"tv_address", "tv_detail", "tv_rest",
+								"tv_price" }, new int[] { R.id.amap_tv_address,
+								R.id.amap_tv_detail, R.id.amap_tv_rest,
+								R.id.amap_tv_price });
 				mListView.setAdapter(mAdapter1);
 				mAdapter1.notifyDataSetChanged();
 				break;
 			case 4:
-				if(dlist!=null){
+				if (dlist != null) {
 					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-							R.layout.amap_listview_item, new String[] { "tv_address",
-									"tv_detail","tv_rest","tv_price" }, new int[] { R.id.amap_tv_address,
-									R.id.amap_tv_detail,R.id.amap_tv_rest,R.id.amap_tv_price });
+							R.layout.amap_listview_item, new String[] {
+									"tv_address", "tv_detail", "tv_rest",
+									"tv_price" }, new int[] {
+									R.id.amap_tv_address, R.id.amap_tv_detail,
+									R.id.amap_tv_rest, R.id.amap_tv_price });
 					mListView.setAdapter(mAdapter1);
 					mAdapter1.notifyDataSetChanged();
 				}
@@ -274,37 +266,40 @@ public class AMapActivity extends FragmentActivity implements
 			}
 		}
 	};
+
 	private void refresh(String readFrom) {
 		try {
-			JSONObject jsonObject=new JSONObject(readFrom);
+			JSONObject jsonObject = new JSONObject(readFrom);
 			JSONArray jsonArray = jsonObject.getJSONArray("result");
-			if(jsonArray!=null && jsonArray.length()>0){
-				List<String> addressList=new ArrayList<String>();
-				List<String> objList=new ArrayList<String>(); //车位的objectId
-				List<LatLng>  latLngList =new ArrayList<LatLng>();//经纬度集合
-				List<Integer> restList=new ArrayList<Integer>();//获取到park_space表示是否出租 后面判断出租还是未租
-				List<Double> priceList=new ArrayList<Double>();
-				
-				List<String> parkList=new ArrayList<String>();
-				for (int index = 0; index < jsonArray.length(); index++) {	//每次加载5条
+			if (jsonArray != null && jsonArray.length() > 0) {
+				List<String> addressList = new ArrayList<String>();
+				List<String> objList = new ArrayList<String>(); // 车位的objectId
+				List<LatLng> latLngList = new ArrayList<LatLng>();// 经纬度集合
+				List<Integer> restList = new ArrayList<Integer>();// 获取到park_space表示是否出租
+																	// 后面判断出租还是未租
+				List<Double> priceList = new ArrayList<Double>();
+
+				List<String> parkList = new ArrayList<String>();
+				for (int index = 0; index < jsonArray.length(); index++) { // 每次加载5条
 					String address = jsonArray.getJSONObject(index).getString(
-							"address");//地址信息
-					addressList.add(address);//地址集合
-					//经纬度
-					JSONObject object = jsonArray.getJSONObject(index).getJSONObject("location");
+							"address");// 地址信息
+					addressList.add(address);// 地址集合
+					// 经纬度
+					JSONObject object = jsonArray.getJSONObject(index)
+							.getJSONObject("location");
 					double latitude = object.getDouble("latitude");
 					double longitude = object.getDouble("longitude");
-					LatLng latLng =new LatLng(latitude, longitude);
+					LatLng latLng = new LatLng(latitude, longitude);
 					latLngList.add(latLng);
-					if(numCheck!=2){
-						double field = jsonArray.getJSONObject(index).getDouble(
-								getField());
+					if (numCheck != 2) {
+						double field = jsonArray.getJSONObject(index)
+								.getDouble(getField());
 						priceList.add(field);
 					}
 					int park_space = jsonArray.getJSONObject(index).getInt(
 							"park_space");
 					restList.add(park_space);
-					
+
 					String objectId = jsonArray.getJSONObject(index).getString(
 							"objectId");
 					objList.add(objectId);
@@ -316,81 +311,8 @@ public class AMapActivity extends FragmentActivity implements
 				bean.setObjList(objList);
 				bean.setRestList(restList);
 				bean.setPriceList(priceList);
-				
-				/*Log.d("bean.setPark_id", bean.getPark_id()+"::");
-				Log.d("bean.setAddressList", bean.getAddressList()+"::");
-				Log.d("bean.setLatLngList", bean.getLatLngList()+"::");
-				Log.d("bean.setObjList", bean.getObjList()+"::");
-				Log.d("bean.setRestList", bean.getRestList()+"::");
-				Log.d("bean.setPriceList", bean.getPriceList()+"::");*/
-				/*		List<String> addressList=new ArrayList<String>();
-				List<String> objList=new ArrayList<String>(); //车位的objectId
-				List<LatLng>  latLngList =new ArrayList<LatLng>();//经纬度集合
-				List<Integer> restList=new ArrayList<Integer>();//获取到park_space表示是否出租 后面判断出租还是未租
-				List<Double> priceList=new ArrayList<Double>();
-				
-				List<String> parkList=new ArrayList<String>();
-				Map<String,Double> map=new HashMap<String, Double>();
-				if(jsonArray.length()>i){
-					for (int index = 0; index < 10; index++) {	//每次加载5条
-						String address = jsonArray.getJSONObject(index).getString(
-								"address");//地址信息
-						addressList.add(address);//地址集合
-						//经纬度
-						JSONObject object = jsonArray.getJSONObject(index).getJSONObject("location");
-						double latitude = object.getDouble("latitude");
-						double longitude = object.getDouble("longitude");
-						LatLng latLng =new LatLng(latitude, longitude);
-						latLngList.add(latLng);
-						if(numCheck!=2){
-							double field = jsonArray.getJSONObject(index).getDouble(
-									getField());
-							priceList.add(field);
-						}
-						int park_space = jsonArray.getJSONObject(index).getInt(
-								"park_space");
-						restList.add(park_space);
-						
-						String objectId = jsonArray.getJSONObject(index).getString(
-								"objectId");
-						objList.add(objectId);
-					}
-				}else {
-					for (int index = 0; index < jsonArray.length(); index++){	//每次加载5条
-						String address = jsonArray.getJSONObject(index).getString(
-								"address");//地址信息
-						addressList.add(address);//地址集合
-						JSONObject object = jsonArray.getJSONObject(index).getJSONObject("location");
-						double latitude = object.getDouble("latitude");
-						double longitude = object.getDouble("longitude");
-						LatLng latLng =new LatLng(latitude, longitude);
-						latLngList.add(latLng);
-						if(numCheck!=2){
-							double field = jsonArray.getJSONObject(index).getDouble(
-									getField());
-							priceList.add(field);
-						}
-						String string = jsonArray.getJSONObject(index).getJSONArray("hire_method")
-								.getJSONObject(index).getString("objectId");
-						parkList.add(string);
-						
-						int park_space = jsonArray.getJSONObject(index).getInt(
-								"park_space");
-						restList.add(park_space);
-						
-						String objectId = jsonArray.getJSONObject(index).getString(
-								"objectId");
-						objList.add(objectId);
-					}
-				}
-				bean = new Bean();
-				bean.setPark_id(parkList);
-				bean.setAddressList(addressList);
-				bean.setLatLngList(latLngList);
-				bean.setObjList(objList);
-				bean.setRestList(restList);
-				bean.setPriceList(priceList);//
-*/			}else{
+
+			} else {
 				ToastUtil.show(getBaseContext(), "没有数据！");
 			}
 		} catch (Exception e) {
@@ -416,8 +338,9 @@ public class AMapActivity extends FragmentActivity implements
 
 		mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
 				R.layout.amap_listview_item, new String[] { "tv_address",
-			"tv_detail","tv_rest","tv_price" }, new int[] { R.id.amap_tv_address,
-			R.id.amap_tv_detail,R.id.amap_tv_rest,R.id.amap_tv_price });
+						"tv_detail", "tv_rest", "tv_price" }, new int[] {
+						R.id.amap_tv_address, R.id.amap_tv_detail,
+						R.id.amap_tv_rest, R.id.amap_tv_price });
 
 		mListView.setAdapter(mAdapter1);
 		mListView.setAMapListViewListener(this);
@@ -435,6 +358,7 @@ public class AMapActivity extends FragmentActivity implements
 		displayWidth = displayMetrics.widthPixels;
 		displayHeight = displayMetrics.heightPixels;
 	}
+
 	/**
 	 * 设置地图占三分之二
 	 */
@@ -459,6 +383,7 @@ public class AMapActivity extends FragmentActivity implements
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.5f + 0.5f));
 		mListView.setLayoutParams(params);
 	}
+
 	/**
 	 * 获取经纬度
 	 */
@@ -484,10 +409,11 @@ public class AMapActivity extends FragmentActivity implements
 					// TODO Auto-generated method stub
 					if (SearchActivity.latLng == null) {
 						initMarkers();
-					    initView();
-					} else if(Data.getData("LatLng")!=null){
-						LatLng latLng=(LatLng) Data.getData("LatLng");
-						aMap.moveCamera(CameraUpdateFactory.changeLatLng(SearchActivity.latLng));
+						initView();
+					} else if (Data.getData("LatLng") != null) {
+						LatLng latLng = (LatLng) Data.getData("LatLng");
+						aMap.moveCamera(CameraUpdateFactory
+								.changeLatLng(SearchActivity.latLng));
 						locationMarker = aMap.addMarker(new MarkerOptions()
 								.anchor(0.5f, 1)
 								.icon(BitmapDescriptorFactory
@@ -497,20 +423,22 @@ public class AMapActivity extends FragmentActivity implements
 												latLng.longitude))
 								.title("搜索地点的位置"));
 						locationMarker.showInfoWindow();
-						SearchActivity.latLng=null;
+						SearchActivity.latLng = null;
 						mypDialog.dismiss();
-					}else{
-						aMap.moveCamera(CameraUpdateFactory.changeLatLng(SearchActivity.latLng));
+					} else {
+						aMap.moveCamera(CameraUpdateFactory
+								.changeLatLng(SearchActivity.latLng));
 						locationMarker = aMap.addMarker(new MarkerOptions()
 								.anchor(0.5f, 1)
 								.icon(BitmapDescriptorFactory
 										.fromResource(R.drawable.start))
 								.position(
-										new LatLng(SearchActivity.latLng.latitude,
+										new LatLng(
+												SearchActivity.latLng.latitude,
 												SearchActivity.latLng.longitude))
 								.title("搜索地点的位置"));
 						locationMarker.showInfoWindow();
-						SearchActivity.latLng=null;
+						SearchActivity.latLng = null;
 						mypDialog.dismiss();
 					}
 				}
@@ -518,16 +446,17 @@ public class AMapActivity extends FragmentActivity implements
 			setUpMap();// 设置侦听
 		}
 	}
-	
+
 	private void initMarkers() {
-	//	beanList = (Bean) Data.getData("LIST");
+		// beanList = (Bean) Data.getData("LIST");
 		beanList = bean;
 		if (beanList != null) {
 			addresslist = (ArrayList) beanList.getAddressList();
 			latLngList = (ArrayList) beanList.getLatLngList();
 			restList = (ArrayList) beanList.getRestList();
 			priceList = (ArrayList) beanList.getPriceList();
-			aMap.moveCamera(CameraUpdateFactory.changeLatLng((LatLng) latLngList.get(0)));
+			aMap.moveCamera(CameraUpdateFactory
+					.changeLatLng((LatLng) latLngList.get(0)));
 			for (int i = 0; i < latLngList.size(); i++) {
 				locationMarker = aMap.addMarker(new MarkerOptions()
 						.anchor(0.5f, 1)
@@ -537,16 +466,21 @@ public class AMapActivity extends FragmentActivity implements
 				locationMarker.showInfoWindow();
 			}
 			mypDialog.dismiss();
-		}else {
-			if(searchBean!=null){
+		} else {
+			if (searchBean != null) {
 				Location_info location_info = searchBean.getLocation_info();
-				
-				aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(location_info.getLatitude(), location_info.getLongitude())));
+
+				aMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(
+						location_info.getLatitude(), location_info
+								.getLongitude())));
 				locationMarker = aMap.addMarker(new MarkerOptions()
 						.anchor(0.5f, 1)
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.start))
-						.position(new LatLng(location_info.getLatitude(), location_info.getLongitude())).title("搜索地点的位置"));
+						.position(
+								new LatLng(location_info.getLatitude(),
+										location_info.getLongitude()))
+						.title("搜索地点的位置"));
 				locationMarker.showInfoWindow();
 				mypDialog.dismiss();
 			}
@@ -562,18 +496,19 @@ public class AMapActivity extends FragmentActivity implements
 				int park_space = (Integer) restList.get(i);
 				map.put("tv_address", a[0]);
 				map.put("tv_detail", a[1]);
-				if(park_space==0){
+				if (park_space == 0) {
 					map.put("tv_rest", "已租");
-				}else{
+				} else {
 					map.put("tv_rest", "未租");
 				}
-				if(priceList.size()>0)
-				map.put("tv_price", "¥ "+priceList.get(i));
+				if (priceList.size() > 0)
+					map.put("tv_price", "¥ " + priceList.get(i));
 				dlist.add(map);
 			}
 		}
 		return dlist;
 	}
+
 	/**
 	 * amap添加一些事件监听器
 	 */
@@ -582,6 +517,7 @@ public class AMapActivity extends FragmentActivity implements
 		aMap.setOnMapLongClickListener(this);// 对amap添加长按地图事件监听器
 		aMap.setOnCameraChangeListener(this);// 对amap添加移动地图事件监听器
 	}
+
 	/**
 	 * 方法必须重写
 	 */
@@ -601,6 +537,7 @@ public class AMapActivity extends FragmentActivity implements
 		super.onPause();
 		mapView.onPause();
 	}
+
 	/**
 	 * 方法必须重写
 	 */
@@ -610,6 +547,7 @@ public class AMapActivity extends FragmentActivity implements
 		mapView.onSaveInstanceState(outState);
 
 	}
+
 	/**
 	 * 方法必须重写
 	 */
@@ -618,13 +556,31 @@ public class AMapActivity extends FragmentActivity implements
 		super.onDestroy();
 		mapView.onDestroy();
 	}
+
 	/**
 	 * 对单击地图事件回调 处理marker点击事件
 	 */
 	@Override
 	public void onMapClick(LatLng latng) {
 		locationMarker.showInfoWindow();
+		animalDone();
 	}
+	
+	private void animalDone() {
+		// TODO Auto-generated method stub
+		Log.d("地图被点击了>>>>>>", "<<>>");
+		LayoutTransition transition = new LayoutTransition();  
+	    transition.setAnimator(LayoutTransition.CHANGE_APPEARING,  
+	            transition.getAnimator(LayoutTransition.CHANGE_APPEARING));  
+	    transition.setAnimator(LayoutTransition.APPEARING,  
+	            null);  
+	    transition.setAnimator(LayoutTransition.DISAPPEARING,  
+	            null);  
+	    transition.setAnimator(LayoutTransition.CHANGE_DISAPPEARING,  
+	            null);  
+	    mapView.setLayoutTransition(transition); 
+	}
+	
 	/**
 	 * 对长按地图事件回调
 	 */
@@ -652,35 +608,36 @@ public class AMapActivity extends FragmentActivity implements
 		mListView.stopLoadMore();
 		mListView.setRefreshTime("刚刚");
 	}
+
 	public void onRefresh() {
 		mHandler.postDelayed(new Runnable() {
 			public void run() {
 				doRefresh();
 				onLoad();
 			}
+
 			private void doRefresh() {
 				// TODO Auto-generated method stub
-				if(searchBean!=null){
-					Gson gson=new Gson();
-					numCheck=getHire_type();
-					if(numCheck==2){
+				if (searchBean != null) {
+					Gson gson = new Gson();
+					numCheck = getHire_type();
+					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
 					}
-					i=i+10;
+					i = i + 10;
 					searchBean.setSkip(i);
 					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info=new ReadInfo();
+					ReadInfo info = new ReadInfo();
 					info.execute(json);
 					mHandler.sendEmptyMessageDelayed(1, 1000);
 				}
 			}
 		}, 1500);
 	}
-	
-	
+
 	// 加载更多
 	public void onLoadMore() {
 		mHandler.postDelayed(new Runnable() {
@@ -688,38 +645,40 @@ public class AMapActivity extends FragmentActivity implements
 				doLoadMore();
 				onLoad();
 			}
+
 			private void doLoadMore() {
 				// TODO Auto-generated method stub
-				if(searchBean!=null){
-					Gson gson=new Gson();
-					numCheck=getHire_type();
-					if(numCheck==2){
+				if (searchBean != null) {
+					Gson gson = new Gson();
+					numCheck = getHire_type();
+					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
 					}
-					i=i+2;
+					i = i + 2;
 					searchBean.setSkip(i);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info=new ReadInfo();
+					ReadInfo info = new ReadInfo();
 					info.execute(json);
 					mHandler.sendEmptyMessageDelayed(2, 1000);
 				}
 			}
 		}, 1500);
 	}
-	
+
 	private double price;
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		if(position!=0){
+		if (position != 0) {
 			if (SearchActivity.latLng == null) {
 				ArrayList data = (ArrayList) beanList.getObjList();
 				final String object = (String) data.get(position - 1);
-				if(numCheck!=2){
-					price = (Double) priceList.get(position-1);
+				if (numCheck != 2) {
+					price = (Double) priceList.get(position - 1);
 				}
 				view.postDelayed(new Runnable() {
 					@Override
@@ -730,13 +689,13 @@ public class AMapActivity extends FragmentActivity implements
 						Bundle bundle = new Bundle();
 						bundle.putString("mode", getMode());
 						bundle.putString("park_id", object);
-						/*if(price!=0){
-							bundle.putInt("price", price);
-							bundle.putString("getField", getField());
-						 }*/
+						/*
+						 * if(price!=0){ bundle.putInt("price", price);
+						 * bundle.putString("getField", getField()); }
+						 */
 						bundle.putDouble("price", price);
 						bundle.putString("getField", getField());
-						
+
 						intent.putExtras(bundle);
 						CurbAndObjectId bean = new CurbAndObjectId();
 						bean.setMode(getMode());
@@ -750,7 +709,6 @@ public class AMapActivity extends FragmentActivity implements
 			}
 		}
 	}
-
 	/**
 	 * 获取field
 	 */
@@ -779,6 +737,7 @@ public class AMapActivity extends FragmentActivity implements
 		String object = (String) bundle.get("mode");
 		return object;
 	}
+
 	/**
 	 * onMarkerClick
 	 */
@@ -801,6 +760,7 @@ public class AMapActivity extends FragmentActivity implements
 			poiSearch.searchPOIDetailAsyn(poiId);
 		}
 	}
+
 	/**
 	 * info
 	 */
@@ -814,10 +774,10 @@ public class AMapActivity extends FragmentActivity implements
 		return null;
 	}
 
-	private boolean flag = true;//页面布局的切换
+	private boolean flag = true;// 页面布局的切换
 	private boolean rangeAndPrice = true;
 	private ProgressDialog mypDialog;
-	private TextView rangePrice,tvRest,tvPrice;
+	private TextView rangePrice, tvRest, tvPrice;
 	private Bean bean;
 	private SearchBean searchBean;
 
@@ -840,13 +800,13 @@ public class AMapActivity extends FragmentActivity implements
 		case R.id.tv_rangeandprice:
 			if (rangeAndPrice) {
 				rangePrice.setText("按价格");
-				if(searchBean!=null){
-					if(dlist!=null){
+				if (searchBean != null) {
+					if (dlist != null) {
 						dlist.clear();
 					}
-					Gson gson=new Gson();
-					numCheck=getHire_type();
-					if(numCheck==2){
+					Gson gson = new Gson();
+					numCheck = getHire_type();
+					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
 					}
@@ -854,22 +814,22 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按价格排序的请求json", json);
-					ReadInfo info=new ReadInfo();
+					ReadInfo info = new ReadInfo();
 					info.execute(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
-				}else{
+				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
-				rangeAndPrice=false;
+				rangeAndPrice = false;
 			} else {
 				rangePrice.setText("按距离");
-				if(searchBean!=null){
-					if(dlist!=null){
+				if (searchBean != null) {
+					if (dlist != null) {
 						dlist.clear();
 					}
-					Gson gson=new Gson();
-					numCheck=getHire_type();
-					if(numCheck==2){
+					Gson gson = new Gson();
+					numCheck = getHire_type();
+					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
 					}
@@ -877,13 +837,13 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按距离排序的请求json", json);
-					ReadInfo info=new ReadInfo();
+					ReadInfo info = new ReadInfo();
 					info.execute(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
-				}else{
+				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
-				rangeAndPrice=true;
+				rangeAndPrice = true;
 			}
 			break;
 		default:
@@ -906,6 +866,7 @@ public class AMapActivity extends FragmentActivity implements
 		// TODO Auto-generated method stub
 
 	}
+
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
 		// TODO Auto-generated method stub

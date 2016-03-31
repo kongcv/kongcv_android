@@ -99,8 +99,7 @@ public class TypeDialog extends Dialog implements TextWatcher,
 			flag = true;
 			findViewById(R.id.tv_txt1).setVisibility(View.VISIBLE);
 			findViewById(R.id.tv_txt2).setVisibility(View.INVISIBLE);
-		//	mPicker.setVisibility(View.INVISIBLE);
-			mPicker.setVisibility(View.GONE);
+			mPicker.setVisibility(View.INVISIBLE);
 			adapterData(commMethod, spinner);
 			break;
 		case R.id.tv_time:
@@ -148,7 +147,6 @@ public class TypeDialog extends Dialog implements TextWatcher,
 								}
 							}
 						}
-					//}
 				}
 			}else{
 				if(price.getText().toString()==null && tvPrice==null && !StringUtils.isNum(tvPrice)) {
@@ -254,7 +252,6 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		price.addTextChangedListener(this);
 		
 		Community community = (Community) Data.getData("community");
-//		Community community = (Community) Data.getData("corc");
 		if (community != null) {
 			List<String> method = community.getMethod();
 			List<String> objectId = community.getObjectId();
@@ -273,8 +270,8 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		}
 		adapterData(commMethod, spinner);
 		mPicker = findViewById(R.id.ll);
-		mPicker.setVisibility(View.GONE);
-	//	mPicker.setVisibility(View.INVISIBLE);
+	//	mPicker.setVisibility(View.GONE);
+		mPicker.setVisibility(View.INVISIBLE);
 	}
 
 	/**

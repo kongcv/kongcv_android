@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
@@ -32,7 +35,6 @@ import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.model.LatLng;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.dialog.SpotsDialog;
 import com.kongcv.fragment.CarwFragment;
 import com.kongcv.fragment.MineFragment;
 import com.kongcv.fragment.PublishFragment;
@@ -306,8 +308,8 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	@Override
 	public void onBackPressed() {
 		if (i == 0) {
-			new SpotsDialog(this).show(); 
-			/*Builder builder = new Builder(HomeActivity.this,
+			//new SpotsDialog(this).show(); 
+			Builder builder = new Builder(HomeActivity.this,
 					AlertDialog.THEME_HOLO_DARK);
 			builder.setMessage("确定要退出当前应用吗？")
 					.setPositiveButton("取消",
@@ -330,7 +332,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			Intent i = new Intent(this, MineCarmanagerActivity.class);
 			startActivity(i);
 			finish();
-		}*/
 		}
 	}
 	/**

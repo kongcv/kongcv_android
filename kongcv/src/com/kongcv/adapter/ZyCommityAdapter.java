@@ -75,7 +75,6 @@ public class ZyCommityAdapter extends BaseAdapter {
 		}
 		tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
 				.get(position).getMethod());
-		Log.v("Method", mList.get(position).getMethod() + "");
 		return convertView;
 	}
 

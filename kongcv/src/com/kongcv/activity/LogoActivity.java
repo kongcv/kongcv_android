@@ -224,7 +224,7 @@ public class LogoActivity extends Activity {
 			JSONArray numberList = demoJson.getJSONArray("result");
 			for (int i = 0; i < numberList.length(); i++) {
 				//之前类型的图片
-				if(!pictureOrT()){
+				if(pictureOrT()){
 					  JSONObject object = numberList.getJSONObject(i).getJSONObject(
 								"picture2");
 						String url = object.getString("url");
