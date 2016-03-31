@@ -5,7 +5,6 @@ import java.io.File;
 
 import org.json.JSONObject;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -23,14 +22,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
+import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.LogInActivity;
 import com.kongcv.activity.MineCarmanagerActivity;
 import com.kongcv.activity.MineInformationActivity;
@@ -51,6 +49,7 @@ import com.kongcv.view.MinePopu;
  * 我的页面
  */
 public class MineFragment extends Fragment implements OnClickListener {
+
 	private RelativeLayout rl_wallet;// 钱包
 	private RelativeLayout rl_carmanager;// 车位管理
 	private RelativeLayout rl_ordermanager;// 订单管理
@@ -62,10 +61,8 @@ public class MineFragment extends Fragment implements OnClickListener {
 	private static final int PHOTO_REQUEST_CUT = 3;// 结果
 	private Bitmap bitmap, bit;
 	private File tempFile;
-
 	private View linearLayout;
 	private TextView uName;
-	private View view;
 	private CircleImageView mFace;
 
 	private ACacheUtils mCache;
@@ -73,6 +70,27 @@ public class MineFragment extends Fragment implements OnClickListener {
 	// 自定义的弹出框类
 	MinePopu menuWindow;
 	private String url;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		mCache = ACacheUtils.get(getActivity());
+		updateUserInfo();
+	}
+
+	private void updateUserInfo() {
+		ReadType readType = new ReadType();
+		readType.execute();
+	}
+
+	class ReadType extends PreReadTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			updateUser();
+			return null;
+		}
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,8 +106,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				false);
 		mCache = ACacheUtils.get(getActivity());
 		initView();
-
-		mHandler.sendEmptyMessage(0);
 		return linearLayout;
 	}
 
@@ -120,26 +136,12 @@ public class MineFragment extends Fragment implements OnClickListener {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case 0:
-				if (mCache.getAsString("USER") != null) {
-//					Bundle arguments = getArguments();
-//					String userUrl = arguments.getString("userUrl");
-//					String userName = arguments.getString("userName");
-//					if (userUrl != null && userName != null) {
-//						uName.setText(userName);
-//						updateUserImage(userUrl);
-//					}
-					updateUser();
-				}
-				break;
 			case 1:
-				String username = (String) msg.obj;
-				uName.setText(username);
+				uName.setText(user_name);
 				try {
 					if (bit != null) {
 						mFace.setImageBitmap(bit);
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -151,56 +153,26 @@ public class MineFragment extends Fragment implements OnClickListener {
 		}
 	};
 
-//		private void updateUserImage(String userUrl) {
-//			ReadType readType = new ReadType();
-//			readType.execute(userUrl);
-//		}
-//	};
-//
-//	class ReadType extends PreReadTask<String, Void, Void> {
-//		@Override
-//		protected Void doInBackground(String... params) {
-//			bit = GetImage.getHttpBitmap(params[0]);
-//
-//			Message msg = mHandler.obtainMessage();
-//			msg.what = 1;
-//			msg.obj = bit;
-//			mHandler.sendMessage(msg);
-//			return null;
-//		}
-//	}
 	private void updateUser() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					JSONObject object = new JSONObject();
-					object.put("mobilePhoneNumber", mCache.getAsString("USER"));
-					object.put("user_id", mCache.getAsString("user_id"));
-					String jsoStr = PostCLientUtils.doHttpsPost2(Information.KONGCV_GET_USERINFO, JsonStrUtils.JsonStr(object), mCache.getAsString("sessionToken"));
-					JSONObject obj = new JSONObject(jsoStr);
-					String username = obj.getJSONObject("result").getString("username");
-					if (obj.getJSONObject("result").has("image")) {
-						url = obj.getJSONObject("result").getJSONObject("image").getString("url");
-						bit = GetImage.getHttpBitmap(url);
-					} else {
-						url = "";
-						bit = null;
-					}
-					Message msg = mHandler.obtainMessage();
-					msg.what = 1;
-					msg.obj = username;
-					mHandler.sendMessage(msg);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		try {
+			JSONObject object = new JSONObject();
+			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
+			object.put("user_id", mCache.getAsString("user_id"));
+			String jsoStr = PostCLientUtils.doHttpsPost2(
+					Information.KONGCV_GET_USERINFO,
+					JsonStrUtils.JsonStr(object),
+					mCache.getAsString("sessionToken"));
+			JSONObject obj = new JSONObject(jsoStr);
+			user_name = obj.getJSONObject("result").getString("username");
+			if (obj.getJSONObject("result").has("image")) {
+				url = obj.getJSONObject("result").getJSONObject("image")
+						.getString("url");
+				bit = GetImage.getHttpBitmap(url);
+				mHandler.sendEmptyMessage(1);
 			}
-		}).start();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -212,7 +184,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				Uri uri = data.getData();
 				crop(uri);
 			}
-
 		} else if (requestCode == PHOTO_REQUEST_CAMERA) {
 			if (FileUtil.hasSdcard()) {
 				tempFile = new File(Environment.getExternalStorageDirectory(),
@@ -243,15 +214,15 @@ public class MineFragment extends Fragment implements OnClickListener {
 		case 10:
 			if (data != null) {
 				user_name = data.getStringExtra("nick");
-				if(user_name!=null){
-				uName.setText(user_name);
-				}else{
+				if (user_name != null) {
+					uName.setText(user_name);
+				} else {
 					uName.setText("登录");
 				}
 				Bitmap bit = data.getParcelableExtra("bit");
 				if (bit != null) {
 					mFace.setImageBitmap(bit);
-				}else{
+				} else {
 					mFace.setImageResource(R.drawable.defaulto);
 				}
 			}
@@ -333,8 +304,9 @@ public class MineFragment extends Fragment implements OnClickListener {
 			startActivity(intentOrder);
 			break;
 		case R.id.rl_shezhi:
+
 			/*
-			 * if(mCache.getAsString("USER")!=null &&
+			 *  * if(mCache.getAsString("USER")!=null &&
 			 * mCache.getAsString("sessionToken")!=null){ Intent intentSheZhi =
 			 * new Intent(getActivity(), MineSheZhiActivity.class);
 			 * startActivity(intentSheZhi); }else {
@@ -345,6 +317,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 			 * Intent intent=new Intent(getActivity(),LogInActivity.class);
 			 * startActivity(intent); } }, 2000); }
 			 */
+
 			Intent intentSheZhi = new Intent(getActivity(),
 					MineSheZhiActivity.class);
 			startActivity(intentSheZhi);
@@ -365,7 +338,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 					public void run() {
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
-						//	startActivity(intent);
+						// startActivity(intent);
 						startActivityForResult(intent, 0);
 					}
 				}, 2000);
@@ -374,7 +347,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 			break;
 
 		case R.id.tv_logn:
-			// setDialog();
 			if (mCache.getAsString("USER") != null
 					&& mCache.getAsString("sessionToken") != null) {
 				setUserNickName();
@@ -385,7 +357,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 					public void run() {
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
-						//	startActivity(intent);
 						startActivityForResult(intent, 0);
 					}
 				}, 2000);
@@ -397,26 +368,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 	}
 
 	/**
-	 * 修改用户名称
-	 */
-	private void setDialog() {
-		final Dialog mDialog = new Dialog(getActivity(), R.style.MyDialog);
-		mDialog.setContentView(R.layout.mydialog_user);
-		TextView oldUser = (TextView) mDialog.findViewById(R.id.old_name);
-		oldUser.setText("13717950391");
-		EditText newUser = (EditText) mDialog.findViewById(R.id.new_name);
-		Button selectCancel = (Button) mDialog.findViewById(R.id.select_cancel);
-		selectCancel.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mDialog.dismiss();
-			}
-		});
-		mDialog.show();
-	}
-
-	/**
-	 * 修改用户名称 仿ios 修改2
+	 * 修改用户名称 仿ios 修改
 	 */
 	private void setUserNickName() {
 		Intent intent = new Intent(getActivity(), NickNameActivity.class);

@@ -51,7 +51,6 @@ public class GetImage {
 		matrix.postScale(scaleWidth, scaleHeight);
 		Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
 				height, matrix, true);
-
 		return new BitmapDrawable(resizedBitmap);
 
 	}

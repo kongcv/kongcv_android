@@ -253,7 +253,6 @@ public class MineCreditModifyActivity extends Activity implements
 					bank_card.put("name", hostName);
 					bank_card.put("bank_icon_url", Data.getData("banUrl"));
 					// 银行卡类型
-
 					Data.putData("bank", NewType);
 					
 					obj.put("bank_card", bank_card);

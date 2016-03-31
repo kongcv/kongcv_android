@@ -2,9 +2,7 @@ package com.kongcv.fragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -28,13 +26,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.kongcv.R;
 import com.kongcv.ImageRun.Advertisements;
@@ -49,9 +43,6 @@ import com.kongcv.global.Information;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.BitmapCache;
 import com.kongcv.utils.Data;
-import com.kongcv.utils.JsonStrUtils;
-import com.kongcv.utils.NormalPostRequest;
-import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.view.KCVGridView;
 /**
  * 空车位首页
@@ -98,6 +89,8 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private void getType() {
 		// TODO Auto-generated method stub
 		if(data!=null){
+			Log.d("data==null???",data+"::");
+			Log.d("data==null???",data+"::");
 			ReadType reading = new ReadType();
 			reading.execute();
 		}
@@ -311,7 +304,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	 * 获取道路和社区照片
 	 */
 	public void btnImage() {
-		data = (List<ModeAndObjId>) Data.getData("objectId");
+		data = (List<ModeAndObjId>) Data.getData("objectIddoReadBtn");
 		List<String> urlList=new ArrayList<String>();
 		/*if(data==null){
 			loadJson();

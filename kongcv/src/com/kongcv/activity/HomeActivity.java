@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONObject;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -16,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -37,26 +34,23 @@ import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.model.LatLng;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.fragment.CarwFragment;
 import com.kongcv.fragment.MineFragment;
 import com.kongcv.fragment.PublishFragment;
 import com.kongcv.global.FragOperManager;
-import com.kongcv.global.Information;
 import com.kongcv.global.MineCarmanagerBean;
 import com.kongcv.jPush.HttpHelper;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Config;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.ExampleUtil;
-import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.Logger;
-import com.kongcv.utils.PostCLientUtils;
 
 /**
  * 空车位页面对所有fragment进行管理
  */
-public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener,AMapLocationListener {
+public class HomeActivity extends FragmentActivity implements
+		RadioGroup.OnCheckedChangeListener, AMapLocationListener {
 
 	public static boolean isForeground = false;// 极光推送的标记
 	/**
@@ -65,22 +59,25 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	public static int CWGL = 1;
 	// 定位
 	private LocationManagerProxy mLocationManger;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			/*setTranslucentStatus(true);
-			SystemBarTintManager tintManager = new SystemBarTintManager(this);
-			tintManager.setStatusBarTintEnabled(true);
-			tintManager.setStatusBarTintResource(R.color.top_bg_color);// 通知栏所需颜色
-*/			
-		}
+		/*
+		 * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+		 * setTranslucentStatus(true); SystemBarTintManager tintManager = new
+		 * SystemBarTintManager(this);
+		 * tintManager.setStatusBarTintEnabled(true);
+		 * tintManager.setStatusBarTintResource(R.color.top_bg_color);// 通知栏所需颜色
+		 * }
+		 */
 		setContentView(R.layout.activity_home);
 		initLocation();
 		registerMessageReceiver();
 		newThreadToReset();
 		init();
 	}
+
 	private void initLocation() {
 		mLocationManger = LocationManagerProxy
 				.getInstance(getApplicationContext());
@@ -91,46 +88,13 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			public void run() {
 				stopLocation();
 			}
-		}, 15000);//15秒 未定位成功
+		}, 15000);// 15秒 未定位成功
 	}
-	private Handler mHandler=new Handler(){};
-	
-//	private void updateUserInfo(){
-//		ReadType readType = new ReadType();
-//		readType.execute();
-//	}
-//	class ReadType extends PreReadTask<Void, Void, Void> {
-//		@Override
-//		protected Void doInBackground(Void... params) {
-//			updateUser();
-//			return null;
-//		}
-//	}
-//	private void updateUser() {
-//		try {
-//			JSONObject object = new JSONObject();
-//			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
-//			object.put("user_id", mCache.getAsString("user_id"));
-//			String jsoStr = PostCLientUtils.doHttpsPost2(
-//					Information.KONGCV_GET_USERINFO,
-//					JsonStrUtils.JsonStr(object),
-//					mCache.getAsString("sessionToken"));
-//			Log.v("更新用户数据", jsoStr);// 用户的注册id 用户名等信息
-//			JSONObject obj = new JSONObject(jsoStr);
-//			userName = obj.getJSONObject("result").getString("username");
-//			Log.v("用户名称", jsoStr);// 用户的注册id 用户名等信息
-//			if (obj.getJSONObject("result").has("image")) {
-//				userUrl = obj.getJSONObject("result").getJSONObject("image")
-//						.getString("url");
-//			}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
-	
+
+	private Handler mHandler = new Handler() {
+	};
+
+
 	@TargetApi(19)
 	private void setTranslucentStatus(boolean on) {
 		Window win = getWindow();
@@ -143,7 +107,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		}
 		win.setAttributes(winParams);
 	}
-	
+
 	private void getDisplay() {
 		// 方法1 Android获得屏幕的宽和高
 		WindowManager windowManager = getWindowManager();
@@ -174,6 +138,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 
 	private int i = 0;
 	private MineCarmanagerBean bean;
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -181,37 +146,33 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			if (data != null) {
 				HomeActivity.CWGL = 2;
 				i = 1;
-			    bean = (MineCarmanagerBean) data
-								.getBundleExtra("bundle").get("MineCarmanagerBean");
-			    mPublishFragment=new PublishFragment();
-			    Bundle args=new Bundle();
-			    args.putSerializable("MineCarmanagerBean",bean);
-			    mPublishFragment.setArguments(args);
+				bean = (MineCarmanagerBean) data.getBundleExtra("bundle").get(
+						"MineCarmanagerBean");
+				mPublishFragment = new PublishFragment();
+				Bundle args = new Bundle();
+				args.putSerializable("MineCarmanagerBean", bean);
+				mPublishFragment.setArguments(args);
 				rb1.setChecked(true);
 			}
 		}
 	}
 
 	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
-	private String userUrl=null,userName=null;
 	private void init() {
 		JPushInterface.init(getApplicationContext());
 		mCache = ACacheUtils.get(this);
 		MyApplication.getInstance().addActivity(this);
-		
+
 		mCarwFragment = new CarwFragment();
 		mPublishFragment = new PublishFragment();
-//		mMineFragment = new MineFragment();
-		
+		mMineFragment = new MineFragment();
+
 		manager = new FragOperManager(this, R.id.content);
 		rdoBtn = (RadioGroup) findViewById(R.id.main_rg);
-		rb1=(RadioButton)findViewById(R.id.rb1);
-		rb0=(RadioButton)findViewById(R.id.rb0);
+		rb1 = (RadioButton) findViewById(R.id.rb1);
+		rb0 = (RadioButton) findViewById(R.id.rb0);
 		rdoBtn.setOnCheckedChangeListener(this);
 		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
-		
-		//更改用户信息
-	//	updateUserInfo();
 		getDisplay();
 	}
 
@@ -239,14 +200,15 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			Log.e("手机：getRegistrationID",
 					JPushInterface.getRegistrationID(getApplicationContext()));
 		} catch (Exception e) {
-			Logger.e("HomeActivity jpush resetAliasAndTags", "Call pushtalk api to get user info error", e);
+			Logger.e("HomeActivity jpush resetAliasAndTags",
+					"Call pushtalk api to get user info error", e);
 			return;
 		}
 	}
 
 	@Override
 	protected void onResume() {
-		initLocation();//初始化定位
+		initLocation();// 初始化定位
 		isForeground = true;
 		super.onResume();
 		JPushInterface.onResume(this);
@@ -272,6 +234,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	public static final String KEY_MESSAGE = "message";
 	public static final String KEY_EXTRAS = "extras";
 	private ACacheUtils mCache;
+
 	/**
 	 * 注册广播服务
 	 */
@@ -310,9 +273,11 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 		Date date = new Date(time);
 		return df.format(date);
 	}
+
 	@Override
 	public void onBackPressed() {
 		if (i == 0) {
+			// new SpotsDialog(this).show();
 			Builder builder = new Builder(HomeActivity.this,
 					AlertDialog.THEME_HOLO_DARK);
 			builder.setMessage("确定要退出当前应用吗？")
@@ -338,6 +303,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			finish();
 		}
 	}
+
 	/**
 	 * 切换框架
 	 */
@@ -346,7 +312,8 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 	private CarwFragment mCarwFragment;
 	private PublishFragment mPublishFragment;
 	private MineFragment mMineFragment;
-	private RadioButton rb1,rb0;
+	private RadioButton rb1, rb0;
+
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		switch (checkedId) {
@@ -361,11 +328,6 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			manager.chAddFrag(mPublishFragment, "mPublishFragment", false);
 			break;
 		case R.id.rb2:
-			mMineFragment = new MineFragment();
-//			Bundle args=new Bundle();
-//			args.putString("userUrl", userUrl);
-//			args.putString("userName", userName);
-//			mMineFragment.setArguments(args);
 			manager.chHideFrag(mCarwFragment);
 			manager.chHideFrag(mPublishFragment);
 			manager.chAddFrag(mMineFragment, "mMineFragment", false);
@@ -374,25 +336,30 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			break;
 		}
 	}
+
 	/**
 	 * 自动定位
 	 */
 	@Override
 	public void onLocationChanged(Location location) {
-		
+
 	}
+
 	@Override
 	public void onProviderDisabled(String provider) {
-		
+
 	}
+
 	@Override
 	public void onProviderEnabled(String provider) {
-		
+
 	}
+
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		
+
 	}
+
 	@Override
 	public void onLocationChanged(AMapLocation amapLocation) {
 		if (amapLocation != null) {
@@ -405,14 +372,15 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			}
 			String address = amapLocation.getCity()
 					+ amapLocation.getDistrict();
-			String wk=amapLocation.getCity();
-			wk=wk.substring(0,wk.length()-1);
-			Data.putData("address", address);//城市
-			Data.putData("wk", wk);//地址
+			String wk = amapLocation.getCity();
+			wk = wk.substring(0, wk.length() - 1);
+			Data.putData("address", address);// 城市
+			Data.putData("wk", wk);// 地址
 			LatLng latLng = new LatLng(Latitude, Longitude);
 			Data.putData("LatLng", latLng);
 		}
 	}
+
 	/**
 	 * 销毁定位
 	 */

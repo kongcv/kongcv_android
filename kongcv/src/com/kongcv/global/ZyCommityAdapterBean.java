@@ -15,6 +15,36 @@ public class ZyCommityAdapterBean {
 	private int trade_state;//订单状态
 	private Bitmap bitmap;
 	
+	private String parkId; //道边
+	private String field;
+	private String address;
+	private String park_curb;
+	
+	
+	public String getPark_curb() {
+		return park_curb;
+	}
+	public void setPark_curb(String park_curb) {
+		this.park_curb = park_curb;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getField() {
+		return field;
+	}
+	public void setField(String field) {
+		this.field = field;
+	}
+	public String getParkId() {
+		return parkId;
+	}
+	public void setParkId(String parkId) {
+		this.parkId = parkId;
+	}
 	public Bitmap getBitmap() {
 		return bitmap;
 	}

@@ -23,7 +23,8 @@
                 android:layout_marginLeft="13dp"
                 android:gravity="center_vertical"
                 android:paddingTop="6dp"
-                android:src="@drawable/bg_dingwei" />
+                android:src="@drawable/bg_dingwei"
+                 />
 
             <TextView
                 android:id="@+id/tv_username"

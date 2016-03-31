@@ -28,9 +28,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
+import com.kongcv.dialog.SpotsDialog;
 import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;
+import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.NormalPostRequest;
 import com.kongcv.utils.ToastUtil;
 
@@ -40,10 +42,13 @@ import com.kongcv.utils.ToastUtil;
 public class SplashActivity extends Activity {
 
 	private RelativeLayout rlRoot;
+	private ACacheUtils mCache;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		
+		mCache=ACacheUtils.get(getApplicationContext());
 		MyApplication.getInstance().addActivity(this);
 		rlRoot = (RelativeLayout) findViewById(R.id.rl_root);
 		// 渐变动画
@@ -122,9 +127,11 @@ public class SplashActivity extends Activity {
 					.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
+							/*Log.d("user!!!!",mCache.getAsString("USER"));
+							Log.d("user!!!!",mCache.getAsString("user_id"));*/
 							ToastUtil.show(getBaseContext(), "取消更新！");
 							dialog.dismiss();
-							mHandler.sendEmptyMessage(0);
+							mHandler.sendEmptyMessageDelayed(0,1500);
 						}
 					});
 					 builder.setCancelable(false);
@@ -136,7 +143,7 @@ public class SplashActivity extends Activity {
 					startService(intent);
 				}
 			}else if(fromJson.getResult().get(0).getVersion_Num()==currentVersionCode){
-				mHandler.sendEmptyMessage(0);
+				mHandler.sendEmptyMessageDelayed(0, 15000);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -147,6 +154,7 @@ public class SplashActivity extends Activity {
 	 */
 	protected void enterHome() {
 		Intent intent = new Intent(this, HomeActivity.class);
+	//	Intent intent = new Intent(this, AMapAnimalActivity.class);
 		startActivity(intent);
 		finish();
 	}

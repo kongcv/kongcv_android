@@ -11,85 +11,73 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.kongcv.R;
-import com.kongcv.global.OrderCommityBean.ResultEntity;
-import com.kongcv.global.OrderCommityBean.ResultEntity.HireEndEntity;
-import com.kongcv.global.OrderCommityBean.ResultEntity.HireStartEntity;
+import com.kongcv.global.ZyCommityAdapterBean;
+import com.kongcv.utils.BaseViewHolder;
 
 public class ZyCommityAdapter extends BaseAdapter {
-	private Context context;
-	private List<HireStartEntity> mList;
-	private List<HireEndEntity> list;
-	private List<ResultEntity> resultBean;
-
-	public ZyCommityAdapter(Context context, List<HireStartEntity> mList,
-			List<HireEndEntity> list, List<ResultEntity> resultBean) {
-		this.context = context;
-		this.mList = mList;
-		this.list = list;
-		this.resultBean = resultBean;
+	
+	private Context mContext;
+	private List<ZyCommityAdapterBean> mList;
+	public ZyCommityAdapter(Context context,List<ZyCommityAdapterBean> list) {
+		this.mContext=context;
+		this.mList=list;
 	}
-
 	@Override
 	public int getCount() {
-		return resultBean.size();
+		return mList.size();
 
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return position;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return 0;
+		return position;
 	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
-		if (convertView == null) {
-			convertView = View.inflate(context, R.layout.order_item, null);
-			holder = new ViewHolder();
-			holder.tv_username = (TextView) convertView
-					.findViewById(R.id.tv_username);
-			holder.tv_start = (TextView) convertView
-					.findViewById(R.id.tv_start);
-			holder.tv_end = (TextView) convertView.findViewById(R.id.tv_end);
-			holder.tv_order = (TextView) convertView
-					.findViewById(R.id.tv_order);
-			holder.tv_price = (TextView) convertView
-					.findViewById(R.id.tv_price);
-			holder.tv_state = (TextView) convertView
-					.findViewById(R.id.tv_state);
-			holder.tv_method = (TextView) convertView
-					.findViewById(R.id.tv_method);
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		holder.tv_username.setText(resultBean.get(position).getPark_community());
-		holder.tv_start.setText(mList.get(position).getIso());
-		holder.tv_end.setText(list.get(position).getIso());
-		holder.tv_order.setText(resultBean.get(position).getObjectId());
-		holder.tv_price.setText(resultBean.get(position).getPrice() + "");
-		int state = resultBean.get(position).getTrade_state();
-		// 1代表已完成,0代表未完成
-		if (state == 1) {
-			holder.tv_state.setText("已完成");
-			holder.tv_state.setTextColor(Color.parseColor("#76d25a"));
-		} else {
-			holder.tv_state.setText("未完成");
-			holder.tv_state.setTextColor(Color.parseColor("#FF692A"));
-		}
-		holder.tv_method.setText(resultBean.get(position).getMethod());
-		Log.v("Method", resultBean.get(position).getMethod() + "");
-		return convertView;
-	}
-
 	class ViewHolder {
 		TextView tv_username, tv_start, tv_end, tv_order, tv_price, tv_state,
 				tv_method;
 	}
+	private int state = 1;
+	TextView tv_username, tv_start, tv_end, tv_order, tv_price, tv_state,
+	tv_method;
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			convertView = View.inflate(mContext, R.layout.order_item, null);
+		}
+		tv_username = BaseViewHolder.get(convertView, R.id.tv_username);
+		tv_start = BaseViewHolder.get(convertView, R.id.tv_start);
+		tv_end = BaseViewHolder.get(convertView, R.id.tv_end);
+		tv_order = BaseViewHolder.get(convertView, R.id.tv_order);
+		tv_price = BaseViewHolder.get(convertView, R.id.tv_price);
+		tv_state = BaseViewHolder.get(convertView, R.id.tv_state);
+		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
+		tv_username.setText(mList.get(position).getUsername() == null ? ""
+				: mList.get(position).getUsername());
+		tv_start.setText(mList.get(position).getHire_start() == null ? "0000-00-00 00:00:00"
+				: mList.get(position).getHire_start());
+		tv_end.setText(mList.get(position).getHire_end() == null ? "0000-00-00 00:00:00" : mList
+				.get(position).getHire_end());
+		tv_order.setText(mList.get(position).getObjectId() == null ? "" : mList
+				.get(position).getObjectId());
+		tv_price.setText(mList.get(position).getPrice() + "");
+		state = mList.get(position).getTrade_state();
+		if (state == 1) {
+			tv_state.setText("已完成");
+			tv_state.setTextColor(Color.parseColor("#76d25a"));
+		} else {
+			tv_state.setText("未完成");
+			tv_state.setTextColor(Color.parseColor("#FF692A"));
+		}
+		tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
+				.get(position).getMethod());
+		return convertView;
+	}
+
+	
 
 }

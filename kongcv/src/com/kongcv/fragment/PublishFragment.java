@@ -229,7 +229,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 					mydialog.add(typeBean);
 				}
 				typeBeansList=mydialog;
-				
 				LocationInfo info=new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -354,27 +353,16 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	}
 
 	// ---------------------------------必要的重写方法--------------------------------------------------
-	@Override
-	public void onResume() {
-		super.onResume();
-//		HomeActivity.curFragmentTag = getString(R.string.mpublic_fg);
-	}
-
 	private int indexOf=0;
-	private int iiii=0;
 	private void typeCar() {
 		if(mydialog==null){
 			mydialog=new  ArrayList<TypeBean>();
 		}
-		
 		dialog2 = new TypeDialog(homeActivity, R.style.CustomDialog,
 				new LeaveMyDialogListener() {
 					@Override
 					public void refreshUI(ArrayList<TypeBean> item) {
 						// TODO Auto-generated method stub
-						for(int i=0;i<item.size();i++){
-							System.out.println("item>>>>>>>>>>>>>>>>>>>>>>>>>>"+item.get(i).getDate());
-						}
 						if (null == items) {
 							if(visibleInit==0){
   								items = item;

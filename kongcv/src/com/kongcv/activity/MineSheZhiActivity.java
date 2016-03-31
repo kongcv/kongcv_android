@@ -102,6 +102,8 @@ public class MineSheZhiActivity extends Activity implements OnClickListener {
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						mCache.remove("");
+						
 						MyApplication.getInstance().exit();
 					}
 				})

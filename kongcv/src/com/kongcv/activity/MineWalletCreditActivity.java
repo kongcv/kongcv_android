@@ -112,7 +112,7 @@ public class MineWalletCreditActivity extends Activity implements
 			if (Data.getData("bank") != null) {
 				tv_bank.setText(Data.getData("bank").toString());
 				mCache.put("bank", Data.getData("bank").toString());
-
+			
 			}
 			if (Data.getData("hostCode") != null) {
 				String s = Data.getData("hostCode").toString();

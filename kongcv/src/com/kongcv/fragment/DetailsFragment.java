@@ -58,8 +58,8 @@ public class DetailsFragment extends Fragment implements
 	private RadioGroup mRadioGroup;
 	private RadioButton mRadioButton1, mRadioButton2;
 	private ImageView mBack, mDaoh, mImageView;
-	private String park_id;
-	private String mode;
+	private String mode,park_id;
+	double price;
 	private float mCurrentCheckedRadioLeft;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,14 +94,17 @@ public class DetailsFragment extends Fragment implements
 		mImageView = (ImageView) view.findViewById(R.id.img1);
 	}
 
+	private String field;
 	private void addFragment() {
-		Bundle extras = getArguments();
-			if(extras.containsKey("mode"))
-			mode = extras.getString("mode");
-			if(extras.containsKey("park_id"))
-			park_id = extras.getString("park_id");
-			double price = extras.getDouble("price");
-			String field = extras.getString("field");
+			Bundle extras = getArguments();
+			if(extras!=null){
+				mode = extras.getString("mode");
+				park_id = extras.getString("park_id");
+				Log.d("addFragment>>>", mode+"<<");
+				Log.d("addFragment>>>", mode+"<<");
+				price = extras.getDouble("price");
+				field = extras.getString("field");
+			}
 			mFragmentList = new ArrayList<Fragment>();
 			String stringExtra = extras.getString("MineSendFragment");
 			String string = extras.getString("stringExtra");

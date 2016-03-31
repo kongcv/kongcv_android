@@ -91,11 +91,6 @@ public class SearchActivity extends FragmentActivity implements
 		MyApplication.getInstance().addActivity(this);
 		init();
 	}
-
-	/*
-	 * private String getSort(boolean flag){ if(flag){ return "price_asc"; }else
-	 * { return "price_desc"; } }
-	 */
 	/**
 	 * 获取field
 	 */
@@ -159,7 +154,7 @@ public class SearchActivity extends FragmentActivity implements
 		geocoderSearch = new GeocodeSearch(SearchActivity.this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
 	}
-
+	
 	/**
 	 * 响应地理编码
 	 */
@@ -167,7 +162,6 @@ public class SearchActivity extends FragmentActivity implements
 		GeocodeQuery query = new GeocodeQuery(name, city);// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode，
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
-
 	/**
 	 * 下一页
 	 */
@@ -505,12 +499,8 @@ public class SearchActivity extends FragmentActivity implements
 				adapter.setDataSource(mList);
 				lv.setAdapter(adapter);
 			}
-		} else if (keyCode == KeyEvent.KEYCODE_BACK) {
-			/*
-			 * Intent intent=new Intent(this,HomeActivity.class);
-			 * intent.putExtra("back", 0); startActivity(intent); finish();
-			 */
 		}
+
 		return false;
 	}
 

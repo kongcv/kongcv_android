@@ -117,4 +117,11 @@
     <string name="send">我发送的</string>
     <string name="carmanager">车位管理</string>
 
+    
+    <!-- dialog -->
+    <string name="title">空车位…</string>
+    <!-- <string name="show_default">Show default dialog</string>
+    <string name="show_styled">Show styled dialog</string>
+    <string name="show_message">Show custom message dialog</string>
+    <string name="show_message_style">Show custom message AND style dialog</string> -->
 </resources>
