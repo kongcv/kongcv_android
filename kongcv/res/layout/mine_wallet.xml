@@ -66,7 +66,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/tv_balance"
-            android:text="223.00元"
             android:textColor="@color/txt_money"
             android:textSize="18sp" />
     </RelativeLayout>
@@ -142,7 +141,6 @@
             android:layout_toRightOf="@id/iv_tixian"
             android:text="@string/mine_cash"
             android:textSize="18sp" />
-
         <ImageView style="@style/iv" />
     </RelativeLayout>
 

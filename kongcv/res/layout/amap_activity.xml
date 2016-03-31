@@ -27,7 +27,7 @@
         android:id="@+id/iv_map_flexible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/item_show_sh"
+        android:src="@drawable/item_show"
         android:layout_centerInParent="true"
         
       

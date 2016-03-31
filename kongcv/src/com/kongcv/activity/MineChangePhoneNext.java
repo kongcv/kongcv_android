@@ -144,11 +144,9 @@ public class MineChangePhoneNext extends Activity implements OnClickListener {
 					try {
 						JSONObject obj = new JSONObject();
 						obj.put("smsCode", newCode);
-						Log.i("hhjjlslsjdjlssssss", JsonStrUtils.JsonStr(obj));
 						String doHttpsPost = PostCLientUtils.doHttpsPost2(
 								Information.KONGCV_VERIFY_MOBILE,
 								JsonStrUtils.JsonStr(obj),mCache.getAsString("sessionToken"));
-						Log.v("doHttpsPostPhone", doHttpsPost);
 						JSONObject objs = new JSONObject(doHttpsPost);
 						Message  msg= Message.obtain();
 						msg.obj=objs;

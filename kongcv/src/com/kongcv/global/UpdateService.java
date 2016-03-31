@@ -70,7 +70,7 @@ public class UpdateService extends Service {
 	 */
 	private void setUpNotifiction() {
 		manager = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
-		int icon = R.drawable.logo;
+		int icon = R.drawable.logo_update;
 		CharSequence tickerText = "开始下载";
 		long when = System.currentTimeMillis();
 		notification = new Notification(icon, tickerText, when);

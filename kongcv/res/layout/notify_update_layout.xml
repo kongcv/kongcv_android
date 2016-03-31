@@ -23,7 +23,7 @@
                 android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/logo" />
+                android:background="@drawable/logo_update" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
     <TextView
         android:id="@+id/cancle"
-        android:layout_width="45dp"
+        android:layout_width="40dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dp"

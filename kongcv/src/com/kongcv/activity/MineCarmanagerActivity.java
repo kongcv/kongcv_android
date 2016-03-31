@@ -118,13 +118,9 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 	}
 	private ArrayList<MineCarmanagerBean> updateInfo;
 	private void getData(Integer integer) {
-		// TODO Auto-generated method stub
 		JSONObject jso = new JSONObject();
-		// jso.put("user_id", mCache.getAsString("user_id"));
-		// jso.put("user_id", "5621f512ddb2dd000ac16189");
 		try {
 			jso.put("user_id", mCache.getAsString("user_id"));
-		//	jso.put("user_id", "567a43d134f81a1d87870d62");
 			jso.put("skip", skip*10);
 			jso.put("limit", 10);//写死的10条每次请求
 			jso.put("mode", "community");
@@ -150,7 +146,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 			}
 			handler.sendMessage(msg);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -176,7 +171,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 		handler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				skip=0;
 				getInfoData();
 				onLoad();
@@ -192,7 +186,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				skip++;
 				getInfoData();
 				onLoad();
@@ -223,7 +216,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 	}
 	private String city=null;
 	private ArrayList<MineCarmanagerBean> updateInfo(String doHttpsPost) {
-		// TODO Auto-generated method stub
 		JSONObject Resultobj;
 		try {
 			Resultobj = new JSONObject(doHttpsPost);

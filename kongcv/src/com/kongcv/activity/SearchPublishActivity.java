@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
 
 import com.amap.api.services.core.AMapException;
@@ -62,7 +63,8 @@ public class SearchPublishActivity extends Activity implements
 	private String keyWord = "";// 要输入的poi搜索关键字
 	ArrayList<Map<String, Object>> mList;
 	private static GeocodeSearch geocoderSearch;// 经纬度搜索
-	private ImageView ivBack, ivDelete, ivSearch;
+	private ImageView ivBack, ivDelete;
+	private TextView ivSearch;
 	private PoiSearch.Query query;// Poi查询条件类
 	private PoiResult poiResult; // poi返回的结果
 	// key和id
@@ -126,7 +128,7 @@ public class SearchPublishActivity extends Activity implements
 
 		txtFind = (EditText) findViewById(R.id.txtfind);
 		ivDelete = (ImageView) findViewById(R.id.iv_delete);
-		ivSearch = (ImageView) findViewById(R.id.iv_search);
+		ivSearch =  (TextView) findViewById(R.id.iv_search);
 		ivBack = (ImageView) findViewById(R.id.iv_back);
 
 		txtFind.addTextChangedListener(this);

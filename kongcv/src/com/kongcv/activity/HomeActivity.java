@@ -93,8 +93,7 @@ public class HomeActivity extends FragmentActivity implements RadioGroup.OnCheck
 			}
 		}, 15000);//15秒 未定位成功
 	}
-	private Handler mHandler=new Handler(){
-	};
+	private Handler mHandler=new Handler(){};
 	
 //	private void updateUserInfo(){
 //		ReadType readType = new ReadType();
