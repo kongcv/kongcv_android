@@ -89,6 +89,8 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private void getType() {
 		// TODO Auto-generated method stub
 		if(data!=null){
+			Log.d("data==null???",data+"::");
+			Log.d("data==null???",data+"::");
 			ReadType reading = new ReadType();
 			reading.execute();
 		}
@@ -302,7 +304,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	 * 获取道路和社区照片
 	 */
 	public void btnImage() {
-		data = (List<ModeAndObjId>) Data.getData("objectId");
+		data = (List<ModeAndObjId>) Data.getData("objectIddoReadBtn");
 		List<String> urlList=new ArrayList<String>();
 		/*if(data==null){
 			loadJson();

@@ -24,7 +24,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -71,7 +73,6 @@ public class LogoActivity extends Activity {
 		MyApplication.getInstance().addActivity(this);
 		mCache = ACacheUtils.get(getApplicationContext());
 		if(HttpUtils.isNetworkConnected(getApplicationContext())) {
-		//	initLocation();//初始化定位
 			getData();// 预加载
 			preferences = getSharedPreferences("count", MODE_WORLD_READABLE);
 			int count = preferences.getInt("count", 0);
@@ -196,6 +197,11 @@ public class LogoActivity extends Activity {
 	 * 加载获取id和url
 	 */
 	private void getData() {
+		/*ReadImgTask task = new ReadImgTask();
+		task.execute();
+		ReadBtnTask task2 = new ReadBtnTask();
+		task2.execute();*/
+		
 		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
 			ReadImgTask task = new ReadImgTask();
 			task.execute();
@@ -207,9 +213,10 @@ public class LogoActivity extends Activity {
 			Data.putData("url", doReadImg);//传递跑马灯图片url
 			List<ModeAndObjId> doReadBtn = doReadBtn(mCache
 					.getAsString("ReadBtnTask"));
-			Data.putData("objectId", doReadBtn);
+			Data.putData("objectIddoReadBtn", doReadBtn);
 		}
 	}
+	
 	private List<String> doReadImg(String str) {
 		try {
 			List<String> list = new ArrayList<String>();
@@ -217,16 +224,35 @@ public class LogoActivity extends Activity {
 			JSONArray numberList = demoJson.getJSONArray("result");
 			for (int i = 0; i < numberList.length(); i++) {
 				//之前类型的图片
-			    JSONObject object = numberList.getJSONObject(i).getJSONObject(
-						"picture");
-				String url = object.getString("url");
-				list.add(url);
+				if(!pictureOrT()){
+					  JSONObject object = numberList.getJSONObject(i).getJSONObject(
+								"picture2");
+						String url = object.getString("url");
+						list.add(url);
+				}else{
+					JSONObject object = numberList.getJSONObject(i).getJSONObject(
+								"picture");
+					String url = object.getString("url");
+					list.add(url);
+				}
 			}
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private boolean pictureOrT(){
+		boolean falg=false;
+		WindowManager windowManager = getWindowManager();
+		Display display = windowManager.getDefaultDisplay();
+		int screenWidth = screenWidth = display.getWidth();
+		int screenHeight = screenHeight = display.getHeight();
+		if(screenWidth==1080 && screenHeight==1920){
+			falg=true;
+		}
+		return falg;
 	}
 	/**
 	 * 预加道路和社区
@@ -244,11 +270,10 @@ public class LogoActivity extends Activity {
 				// 缓存
 				mCache.put("ReadBtnTask", jsonStr,ACacheUtils.TIME_DAY);
 				list = doReadBtn(jsonStr);
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Data.putData("objectId", list);
+			Data.putData("objectIddoReadBtn", list);
 			return null;
 		}
 	}

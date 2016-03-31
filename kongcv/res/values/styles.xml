@@ -144,11 +144,10 @@
         <item name="android:windowContentOverlay">@null </item>
  <!-- 内容覆盖 -->
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-窗口样式Dialog          <item name="android:backgroundDimEnabled">true</item>
+	<!-- 窗口样式Dialog   -->        <item name="android:backgroundDimEnabled">true</item>
  <!-- 模糊 -->
        
 　	</style>
-
     <!-- tag切换 -->
     <style name="main_tab_style">
         <item name="android:layout_height">match_parent</item>
@@ -161,5 +160,12 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/main_tab_color_bg</item>
     </style>
-
+    <style name="Custom" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="DialogTitleText">@string/title</item>
+        <item name="DialogSpotCount">4</item>
+    </style>
+    
+    
 </resources>
+ 

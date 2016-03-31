@@ -92,6 +92,8 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 			Drawable d = GetImage.resizeImage(mList.get(position).getBitmap(),
 					160, 160);
 			iv_dingwei.setImageDrawable(d);
+			
+			
 		}
 		return convertView;
 	}

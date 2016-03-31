@@ -301,10 +301,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				user = result.getUser();
 				gson = new Gson();
 				userBean = gson.fromJson(user, UserBean.class);
-				
-				Log.d("user >>>实体类 结构", user+":::");
-				Log.d("user >>>实体类 结构", user+":::");
-				Log.d("user >>>实体类 结构", user+":::");
 				/**
 				 * 租用时间  租用时间这个 需要处理一部分
 				 */
@@ -313,10 +309,11 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				payOneBean.setHire_end(GTMDateUtil.GTMToLocal(result
 						.getHire_end().getIso(), true));
 				payOneBean.setUser_id(mCache.getAsString("user_id"));
-				payOneBean.setLicense_plate(userBean.getLicense_plate());//车牌号 
+				if(user.contains("license_plate")){
+					payOneBean.setLicense_plate(userBean.getLicense_plate());//车牌号 
+				}
 				payOneBean.setHirer_id(userBean.getObjectId());
 				payOneBean.setPark_id(park_id);
-				
 				payOneBean.setMode(mode);// 社区道路这个值需要传递
 				String days = DateUtils.getDays(payOneBean.getHire_start(),
 						payOneBean.getHire_end(), true);

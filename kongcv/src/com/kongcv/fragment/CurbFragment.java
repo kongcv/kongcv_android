@@ -3,9 +3,13 @@ package com.kongcv.fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import org.json.JSONArray;
@@ -61,55 +65,61 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			switch (msg.what) {
 			case 0:
 				beansList = (List<ZyCommityAdapterBean>) msg.obj;
-				zydapter = new ZyCurbAdapter(getActivity(), beansList);
-				lv.setAdapter(zydapter);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						Log.d("mHandler Curb  i==0 position"+position, "<>");
-						Log.d("mHandler Curb  i==0 position"+position, "<>");
-						Log.d("mHandler Curb  i==0 position"+position, "<>");
-						if (beansList != null && beansList.size() > position) {
-							trade_state = beansList.get(position)
-									.getTrade_state();
-							if (0 == trade_state) {
-								Intent i = new Intent(getActivity(),
-										DetailsActivity.class);
-								// 传递数据
-								i.putExtra("mode", "cub");
-								i.putExtra("trade_state", trade_state);
-								startActivity(i);
+				if (beansList != null && beansList.size() > 0) {
+					zydapter = new ZyCurbAdapter(getActivity(), beansList);
+					lv.setAdapter(zydapter);
+					lv.setOnItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							Log.d("mHandler Curb  i==0 position" + position,
+									"<>");
+							Log.d("mHandler Curb  i==0 position" + position,
+									"<>");
+							Log.d("mHandler Curb  i==0 position" + position,
+									"<>");
+							if (beansList != null
+									&& beansList.size() >= position) {
+								trade_state = beansList.get(position)
+										.getTrade_state();
+								if (0 == trade_state) {
+									Intent i = new Intent(getActivity(),
+											DetailsActivity.class);
+									// 传递数据
+									i.putExtra("mode", "cub");
+									i.putExtra("trade_state", trade_state);
+									startActivity(i);
+								}
 							}
 						}
-					}
-				});
+					});
+				}
 				break;
 			case 1:
 				beansList = (ArrayList<ZyCommityAdapterBean>) msg.obj;
-				czdapter = new CzCommityAdapter(getActivity(), beansList);
-				lv.setAdapter(czdapter);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						Log.d("mHandler Curb  i==1 position"+position, "<>");
-						Log.d("mHandler Curb  i==1 position"+position, "<>");
-						Log.d("mHandler Curb  i==1 position"+position, "<>");
-						if (beansList != null && beansList.size() > position) {
-							trade_state = beansList.get(position)
-									.getTrade_state();
-							if (0 == trade_state) {
-								Intent i = new Intent(getActivity(),
-										DetailsActivity.class);
-								// 传递数据
-								i.putExtra("mode", "curb");
-								i.putExtra("trade_state", trade_state);
-								startActivity(i);
+				if (beansList != null && beansList.size() > 0) {
+					czdapter = new CzCommityAdapter(getActivity(), beansList);
+					lv.setAdapter(czdapter);
+					lv.setOnItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							if (beansList != null
+									&& beansList.size() >= position) {
+								trade_state = beansList.get(position)
+										.getTrade_state();
+								if (0 == trade_state) {
+									Intent i = new Intent(getActivity(),
+											DetailsActivity.class);
+									// 传递数据
+									i.putExtra("mode", "curb");
+									i.putExtra("trade_state", trade_state);
+									startActivity(i);
+								}
 							}
 						}
-					}
-				});
+					});
+				}
 				break;
 			default:
 				break;
@@ -284,8 +294,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					// 头像
 					if (objStr.has("image")) {
 						url = objStr.getJSONObject("image").getString("url");
-						Bitmap bitMap = GetImage.getImage(url);
-						mCommBean.setBitmap(bitMap);
+						Bitmap httpBitmap = GetImage.getHttpBitmap(url);
+						// Bitmap bitMap = GetImage.getImage(url);
+						mCommBean.setBitmap(httpBitmap);
 						mCommBean.setImage(url);
 					}
 					// 电话
@@ -364,4 +375,56 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		lv.setRefreshTime("刚刚");
 	}
 
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		try {
+			run(Information.KONGCV_GET_TRADE_LIST);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		refresh();
+	}
+
+	/**
+	 * 取消网络请求
+	 */
+	private final ScheduledExecutorService executor = Executors
+			.newScheduledThreadPool(1);
+	public void run(String url) throws Exception {
+		// This URL is served with a 2 second delay.
+		okhttp3.Request request = new okhttp3.Request.Builder().url(url)
+				.build();
+		final long startNanos = System.nanoTime();
+		final Call call = client.newCall(request);
+		// Schedule a job to cancel the call in 1 second.
+		executor.schedule(new Runnable() {
+			@Override
+			public void run() {
+				System.out.printf("%.2f Canceling call.%n",
+						(System.nanoTime() - startNanos) / 1e9f);
+				call.cancel();
+				System.out.printf("%.2f Canceled call.%n",
+						(System.nanoTime() - startNanos) / 1e9f);
+			}
+		}, 1, TimeUnit.SECONDS);
+		try {
+			System.out.printf("%.2f Executing call.%n",
+					(System.nanoTime() - startNanos) / 1e9f);
+			okhttp3.Response response = call.execute();
+			System.out.printf(
+					"%.2f Call was expected to fail, but completed: %s%n",
+					(System.nanoTime() - startNanos) / 1e9f, response);
+		} catch (IOException e) {
+			System.out.printf("%.2f Call failed as expected: %s%n",
+					(System.nanoTime() - startNanos) / 1e9f, e);
+		}
+	}
 }

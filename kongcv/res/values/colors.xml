@@ -51,8 +51,10 @@
    <color name="carwfragment_log">#000000</color>
    <!-- 标题背景色 -->
    <color name="top_bg_color">#FF9C00</color>
-   
    <color name="line">#f7f7f7</color>
+   
+    <!-- <color name="spots_dialog_color">@android:color/holo_red_light</color> -->
+     <color name="spots_dialog_color">#ffffff</color>
 </resources>
 
 

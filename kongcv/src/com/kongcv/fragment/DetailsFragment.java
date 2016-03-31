@@ -96,9 +96,7 @@ public class DetailsFragment extends Fragment implements
 
 	private void addFragment() {
 		Bundle extras = getArguments();
-			if(extras.containsKey("mode"))
 			mode = extras.getString("mode");
-			if(extras.containsKey("park_id"))
 			park_id = extras.getString("park_id");
 			double price = extras.getDouble("price");
 			String field = extras.getString("field");
