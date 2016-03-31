@@ -56,8 +56,9 @@ public class ZyCommityAdapter extends BaseAdapter {
 		tv_price = BaseViewHolder.get(convertView, R.id.tv_price);
 		tv_state = BaseViewHolder.get(convertView, R.id.tv_state);
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
-		tv_username.setText(mList.get(position).getUsername() == null ? ""
-				: mList.get(position).getUsername());
+		
+		tv_username.setText(mList.get(position).getAddress() == null ? ""
+				: mList.get(position).getAddress());
 		tv_start.setText(mList.get(position).getHire_start() == null ? "0000-00-00 00:00:00"
 				: mList.get(position).getHire_start());
 		tv_end.setText(mList.get(position).getHire_end() == null ? "0000-00-00 00:00:00" : mList

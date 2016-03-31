@@ -47,6 +47,7 @@ import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
 import com.kongcv.global.PayOneBean;
 import com.kongcv.global.UserBean;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.DateUtils;
@@ -94,16 +95,31 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	 * 一开始获取到mode和park_id
 	 */
 	private String strExtra,CurbMineReceiver;
+	private ZyCommityAdapterBean mCommBean = null;
 	private void getModeAndParkId() {
 		// TODO Auto-generated method stub
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
 		park_id = arguments.getString("park_id");
 		field = arguments.getString("field");
-		
 		mineSendFragment = arguments.getString("MineSendFragment");
 		strExtra = arguments.getString("stringExtra");
 		CurbMineReceiver=arguments.getString("CurbMineReceiver");//我收到的
+		mCommBean=(ZyCommityAdapterBean) arguments.getSerializable("mCommBean");//订单管理 跳撞过来的
+		if(mCommBean!=null){
+			Log.d("mCommBean getModeAndParkId", mCommBean.toString()+"<>");
+			if(mCommBean.getTrade_state()==1){
+				btnInform.setVisibility(View.GONE);
+				btnPayTo.setVisibility(View.GONE);
+			}else{
+				if(mCommBean.getHandsel_state()==0){
+					LastTradeId=mCommBean.getObjectId();
+					btnInform.setVisibility(View.GONE);
+					btnPayTo.setVisibility(View.VISIBLE);
+					btnPayTo.setOnClickListener(this);
+				}
+			}
+		}
 		ReadInfo task = new ReadInfo();
 		task.execute();
 	}
@@ -144,6 +160,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				}
 			}
 		}
+		
 	}
 	
 	
@@ -305,6 +322,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				String initAdapter = array.getJSONObject(i).getString("field");
 				hireMethodId.add(array.getJSONObject(i).getString("objectId"));
 				hireFieldList.add(initAdapter);
+				
 				if (initAdapter.equals(field)) {
 					index = i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
@@ -883,7 +901,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			adapter.notifyDataSetChanged();
 			String string = (String) dataList.get(position).get(KEY[2]);
 			String days = DateUtils.getDays(start, end, true);// 天数
-			
 			hire_method_id = hireMethodId.get(position);
 			field = hireFieldList.get(position);
 			if (dataList != null && dataList.size() > 0) {

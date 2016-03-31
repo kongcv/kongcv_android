@@ -11,6 +11,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.fragment.DetailsFragment;
+import com.kongcv.global.ZyCommityAdapterBean;
 /**
  * 详情activity 用于切换fragment 画面
  */
@@ -27,17 +28,16 @@ public class DetailsActivity extends FragmentActivity{
 		getModeandParkId();
 	}
 	
+	
 	private void getModeandParkId(){
 		Intent intent = getIntent();
 		String mode = intent.getStringExtra("mode");
 		String park_id = intent.getStringExtra("park_id");
 		double price=intent.getDoubleExtra("price", 0);
 		int trade_state = intent.getIntExtra("trade_state", -1);
-		
-		Log.d("detailsactivity>>><<<mode ", "mode>>>:::"+mode);
-		Log.d("detailsactivity>>><<<trade_state ", "trade_state>>>:::"+trade_state);
 		String field = intent.getStringExtra("getField");
 		String CurbMineReceiver = intent.getStringExtra("CurbMineReceiver");
+		ZyCommityAdapterBean mCommBean=(ZyCommityAdapterBean) intent.getSerializableExtra("mCommBean");
 		if(mode!=null && park_id!=null){
 			DetailsFragment fragment=new DetailsFragment();
 			Bundle args=new Bundle();
@@ -47,6 +47,9 @@ public class DetailsActivity extends FragmentActivity{
 			}
 			if(CurbMineReceiver!=null){
 				args.putString("CurbMineReceiver", CurbMineReceiver);
+			}
+			if(mCommBean!=null){
+				args.putSerializable("mCommBean", mCommBean);
 			}
 			if(mode!=null)
 			args.putString("mode", mode);
@@ -61,8 +64,6 @@ public class DetailsActivity extends FragmentActivity{
 			fragment.setArguments(args);
 			fragmentTransaction.replace(R.id.fragmentmain, fragment);
 			fragmentTransaction.commit();
-			Log.d("detailsactivity commit>>><<<mode ", "mode>>>:::"+mode);
-			Log.d("detailsactivity commit>>><<<trade_state ", "trade_state>>>:::"+trade_state);
 		}else {
 			fragmentTransaction.replace(R.id.fragmentmain, new DetailsFragment());
 			fragmentTransaction.commit();

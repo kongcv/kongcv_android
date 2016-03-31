@@ -75,6 +75,7 @@ public class ZyCurbAdapter extends BaseAdapter {
 			tv_state.setTextColor(Color.parseColor("#FF692A"));
 		}
 		tv_method.setText(mList.get(position).getMethod());
+
 		return convertView;
 	}
 

@@ -1,9 +1,13 @@
 package com.kongcv.global;
 
+import java.io.Serializable;
+
 import android.graphics.Bitmap;
 
-public class ZyCommityAdapterBean {
+public class ZyCommityAdapterBean implements Serializable{
 
+	
+	private static final long serialVersionUID = 9061047355702269342L;
 	private String hire_start;
 	private String hire_end;
 	private double price;
@@ -13,6 +17,7 @@ public class ZyCommityAdapterBean {
 	private String image;
 	private String mobilePhoneNumber;
 	private int trade_state;//订单状态
+	private int handsel_state;
 	private Bitmap bitmap;
 	
 	private String parkId; //道边
@@ -21,6 +26,12 @@ public class ZyCommityAdapterBean {
 	private String park_curb;
 	
 	
+	public int getHandsel_state() {
+		return handsel_state;
+	}
+	public void setHandsel_state(int handsel_state) {
+		this.handsel_state = handsel_state;
+	}
 	public String getPark_curb() {
 		return park_curb;
 	}

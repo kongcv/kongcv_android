@@ -38,6 +38,7 @@ import com.kongcv.activity.SearchActivity;
 import com.kongcv.adapter.MyFragmentAdapter;
 import com.kongcv.global.CurbAndObjectId;
 import com.kongcv.global.DetailBean;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.global.DetailBean.ResultEntity;
 import com.kongcv.global.DetailBean.ResultEntity.LocationEntity;
 import com.kongcv.global.Information;
@@ -94,21 +95,22 @@ public class DetailsFragment extends Fragment implements
 		mImageView = (ImageView) view.findViewById(R.id.img1);
 	}
 
-	private String field;
+	private String field,stringExtra=null,string=null;
+	private String CurbMineReceiver=null;
+	private ZyCommityAdapterBean mCommBean=null;
 	private void addFragment() {
 			Bundle extras = getArguments();
 			if(extras!=null){
 				mode = extras.getString("mode");
 				park_id = extras.getString("park_id");
-				Log.d("addFragment>>>", mode+"<<");
-				Log.d("addFragment>>>", mode+"<<");
 				price = extras.getDouble("price");
 				field = extras.getString("field");
 			}
 			mFragmentList = new ArrayList<Fragment>();
-			String stringExtra = extras.getString("MineSendFragment");
-			String string = extras.getString("stringExtra");
-			String CurbMineReceiver = extras.getString("CurbMineReceiver");
+			/*stringExtra = extras.getString("MineSendFragment");
+			string = extras.getString("stringExtra");
+			CurbMineReceiver = extras.getString("CurbMineReceiver");*/
+			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
 			if (mode != null && park_id != null) {
 				if (mode.equals("curb")) {
 					CurbDetailFragment curbDetailFragment = new CurbDetailFragment();
@@ -122,6 +124,9 @@ public class DetailsFragment extends Fragment implements
 					if (CurbMineReceiver != null) {
 						args.putString("CurbMineReceiver", CurbMineReceiver);
 					}
+					if(mCommBean!=null){
+						args.putSerializable("mCommBean", mCommBean);
+					}
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);
 					args.putDouble("price", price);
@@ -129,7 +134,6 @@ public class DetailsFragment extends Fragment implements
 					args.putString("field", field);
 					curbDetailFragment.setArguments(args);
 					mFragmentList.add(curbDetailFragment);
-
 					CommentFragment commFragment = new CommentFragment();
 					Bundle args2 = new Bundle();
 					args2.putString("mode", mode);
@@ -151,7 +155,6 @@ public class DetailsFragment extends Fragment implements
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);
 					args.putDouble("price", price);
-
 					args.putString("field", field);
 
 					communityDetailFragment.setArguments(args);
@@ -167,7 +170,6 @@ public class DetailsFragment extends Fragment implements
 			} else {
 				CurbAndObjectId bean = (CurbAndObjectId) Data
 						.getData("CurbAndObjectId");
-				
 				mode = bean.getMode();
 				park_id = bean.getObjectId();
 				if (bean != null && mode.equals("curb")) {
