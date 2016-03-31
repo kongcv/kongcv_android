@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
@@ -31,7 +32,10 @@ public class DetailsActivity extends FragmentActivity{
 		String mode = intent.getStringExtra("mode");
 		String park_id = intent.getStringExtra("park_id");
 		double price=intent.getDoubleExtra("price", 0);
+		int trade_state = intent.getIntExtra("trade_state", -1);
 		
+		Log.d("detailsactivity>>><<<mode ", "mode>>>:::"+mode);
+		Log.d("detailsactivity>>><<<trade_state ", "trade_state>>>:::"+trade_state);
 		String field = intent.getStringExtra("getField");
 		String CurbMineReceiver = intent.getStringExtra("CurbMineReceiver");
 		if(mode!=null && park_id!=null){
@@ -44,13 +48,21 @@ public class DetailsActivity extends FragmentActivity{
 			if(CurbMineReceiver!=null){
 				args.putString("CurbMineReceiver", CurbMineReceiver);
 			}
+			if(mode!=null)
 			args.putString("mode", mode);
+			if(park_id!=null)
 			args.putString("park_id",park_id);
+			if(price!=0)
 			args.putDouble("price", price);
+			if(field!=null)
 			args.putString("field", field);
+			if(trade_state!=-1)
+			args.putInt("trade_state", trade_state);	
 			fragment.setArguments(args);
 			fragmentTransaction.replace(R.id.fragmentmain, fragment);
 			fragmentTransaction.commit();
+			Log.d("detailsactivity commit>>><<<mode ", "mode>>>:::"+mode);
+			Log.d("detailsactivity commit>>><<<trade_state ", "trade_state>>>:::"+trade_state);
 		}else {
 			fragmentTransaction.replace(R.id.fragmentmain, new DetailsFragment());
 			fragmentTransaction.commit();

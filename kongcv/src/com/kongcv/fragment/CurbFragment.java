@@ -78,15 +78,20 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 									"<>");
 							Log.d("mHandler Curb  i==0 position" + position,
 									"<>");
+							
+							
 							if (beansList != null
 									&& beansList.size() >= position) {
 								trade_state = beansList.get(position)
 										.getTrade_state();
+								
+								Log.d("mHandler Curb  i==0 position" + position,
+										"<trade_state>:"+trade_state);
 								if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
 									// 传递数据
-									i.putExtra("mode", "cub");
+									i.putExtra("mode", "curb");
 									i.putExtra("trade_state", trade_state);
 									startActivity(i);
 								}
@@ -379,52 +384,10 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		try {
-			run(Information.KONGCV_GET_TRADE_LIST);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		refresh();
-	}
-
-	/**
-	 * 取消网络请求
-	 */
-	private final ScheduledExecutorService executor = Executors
-			.newScheduledThreadPool(1);
-	public void run(String url) throws Exception {
-		// This URL is served with a 2 second delay.
-		okhttp3.Request request = new okhttp3.Request.Builder().url(url)
-				.build();
-		final long startNanos = System.nanoTime();
-		final Call call = client.newCall(request);
-		// Schedule a job to cancel the call in 1 second.
-		executor.schedule(new Runnable() {
-			@Override
-			public void run() {
-				System.out.printf("%.2f Canceling call.%n",
-						(System.nanoTime() - startNanos) / 1e9f);
-				call.cancel();
-				System.out.printf("%.2f Canceled call.%n",
-						(System.nanoTime() - startNanos) / 1e9f);
-			}
-		}, 1, TimeUnit.SECONDS);
-		try {
-			System.out.printf("%.2f Executing call.%n",
-					(System.nanoTime() - startNanos) / 1e9f);
-			okhttp3.Response response = call.execute();
-			System.out.printf(
-					"%.2f Call was expected to fail, but completed: %s%n",
-					(System.nanoTime() - startNanos) / 1e9f, response);
-		} catch (IOException e) {
-			System.out.printf("%.2f Call failed as expected: %s%n",
-					(System.nanoTime() - startNanos) / 1e9f, e);
-		}
 	}
 }
