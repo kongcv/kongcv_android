@@ -122,6 +122,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					btnPayTo.setOnClickListener(this);
 					tv_reserveOrpay.setText("定金");
 				}else if(mCommBean.getHandsel_state()==1){
+					LastTradeId=mCommBean.getObjectId();
 					btnInform.setVisibility(View.GONE);
 					btnPayTo.setVisibility(View.VISIBLE);
 					btnPayTo.setOnClickListener(this);
@@ -294,6 +295,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					}else if(mineSendFragment!=null){
 						bundle.putString("stringExtra", mineSendFragment);
 					}
+					if(mCommBean!=null){
+						bundle.putSerializable("mCommBean", mCommBean);
+					}
 					if (rate != 0) {
 						bundle.putDouble("rate", rate);
 					}
@@ -352,7 +356,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					index = i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
 					if(mCommBean!=null){
-						tvCurbMoney.setText(mCommBean.getPrice()+"元");
+						tvCurbMoney.setText(mCommBean.getPrice()+"");
 					}else{
 						if (method.equals("计时/小时")) {
 							if (hire_price.get(i).indexOf("/") != -1) {

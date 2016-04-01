@@ -20,12 +20,26 @@ public class ZyCommityAdapterBean implements Serializable{
 	private int handsel_state;
 	private Bitmap bitmap;
 	
-	private String parkId; //道边
+	private String park_id; //道边
 	private String field;
 	private String address;
 	private String park_curb;
+	private String device_type;
+	private String device_token;
 	
 	
+	public String getDevice_type() {
+		return device_type;
+	}
+	public void setDevice_type(String device_type) {
+		this.device_type = device_type;
+	}
+	public String getDevice_token() {
+		return device_token;
+	}
+	public void setDevice_token(String device_token) {
+		this.device_token = device_token;
+	}
 	public int getHandsel_state() {
 		return handsel_state;
 	}
@@ -51,10 +65,10 @@ public class ZyCommityAdapterBean implements Serializable{
 		this.field = field;
 	}
 	public String getParkId() {
-		return parkId;
+		return park_id;
 	}
 	public void setParkId(String parkId) {
-		this.parkId = parkId;
+		this.park_id = parkId;
 	}
 	public Bitmap getBitmap() {
 		return bitmap;

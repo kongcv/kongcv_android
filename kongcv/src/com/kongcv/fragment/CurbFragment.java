@@ -57,7 +57,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private int trade_state;
 	private List<ZyCommityAdapterBean> beansList;
 	private String[] str = new String[] { "customer", "hirer" };
-	private String method, username, start, end, objectId, hire_method, user,
+	private String method, username, start, end, objectId, hire_method, user,device_type,device_token,
 			url, mobilePhoneNumber, park_curb, address,park_id,field;
 	private int limit = 10,handsel_state;
 	private Handler mHandler = new Handler() {
@@ -201,7 +201,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 		});
 	}
-	ZyCommityAdapterBean mCommBean = null;
+	private ZyCommityAdapterBean mCommBean = null;
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
@@ -243,6 +243,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					JSONObject objStrs = new JSONObject(hire_method);
 					method = objStrs.getString("method");
 					field = objStrs.getString("field");
+					user = array.getJSONObject(i).getString("user");
+					JSONObject userObj=new JSONObject(user);
+					device_type = userObj.getString("device_type");
+					device_token = userObj.getString("device_token");
+					mCommBean.setDevice_token(device_token);
+					mCommBean.setDevice_type(device_type);
 					mCommBean.setField(field);
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
