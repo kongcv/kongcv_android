@@ -110,6 +110,7 @@ public class DetailsFragment extends Fragment implements
 			/*stringExtra = extras.getString("MineSendFragment");
 			string = extras.getString("stringExtra");
 			CurbMineReceiver = extras.getString("CurbMineReceiver");*/
+			if(extras.containsKey("mCommBean"))
 			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
 			if (mode != null && park_id != null) {
 				if (mode.equals("curb")) {

@@ -38,6 +38,7 @@ import com.kongcv.activity.LogInActivity;
 import com.kongcv.activity.PayActivity;
 import com.kongcv.activity.SearchActivity;
 import com.kongcv.adapter.DetailFragmentAdapter;
+import com.kongcv.adapter.PhoneNumberAdapter;
 import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.global.CurbInfoBean;
@@ -61,7 +62,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private View view;
 	private ACacheUtils mCache;
 	private TextView tvAddress, tvAddressDetail, curbStart, curbEnd,
-			curbDescribe, tvCurbMoney;
+			curbDescribe, tvCurbMoney,tv_reserveOrpay;
 	private ListView curbInfoListView;
 	private Button btnInform, btnPayTo;
 	private PickDialog dialog;
@@ -111,19 +112,41 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			if(mCommBean.getTrade_state()==1){
 				btnInform.setVisibility(View.GONE);
 				btnPayTo.setVisibility(View.GONE);
+				visiblePhone(mCommBean);
+				tv_reserveOrpay.setText("交易完成");
 			}else{
 				if(mCommBean.getHandsel_state()==0){
 					LastTradeId=mCommBean.getObjectId();
 					btnInform.setVisibility(View.GONE);
 					btnPayTo.setVisibility(View.VISIBLE);
 					btnPayTo.setOnClickListener(this);
+					tv_reserveOrpay.setText("定金");
+				}else if(mCommBean.getHandsel_state()==1){
+					tv_reserveOrpay.setText("差额");
 				}
 			}
 		}
 		ReadInfo task = new ReadInfo();
 		task.execute();
 	}
-
+	/**
+	 * 出租人接收设置电话号码求租人可见
+	 */
+	private List<String> phoneList;
+	private PhoneNumberAdapter phoneNumberAdapter;
+	private void visiblePhone(ZyCommityAdapterBean mCommBean) {
+		mListPhone.setVisibility(View.VISIBLE);
+		phoneList = new ArrayList<String>();
+		phoneList.add(mCommBean.getMobilePhoneNumber());
+		Log.v("电话号码>>>", mCommBean.getMobilePhoneNumber()+"<>");
+		Log.v("电话号码phoneList.size()>>>", phoneList.size()+"<>");
+		if(phoneList!=null && phoneList.size()>0){
+			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneList);
+			mListPhone.setAdapter(phoneNumberAdapter);
+			phoneNumberAdapter.notifyDataSetChanged();
+		    ToastUtil.fixListViewHeight(mListPhone,-1);
+		}
+	}
 	/**
 	 * 打开jpush
 	 */
@@ -322,25 +345,28 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				String initAdapter = array.getJSONObject(i).getString("field");
 				hireMethodId.add(array.getJSONObject(i).getString("objectId"));
 				hireFieldList.add(initAdapter);
-				
 				if (initAdapter.equals(field)) {
 					index = i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
-					if (method.equals("计时/小时")) {
-						if (hire_price.get(i).indexOf("/") != -1) {
-							String[] split = hire_price.get(i).split("/");
-							double p = Double.parseDouble(split[0]) / 4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat(
-									"#.00");
-							tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
-							toastOrNo = true;
-						} else {
-							double p = Double.parseDouble(hire_price.get(i)) / 4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat(
-									"#.00");
-							
-							tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
-							toastOrNo = true;
+					if(mCommBean!=null && mCommBean.getTrade_state()==1){
+						tvCurbMoney.setText(mCommBean.getPrice()+"元");
+					}else{
+						if (method.equals("计时/小时")) {
+							if (hire_price.get(i).indexOf("/") != -1) {
+								String[] split = hire_price.get(i).split("/");
+								double p = Double.parseDouble(split[0]) / 4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat(
+										"#.00");
+								tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+								toastOrNo = true;
+								tv_reserveOrpay.setText("定金");
+							} else {
+								double p = Double.parseDouble(hire_price.get(i)) / 4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat(
+										"#.00");
+								tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+								toastOrNo = true;
+							}
 						}
 					}
 				}
@@ -354,12 +380,21 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					}
 				}
 			}
-			for (int i = 0; i < hire_price.size(); i++) {
+			if(mCommBean==null){
+				for (int i = 0; i < hire_price.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put(KEY[0], hire_name.get(i));// 地点
+					map.put(KEY[1],
+							hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
+					map.put(KEY[2], hire_price.get(i));// 价格
+					dataList.add(map);
+				}
+			}else{
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(KEY[0], hire_name.get(i));// 地点
+				map.put(KEY[0], hire_name.get(index));// 地点
 				map.put(KEY[1],
-						hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
-				map.put(KEY[2], hire_price.get(i));// 价格
+						hire_time.get(index).equals("0") ? "" : hire_time.get(index));// 事件a
+				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
 			if (dataList != null) {
@@ -379,7 +414,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			e.printStackTrace();
 		}
 	}
-	
+	private ListView mListPhone;
 	private void initView() {
 		tvAddress = (TextView) view.findViewById(R.id.tv_curb_address);
 		tvAddressDetail = (TextView) view.findViewById(R.id.tv_curb_add_detail);
@@ -387,6 +422,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		curbEnd = (TextView) view.findViewById(R.id.curb_rent_end);
 		curbDescribe = (TextView) view.findViewById(R.id.tv_curb_describe);
 		tvCurbMoney = (TextView) view.findViewById(R.id.tv_curb_money);// 价格 随变化
+		mListPhone = (ListView) view.findViewById(R.id.detail_lv_phone);
+		tv_reserveOrpay = (TextView) view.findViewById(R.id.tv_reserveOrpay);
+		
 		curbStart.setOnClickListener(this);
 		curbEnd.setOnClickListener(this);
 

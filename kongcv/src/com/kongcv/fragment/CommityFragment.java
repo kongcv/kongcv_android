@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,7 +44,6 @@ import com.kongcv.view.AMapListView.AMapListViewListener;
 
 /**
  * 社区的订单(通过判断是租用的，还是出租的)
- * 
  * @author kcw
  */
 public class CommityFragment extends Fragment implements AMapListViewListener {
@@ -71,9 +71,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view,
 								int position, long id) {
-							Log.d("mHandler comm  i==0 position="+position, "<>");
-							Log.d("mHandler comm  i==0 position="+position, "<>");
-							Log.d("mHandler comm  i==0 position="+position, "<>");
 							if(beansList!=null && beansList.size()>0 && position>=1){
 								trade_state = beansList.get(position - 1)
 										.getTrade_state();
@@ -112,11 +109,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view,
 								int position, long id) {
-							Log.d("mHandler comm  i==1 position"+position, "<>");
-							Log.d("mHandler comm  i==1 position"+position, "<>");
-							Log.d("mHandler comm  i==1 position"+position, "<>");
 							if(position>=1 && beansList!=null && beansList.size()>0){
-								trade_state = beansList.get(position - 1)
+								/*trade_state = beansList.get(position - 1)
 										.getTrade_state();
 								if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
@@ -125,7 +119,11 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 									i.putExtra("mode", "community");
 									i.putExtra("trade_state", trade_state);
 									startActivity(i);
-								}
+								}*/
+								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
+								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+										+ mobilePhoneNumber));
+								startActivity(intent);
 							}
 						}
 					});
@@ -334,6 +332,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
+			Log.d("doResponse社区>>>>>", string+"::");
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
@@ -341,7 +340,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
-
 					// 开始时间
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
@@ -383,7 +381,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
 					if (address != null)
-						mCommBean.setAddress(address);
+					mCommBean.setAddress(address);
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);

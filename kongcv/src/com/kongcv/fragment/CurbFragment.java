@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -106,12 +107,14 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								View view, int position, long id) {
 							if (beansList != null
 									&& beansList.size() >= position) {
-								trade_state = beansList.get(position-1)
+								/*trade_state = beansList.get(position-1)
 										.getTrade_state();
 								park_id=beansList.get(position-1).getParkId();
 								field=beansList.get(position-1).getField();
 								mCommBean=beansList.get(position-1);
-							//	if (0 == trade_state) {
+								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
+								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
+								if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
 									// 传递数据
@@ -121,7 +124,11 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 									i.putExtra("getField", field);
 									i.putExtra("mCommBean", mCommBean);
 									startActivity(i);
-							//	}
+								}*/
+								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
+								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+										+ mobilePhoneNumber));
+								startActivity(intent);
 							}
 						}
 					});
@@ -239,6 +246,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setField(field);
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
+					String hirer = array.getJSONObject(i).getString("hirer");
+					JSONObject hirerObj=new JSONObject(hirer);
+					mobilePhoneNumber = hirerObj.getString("mobilePhoneNumber");
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setPark_curb(park_curb);
@@ -247,6 +257,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setParkId(park_id);
 					mCommBean.setHandsel_state(handsel_state);
+					mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
 					beansList.add(mCommBean);
 				}
 				Message msg = mHandler.obtainMessage();

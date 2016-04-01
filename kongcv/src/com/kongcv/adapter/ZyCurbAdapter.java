@@ -56,8 +56,9 @@ public class ZyCurbAdapter extends BaseAdapter {
 		tv_state = BaseViewHolder.get(convertView, R.id.tv_state);
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
 
-		tv_username.setText(mList.get(position).getUsername() == null ? ""
-				: mList.get(position).getUsername());
+		tv_username.setText(mList.get(position).getAddress() == null ? ""
+				: mList.get(position).getAddress());
+		
 		tv_start.setText(mList.get(position).getHire_start() == null ? ""
 				: mList.get(position).getHire_start());
 		tv_end.setText(mList.get(position).getHire_end() == null ? "" : mList
@@ -75,7 +76,6 @@ public class ZyCurbAdapter extends BaseAdapter {
 			tv_state.setTextColor(Color.parseColor("#FF692A"));
 		}
 		tv_method.setText(mList.get(position).getMethod());
-
 		return convertView;
 	}
 
