@@ -38,6 +38,7 @@ import com.kongcv.activity.LogInActivity;
 import com.kongcv.activity.PayActivity;
 import com.kongcv.activity.SearchActivity;
 import com.kongcv.adapter.DetailFragmentAdapter;
+import com.kongcv.adapter.PhoneNumberAdapter;
 import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.global.CurbInfoBean;
@@ -47,6 +48,7 @@ import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
 import com.kongcv.global.PayOneBean;
 import com.kongcv.global.UserBean;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.DateUtils;
@@ -60,7 +62,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private View view;
 	private ACacheUtils mCache;
 	private TextView tvAddress, tvAddressDetail, curbStart, curbEnd,
-			curbDescribe, tvCurbMoney;
+			curbDescribe, tvCurbMoney,tv_reserveOrpay;
 	private ListView curbInfoListView;
 	private Button btnInform, btnPayTo;
 	private PickDialog dialog;
@@ -94,20 +96,61 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	 * 一开始获取到mode和park_id
 	 */
 	private String strExtra,CurbMineReceiver;
+	private ZyCommityAdapterBean mCommBean = null;
 	private void getModeAndParkId() {
 		// TODO Auto-generated method stub
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
 		park_id = arguments.getString("park_id");
 		field = arguments.getString("field");
-		
 		mineSendFragment = arguments.getString("MineSendFragment");
 		strExtra = arguments.getString("stringExtra");
 		CurbMineReceiver=arguments.getString("CurbMineReceiver");//我收到的
+		mCommBean=(ZyCommityAdapterBean) arguments.getSerializable("mCommBean");//订单管理 跳撞过来的
+		if(mCommBean!=null){
+			Log.d("mCommBean getModeAndParkId", mCommBean.toString()+"<>");
+			if(mCommBean.getTrade_state()==1){
+				btnInform.setVisibility(View.GONE);
+				btnPayTo.setVisibility(View.GONE);
+				visiblePhone(mCommBean);
+				tv_reserveOrpay.setText("交易完成");
+			}else{
+				if(mCommBean.getHandsel_state()==0){
+					LastTradeId=mCommBean.getObjectId();
+					btnInform.setVisibility(View.GONE);
+					btnPayTo.setVisibility(View.VISIBLE);
+					btnPayTo.setOnClickListener(this);
+					tv_reserveOrpay.setText("定金");
+				}else if(mCommBean.getHandsel_state()==1){
+					LastTradeId=mCommBean.getObjectId();
+					btnInform.setVisibility(View.GONE);
+					btnPayTo.setVisibility(View.VISIBLE);
+					btnPayTo.setOnClickListener(this);
+					tv_reserveOrpay.setText("差额");
+				}
+			}
+		}
 		ReadInfo task = new ReadInfo();
 		task.execute();
 	}
-
+	/**
+	 * 出租人接收设置电话号码求租人可见
+	 */
+	private List<String> phoneList;
+	private PhoneNumberAdapter phoneNumberAdapter;
+	private void visiblePhone(ZyCommityAdapterBean mCommBean) {
+		mListPhone.setVisibility(View.VISIBLE);
+		phoneList = new ArrayList<String>();
+		phoneList.add(mCommBean.getMobilePhoneNumber());
+		Log.v("电话号码>>>", mCommBean.getMobilePhoneNumber()+"<>");
+		Log.v("电话号码phoneList.size()>>>", phoneList.size()+"<>");
+		if(phoneList!=null && phoneList.size()>0){
+			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneList);
+			mListPhone.setAdapter(phoneNumberAdapter);
+			phoneNumberAdapter.notifyDataSetChanged();
+		    ToastUtil.fixListViewHeight(mListPhone,-1);
+		}
+	}
 	/**
 	 * 打开jpush
 	 */
@@ -144,6 +187,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				}
 			}
 		}
+		
 	}
 	
 	
@@ -251,6 +295,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					}else if(mineSendFragment!=null){
 						bundle.putString("stringExtra", mineSendFragment);
 					}
+					if(mCommBean!=null){
+						bundle.putSerializable("mCommBean", mCommBean);
+					}
 					if (rate != 0) {
 						bundle.putDouble("rate", rate);
 					}
@@ -308,21 +355,33 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				if (initAdapter.equals(field)) {
 					index = i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
-					if (method.equals("计时/小时")) {
-						if (hire_price.get(i).indexOf("/") != -1) {
-							String[] split = hire_price.get(i).split("/");
-							double p = Double.parseDouble(split[0]) / 4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat(
-									"#.00");
-							tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
-							toastOrNo = true;
-						} else {
-							double p = Double.parseDouble(hire_price.get(i)) / 4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat(
-									"#.00");
-							
-							tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
-							toastOrNo = true;
+					if(mCommBean!=null){
+						if(mCommBean.getTrade_state()==0){
+							if(mCommBean.getHandsel_state()==0){
+								tvCurbMoney.setText(mCommBean.getPrice()+"");
+							}else{
+								tvCurbMoney.setText((mCommBean.getMoney()-mCommBean.getPrice())+"");
+							}
+						}else{
+							tvCurbMoney.setText("0");
+						}
+					}else{
+						if (method.equals("计时/小时")) {
+							if (hire_price.get(i).indexOf("/") != -1) {
+								String[] split = hire_price.get(i).split("/");
+								double p = Double.parseDouble(split[0]) / 4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat(
+										"#.00");
+								tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+								toastOrNo = true;
+								tv_reserveOrpay.setText("定金");
+							} else {
+								double p = Double.parseDouble(hire_price.get(i)) / 4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat(
+										"#.00");
+								tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+								toastOrNo = true;
+							}
 						}
 					}
 				}
@@ -336,12 +395,21 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					}
 				}
 			}
-			for (int i = 0; i < hire_price.size(); i++) {
+			if(mCommBean==null){
+				for (int i = 0; i < hire_price.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put(KEY[0], hire_name.get(i));// 地点
+					map.put(KEY[1],
+							hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
+					map.put(KEY[2], hire_price.get(i));// 价格
+					dataList.add(map);
+				}
+			}else{
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(KEY[0], hire_name.get(i));// 地点
+				map.put(KEY[0], hire_name.get(index));// 地点
 				map.put(KEY[1],
-						hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
-				map.put(KEY[2], hire_price.get(i));// 价格
+						hire_time.get(index).equals("0") ? "" : hire_time.get(index));// 事件a
+				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
 			if (dataList != null) {
@@ -361,7 +429,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			e.printStackTrace();
 		}
 	}
-	
+	private ListView mListPhone;
 	private void initView() {
 		tvAddress = (TextView) view.findViewById(R.id.tv_curb_address);
 		tvAddressDetail = (TextView) view.findViewById(R.id.tv_curb_add_detail);
@@ -369,6 +437,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		curbEnd = (TextView) view.findViewById(R.id.curb_rent_end);
 		curbDescribe = (TextView) view.findViewById(R.id.tv_curb_describe);
 		tvCurbMoney = (TextView) view.findViewById(R.id.tv_curb_money);// 价格 随变化
+		mListPhone = (ListView) view.findViewById(R.id.detail_lv_phone);
+		tv_reserveOrpay = (TextView) view.findViewById(R.id.tv_reserveOrpay);
+		
 		curbStart.setOnClickListener(this);
 		curbEnd.setOnClickListener(this);
 
@@ -883,7 +954,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			adapter.notifyDataSetChanged();
 			String string = (String) dataList.get(position).get(KEY[2]);
 			String days = DateUtils.getDays(start, end, true);// 天数
-			
 			hire_method_id = hireMethodId.get(position);
 			field = hireFieldList.get(position);
 			if (dataList != null && dataList.size() > 0) {

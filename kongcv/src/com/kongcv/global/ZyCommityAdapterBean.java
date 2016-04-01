@@ -1,26 +1,59 @@
 package com.kongcv.global;
 
+import java.io.Serializable;
+
 import android.graphics.Bitmap;
 
-public class ZyCommityAdapterBean {
+public class ZyCommityAdapterBean implements Serializable{
 
+	
+	private static final long serialVersionUID = 9061047355702269342L;
 	private String hire_start;
 	private String hire_end;
 	private double price;
+	private double money;
 	private String objectId;//订单号
 	private String method;//租用方式
 	private String username;
 	private String image;
 	private String mobilePhoneNumber;
 	private int trade_state;//订单状态
+	private int handsel_state;
 	private Bitmap bitmap;
 	
-	private String parkId; //道边
+	private String park_id; //道边
 	private String field;
 	private String address;
 	private String park_curb;
+	private String device_type;
+	private String device_token;
 	
 	
+	
+	public double getMoney() {
+		return money;
+	}
+	public void setMoney(double money) {
+		this.money = money;
+	}
+	public String getDevice_type() {
+		return device_type;
+	}
+	public void setDevice_type(String device_type) {
+		this.device_type = device_type;
+	}
+	public String getDevice_token() {
+		return device_token;
+	}
+	public void setDevice_token(String device_token) {
+		this.device_token = device_token;
+	}
+	public int getHandsel_state() {
+		return handsel_state;
+	}
+	public void setHandsel_state(int handsel_state) {
+		this.handsel_state = handsel_state;
+	}
 	public String getPark_curb() {
 		return park_curb;
 	}
@@ -40,10 +73,10 @@ public class ZyCommityAdapterBean {
 		this.field = field;
 	}
 	public String getParkId() {
-		return parkId;
+		return park_id;
 	}
 	public void setParkId(String parkId) {
-		this.parkId = parkId;
+		this.park_id = parkId;
 	}
 	public Bitmap getBitmap() {
 		return bitmap;

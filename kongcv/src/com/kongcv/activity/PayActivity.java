@@ -34,6 +34,7 @@ import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
 import com.kongcv.global.PayBean;
 import com.kongcv.global.Pay_info;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
@@ -75,42 +76,59 @@ public class PayActivity extends Activity implements OnClickListener {
 			return null;
 		}
 	}
+	private ZyCommityAdapterBean mCommBean = null;
 	private void getBillId(String params) {
 		// TODO Auto-generated method stub
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
+			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
 			String trade_id = extras.getString("trade_id");
 			String price =extras.getString("price");
-			String stringExtra = extras.getString("stringExtra");
 			String phoneNumber = extras.getString("phoneNumber");
-			Gson gson=new Gson();
-			Pay_info info=new Pay_info();
-			Log.v("价格", price);
-			if(stringExtra!=null && phoneNumber!=null){
-				JpushBean jpushBean = gson.fromJson(stringExtra, JpushBean.class);
-				info.setMode(jpushBean.getMode());
-				info.setOpen_id("123456");
-				info.setDevice_type(jpushBean.getOwn_device_type());
-				if(jpushBean.getMode().equals("curb")){
-					//hour_meter
-					if(jpushBean.getHire_method_field().equals("hour_meter") && jpushBean.getPush_type().equals("verify_accept")){
-						info.setPay_type("handsel");
+			
+			if(mCommBean==null){
+				String stringExtra = extras.getString("stringExtra");
+				Gson gson=new Gson();
+				Pay_info info=new Pay_info();
+				if(stringExtra!=null && phoneNumber!=null){
+					JpushBean jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+					info.setMode(jpushBean.getMode());
+					info.setOpen_id("123456");
+					info.setDevice_type(jpushBean.getOwn_device_type());
+					if(jpushBean.getMode().equals("curb")){
+						//hour_meter
+						if(jpushBean.getHire_method_field().equals("hour_meter") && jpushBean.getPush_type().equals("verify_accept")){
+							info.setPay_type("handsel");
+						}else{
+							info.setPay_type("balance");
+						}
 					}else{
-						info.setPay_type("balance");
+						info.setPay_type("money");
 					}
-				}else{
-					info.setPay_type("money");
+					info.setPhone(phoneNumber);
+					info.setSubject(jpushBean.getAddress());
+					info.setDevice_token(jpushBean.getOwn_device_token());
 				}
-				Log.d(">>>>>>tag jpushBean.getMode()", jpushBean.getMode()+":");
-				Log.d(">>>>>>tag jpushBean.getHire_method_field()", jpushBean.getHire_method_field()+":");
-				Log.d(">>>>>>tag jpushBean.getPush_type()", jpushBean.getPush_type()+":");
-				
+				if(price!=null)
+				payTo(trade_id,price,params,info);
+			}else {
+				Pay_info info=new Pay_info();
+				info.setMode("curb");
+				info.setOpen_id("123456");
+				info.setDevice_type(mCommBean.getDevice_type());//
+				if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
+					info.setPay_type("handsel");
+					price=mCommBean.getMoney()+"";
+				}else{
+					info.setPay_type("balance");
+					price=(mCommBean.getMoney()-mCommBean.getPrice())+"";
+				}
 				info.setPhone(phoneNumber);
-				info.setSubject(jpushBean.getAddress());
-				info.setDevice_token(jpushBean.getOwn_device_token());
+				info.setSubject(mCommBean.getAddress());
+				info.setDevice_token(mCommBean.getDevice_token());
+				if(price!=null)
+				payTo(trade_id,price,params,info);
 			}
-			if(price!=null)
-			payTo(trade_id,price,params,info);
 		}
 	}
 	/**
@@ -178,6 +196,8 @@ public class PayActivity extends Activity implements OnClickListener {
 		try {
 			JSONObject object = new JSONObject();
 			object.put("trade_id", trade_id);
+			Log.d("插入交易数据>>><<<", JsonStrUtils.JsonStr(object));
+			Log.d("插入交易数据>>><<<", JsonStrUtils.JsonStr(object));
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_TRADE_BILLDATA,
 					JsonStrUtils.JsonStr(object));

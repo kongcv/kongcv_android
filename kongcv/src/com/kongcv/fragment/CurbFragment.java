@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,18 +48,18 @@ import com.kongcv.view.AMapListView.AMapListViewListener;
  */
 public class CurbFragment extends Fragment implements AMapListViewListener {
 
-	private int limit = 10;
 	private AMapListView lv;
 	private ACacheUtils mCache;
 	private ZyCurbAdapter zydapter;
 	private CzCommityAdapter czdapter;
 	private View view;
-	private double price;
+	private double price,money;
 	private int trade_state;
 	private List<ZyCommityAdapterBean> beansList;
 	private String[] str = new String[] { "customer", "hirer" };
-	private String method, username, start, end, objectId, hire_method, user,
-			url, mobilePhoneNumber, park_curb, address;
+	private String method, username, start, end, objectId, hire_method, user,device_type,device_token,
+			url, mobilePhoneNumber, park_curb, address,park_id,field;
+	private int limit = 10,handsel_state;
 	private Handler mHandler = new Handler() {
 		@SuppressWarnings("unchecked")
 		public void handleMessage(android.os.Message msg) {
@@ -72,29 +73,24 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
-							Log.d("mHandler Curb  i==0 position" + position,
-									"<>");
-							Log.d("mHandler Curb  i==0 position" + position,
-									"<>");
-							Log.d("mHandler Curb  i==0 position" + position,
-									"<>");
-							
-							
 							if (beansList != null
 									&& beansList.size() >= position) {
-								trade_state = beansList.get(position)
+								trade_state = beansList.get(position-1)
 										.getTrade_state();
-								
-								Log.d("mHandler Curb  i==0 position" + position,
-										"<trade_state>:"+trade_state);
-								if (0 == trade_state) {
+								park_id=beansList.get(position-1).getParkId();
+								field=beansList.get(position-1).getField();
+								mCommBean=beansList.get(position-1);
+						//		if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
 									// 传递数据
 									i.putExtra("mode", "curb");
 									i.putExtra("trade_state", trade_state);
+									i.putExtra("park_id", park_id);
+									i.putExtra("getField", field);
+									i.putExtra("mCommBean", mCommBean);
 									startActivity(i);
-								}
+						//		}
 							}
 						}
 					});
@@ -111,16 +107,28 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								View view, int position, long id) {
 							if (beansList != null
 									&& beansList.size() >= position) {
-								trade_state = beansList.get(position)
+								/*trade_state = beansList.get(position-1)
 										.getTrade_state();
+								park_id=beansList.get(position-1).getParkId();
+								field=beansList.get(position-1).getField();
+								mCommBean=beansList.get(position-1);
+								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
+								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
 								if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
 									// 传递数据
 									i.putExtra("mode", "curb");
 									i.putExtra("trade_state", trade_state);
+									i.putExtra("park_id", park_id);
+									i.putExtra("getField", field);
+									i.putExtra("mCommBean", mCommBean);
 									startActivity(i);
-								}
+								}*/
+								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
+								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+										+ mobilePhoneNumber));
+								startActivity(intent);
 							}
 						}
 					});
@@ -152,7 +160,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	 * 初始化数据和下拉刷新数据
 	 */
 	private int skip = 0;
-
 	public void refresh() {
 		if (MineOrdermanagerActivity.TYPEORDER == 0) {
 			getCurbOrCommInfo(breakJsonStr(str[0]), 0);
@@ -165,7 +172,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	 * 网络请求
 	 */
 	private final OkHttpClient client = new OkHttpClient();
-
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
 		Log.d("i==" + i, jsonStr + ":");
@@ -195,15 +201,15 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 		});
 	}
-
+	private ZyCommityAdapterBean mCommBean = null;
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
+			Log.d("doResponse 道边>>>>>>>>>>>>>>", string);
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
 				beansList = new ArrayList<ZyCommityAdapterBean>();
-				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
 					// 开始时间
@@ -221,7 +227,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								true);
 						mCommBean.setHire_end(end);
 					}
+					handsel_state=array.getJSONObject(i).getInt("handsel_state");//0没有定金1支付差额"trade_state": 1,
 					// 价钱
+					money = array.getJSONObject(i).getDouble("money");
 					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
 					objectId = array.getJSONObject(i).getString("objectId");
@@ -229,19 +237,34 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					park_curb = array.getJSONObject(i).getString("park_curb");
 					JSONObject objStr = new JSONObject(park_curb);
 					address = objStr.getString("address");
+					park_id = objStr.getString("objectId");
 					// 租用方式
 					hire_method = array.getJSONObject(i).getString(
 							"hire_method");
 					JSONObject objStrs = new JSONObject(hire_method);
 					method = objStrs.getString("method");
+					field = objStrs.getString("field");
+					mCommBean.setField(field);
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
+					String hirer = array.getJSONObject(i).getString("hirer");
+					JSONObject hirerObj=new JSONObject(hirer);
+					mobilePhoneNumber = hirerObj.getString("mobilePhoneNumber");
+					device_type = hirerObj.getString("device_type");
+					device_token = hirerObj.getString("device_token");
+					mCommBean.setDevice_token(device_token);
+					mCommBean.setDevice_type(device_type);
+					
+					mCommBean.setMoney(money);
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setPark_curb(park_curb);
 					mCommBean.setAddress(address);
 					mCommBean.setMethod(method);
 					mCommBean.setTrade_state(trade_state);
+					mCommBean.setParkId(park_id);
+					mCommBean.setHandsel_state(handsel_state);
+					mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
 					beansList.add(mCommBean);
 				}
 				Message msg = mHandler.obtainMessage();
@@ -258,11 +281,11 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private void doResponse2(String string) {
 		// TODO Auto-generated method stub
 		try {
+			Log.d("doResponse2 道边>>>>>>>>>>>>>>", string);
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
 				beansList = new ArrayList<ZyCommityAdapterBean>();
-				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
 					JSONObject ob = array.getJSONObject(i);
@@ -287,7 +310,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								"hire_method");
 						JSONObject objStrs = new JSONObject(hire_method);
 						method = objStrs.getString("method");
+						field = objStrs.getString("field");
 						mCommBean.setMethod(method);
+						mCommBean.setField(field);
 					}
 					// 用户名
 					user = array.getJSONObject(i).getString("user");
@@ -304,6 +329,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 						mCommBean.setBitmap(httpBitmap);
 						mCommBean.setImage(url);
 					}
+					
 					// 电话
 					mobilePhoneNumber = objStr.getString("mobilePhoneNumber");
 					// 订单状态
