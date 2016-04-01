@@ -58,7 +58,7 @@ public class ZdAdapter extends BaseAdapter {
 
 		holder.tv_time.setText(checkList.get(position).getTime());
 		holder.tv_year.setText(checkList.get(position).getYear());
-		holder.tv_money.setText(checkList.get(position).getPrice());
+		holder.tv_money.setText(checkList.get(position).getMoney());
 		holder.tv_address.setText(checkList.get(position).getAddress());
 		return convertView;
 	}

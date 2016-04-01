@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 提现页面 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/bg_white"
     android:orientation="vertical"
     android:id="@+id/withdraw_lin" >
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" >
 
@@ -56,7 +56,7 @@
     <!-- 储蓄卡 -->
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_marginTop="11dp"
         android:background="@drawable/item_two" >
@@ -92,7 +92,7 @@
     <!-- 金额 -->
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/item_one" >
 
@@ -129,7 +129,7 @@
     <!-- 密码 -->
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/item_one" >
 
@@ -168,7 +168,7 @@
 
     <Button
          android:id="@+id/bt_commitdraw"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/item_txtmargin"
         android:layout_marginRight="@dimen/item_txtmargin"

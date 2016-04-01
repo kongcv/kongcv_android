@@ -33,7 +33,6 @@ public class TestActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		// TODO Auto-generated method stub
 		super.onCreate(arg0);
 		setContentView(R.layout.details_activity);
 		MyApplication.getInstance().addActivity(this);

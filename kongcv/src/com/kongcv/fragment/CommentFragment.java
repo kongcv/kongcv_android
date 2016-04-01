@@ -183,9 +183,11 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 		String urlImage=null;
 		for(int i=0;i<result.size();i++){
 			map=new HashMap<String, Object>();
+			if(result.get(i).getUser()!=null){
 			String user = result.get(i).getUser();
 			User userBean = gson.fromJson(user, User.class);
 			String username = userBean.getUsername();
+			map.put("userName",username);
 			ImageUser image = userBean.getImage();
 //			String createdat = userBean.getCreatedat();
 //			if(createdat!=null){
@@ -195,10 +197,11 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 			if(user.contains("url")){
 				urlImage=image.getUrl();
 			}
+			}
 			String gtmToLocal =	GTMDateUtil.GTMToLocal(result.get(i).getCreatedAt(),true);
 			map.put("tvTime", gtmToLocal);//时间
 			map.put("tvSay", result.get(i).getComment());//评论
-			map.put("userName",username);
+			
 			map.put("myratingbar",(float) result.get(i).getGrade());//星评论
 			map.put("userImage",urlImage);//图片
 			listData.add(map);

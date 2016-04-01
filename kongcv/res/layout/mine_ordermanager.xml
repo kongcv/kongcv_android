@@ -41,13 +41,13 @@
                     android:background="@drawable/detail_selector"
                     android:checked="true"
                     android:text="租用订单"
-                    android:textColor="@color/textcolor" />
+                    android:textColor="@drawable/bg_text_check_selector" />
                 <RadioButton
                     android:id="@+id/btn2"
                     style="@style/radioButton"
                     android:background="@drawable/detail_selector"
                     android:text="出租订单"
-                    android:textColor="@color/textcolor" />
+                   android:textColor="@drawable/bg_text_check_selector" />
             </RadioGroup>
         </RelativeLayout>
     </RelativeLayout>

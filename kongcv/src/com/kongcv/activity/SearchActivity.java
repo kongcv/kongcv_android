@@ -57,9 +57,10 @@ import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
-public class SearchActivity extends FragmentActivity implements AMapListViewListener
-		,OnItemClickListener, TextWatcher, OnGeocodeSearchListener,OnPoiSearchListener,
-		OnKeyListener, OnEditorActionListener, OnClickListener {
+public class SearchActivity extends FragmentActivity implements
+		AMapListViewListener, OnItemClickListener, TextWatcher,
+		OnGeocodeSearchListener, OnPoiSearchListener, OnKeyListener,
+		OnEditorActionListener, OnClickListener {
 	private String keyWord = "";// 要输入的poi搜索关键字
 	private int currentPage = 0;// 当前页面，从0开始计数
 	private PoiSearch.Query query;// Poi查询条件类
@@ -67,21 +68,22 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 
 	private AMapListView lv;
 	private EditText txtFind;
-	private ImageView ivDelete,ivSearch;
-	
-	private String city=null;
-	private String a[]=null;
-	
+	private ImageView ivDelete;
+	private TextView ivSearch;
+
+	private String city = null;
+	private String a[] = null;
+
 	private ProgressDialog progDialog = null;// 搜索时进度条
 	public static final String KEY[] = new String[] { "ivDaoH", "txtFind",
-			"ivCome","ivCity" };
+			"ivCome", "ivCity" };
 	private static GeocodeSearch geocoderSearch;// 经纬度搜索
 	private SearchAdapter adapter;
 	private PoiResult poiResult; // poi返回的结果
 	ArrayList<Map<String, Object>> mList;
 	private Drawable mDelete;
 	private int mCount;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,33 +91,35 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		MyApplication.getInstance().addActivity(this);
 		init();
 	}
-	
 	/**
 	 * 获取field
 	 */
-	private String getField(){
-		Bundle bundle=getIntent().getExtras();
+	private String getField() {
+		Bundle bundle = getIntent().getExtras();
 		String field = (String) bundle.get("hire_field");
 		return field;
 	}
+
 	/**
 	 * 获取到hire_method_id
-	 * @return 
+	 * 
+	 * @return
 	 */
-	private String getData(){
-		Bundle bundle=getIntent().getExtras();
+	private String getData() {
+		Bundle bundle = getIntent().getExtras();
 		String object = (String) bundle.get("objectId");
 		return object;
 	}
+
 	/**
 	 * 获取mode
 	 */
-	private String getMode(){
-		Bundle bundle =getIntent().getExtras();
+	private String getMode() {
+		Bundle bundle = getIntent().getExtras();
 		String object = (String) bundle.get("mode");
 		return object;
 	}
-	
+
 	/**
 	 * 初始化
 	 */
@@ -125,26 +129,27 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		lv.setAMapListViewListener(this);
 		lv.setPullLoadEnable(true);
 		lv.setPullRefreshEnable(false);
-		
+
 		txtFind = (EditText) findViewById(R.id.txtfind);
+
 		ivDelete = (ImageView) findViewById(R.id.iv_delete);
-		ivSearch = (ImageView) findViewById(R.id.iv_search);
+		ivSearch = (TextView) findViewById(R.id.iv_search);
 		ivBack = (ImageView) findViewById(R.id.iv_back);
-		
+
 		txtFind.addTextChangedListener(this);
 		ivDelete.setOnClickListener(this);
 		ivSearch.setOnClickListener(this);
 		ivBack.setOnClickListener(this);
-		
+
 		txtFind.setOnKeyListener(this);
 		txtFind.setOnEditorActionListener(this);
-		
+
 		mList = new ArrayList<Map<String, Object>>();
 		mCount = mList.size();
 		// 在初始化方法中设置图片的颜色
-		ivDelete.setImageResource(R.drawable.delete_item);
-		mDelete = this.getResources().getDrawable(
-				R.drawable.delete_item_unselector);
+		// ivDelete.setImageResource(R.drawable.delete_item);
+		// mDelete = this.getResources().getDrawable(
+		// R.drawable.delete_item_unselector);
 		// 初始化中设置GeocodeSearch侦听 请求获取经纬度
 		geocoderSearch = new GeocodeSearch(SearchActivity.this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
@@ -153,13 +158,10 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 	/**
 	 * 响应地理编码
 	 */
-	public static void getLatlon(String name,String city) {
+	public static void getLatlon(String name, String city) {
 		GeocodeQuery query = new GeocodeQuery(name, city);// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode，
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
-	
-	
-	
 	/**
 	 * 下一页
 	 */
@@ -171,25 +173,29 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 				poiSearch.setOnPoiSearchListener(this);
 				poiSearch.searchPOIAsyn();
 			} else {
-				ToastUtil.show(SearchActivity.this,
-						R.string.no_result);
+				ToastUtil.show(SearchActivity.this, R.string.no_result);
 			}
 		}
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
-		
 	}
-	
+
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
 	}
-	
+
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		String newText = s.toString().trim();
+		if (newText.length() > 0) {
+			
+				ivDelete.setImageResource(R.drawable.delete_item_unselector);
+		} else if (newText.length() <= 0) {
+			ivDelete.setImageResource(R.drawable.delete_item);
+		}
 		if (newText != null) {
 			adapter = new SearchAdapter(SearchActivity.this);
 			mList.clear();
@@ -206,9 +212,9 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 						map.put(KEY[0], R.drawable.iv_daoh);// 加入图片
 						map.put(KEY[1], tipList.get(i).getName());// 文字
 						map.put(KEY[2], R.drawable.iv_come);
-						String city=getCity(tipList.get(i).getDistrict());
+						String city = getCity(tipList.get(i).getDistrict());
 						map.put(KEY[3], city);
-	 					mList.add(map);
+						mList.add(map);
 					}
 					adapter = new SearchAdapter(SearchActivity.this);
 					adapter.setDataSource(mList);
@@ -216,17 +222,18 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 					adapter.notifyDataSetChanged();
 				}
 			}
+
 			private String getCity(String district) {
-				//广西壮族自治区玉林市玉州区
-				if(district.indexOf("市")>=0 ){
-					 a = district.split("市"); 
-					 city=a[0];
-					if(city.indexOf("省")>=0){
-						a = city.split("省"); 
-						city=a[1];
-					}else if(city.indexOf("区")>=0){
-						a = city.split("区"); 
-						city=a[1];
+				// 广西壮族自治区玉林市玉州区
+				if (district.indexOf("市") >= 0) {
+					a = district.split("市");
+					city = a[0];
+					if (city.indexOf("省") >= 0) {
+						a = city.split("省");
+						city = a[1];
+					} else if (city.indexOf("区") >= 0) {
+						a = city.split("区");
+						city = a[1];
 					}
 				}
 				return city;
@@ -239,6 +246,9 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		}
 	}
 
+	// <item android:drawable="@drawable/delete_item_unselector"
+	// android:state_pressed="true"></item>
+	// <item android:drawable="@drawable/delete_item"
 	/**
 	 * Button点击事件回调方法
 	 */
@@ -246,16 +256,15 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_search:
-			if(!TextUtils.isEmpty(txtFind.getText())){
+			if (!TextUtils.isEmpty(txtFind.getText())) {
 				searchButton();
-			}else{
+			} else {
 				mList.clear();
 				LatLng data = (LatLng) Data.getData("LatLng");
-				Location_info info=new Location_info();
+				Location_info info = new Location_info();
 				info.setLatitude(data.latitude);
 				info.setLongitude(data.longitude);
-				
-				Bundle bundle =new Bundle();
+				Bundle bundle = new Bundle();
 				bean = new SearchBean();
 				bean.setAddress(Data.getData("wk").toString());
 				bean.setHire_field(getField());
@@ -264,14 +273,15 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 				bean.setSkip(0);
 				bean.setLocation_info(info);
 				bean.setMode(getMode());
-				bundle.putString("mode", getMode());//道路社区
-				bundle.putString("objectId", getData());//车位id
+				bundle.putString("mode", getMode());// 道路社区
+				bundle.putString("objectId", getData());// 车位id
 				bundle.putString("getField", getField());//
 				bundle.putSerializable("bean", bean);
-				if(getHire_type()==2){
+				if (getHire_type() == 2) {
 					bundle.putInt("hire_type", getHire_type());
 				}
-				Intent intent = new Intent(SearchActivity.this,AMapActivity.class);
+				Intent intent = new Intent(SearchActivity.this,
+						AMapActivity.class);
 				intent.putExtras(bundle);
 				hintKbTwo();
 				startActivity(intent);
@@ -284,7 +294,7 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 			adapter.setDataSource(mList);
 			lv.setAdapter(adapter);
 			break;
-		case R.id.iv_back://点击回退到 fragment //隐藏软键盘
+		case R.id.iv_back:// 点击回退到 fragment //隐藏软键盘
 			hintKbTwo();
 			this.finish();
 			break;
@@ -292,18 +302,20 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 			break;
 		}
 	}
-	
+
 	/**
 	 * 关闭软键盘
 	 */
 	private void hintKbTwo() {
-		 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);            
-		 if(imm.isActive()&&getCurrentFocus()!=null){
-		    if (getCurrentFocus().getWindowToken()!=null) {
-		    	imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-		    }             
-		 }
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm.isActive() && getCurrentFocus() != null) {
+			if (getCurrentFocus().getWindowToken() != null) {
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+		}
 	}
+
 	/**
 	 * 点击搜索按钮
 	 */
@@ -311,6 +323,7 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		String newText = txtFind.getText().toString();
 		doSearchQuery(newText);
 	}
+
 	/**
 	 * 开始进行poi搜索
 	 */
@@ -324,7 +337,7 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		poiSearch.setOnPoiSearchListener(this);
 		poiSearch.searchPOIAsyn();
 	}
-	
+
 	/**
 	 * 获取地理坐标
 	 */
@@ -336,11 +349,11 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 					&& result.getGeocodeAddressList().size() > 0) {
 				GeocodeAddress address = result.getGeocodeAddressList().get(0);
 				LatLonPoint latLonPoint = address.getLatLonPoint();
-				if(latLonPoint!=null){
+				if (latLonPoint != null) {
 					try {
 						double latitude = latLonPoint.getLatitude();
 						double longitude = latLonPoint.getLongitude();
-						Location_info info=new Location_info();
+						Location_info info = new Location_info();
 						info.setLatitude(latitude);
 						info.setLongitude(longitude);
 						bean = new SearchBean();
@@ -351,7 +364,8 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 						bean.setSkip(0);
 						bean.setLocation_info(info);
 						bean.setMode(getMode());
-						ToastUtil.show(getApplicationContext(), latitude+":"+longitude+"!");
+						ToastUtil.show(getApplicationContext(), latitude + ":"
+								+ longitude + "!");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -369,16 +383,20 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 					+ rCode);
 		}
 	}
-	public static String s="";
+
+	public static String s = "";
 	public static LatLng latLng;
-	private Handler mHandler = new Handler() {};
+	private Handler mHandler = new Handler() {
+	};
 	private Inputtips inputTips;
 	private ImageView ivBack;
 	private SearchBean bean;
+
 	@Override
 	public void onRegeocodeSearched(RegeocodeResult arg0, int arg1) {
-		
+
 	}
+
 	/**
 	 * 设置点击事件
 	 */
@@ -386,73 +404,80 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		if(position!=0){
-			String str = (String) mList.get(position-1).get(SearchActivity.KEY[1]);
-			String strCity = (String) mList.get(position-1).get(SearchActivity.KEY[3]);
+		if (position != 0) {
+			String str = (String) mList.get(position - 1).get(
+					SearchActivity.KEY[1]);
+			String strCity = (String) mList.get(position - 1).get(
+					SearchActivity.KEY[3]);
 			String strSearch = getStrSearch(str);
-			getLatlon(strSearch,strCity);
-			
+			getLatlon(strSearch, strCity);
+
 			view.postDelayed(new Runnable() {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-				if(latLng!=null){
+					if (latLng != null) {
 						try {
 							double latitude = latLng.latitude;
 							double longitude = latLng.longitude;
 							// TODO Auto-generated method stub
-							Bundle bundle=new Bundle();
+							Bundle bundle = new Bundle();
 							bundle.putDouble("latitude", latitude);
 							bundle.putDouble("longitude", longitude);
-							Intent intent = new Intent(SearchActivity.this,AMapActivity.class);
+							Intent intent = new Intent(SearchActivity.this,
+									AMapActivity.class);
 							intent.putExtras(bundle);
 							hintKbTwo();
-							startActivity(intent); 
+							startActivity(intent);
 						} catch (Exception e) {
 							e.printStackTrace();
+						}
+					} else {
+						Bundle bundle = new Bundle();
+						bundle.putString("mode", getMode());// 道路社区
+						bundle.putString("objectId", getData());// 车位id
+						bundle.putString("getField", getField());//
+						bundle.putSerializable("bean", bean);
+						if (getHire_type() == 2) {
+							bundle.putInt("hire_type", getHire_type());
+						}
+						Intent intent = new Intent(SearchActivity.this,
+								AMapActivity.class);
+						intent.putExtras(bundle);
+						hintKbTwo();
+						startActivity(intent);
 					}
-				}else {
-					Bundle bundle =new Bundle();
-					bundle.putString("mode", getMode());//道路社区
-					bundle.putString("objectId", getData());//车位id
-					bundle.putString("getField", getField());//
-					bundle.putSerializable("bean", bean);
-					if(getHire_type()==2){
-						bundle.putInt("hire_type", getHire_type());
-					}
-					Intent intent = new Intent(SearchActivity.this,AMapActivity.class);
-					intent.putExtras(bundle);
-					hintKbTwo();
-					startActivity(intent);
 				}
-			}
-		}, 1000);
+			}, 1000);
 		}
 	}
-	
-	private String getStrSearch(String str){
-		 String param=null;
-		 if(str.indexOf("(")!=-1){
-			 String string=str.substring(0, str.indexOf("("));
-			 param=string+" "+str.substring(str.indexOf("(")+1,str.indexOf(")"));
-		 }else{
-			 param=str;
-		 }
+
+	private String getStrSearch(String str) {
+		String param = null;
+		if (str.indexOf("(") != -1) {
+			String string = str.substring(0, str.indexOf("("));
+			param = string + " "
+					+ str.substring(str.indexOf("(") + 1, str.indexOf(")"));
+		} else {
+			param = str;
+		}
 		return param;
 	}
+
 	/**
 	 * 判断
 	 */
-	private int getHire_type(){
-		Bundle bundle =getIntent().getExtras();
-		if(bundle.getInt("hire_type")==2){
+	private int getHire_type() {
+		Bundle bundle = getIntent().getExtras();
+		if (bundle.getInt("hire_type") == 2) {
 			return bundle.getInt("hire_type");
-		}else {
+		} else {
 			return -1;
 		}
 	}
+
 	/**
-	 * 回车键监听 回车之后走搜索 这一步没必要  现在都是下一步了
+	 * 回车键监听 回车之后走搜索 这一步没必要 现在都是下一步了
 	 */
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -461,12 +486,12 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		}
 		return false;
 	}
+
 	/**
 	 * 删除具体处理
 	 */
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_DEL) {
 			if (txtFind == null) {
 				adapter = new SearchAdapter(SearchActivity.this);
@@ -474,20 +499,17 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 				adapter.setDataSource(mList);
 				lv.setAdapter(adapter);
 			}
-		}/*else if(keyCode == KeyEvent.KEYCODE_BACK){
-			Intent intent=new Intent(this,HomeActivity.class);
-			intent.putExtra("back", 0);
-			startActivity(intent);
-			finish();
-		}*/
+		}
+
 		return false;
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
 	}
+
 	/**
 	 * 方法必须重写
 	 */
@@ -496,6 +518,7 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 		JPushInterface.onPause(this);
 		super.onPause();
 	}
+
 	/**
 	 * poi搜索
 	 */
@@ -503,10 +526,11 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
 		// TODO Auto-generated method stub
 	}
+
 	@Override
 	public void onPoiSearched(PoiResult result, int rCode) {
 		// TODO Auto-generated method stub
-		if(rCode==0){
+		if (rCode == 0) {
 			if (result != null && result.getQuery() != null) {// 搜索poi的结果
 				if (result.getQuery().equals(query)) {// 是否是同一条
 					poiResult = result;
@@ -514,7 +538,7 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 					mList.clear();
 					if (poiItems != null && poiItems.size() > 0) {
 						ArrayList<PoiItem> pois = result.getPois();
-						for(int i=0;i<pois.size();i++){
+						for (int i = 0; i < pois.size(); i++) {
 							Map<String, Object> map = new HashMap<String, Object>();
 							map.put(KEY[0], R.drawable.iv_daoh);// 加入图片
 							map.put(KEY[1], result.getPois().get(i).toString());// 文字
@@ -528,11 +552,10 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 					}
 				}
 			}
-		}else{
+		} else {
 			ToastUtil.show(SearchActivity.this, R.string.no_result);
 		}
 	}
-
 
 	/** 停止刷新， */
 	private void onLoad() {
@@ -550,44 +573,18 @@ public class SearchActivity extends FragmentActivity implements AMapListViewList
 			}
 		}, 2000);
 	}
+
 	@Override
 	public void onRefresh() {
 		// TODO Auto-generated method stub
 		searchButton();
 		onLoad();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

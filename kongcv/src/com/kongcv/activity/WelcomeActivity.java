@@ -35,7 +35,6 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener
 	private Handler mHandler=new Handler(){};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 		MyApplication.getInstance().addActivity(this);
@@ -43,7 +42,6 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener
 		initView();
 	}
 	private void initView() {
-		// TODO Auto-generated method stub
 		indicatorLayout = (LinearLayout) findViewById(R.id.indicator);
 		images = new int[] { R.drawable.welcome_01, R.drawable.welcome_02,
 				R.drawable.welcome_03,R.drawable.welcome_04 };

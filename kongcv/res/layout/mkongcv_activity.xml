@@ -61,12 +61,12 @@
             android:id="@+id/kcvgridview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:horizontalSpacing="0.0dip"
+            android:horizontalSpacing="0dp"
             android:listSelector="@null"
             android:numColumns="4"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="0.0dip" />
+            android:verticalSpacing="0dp" />
     </LinearLayout>
 
 </RelativeLayout>

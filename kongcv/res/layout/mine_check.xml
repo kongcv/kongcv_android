@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="42dp"
+                android:layout_marginLeft="40dp"
                 android:layout_toRightOf="@id/relativeLayout1"
                 android:text="@string/mine_rent"
                 android:textColor="@color/txt_pay"
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="42dp"
+                android:layout_marginRight="40dp"
                 android:layout_toRightOf="@id/hire"
                 android:src="@drawable/icon_youjiantou" />
         </RelativeLayout>
@@ -145,13 +145,13 @@
             style="@style/radioButton"
             android:background="@drawable/bg_shequ"
             android:checked="true"
-            android:text="社区"
+            android:text="个人"
             android:textColor="@color/textcolor" />
 
         <RadioButton
             android:id="@+id/btn2"
             style="@style/radioButton"
-            android:text="道路"
+            android:text="商业"
             android:textColor="@color/textcolor" />
     </RadioGroup>
 

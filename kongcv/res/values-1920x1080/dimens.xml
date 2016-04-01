@@ -2,7 +2,8 @@
    
     
      <!-- 空车位页面 -->
-      <dimen name="mkongcv_image_hight">65dp</dimen>
+      <dimen name="mkongcv_image_hight">70dp</dimen>
+      <dimen name="mkongcv_viewpager">285dp</dimen>
 </resources>
 
 

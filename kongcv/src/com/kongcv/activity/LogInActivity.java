@@ -215,6 +215,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 					String result = js.getString("result");
 					JSONObject objStr=new JSONObject(result);
 					String username = objStr.getString("username");
+					Log.e("loglog", result);
 					if(objStr.has("image")){
 							url = objStr.getJSONObject("image").getString("url");
 							bit = GetImage.getHttpBitmap(url);
