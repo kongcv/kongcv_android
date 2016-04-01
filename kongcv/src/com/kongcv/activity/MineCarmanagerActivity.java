@@ -53,11 +53,9 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 	private String hire_method_id, tail_num, gate_card,park_description, hire_start,hire_end,no_hire;
 	private boolean normal;
 	private int park_height ;
-	// private ProgressDialog pro = null;
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case 0:
@@ -77,7 +75,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 						mList, startList, endList);
 				listView.setAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
-				// pro.dismiss();
 				break;
 			default:
 				break;
@@ -91,7 +88,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 		setContentView(R.layout.mine_carmanager);
 		MyApplication.getInstance().addActivity(this);
 		mCache=ACacheUtils.get(getApplicationContext());
-		// pro = ProgressDialog.show(this, "", "正在获取获取数据，请稍候");
 		initView();
 		getInfoData();
 	}
@@ -122,7 +118,7 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 		try {
 			jso.put("user_id", mCache.getAsString("user_id"));
 			jso.put("skip", skip*10);
-			jso.put("limit", 10);//写死的10条每次请求
+			jso.put("limit", 10);
 			jso.put("mode", "community");
 			jso.put("action", "userid");
 			String doHttpsPost = PostCLientUtils.doHttpsPost(

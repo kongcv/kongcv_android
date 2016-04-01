@@ -34,24 +34,5 @@ public class BitmapCache implements ImageCache {
 		}
 	}
 
-			/*@Override
-			protected int sizeOf(String key, Bitmap value) {
-				// TODO Auto-generated method stub
-				return value.getRowBytes() * value.getHeight();
-			}
-		};
-	}
-
-	@Override
-	public Bitmap getBitmap(String url) {
-		// TODO Auto-generated method stub
-		return mCache.get(url);
-	}
-
-	@Override
-	public void putBitmap(String url, Bitmap bm) {
-		// TODO Auto-generated method stub
-		mCache.put(url, bm);
-	}*/
 }
 

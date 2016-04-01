@@ -15,19 +15,12 @@ import com.iflytek.cloud.speech.SpeechSynthesizer;
 import com.iflytek.cloud.speech.SpeechUser;
 import com.iflytek.cloud.speech.SynthesizerListener;
 
-/**
- * 语音播报组件
- */
 public class TTSController implements SynthesizerListener, AMapNaviListener {
 
     public static TTSController ttsManager;
     boolean isfinish = true;
     private Context mContext;
-    // 合成对象.
     private SpeechSynthesizer mSpeechSynthesizer;
-    /**
-     * 用户登录回调监听器.
-     */
     private SpeechListener listener = new SpeechListener() {
 
         @Override
@@ -60,26 +53,18 @@ public class TTSController implements SynthesizerListener, AMapNaviListener {
     public void init() {
         SpeechUser.getUser().login(mContext, null, null,
                 "appid=" + mContext.getString(R.string.app_id), listener);
-        // 初始化合成对象.
         mSpeechSynthesizer = SpeechSynthesizer.createSynthesizer(mContext);
         initSpeechSynthesizer();
     }
 
-    /**
-     * 使用SpeechSynthesizer合成语音，不弹出合成Dialog.
-     *
-     * @param
-     */
     public void playText(String playText) {
         if (!isfinish) {
             return;
         }
         if (null == mSpeechSynthesizer) {
-            // 创建合成对象.
             mSpeechSynthesizer = SpeechSynthesizer.createSynthesizer(mContext);
             initSpeechSynthesizer();
         }
-        // 进行语音合成.
         mSpeechSynthesizer.startSpeaking(playText, this);
 
     }
@@ -94,7 +79,6 @@ public class TTSController implements SynthesizerListener, AMapNaviListener {
     }
 
     private void initSpeechSynthesizer() {
-        // 设置发音人
         mSpeechSynthesizer.setParameter(SpeechConstant.VOICE_NAME,
                 mContext.getString(R.string.preference_default_tts_role));
         // 设置语速
@@ -111,38 +95,32 @@ public class TTSController implements SynthesizerListener, AMapNaviListener {
 
     @Override
     public void onBufferProgress(int arg0, int arg1, int arg2, String arg3) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onCompleted(SpeechError arg0) {
-        // TODO Auto-generated method stub
         isfinish = true;
     }
 
     @Override
     public void onSpeakBegin() {
-        // TODO Auto-generated method stub
         isfinish = false;
 
     }
 
     @Override
     public void onSpeakPaused() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onSpeakProgress(int arg0, int arg1, int arg2) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onSpeakResumed() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -154,13 +132,11 @@ public class TTSController implements SynthesizerListener, AMapNaviListener {
 
     @Override
     public void onArriveDestination() {
-        // TODO Auto-generated method stub
         this.playText("到达目的地");
     }
 
     @Override
     public void onArrivedWayPoint(int arg0) {
-        // TODO Auto-generated method stub
     }
 
     @Override
