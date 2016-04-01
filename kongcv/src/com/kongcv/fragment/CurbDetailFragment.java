@@ -360,10 +360,10 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 							if(mCommBean.getHandsel_state()==0){
 								tvCurbMoney.setText(mCommBean.getPrice()+"");
 							}else{
-								tvCurbMoney.setText((mCommBean.getMoney()-mCommBean.getPrice())+"");
+								tvCurbMoney.setText((mCommBean.getPrice()-mCommBean.getMoney())+"");
 							}
 						}else{
-							tvCurbMoney.setText("0");
+							tvCurbMoney.setText(mCommBean.getPrice()+"");
 						}
 					}else{
 						if (method.equals("计时/小时")) {

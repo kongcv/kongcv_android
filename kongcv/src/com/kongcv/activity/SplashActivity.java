@@ -28,7 +28,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.dialog.SpotsDialog;
 import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;

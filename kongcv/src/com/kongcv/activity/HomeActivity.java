@@ -38,10 +38,10 @@ import com.kongcv.fragment.CarwFragment;
 import com.kongcv.fragment.MineFragment;
 import com.kongcv.fragment.PublishFragment;
 import com.kongcv.global.FragOperManager;
+import com.kongcv.global.Information;
 import com.kongcv.global.MineCarmanagerBean;
 import com.kongcv.jPush.HttpHelper;
 import com.kongcv.utils.ACacheUtils;
-import com.kongcv.utils.Config;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.ExampleUtil;
 import com.kongcv.utils.Logger;
@@ -63,14 +63,6 @@ public class HomeActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
-		 * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		 * setTranslucentStatus(true); SystemBarTintManager tintManager = new
-		 * SystemBarTintManager(this);
-		 * tintManager.setStatusBarTintEnabled(true);
-		 * tintManager.setStatusBarTintResource(R.color.top_bg_color);// 通知栏所需颜色
-		 * }
-		 */
 		setContentView(R.layout.activity_home);
 		initLocation();
 		registerMessageReceiver();
@@ -186,10 +178,10 @@ public class HomeActivity extends FragmentActivity implements
 
 	private void resetAliasAndTags() {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("udid", Config.udid);
+		params.put("udid", Information.udid);
 		String userInfo = null;
 		try {
-			userInfo = HttpHelper.post(Config.URL, params);
+			userInfo = HttpHelper.post(Information.URL, params);
 			Logger.e("userInfo获取到的值是 ", userInfo);
 			String phoneId = (String) Data.getData("Config.udid");
 			JPushInterface.setAliasAndTags(HomeActivity.this, phoneId, null);

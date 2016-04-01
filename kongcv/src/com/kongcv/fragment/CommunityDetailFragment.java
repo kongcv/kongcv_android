@@ -55,6 +55,7 @@ import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
 import com.kongcv.global.PayOneBean;
 import com.kongcv.global.UserBean;
+import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.DateUtils;
@@ -97,7 +98,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 	private String mode;
 	private String park_id,field,CurbMineReceiver;
 	private double price;
-	
+	private String LastTradeId=null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -118,6 +119,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 	/**
 	 * 一开始获取到mode和park_id
 	 */
+	private ZyCommityAdapterBean mCommBean = null;
 	private void getModeAndParkId() {
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
@@ -128,6 +130,35 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 		mineSendFragment = arguments.getString("MineSendFragment");
 		strExtra = arguments.getString("stringExtra");
 		CurbMineReceiver=arguments.getString("CurbMineReceiver");//我收到的
+		mCommBean=(ZyCommityAdapterBean) arguments.getSerializable("mCommBean");//订单管理 跳撞过来的
+		if(mCommBean!=null){
+			Log.d("mCommBean getModeAndParkId", mCommBean.toString()+"<>");
+			if(mCommBean.getTrade_state()==1){
+				mInform.setVisibility(View.GONE);
+				mPay.setVisibility(View.GONE);
+				visiblePhone2(mCommBean);
+				tv_reserveOrpay.setText("交易完成");
+			}else{
+				/*if(mCommBean.getHandsel_state()==0){
+					LastTradeId=mCommBean.getObjectId();
+					mInform.setVisibility(View.GONE);
+					mPay.setVisibility(View.VISIBLE);
+					mPay.setOnClickListener(this);
+					tv_reserveOrpay.setText("定金");
+				}else if(mCommBean.getHandsel_state()==1){
+					LastTradeId=mCommBean.getObjectId();
+					mInform.setVisibility(View.GONE);
+					mPay.setVisibility(View.VISIBLE);
+					mPay.setOnClickListener(this);
+					tv_reserveOrpay.setText("差额");
+				}*/
+				LastTradeId=mCommBean.getObjectId();
+				mInform.setVisibility(View.GONE);
+				mPay.setVisibility(View.VISIBLE);
+				mPay.setOnClickListener(this);
+				tv_reserveOrpay.setText("金额");
+			}
+		}
 		if(park_id==null && price!=0){
 			park_id=(String) Data.getData("PARK_ID");
 		}
@@ -136,6 +167,19 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 		Details();
 	}
 	
+	private void visiblePhone2(ZyCommityAdapterBean mCommBean2) {
+		// TODO Auto-generated method stub
+		mListPhone.setVisibility(View.VISIBLE);
+		phoneList = new ArrayList<String>();
+		phoneList.add(mCommBean.getMobilePhoneNumber());
+		if(phoneList!=null && phoneList.size()>0){
+			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneList);
+			mListPhone.setAdapter(phoneNumberAdapter);
+			phoneNumberAdapter.notifyDataSetChanged();
+		    ToastUtil.fixListViewHeight(mListPhone,-1);
+		}
+	}
+
 	/**
 	 * 打开jpush消息通知调到页面并返回携带的数据
 	 */
@@ -152,23 +196,22 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				refuse.setVisibility(View.VISIBLE);
 				rl_time_pay_start.setVisibility(View.GONE);
 				rl_time_pay_end.setVisibility(View.GONE);
-
 				mInform.setVisibility(View.GONE);// 求租人 订单确认不可见
 				mPay.setVisibility(View.GONE);// 求租人 支付按钮可见
 			} else if (stringExtra != null
 					&& "verify_accept".equals(fromJson.getPush_type())) {
 				rl_time_pay_start.setVisibility(View.VISIBLE);
 				rl_time_pay_end.setVisibility(View.VISIBLE);
-
 				refuse.setVisibility(View.GONE);// 出租人接收或拒绝按钮不可见
 				consent.setVisibility(View.GONE);// 出租人接收或拒绝按钮不可见
-
 				mInform.setVisibility(View.GONE);// 求租人 订单确认不可见
 				mPay.setVisibility(View.VISIBLE);// 求租人 支付按钮可见
 				visiblePhone(stringExtra);
 			}else if(stringExtra != null
 					&& "verify_reject".equals(fromJson.getPush_type())){
-				
+				mInform.setVisibility(View.GONE);
+				mPay.setVisibility(View.GONE);
+				mPay.setOnClickListener(null);
 			}
 		}
 	}
@@ -289,7 +332,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				} else {
 					txt_CarRight.setText("否");
 				}
-				if(result.getPark_space()==0){
+				if(result.getPark_space()==1){
 					mInform.setText("此车位已出租");
 					mInform.setOnClickListener(null);
 				}
@@ -342,7 +385,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice()+"");
-//					visiblePhone(stringExtra);
+					visiblePhone(stringExtra);
 				}
 				if(strExtra!=null){
 					JpushBean fromJson = gson.fromJson(strExtra, JpushBean.class);
@@ -380,6 +423,9 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 					bundle.putString("stringExtra", mineSendFragment);
 				}else if(CurbMineReceiver!=null){
 					bundle.putString("stringExtra", CurbMineReceiver);
+				}
+				if(mCommBean!=null){
+					bundle.putSerializable("mCommBean", mCommBean);
 				}
 				Intent intent = new Intent(getActivity(), PayActivity.class);
 				intent.putExtras(bundle);
@@ -443,19 +489,23 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 					index=i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
 					payOneBean.setHire_method_id(hire_method_id);
-					if(method.equals("计时/小时")){
-						if(hire_price.get(i).indexOf("/")!=-1){
-							String[] split = hire_price.get(i).split("/");
-							double p=Integer.parseInt(split[0])/4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-							tv_pay_number.setText(df.format(p).toString());
-						}else{
-							double p=Integer.parseInt(hire_price.get(i))/4.00;
-							java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-							tv_pay_number.setText(df.format(p).toString());
-						}
-					}
 					
+					if(mCommBean==null){
+						if(method.equals("计时/小时")){
+							if(hire_price.get(i).indexOf("/")!=-1){
+								String[] split = hire_price.get(i).split("/");
+								double p=Integer.parseInt(split[0])/4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+								tv_pay_number.setText(df.format(p).toString());
+							}else{
+								double p=Integer.parseInt(hire_price.get(i))/4.00;
+								java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
+								tv_pay_number.setText(df.format(p).toString());
+							}
+						}
+					}else{
+						tv_pay_number.setText(mCommBean.getPrice()+"");
+					}
 				}
 				if(stringExtra!=null ){
 					Gson gson=new Gson();
@@ -466,12 +516,21 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 					}
 				}
 			}
-			for (int i = 0; i < hire_price.size(); i++) {
+			if(mCommBean==null){
+				for (int i = 0; i < hire_price.size(); i++) {
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put(KEY[0], hire_name.get(i));// 地点
+					map.put(KEY[1],
+							hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
+					map.put(KEY[2], hire_price.get(i));// 价格
+					dataList.add(map);
+				}
+			}else{
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put(KEY[0], hire_name.get(i));// 地点
+				map.put(KEY[0], hire_name.get(index));// 地点
 				map.put(KEY[1],
-						hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
-				map.put(KEY[2], hire_price.get(i));// 价格
+						hire_time.get(index).equals("0") ? "" : hire_time.get(index));// 事件a
+				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
 			if (dataList != null) {
@@ -537,35 +596,42 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 			pushMsgState2.start();
 			refuseJPush();
 		case R.id.detail_pay_btn:
-			try {
-				Gson gson3 = new Gson();
-				PayOneBean data = payOneBean;
-				if(data!=null){
-					JpushBean jpushBean3=null;
-					if(stringExtra!=null){
-						jpushBean3 = gson3.fromJson(stringExtra, JpushBean.class);
-					}else{
-						jpushBean3 = gson3.fromJson(mineSendFragment, JpushBean.class);
-					}
-					String hire_method_id = jpushBean3.getHire_method_id();
-					String hire_method = result.getHire_method();
-					JSONArray array = new JSONArray(hire_method);
-						for(int i=0;i<array.length();i++){
-							if(array.getJSONObject(i).getString("objectId").equals(hire_method_id)){
-								String string = result.getHire_price().get(i);
-								data.setUnit_price(string);
-							}
+			if(LastTradeId==null){
+				try {
+					Gson gson3 = new Gson();
+					PayOneBean data = payOneBean;
+					if(data!=null){
+						JpushBean jpushBean3=null;
+						if(stringExtra!=null){
+							jpushBean3 = gson3.fromJson(stringExtra, JpushBean.class);
+						}else{
+							jpushBean3 = gson3.fromJson(mineSendFragment, JpushBean.class);
 						}
-						data.setPrice(jpushBean3.getPrice());
-						String json = gson3.toJson(data);
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
-						doPay(json);
+						String hire_method_id = jpushBean3.getHire_method_id();
+						String hire_method = result.getHire_method();
+						JSONArray array = new JSONArray(hire_method);
+							for(int i=0;i<array.length();i++){
+								if(array.getJSONObject(i).getString("objectId").equals(hire_method_id)){
+									String string = result.getHire_price().get(i);
+									data.setUnit_price(string);
+								}
+							}
+							data.setPrice(jpushBean3.getPrice());
+							String json = gson3.toJson(data);
+							Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
+							Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
+							Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json+">>>>>>>>>>::");
+							doPay(json);
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			}else{
+				Message msg = mHandler.obtainMessage();
+				msg.what = 1;
+				msg.obj = LastTradeId;
+				mHandler.sendMessage(msg);
 			}
 			break;
 		case R.id.time_pay_start:

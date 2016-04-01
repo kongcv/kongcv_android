@@ -107,9 +107,9 @@ public class DetailsFragment extends Fragment implements
 				field = extras.getString("field");
 			}
 			mFragmentList = new ArrayList<Fragment>();
-			/*stringExtra = extras.getString("MineSendFragment");
+			stringExtra = extras.getString("MineSendFragment");
 			string = extras.getString("stringExtra");
-			CurbMineReceiver = extras.getString("CurbMineReceiver");*/
+			CurbMineReceiver = extras.getString("CurbMineReceiver");
 			if(extras.containsKey("mCommBean"))
 			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
 			if (mode != null && park_id != null) {
@@ -131,7 +131,6 @@ public class DetailsFragment extends Fragment implements
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);
 					args.putDouble("price", price);
-
 					args.putString("field", field);
 					curbDetailFragment.setArguments(args);
 					mFragmentList.add(curbDetailFragment);
@@ -152,6 +151,9 @@ public class DetailsFragment extends Fragment implements
 					}
 					if (CurbMineReceiver != null) {
 						args.putString("CurbMineReceiver", CurbMineReceiver);
+					}
+					if(mCommBean!=null){
+						args.putSerializable("mCommBean", mCommBean);
 					}
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);

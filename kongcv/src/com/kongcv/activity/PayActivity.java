@@ -116,12 +116,17 @@ public class PayActivity extends Activity implements OnClickListener {
 				info.setMode(mCommBean.getMode());
 				info.setOpen_id("123456");
 				info.setDevice_type(mCommBean.getDevice_type());//
-				if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
-					info.setPay_type("handsel");
-					price=mCommBean.getMoney()+"";
+				if(mCommBean.getMode().equals("curb")){
+					if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
+						info.setPay_type("handsel");
+						price=mCommBean.getMoney()+"";
+					}else{
+						info.setPay_type("balance");
+						price=(mCommBean.getPrice()-mCommBean.getMoney())+"";
+					}
 				}else{
-					info.setPay_type("balance");
-					price=(mCommBean.getMoney()-mCommBean.getPrice())+"";
+					info.setPay_type("money");
+					price=mCommBean.getMoney()+"";
 				}
 				info.setPhone(phoneNumber);
 				info.setSubject(mCommBean.getAddress());
