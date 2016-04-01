@@ -356,7 +356,15 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					index = i;
 					hire_method_id = array.getJSONObject(i).getString("objectId");
 					if(mCommBean!=null){
-						tvCurbMoney.setText(mCommBean.getPrice()+"");
+						if(mCommBean.getTrade_state()==0){
+							if(mCommBean.getHandsel_state()==0){
+								tvCurbMoney.setText(mCommBean.getPrice()+"");
+							}else{
+								tvCurbMoney.setText((mCommBean.getMoney()-mCommBean.getPrice())+"");
+							}
+						}else{
+							tvCurbMoney.setText("0");
+						}
 					}else{
 						if (method.equals("计时/小时")) {
 							if (hire_price.get(i).indexOf("/") != -1) {

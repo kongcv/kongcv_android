@@ -53,7 +53,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private ZyCurbAdapter zydapter;
 	private CzCommityAdapter czdapter;
 	private View view;
-	private double price;
+	private double price,money;
 	private int trade_state;
 	private List<ZyCommityAdapterBean> beansList;
 	private String[] str = new String[] { "customer", "hirer" };
@@ -229,6 +229,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					}
 					handsel_state=array.getJSONObject(i).getInt("handsel_state");//0没有定金1支付差额"trade_state": 1,
 					// 价钱
+					money = array.getJSONObject(i).getDouble("money");
 					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
 					objectId = array.getJSONObject(i).getString("objectId");
@@ -243,18 +244,18 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					JSONObject objStrs = new JSONObject(hire_method);
 					method = objStrs.getString("method");
 					field = objStrs.getString("field");
-					user = array.getJSONObject(i).getString("user");
-					JSONObject userObj=new JSONObject(user);
-					device_type = userObj.getString("device_type");
-					device_token = userObj.getString("device_token");
-					mCommBean.setDevice_token(device_token);
-					mCommBean.setDevice_type(device_type);
 					mCommBean.setField(field);
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
 					String hirer = array.getJSONObject(i).getString("hirer");
 					JSONObject hirerObj=new JSONObject(hirer);
 					mobilePhoneNumber = hirerObj.getString("mobilePhoneNumber");
+					device_type = hirerObj.getString("device_type");
+					device_token = hirerObj.getString("device_token");
+					mCommBean.setDevice_token(device_token);
+					mCommBean.setDevice_type(device_type);
+					
+					mCommBean.setMoney(money);
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setPark_curb(park_curb);

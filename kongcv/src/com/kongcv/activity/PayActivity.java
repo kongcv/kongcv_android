@@ -118,8 +118,10 @@ public class PayActivity extends Activity implements OnClickListener {
 				info.setDevice_type(mCommBean.getDevice_type());//
 				if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
 					info.setPay_type("handsel");
+					price=mCommBean.getMoney()+"";
 				}else{
 					info.setPay_type("balance");
+					price=(mCommBean.getMoney()-mCommBean.getPrice())+"";
 				}
 				info.setPhone(phoneNumber);
 				info.setSubject(mCommBean.getAddress());
@@ -194,6 +196,8 @@ public class PayActivity extends Activity implements OnClickListener {
 		try {
 			JSONObject object = new JSONObject();
 			object.put("trade_id", trade_id);
+			Log.d("插入交易数据>>><<<", JsonStrUtils.JsonStr(object));
+			Log.d("插入交易数据>>><<<", JsonStrUtils.JsonStr(object));
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_TRADE_BILLDATA,
 					JsonStrUtils.JsonStr(object));

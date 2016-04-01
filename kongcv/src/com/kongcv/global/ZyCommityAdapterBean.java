@@ -11,6 +11,7 @@ public class ZyCommityAdapterBean implements Serializable{
 	private String hire_start;
 	private String hire_end;
 	private double price;
+	private double money;
 	private String objectId;//订单号
 	private String method;//租用方式
 	private String username;
@@ -28,6 +29,13 @@ public class ZyCommityAdapterBean implements Serializable{
 	private String device_token;
 	
 	
+	
+	public double getMoney() {
+		return money;
+	}
+	public void setMoney(double money) {
+		this.money = money;
+	}
 	public String getDevice_type() {
 		return device_type;
 	}
