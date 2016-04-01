@@ -80,6 +80,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								park_id=beansList.get(position-1).getParkId();
 								field=beansList.get(position-1).getField();
 								mCommBean=beansList.get(position-1);
+								mCommBean.setMode("curb");
 						//		if (0 == trade_state) {
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
