@@ -42,7 +42,7 @@
             android:gravity="center"
             android:text="错时日间/天"
             android:textColor="@color/txt_date"
-            android:textSize="@dimen/item_txtSizeTwo" />
+            android:textSize="@dimen/publish_txtSize"  />
 
       
         <TextView
@@ -54,7 +54,7 @@
             android:gravity="center"
             android:text="12:30--14:30"
             android:textColor="@color/txt_date"
-            android:textSize="@dimen/item_txtSizeTwo" />
+             android:textSize="@dimen/publish_txtSize"  />
           <TextView
             android:id="@+id/type_tv_price"
             android:layout_width="0dp"
@@ -64,7 +64,7 @@
             android:gravity="center"
             android:text="12/天"
             android:textColor="@color/txt_date"
-            android:textSize="@dimen/item_txtSizeTwo" />
+      android:textSize="@dimen/publish_txtSize" />
         
     </LinearLayout>
 

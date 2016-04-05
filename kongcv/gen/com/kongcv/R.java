@@ -168,10 +168,8 @@ containing a value of this type.
         public static final int home_log=0x7f06000a;
         public static final int home_textSize=0x7f06000b;
         public static final int homeactivity_item_ImagepaddingTop=0x7f060036;
-        public static final int homeactivity_item_height=0x7f060046;
         public static final int homeactivity_item_imageview=0x7f060034;
         /**  homeactivity标题栏的字体
- homeactivity标题栏的字体
  homeactivity标题栏的字体
          */
         public static final int homeactivity_item_textSize=0x7f060033;
@@ -215,7 +213,6 @@ containing a value of this type.
         public static final int margin_Size10=0x7f06000c;
         /**  minefragment页面布局上 
  minefragment页面布局上 
- minefragment页面布局上 
          */
         public static final int minefragment_header=0x7f06002f;
         public static final int minefragment_txtSize=0x7f060030;
@@ -228,7 +225,6 @@ containing a value of this type.
         public static final int mkongcv_margintop=0x7f06002c;
         /**  发布页面的listview 
  空车位页面布局 1184x720
- 空车位页面布局  1280x720
          */
         public static final int mkongcv_text_size=0x7f060029;
         public static final int mkongcv_viewpager=0x7f06002b;
@@ -242,7 +238,6 @@ containing a value of this type.
         public static final int public_header_paddingLeft=0x7f060038;
         public static final int public_park_detail=0x7f06003a;
         /**  发布页面 
- 发布页面 
  发布页面 
          */
         public static final int publish_txtSize=0x7f060037;
@@ -390,68 +385,67 @@ containing a value of this type.
         public static final int kongcv_unselector=0x7f02007a;
         public static final int location_marker=0x7f02007b;
         public static final int logo=0x7f02007c;
-        public static final int logo_icon=0x7f02007d;
-        public static final int logo_update=0x7f02007e;
-        public static final int logos=0x7f02007f;
-        public static final int mine_defaultcash=0x7f020080;
-        public static final int mine_pressedcash=0x7f020081;
-        public static final int mine_qianbao=0x7f020082;
-        public static final int mine_selector=0x7f020083;
-        public static final int mine_tixain_selector=0x7f020084;
-        public static final int mine_unselector=0x7f020085;
-        public static final int mine_wallet_pressed=0x7f020086;
-        public static final int myratingbar=0x7f020087;
-        public static final int myratingbar_off=0x7f020088;
-        public static final int myratingbar_on=0x7f020089;
-        public static final int order_commit=0x7f02008a;
-        public static final int page_indicator_focused=0x7f02008b;
-        public static final int page_indicator_unfocused=0x7f02008c;
-        public static final int point=0x7f02008d;
-        public static final int point_yellow=0x7f02008e;
-        public static final int point_yellow_lighted=0x7f02008f;
-        public static final int point_yellow_normal=0x7f020090;
-        public static final int press_left_text_bg=0x7f020091;
-        public static final int press_right_text_bg=0x7f020092;
-        public static final int publish_edittext=0x7f020093;
-        public static final int publish_selector=0x7f020094;
-        public static final int publish_unselector=0x7f020095;
-        public static final int pull_over=0x7f020096;
-        public static final int search_bk=0x7f020097;
-        public static final int select_view_bg=0x7f020098;
-        public static final int selector_button_start=0x7f020099;
-        public static final int shape_bottom_corner_no_top_line=0x7f02009a;
-        public static final int shape_no_corner_without_bottom=0x7f02009b;
-        public static final int shape_top_corner_no_bottom_line=0x7f02009c;
-        public static final int slide_button=0x7f02009d;
-        public static final int sousuo=0x7f02009e;
-        public static final int splash_one=0x7f02009f;
-        public static final int start=0x7f0200a0;
-        public static final int start_uri=0x7f0200a1;
-        public static final int switch_background=0x7f0200a2;
-        public static final int tab_01_bg=0x7f0200a3;
-        public static final int tab_02_bg=0x7f0200a4;
-        public static final int tab_03_bg=0x7f0200a5;
-        public static final int tag_bg=0x7f0200a6;
-        public static final int tag_header=0x7f0200a7;
-        public static final int tijiaocomment=0x7f0200a8;
-        public static final int timer_end=0x7f0200a9;
-        public static final int timer_start=0x7f0200aa;
-        public static final int type_car=0x7f0200ab;
-        public static final int type_date=0x7f0200ac;
-        public static final int type_line=0x7f0200ad;
-        public static final int type_submit=0x7f0200ae;
-        public static final int userinfo_dialog_bg=0x7f0200af;
-        public static final int weixin_hdpi=0x7f0200b0;
-        public static final int weixin_xdpi=0x7f0200b1;
-        public static final int weixin_xxdpi=0x7f0200b2;
-        public static final int welcome_01=0x7f0200b3;
-        public static final int welcome_02=0x7f0200b4;
-        public static final int welcome_03=0x7f0200b5;
-        public static final int welcome_04=0x7f0200b6;
-        public static final int xlistview_arrow=0x7f0200b7;
-        public static final int zhifubao_hdpi=0x7f0200b8;
-        public static final int zhifubao_xdpi=0x7f0200b9;
-        public static final int zhifubao_xxdpi=0x7f0200ba;
+        public static final int logo_update=0x7f02007d;
+        public static final int logos=0x7f02007e;
+        public static final int mine_defaultcash=0x7f02007f;
+        public static final int mine_pressedcash=0x7f020080;
+        public static final int mine_qianbao=0x7f020081;
+        public static final int mine_selector=0x7f020082;
+        public static final int mine_tixain_selector=0x7f020083;
+        public static final int mine_unselector=0x7f020084;
+        public static final int mine_wallet_pressed=0x7f020085;
+        public static final int myratingbar=0x7f020086;
+        public static final int myratingbar_off=0x7f020087;
+        public static final int myratingbar_on=0x7f020088;
+        public static final int order_commit=0x7f020089;
+        public static final int page_indicator_focused=0x7f02008a;
+        public static final int page_indicator_unfocused=0x7f02008b;
+        public static final int point=0x7f02008c;
+        public static final int point_yellow=0x7f02008d;
+        public static final int point_yellow_lighted=0x7f02008e;
+        public static final int point_yellow_normal=0x7f02008f;
+        public static final int press_left_text_bg=0x7f020090;
+        public static final int press_right_text_bg=0x7f020091;
+        public static final int publish_edittext=0x7f020092;
+        public static final int publish_selector=0x7f020093;
+        public static final int publish_unselector=0x7f020094;
+        public static final int pull_over=0x7f020095;
+        public static final int search_bk=0x7f020096;
+        public static final int select_view_bg=0x7f020097;
+        public static final int selector_button_start=0x7f020098;
+        public static final int shape_bottom_corner_no_top_line=0x7f020099;
+        public static final int shape_no_corner_without_bottom=0x7f02009a;
+        public static final int shape_top_corner_no_bottom_line=0x7f02009b;
+        public static final int slide_button=0x7f02009c;
+        public static final int sousuo=0x7f02009d;
+        public static final int splash_one=0x7f02009e;
+        public static final int start=0x7f02009f;
+        public static final int start_uri=0x7f0200a0;
+        public static final int switch_background=0x7f0200a1;
+        public static final int tab_01_bg=0x7f0200a2;
+        public static final int tab_02_bg=0x7f0200a3;
+        public static final int tab_03_bg=0x7f0200a4;
+        public static final int tag_bg=0x7f0200a5;
+        public static final int tag_header=0x7f0200a6;
+        public static final int tijiaocomment=0x7f0200a7;
+        public static final int timer_end=0x7f0200a8;
+        public static final int timer_start=0x7f0200a9;
+        public static final int type_car=0x7f0200aa;
+        public static final int type_date=0x7f0200ab;
+        public static final int type_line=0x7f0200ac;
+        public static final int type_submit=0x7f0200ad;
+        public static final int userinfo_dialog_bg=0x7f0200ae;
+        public static final int weixin_hdpi=0x7f0200af;
+        public static final int weixin_xdpi=0x7f0200b0;
+        public static final int weixin_xxdpi=0x7f0200b1;
+        public static final int welcome_01=0x7f0200b2;
+        public static final int welcome_02=0x7f0200b3;
+        public static final int welcome_03=0x7f0200b4;
+        public static final int welcome_04=0x7f0200b5;
+        public static final int xlistview_arrow=0x7f0200b6;
+        public static final int zhifubao_hdpi=0x7f0200b7;
+        public static final int zhifubao_xdpi=0x7f0200b8;
+        public static final int zhifubao_xxdpi=0x7f0200b9;
     }
     public static final class id {
         public static final int Delete=0x7f0a0130;
@@ -852,51 +846,50 @@ containing a value of this type.
         public static final int grid_item=0x7f030028;
         public static final int horizontalscrollview_item=0x7f030029;
         public static final int info_feedback=0x7f03002a;
-        public static final int listview_activity=0x7f03002b;
-        public static final int listview_item=0x7f03002c;
-        public static final int load=0x7f03002d;
-        public static final int lv_item=0x7f03002e;
-        public static final int marker_info_window=0x7f03002f;
-        public static final int mine_aboutus=0x7f030030;
-        public static final int mine_activity=0x7f030031;
-        public static final int mine_addcredit=0x7f030032;
-        public static final int mine_carmanager=0x7f030033;
-        public static final int mine_carnumber=0x7f030034;
-        public static final int mine_check=0x7f030035;
-        public static final int mine_credit=0x7f030036;
-        public static final int mine_credit_type=0x7f030037;
-        public static final int mine_credit_type_list=0x7f030038;
-        public static final int mine_info_item=0x7f030039;
-        public static final int mine_infonotiy=0x7f03003a;
-        public static final int mine_information=0x7f03003b;
-        public static final int mine_listview_item=0x7f03003c;
-        public static final int mine_modifycredit=0x7f03003d;
-        public static final int mine_ordermanager=0x7f03003e;
-        public static final int mine_popu=0x7f03003f;
-        public static final int mine_shezhi=0x7f030040;
-        public static final int mine_wallet=0x7f030041;
-        public static final int mine_withdrawcash=0x7f030042;
-        public static final int minecheckhistory=0x7f030043;
-        public static final int minereceivefragment=0x7f030044;
-        public static final int minesendfragment=0x7f030045;
-        public static final int mkongcv_activity=0x7f030046;
-        public static final int multi_spinner_item=0x7f030047;
-        public static final int mydialog_user=0x7f030048;
-        public static final int mypicker_dialog=0x7f030049;
-        public static final int navis_activity=0x7f03004a;
-        public static final int normal_car=0x7f03004b;
-        public static final int notify_update_layout=0x7f03004c;
-        public static final int order_item=0x7f03004d;
-        public static final int public_type_item=0x7f03004e;
-        public static final int publish_activity=0x7f03004f;
-        public static final int publish_community_activity=0x7f030050;
-        public static final int publish_test=0x7f030051;
-        public static final int publish_type_dialog=0x7f030052;
-        public static final int spinner_activity=0x7f030053;
-        public static final int startnavis_activity=0x7f030054;
-        public static final int write_comment=0x7f030055;
-        public static final int xlistview_footer=0x7f030056;
-        public static final int xlistview_header=0x7f030057;
+        public static final int listview_item=0x7f03002b;
+        public static final int load=0x7f03002c;
+        public static final int lv_item=0x7f03002d;
+        public static final int marker_info_window=0x7f03002e;
+        public static final int mine_aboutus=0x7f03002f;
+        public static final int mine_activity=0x7f030030;
+        public static final int mine_addcredit=0x7f030031;
+        public static final int mine_carmanager=0x7f030032;
+        public static final int mine_carnumber=0x7f030033;
+        public static final int mine_check=0x7f030034;
+        public static final int mine_credit=0x7f030035;
+        public static final int mine_credit_type=0x7f030036;
+        public static final int mine_credit_type_list=0x7f030037;
+        public static final int mine_info_item=0x7f030038;
+        public static final int mine_infonotiy=0x7f030039;
+        public static final int mine_information=0x7f03003a;
+        public static final int mine_listview_item=0x7f03003b;
+        public static final int mine_modifycredit=0x7f03003c;
+        public static final int mine_ordermanager=0x7f03003d;
+        public static final int mine_popu=0x7f03003e;
+        public static final int mine_shezhi=0x7f03003f;
+        public static final int mine_wallet=0x7f030040;
+        public static final int mine_withdrawcash=0x7f030041;
+        public static final int minecheckhistory=0x7f030042;
+        public static final int minereceivefragment=0x7f030043;
+        public static final int minesendfragment=0x7f030044;
+        public static final int mkongcv_activity=0x7f030045;
+        public static final int multi_spinner_item=0x7f030046;
+        public static final int mydialog_user=0x7f030047;
+        public static final int mypicker_dialog=0x7f030048;
+        public static final int navis_activity=0x7f030049;
+        public static final int normal_car=0x7f03004a;
+        public static final int notify_update_layout=0x7f03004b;
+        public static final int order_item=0x7f03004c;
+        public static final int public_type_item=0x7f03004d;
+        public static final int publish_activity=0x7f03004e;
+        public static final int publish_community_activity=0x7f03004f;
+        public static final int publish_test=0x7f030050;
+        public static final int publish_type_dialog=0x7f030051;
+        public static final int spinner_activity=0x7f030052;
+        public static final int startnavis_activity=0x7f030053;
+        public static final int write_comment=0x7f030054;
+        public static final int xlistview_footer=0x7f030055;
+        public static final int xlistview_header=0x7f030056;
     }
     public static final class menu {
         public static final int main=0x7f090000;

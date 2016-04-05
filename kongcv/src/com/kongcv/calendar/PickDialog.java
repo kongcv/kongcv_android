@@ -149,8 +149,6 @@ public class PickDialog extends Dialog implements OnClickListener,CallBack{
 			break;
 		case R.id.subscibe_circle_view://点击出租的话 在发布页面显示信息
 			
-			
-			
 			pickDialogListener.refreshPriorityUI((String) Data.getData("clickDate"));
 			dismiss();
  		}

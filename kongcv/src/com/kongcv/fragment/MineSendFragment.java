@@ -38,7 +38,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	private AMapListView lv;
 	private ArrayList<InfoBean> mList;
 	private InfoNotifyAdapter infoAdapter;
-	//private ProgressDialog pro=null;
 	private ACacheUtils mCache;
 	
 	private View view;
@@ -50,7 +49,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 			
 			infoAdapter = new InfoNotifyAdapter(getActivity(), mLists);
 			lv.setAdapter(infoAdapter);
-			//pro.dismiss();
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
@@ -98,8 +96,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	}
 	private void initView() {
 		lv = (AMapListView) view.findViewById(R.id.lv);
-		//pro=ProgressDialog.show(getActivity(), "", "正在获取数据，请稍候");
-	//	lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
+		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
 
@@ -225,7 +222,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	// 刷新
 	@Override
 	public void onRefresh() {
-		mHandler.postAtTime(new Runnable() {
+		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				getData1();
@@ -238,7 +235,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	// 加载更多
 	@Override
 	public void onLoadMore() {
-		mHandler.postAtTime(new Runnable() {
+		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				getData2();

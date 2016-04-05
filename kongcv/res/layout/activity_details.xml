@@ -5,7 +5,7 @@
     android:background="@drawable/bg_white"
     android:orientation="vertical" >
 
-     <RelativeLayout
+    <RelativeLayout
         android:id="@+id/rl_publish_header"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
@@ -19,6 +19,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="28dp"
             android:src="@drawable/iv_break" />
+
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="210dp"
@@ -30,28 +31,29 @@
                 android:id="@+id/radio"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/details_group"
                 android:layout_centerInParent="true"
+                android:background="@drawable/details_group"
                 android:orientation="horizontal" >
 
                 <RadioButton
                     android:id="@+id/btn1"
                     style="@style/radioButton"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/detail_selector"
                     android:checked="true"
                     android:text="详情"
-                    android:textColor="@drawable/bg_text_check_selector" 
-                    />
+                    android:textColor="@drawable/bg_text_check_selector"
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:id="@+id/btn2"
                     style="@style/radioButton"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/detail_selector"
                     android:text="评论"
-                   android:textColor="@drawable/bg_text_check_selector" 
-                     />
-
+                    android:textColor="@drawable/bg_text_check_selector"
+                    android:textSize="16dp" />
             </RadioGroup>
 
             <ImageView
@@ -65,16 +67,17 @@
             android:id="@+id/details_daoh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/iv_back"
             android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
             android:src="@drawable/detail_daoh" />
     </RelativeLayout>
-    
-	<android.support.v4.view.ViewPager
+
+    <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/rl_publish_header" >
     </android.support.v4.view.ViewPager>
+
 </LinearLayout>

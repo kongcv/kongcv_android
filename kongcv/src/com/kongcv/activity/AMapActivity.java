@@ -785,12 +785,12 @@ public class AMapActivity extends FragmentActivity implements
 		switch (v.getId()) {
 		case R.id.iv_map_flexible:
 			if (flag) {
-				setAItemNum.setImageResource(R.drawable.item_show_sh);
+				setAItemNum.setImageResource(R.drawable.item_show);
 				ToastUtil.fixListViewHeight(mListView, 2);
 				setMapHeight();
 				flag = !flag;
 			} else {
-				setAItemNum.setImageResource(R.drawable.item_show);
+				setAItemNum.setImageResource(R.drawable.item_show_sh);
 				ToastUtil.fixListViewHeight(mListView, -1);
 				initMapHeight();
 				flag = !flag;

@@ -192,24 +192,24 @@ public class LogoActivity extends Activity {
 	 * 加载获取id和url
 	 */
 	private void getData() {
-		/*ReadImgTask task = new ReadImgTask();
+		ReadImgTask task = new ReadImgTask();
 		task.execute();
 		ReadBtnTask task2 = new ReadBtnTask();
-		task2.execute();*/
+		task2.execute();
 		
-		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
-			ReadImgTask task = new ReadImgTask();
-			task.execute();
-			ReadBtnTask task2 = new ReadBtnTask();
-			task2.execute();
-		} else {
-			List<String> doReadImg = doReadImg(mCache
-					.getAsString("ReadImgTask"));
-			Data.putData("url", doReadImg);//传递跑马灯图片url
-			List<ModeAndObjId> doReadBtn = doReadBtn(mCache
-					.getAsString("ReadBtnTask"));
-			Data.putData("objectIddoReadBtn", doReadBtn);
-		}
+//		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
+//			ReadImgTask task = new ReadImgTask();
+//			task.execute();
+//			ReadBtnTask task2 = new ReadBtnTask();
+//			task2.execute();
+//		} else {
+//			List<String> doReadImg = doReadImg(mCache
+//					.getAsString("ReadImgTask"));
+//			Data.putData("url", doReadImg);//传递跑马灯图片url
+//			List<ModeAndObjId> doReadBtn = doReadBtn(mCache
+//					.getAsString("ReadBtnTask"));
+//			Data.putData("objectIddoReadBtn", doReadBtn);
+//		}
 	}
 	
 	private List<String> doReadImg(String str) {
@@ -219,17 +219,11 @@ public class LogoActivity extends Activity {
 			JSONArray numberList = demoJson.getJSONArray("result");
 			for (int i = 0; i < numberList.length(); i++) {
 				//之前类型的图片
-				if(pictureOrT()){
+			
 					  JSONObject object = numberList.getJSONObject(i).getJSONObject(
-								"picture2");
+								"picture");
 						String url = object.getString("url");
 						list.add(url);
-				}else{
-					JSONObject object = numberList.getJSONObject(i).getJSONObject(
-								"picture");
-					String url = object.getString("url");
-					list.add(url);
-				}
 			}
 			return list;
 		} catch (Exception e) {
@@ -238,17 +232,6 @@ public class LogoActivity extends Activity {
 		return null;
 	}
 	
-	private boolean pictureOrT(){
-		boolean falg=false;
-		WindowManager windowManager = getWindowManager();
-		Display display = windowManager.getDefaultDisplay();
-		int screenWidth = screenWidth = display.getWidth();
-		int screenHeight = screenHeight = display.getHeight();
-		if(screenWidth==1080 && screenHeight==1920){
-			falg=true;
-		}
-		return falg;
-	}
 	/**
 	 * 预加道路和社区
 	 */

@@ -299,6 +299,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				Data.putData("hire_method", result);
 				setAdapter(hire_time, hire_price, hire_method);
 				user = result.getUser();
+				Log.e("user","user");
 				gson = new Gson();
 				userBean = gson.fromJson(user, UserBean.class);
 				/**
