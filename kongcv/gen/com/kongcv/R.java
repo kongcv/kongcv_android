@@ -170,7 +170,7 @@ containing a value of this type.
         public static final int homeactivity_item_ImagepaddingTop=0x7f060036;
         public static final int homeactivity_item_height=0x7f060046;
         public static final int homeactivity_item_imageview=0x7f060034;
-        /**  homeactivity标题栏的字体
+        /**  homeactivity标题栏的字体 
  homeactivity标题栏的字体
  homeactivity标题栏的字体
          */
@@ -190,7 +190,7 @@ containing a value of this type.
         public static final int item_margintop=0x7f060026;
         public static final int item_margintop_logo=0x7f06003c;
         public static final int item_margintopt_logo=0x7f06003e;
-        /** 添加银行卡页面  
+        /**  添加银行卡页面 
          */
         public static final int item_mineadd=0x7f060027;
         public static final int item_minelefts=0x7f060028;
@@ -207,7 +207,7 @@ containing a value of this type.
         public static final int item_txtSizeThree=0x7f060020;
         public static final int item_txtSizeTwo=0x7f06001f;
         public static final int item_txt_logo=0x7f06003d;
-        /** 账单页面  
+        /**  账单页面 
          */
         public static final int item_txtmargin=0x7f060024;
         /**  图片小圆点的距离 

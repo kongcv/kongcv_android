@@ -44,6 +44,7 @@ import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;
 import com.kongcv.utils.ACacheUtils;
+import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.HttpUtils;
 import com.kongcv.utils.JsonStrUtils;
@@ -183,6 +184,8 @@ public class LogoActivity extends Activity {
 					intent.putExtra("UpdateApk", fromJson.getResult().get(0).getApk().getUrl());
 					startService(intent);
 				}
+			}else{
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,11 +195,6 @@ public class LogoActivity extends Activity {
 	 * 加载获取id和url
 	 */
 	private void getData() {
-		/*ReadImgTask task = new ReadImgTask();
-		task.execute();
-		ReadBtnTask task2 = new ReadBtnTask();
-		task2.execute();*/
-		
 		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
 			ReadImgTask task = new ReadImgTask();
 			task.execute();
@@ -219,7 +217,7 @@ public class LogoActivity extends Activity {
 			JSONArray numberList = demoJson.getJSONArray("result");
 			for (int i = 0; i < numberList.length(); i++) {
 				//之前类型的图片
-				if(pictureOrT()){
+				if(AndroidUtil.pictureOrT(this)){
 					  JSONObject object = numberList.getJSONObject(i).getJSONObject(
 								"picture2");
 						String url = object.getString("url");
@@ -238,17 +236,7 @@ public class LogoActivity extends Activity {
 		return null;
 	}
 	
-	private boolean pictureOrT(){
-		boolean falg=false;
-		WindowManager windowManager = getWindowManager();
-		Display display = windowManager.getDefaultDisplay();
-		int screenWidth = screenWidth = display.getWidth();
-		int screenHeight = screenHeight = display.getHeight();
-		if(screenWidth==1080 && screenHeight==1920){
-			falg=true;
-		}
-		return falg;
-	}
+	
 	/**
 	 * 预加道路和社区
 	 */

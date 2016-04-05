@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -297,5 +298,19 @@ public class AndroidUtil {
 		}
 		return versionName;
     }
-   
+    /**
+     * 分辨率 适配
+     * @return
+     */
+    public static  boolean pictureOrT(Context mContext){
+		boolean falg=false;
+		WindowManager windowManager = ((Activity) mContext).getWindowManager();
+		Display display = windowManager.getDefaultDisplay();
+		int screenWidth = screenWidth = display.getWidth();
+		int screenHeight = screenHeight = display.getHeight();
+		if(screenWidth==1080 && screenHeight==1920){
+			falg=true;
+		}
+		return falg;
+	}
 }

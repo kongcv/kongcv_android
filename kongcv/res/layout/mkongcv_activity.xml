@@ -33,20 +33,20 @@
     <LinearLayout
         android:id="@+id/rl_qandp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/mkongcv_image_hight"
         android:layout_below="@+id/llAdvertiseBoard" >
 
         <ImageView
             android:id="@+id/image1"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/mkongcv_image_hight"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:scaleType="fitXY"
              />
         <ImageView
             android:id="@+id/image2"
             android:layout_width="fill_parent"
-            android:layout_height="@dimen/mkongcv_image_hight"
+            android:layout_height="fill_parent"
             android:layout_weight="1"
             android:scaleType="fitXY"
             />
@@ -55,8 +55,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/rl_qandp" >
-
+        android:layout_below="@+id/rl_qandp" 
+        >
         <com.kongcv.view.KCVGridView
             android:id="@+id/kcvgridview"
             android:layout_width="fill_parent"

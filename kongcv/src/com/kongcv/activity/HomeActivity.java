@@ -128,10 +128,10 @@ public class HomeActivity extends FragmentActivity implements
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
 	}
 
-	private int i = 0;
+//	private int i = 0;
 	private MineCarmanagerBean bean;
 
-	@Override
+	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == HomeActivity.CWGL) {
@@ -147,7 +147,7 @@ public class HomeActivity extends FragmentActivity implements
 				rb1.setChecked(true);
 			}
 		}
-	}
+	}*/
 
 	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
 	private void init() {
@@ -164,7 +164,21 @@ public class HomeActivity extends FragmentActivity implements
 		rb1 = (RadioButton) findViewById(R.id.rb1);
 		rb0 = (RadioButton) findViewById(R.id.rb0);
 		rdoBtn.setOnCheckedChangeListener(this);
-		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
+		
+		Bundle bundle = getIntent().getBundleExtra("bundle");
+		if (bundle == null) {
+			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
+		}else{
+		//	HomeActivity.CWGL = 2;
+		//	i = 1;
+			bean = (MineCarmanagerBean) bundle.get(
+					"MineCarmanagerBean");
+			mPublishFragment = new PublishFragment();
+			Bundle args = new Bundle();
+			args.putSerializable("MineCarmanagerBean", bean);
+			mPublishFragment.setArguments(args);
+			rb1.setChecked(true);
+		}
 		getDisplay();
 	}
 
@@ -268,8 +282,7 @@ public class HomeActivity extends FragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		if (i == 0) {
-			// new SpotsDialog(this).show();
+		//if (i == 0) {
 			Builder builder = new Builder(HomeActivity.this,
 					AlertDialog.THEME_HOLO_DARK);
 			builder.setMessage("确定要退出当前应用吗？")
@@ -289,11 +302,11 @@ public class HomeActivity extends FragmentActivity implements
 									finish();
 								}
 							}).show();
-		} else {
+		/*} else {
 			Intent i = new Intent(this, MineCarmanagerActivity.class);
 			startActivity(i);
 			finish();
-		}
+		}*/
 	}
 
 	/**

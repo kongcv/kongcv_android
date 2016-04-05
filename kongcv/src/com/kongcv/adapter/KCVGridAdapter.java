@@ -2,6 +2,7 @@ package com.kongcv.adapter;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kongcv.R;
+import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.BaseViewHolder;
 
 public class KCVGridAdapter extends BaseAdapter {
@@ -64,7 +66,13 @@ public class KCVGridAdapter extends BaseAdapter {
 		WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 		int width = wm.getDefaultDisplay().getWidth();
 		params.width=width/3;
-		params.height=width/4;
+		if(AndroidUtil.pictureOrT(mContext)){
+			Log.d("falg", "AndroidUtil.pictureOrT(mContext)");
+			params.height=width*100/450;
+		}else{
+			Log.d("else falg", "AndroidUtil.pictureOrT(mContext)");
+			params.height=width/4;
+		}
 		view.setLayoutParams(params);
 		if(position<allCount){
 			view.setImageUrl((String) mList.get(position), imageLoader);
@@ -74,6 +82,8 @@ public class KCVGridAdapter extends BaseAdapter {
 		}
 		return convertView;
 	}
+	
+	
 }
 
 
