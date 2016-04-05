@@ -412,7 +412,6 @@ public class SearchActivity extends FragmentActivity implements
 					SearchActivity.KEY[3]);
 			String strSearch = getStrSearch(str);
 			getLatlon(strSearch, strCity);
-
 			view.postDelayed(new Runnable() {
 				@Override
 				public void run() {

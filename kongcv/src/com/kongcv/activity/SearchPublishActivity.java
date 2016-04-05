@@ -270,11 +270,11 @@ public class SearchPublishActivity extends Activity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		if (position != 0) {
 		final String str = (String) mList.get(position-1).get(SearchActivity.KEY[1]);
 		final String strCity = (String) mList.get(position-1).get(SearchActivity.KEY[3]);
 		String strSearch = getStrSearch(str);
 		getLatlon(strSearch,strCity);
-		
 		view.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -292,6 +292,7 @@ public class SearchPublishActivity extends Activity implements
 			}
 
 		}, 1000);
+		}
 	}
 	private String getStrSearch(String str){
 		 String param=null;

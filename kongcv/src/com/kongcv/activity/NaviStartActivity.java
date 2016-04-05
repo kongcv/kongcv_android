@@ -262,7 +262,7 @@ public class NaviStartActivity extends Activity implements
 	    //markerCounts++;
 	//    LatLng position = markerOptions.getPosition();
 	}
-
+	
 	/**
 	 * 自己写的方法 默认加载
 	 */
