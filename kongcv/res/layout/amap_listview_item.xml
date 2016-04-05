@@ -10,7 +10,7 @@
         android:paddingLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/amap_address"
+        android:textSize="20dp"
         android:textColor="@color/amap_address"
         android:text="小区"
         />

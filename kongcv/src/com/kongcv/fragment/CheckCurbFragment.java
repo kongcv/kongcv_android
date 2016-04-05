@@ -46,7 +46,6 @@ public class CheckCurbFragment extends Fragment implements AMapListViewListener 
 			switch (msg.what) {
 			case 0:
 				checkList = (List<CheckBean>) msg.obj;
-
 				lv.setAdapter(zdAdapter);
 				break;
 			case 1:

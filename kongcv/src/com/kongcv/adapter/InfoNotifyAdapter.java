@@ -61,10 +61,12 @@ public class InfoNotifyAdapter extends BaseAdapter{
 		holder.tv_address.setText(mList.get(position).getAddress());
 		holder.tv_starttime.setText(mList.get(position).getHire_start());
 		holder.tv_choice.setText(mList.get(position).getState());
-		if(mList.get(position).getState().equals("接受")){
+		if(mList.get(position).getState().equals("已接受")){
 			holder.tv_choice.setTextColor(Color.parseColor("#76d25a"));
-		}else if(mList.get(position).getState().equals("拒绝")){
+		}else if(mList.get(position).getState().equals("已拒绝")){
 			holder.tv_choice.setTextColor(Color.parseColor("#FF692A"));
+		}else if(mList.get(position).getState().equals("未处理")){
+			holder.tv_choice.setTextColor(Color.parseColor("#444444"));
 		}
 		if (mList.get(position).getMode().equals("community")) {
 			holder.iv_address.setImageResource(R.drawable.bg_shequ_info);

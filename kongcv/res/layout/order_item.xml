@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:text="起始          :"
                         android:textColor="#353535"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_start"
@@ -90,7 +90,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="2015-04-12  12:00:00"
                         android:textColor="#444444"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -105,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:text="结束          :"
                         android:textColor="#353535"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_end"
@@ -114,17 +114,17 @@
                         android:layout_marginLeft="12dp"
                         android:text="2015-04-12  12:00:00"
                         android:textColor="#444444"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_bohao"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="12dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/btn_default_bohao"
                 android:visibility="invisible" />
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:text="订单号      :"
                         android:textColor="#353535"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_order"
@@ -161,7 +161,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="HHJKJLLLLLLLLLLLLLLLL"
                         android:textColor="#444444"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:text="起始方式  :"
                         android:textColor="#353535"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_method"
@@ -184,7 +184,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="全时/天"
                         android:textColor="#444444"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -198,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:text="价钱          :"
                         android:textColor="#353535"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
 
                     <TextView
                         android:id="@+id/tv_price"
@@ -207,7 +207,7 @@
                         android:layout_marginLeft="12dp"
                         android:text="¥ 666"
                         android:textColor="#FF0000"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

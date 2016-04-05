@@ -168,10 +168,8 @@ containing a value of this type.
         public static final int home_log=0x7f06000a;
         public static final int home_textSize=0x7f06000b;
         public static final int homeactivity_item_ImagepaddingTop=0x7f060036;
-        public static final int homeactivity_item_height=0x7f060046;
         public static final int homeactivity_item_imageview=0x7f060034;
         /**  homeactivity标题栏的字体 
- homeactivity标题栏的字体
  homeactivity标题栏的字体
          */
         public static final int homeactivity_item_textSize=0x7f060033;
@@ -215,7 +213,6 @@ containing a value of this type.
         public static final int margin_Size10=0x7f06000c;
         /**  minefragment页面布局上 
  minefragment页面布局上 
- minefragment页面布局上 
          */
         public static final int minefragment_header=0x7f06002f;
         public static final int minefragment_txtSize=0x7f060030;
@@ -228,7 +225,6 @@ containing a value of this type.
         public static final int mkongcv_margintop=0x7f06002c;
         /**  发布页面的listview 
  空车位页面布局 1184x720
- 空车位页面布局  1280x720
          */
         public static final int mkongcv_text_size=0x7f060029;
         public static final int mkongcv_viewpager=0x7f06002b;
@@ -242,7 +238,6 @@ containing a value of this type.
         public static final int public_header_paddingLeft=0x7f060038;
         public static final int public_park_detail=0x7f06003a;
         /**  发布页面 
- 发布页面 
  发布页面 
          */
         public static final int publish_txtSize=0x7f060037;
@@ -848,51 +843,50 @@ containing a value of this type.
         public static final int grid_item=0x7f030027;
         public static final int horizontalscrollview_item=0x7f030028;
         public static final int info_feedback=0x7f030029;
-        public static final int listview_activity=0x7f03002a;
-        public static final int listview_item=0x7f03002b;
-        public static final int load=0x7f03002c;
-        public static final int lv_item=0x7f03002d;
-        public static final int marker_info_window=0x7f03002e;
-        public static final int mine_aboutus=0x7f03002f;
-        public static final int mine_activity=0x7f030030;
-        public static final int mine_addcredit=0x7f030031;
-        public static final int mine_carmanager=0x7f030032;
-        public static final int mine_carnumber=0x7f030033;
-        public static final int mine_check=0x7f030034;
-        public static final int mine_credit=0x7f030035;
-        public static final int mine_credit_type=0x7f030036;
-        public static final int mine_credit_type_list=0x7f030037;
-        public static final int mine_info_item=0x7f030038;
-        public static final int mine_infonotiy=0x7f030039;
-        public static final int mine_information=0x7f03003a;
-        public static final int mine_listview_item=0x7f03003b;
-        public static final int mine_modifycredit=0x7f03003c;
-        public static final int mine_ordermanager=0x7f03003d;
-        public static final int mine_popu=0x7f03003e;
-        public static final int mine_shezhi=0x7f03003f;
-        public static final int mine_wallet=0x7f030040;
-        public static final int mine_withdrawcash=0x7f030041;
-        public static final int minecheckhistory=0x7f030042;
-        public static final int minereceivefragment=0x7f030043;
-        public static final int minesendfragment=0x7f030044;
-        public static final int mkongcv_activity=0x7f030045;
-        public static final int multi_spinner_item=0x7f030046;
-        public static final int mydialog_user=0x7f030047;
-        public static final int mypicker_dialog=0x7f030048;
-        public static final int navis_activity=0x7f030049;
-        public static final int normal_car=0x7f03004a;
-        public static final int notify_update_layout=0x7f03004b;
-        public static final int order_item=0x7f03004c;
-        public static final int public_type_item=0x7f03004d;
-        public static final int publish_activity=0x7f03004e;
-        public static final int publish_community_activity=0x7f03004f;
-        public static final int publish_test=0x7f030050;
-        public static final int publish_type_dialog=0x7f030051;
-        public static final int spinner_activity=0x7f030052;
-        public static final int startnavis_activity=0x7f030053;
-        public static final int write_comment=0x7f030054;
-        public static final int xlistview_footer=0x7f030055;
-        public static final int xlistview_header=0x7f030056;
+        public static final int listview_item=0x7f03002a;
+        public static final int load=0x7f03002b;
+        public static final int lv_item=0x7f03002c;
+        public static final int marker_info_window=0x7f03002d;
+        public static final int mine_aboutus=0x7f03002e;
+        public static final int mine_activity=0x7f03002f;
+        public static final int mine_addcredit=0x7f030030;
+        public static final int mine_carmanager=0x7f030031;
+        public static final int mine_carnumber=0x7f030032;
+        public static final int mine_check=0x7f030033;
+        public static final int mine_credit=0x7f030034;
+        public static final int mine_credit_type=0x7f030035;
+        public static final int mine_credit_type_list=0x7f030036;
+        public static final int mine_info_item=0x7f030037;
+        public static final int mine_infonotiy=0x7f030038;
+        public static final int mine_information=0x7f030039;
+        public static final int mine_listview_item=0x7f03003a;
+        public static final int mine_modifycredit=0x7f03003b;
+        public static final int mine_ordermanager=0x7f03003c;
+        public static final int mine_popu=0x7f03003d;
+        public static final int mine_shezhi=0x7f03003e;
+        public static final int mine_wallet=0x7f03003f;
+        public static final int mine_withdrawcash=0x7f030040;
+        public static final int minecheckhistory=0x7f030041;
+        public static final int minereceivefragment=0x7f030042;
+        public static final int minesendfragment=0x7f030043;
+        public static final int mkongcv_activity=0x7f030044;
+        public static final int multi_spinner_item=0x7f030045;
+        public static final int mydialog_user=0x7f030046;
+        public static final int mypicker_dialog=0x7f030047;
+        public static final int navis_activity=0x7f030048;
+        public static final int normal_car=0x7f030049;
+        public static final int notify_update_layout=0x7f03004a;
+        public static final int order_item=0x7f03004b;
+        public static final int public_type_item=0x7f03004c;
+        public static final int publish_activity=0x7f03004d;
+        public static final int publish_community_activity=0x7f03004e;
+        public static final int publish_test=0x7f03004f;
+        public static final int publish_type_dialog=0x7f030050;
+        public static final int spinner_activity=0x7f030051;
+        public static final int startnavis_activity=0x7f030052;
+        public static final int write_comment=0x7f030053;
+        public static final int xlistview_footer=0x7f030054;
+        public static final int xlistview_header=0x7f030055;
     }
     public static final class menu {
         public static final int main=0x7f090000;

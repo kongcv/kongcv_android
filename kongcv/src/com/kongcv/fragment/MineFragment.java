@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
@@ -163,12 +164,15 @@ public class MineFragment extends Fragment implements OnClickListener {
 					JsonStrUtils.JsonStr(object),
 					mCache.getAsString("sessionToken"));
 			JSONObject obj = new JSONObject(jsoStr);
-			user_name = obj.getJSONObject("result").getString("username");
-			if (obj.getJSONObject("result").has("image")) {
-				url = obj.getJSONObject("result").getJSONObject("image")
-						.getString("url");
-				bit = GetImage.getHttpBitmap(url);
-				mHandler.sendEmptyMessage(1);
+			JSONObject result = obj.getJSONObject("result");
+			if (result != null) {
+				user_name = obj.getJSONObject("result").getString("username");
+				if (obj.getJSONObject("result").has("image")) {
+					url = obj.getJSONObject("result").getJSONObject("image")
+							.getString("url");
+					bit = GetImage.getHttpBitmap(url);
+					mHandler.sendEmptyMessage(1);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -306,7 +310,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 		case R.id.rl_shezhi:
 
 			/*
-			 *  * if(mCache.getAsString("USER")!=null &&
+			 * * if(mCache.getAsString("USER")!=null &&
 			 * mCache.getAsString("sessionToken")!=null){ Intent intentSheZhi =
 			 * new Intent(getActivity(), MineSheZhiActivity.class);
 			 * startActivity(intentSheZhi); }else {

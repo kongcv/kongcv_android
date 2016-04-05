@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:text="@string/mine_wallet"
             android:textColor="@color/txt_color"
-            android:textSize="19sp" />
+            android:textSize="19dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -46,7 +46,7 @@
             android:layout_marginLeft="@dimen/item_text_size"
             android:layout_toRightOf="@id/iv_wallet"
             android:text="@string/mine_account"
-            android:textSize="18sp" />
+        android:textSize="@dimen/publish_txtSize" />
 
         <TextView
             android:id="@+id/tv_balance"
@@ -57,7 +57,7 @@
             android:layout_toRightOf="@id/tv_account"
             android:text="¥"
             android:textColor="@color/txt_money"
-            android:textSize="18sp" />
+           android:textSize="@dimen/publish_txtSize"  />
 
         <TextView
             android:id="@+id/tv_money"
@@ -67,7 +67,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/tv_balance"
             android:textColor="@color/txt_money"
-            android:textSize="18sp" />
+           android:textSize="@dimen/publish_txtSize" />
     </RelativeLayout>
 <!-- 账单 -->
     <RelativeLayout
@@ -92,7 +92,7 @@
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@id/iv_zhangdan"
             android:text="@string/mine_check"
-            android:textSize="18sp" />
+           android:textSize="@dimen/publish_txtSize" />
 
         <ImageView style="@style/iv" />
     </RelativeLayout>
@@ -116,7 +116,7 @@
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@id/iv_yinhangka"
             android:text="@string/mine_credit"
-            android:textSize="18sp" />
+          android:textSize="@dimen/publish_txtSize"  />
 
         <ImageView style="@style/iv" />
     </RelativeLayout>
@@ -140,7 +140,7 @@
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@id/iv_tixian"
             android:text="@string/mine_cash"
-            android:textSize="18sp" />
+           android:textSize="@dimen/publish_txtSize" />
         <ImageView style="@style/iv" />
     </RelativeLayout>
 

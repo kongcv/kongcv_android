@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -36,20 +37,18 @@ import com.kongcv.view.AMapListView.AMapListViewListener;
 public class MineReceiveFragment extends Fragment implements
 		AMapListViewListener {
 	private AMapListView lv;
+	private View view;
 	private ArrayList<InfoBean> mList;
 	private InfoNotifyAdapter infoAdapter;
-	private Handler mHandler;
-	//private ProgressDialog pro = null;
-	private Handler handler = new Handler() {
+	private ACacheUtils mCache;
+	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			
 			JpushBeanAndInfoBean jpushBeanAndInfoBean=(JpushBeanAndInfoBean) msg.obj;
 			final ArrayList<InfoBean> mLists=jpushBeanAndInfoBean.infoList;
 			final JpushBean jpushBean=jpushBeanAndInfoBean.jpushBean;
 			infoAdapter = new InfoNotifyAdapter(getActivity(), mLists);
 			lv.setAdapter(infoAdapter);
 			final Gson gson=new Gson();
-			//pro.dismiss();
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				
 				@Override
@@ -87,22 +86,20 @@ public class MineReceiveFragment extends Fragment implements
 			onLoad();
 		}
 	};
-	private ACacheUtils mCache;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.minereceivefragment, container,
+		view = inflater.inflate(R.layout.minereceivefragment, container,
 				false);
 		mCache = ACacheUtils.get(getActivity());
-		lv = (AMapListView) view.findViewById(R.id.lv);
-		//pro = ProgressDialog.show(getActivity(), "", "正在获取获取数据，请稍候");
 		initView();
 		mList = new ArrayList<InfoBean>();
 		refresh();
 		return view;
 	}
 	private void initView() {
-		mHandler = new Handler();
+		lv = (AMapListView) view.findViewById(R.id.lv);
 		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
 		lv.setAMapListViewListener(this);
 	}
@@ -285,7 +282,7 @@ public class MineReceiveFragment extends Fragment implements
 					Message msg = Message.obtain();
 					msg.what = 0;
 					msg.obj = jpushBeanAndInfoBean;
-					handler.sendMessage(msg);
+					mHandler.sendMessage(msg);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -305,7 +302,6 @@ public class MineReceiveFragment extends Fragment implements
 		}, 1500);
 	}
 	private void refresh() {
-		// TODO Auto-generated method stub
 		int skip = 0;
 		int limit = mList.size() == 0 ? 10 : mList.size();
 		mRun(skip, limit);
@@ -316,12 +312,10 @@ public class MineReceiveFragment extends Fragment implements
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				Loading();
 				onLoad();
 			}
 			private void Loading() {
-				// TODO Auto-generated method stub
 				int skip = mList.size();
 				int limit = 10;
 				mRun(skip, limit);

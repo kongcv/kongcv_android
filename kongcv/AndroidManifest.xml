@@ -52,7 +52,7 @@
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="391b9f56d2369696ea162e6f63bde8db" />
+            android:value="391b9f56d2369696ea162e6f63bde8db" /> 
         <!-- <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="57b93074fc8d6509fe482a12126ca31e" /> -->
