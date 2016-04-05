@@ -1,5 +1,6 @@
 package com.kongcv.activity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -57,8 +58,10 @@ public class LogInActivity extends Activity implements OnClickListener {
 	private Context context;
 	private ACacheUtils mCache;
 	private SharedPreferences preferences;
-	private Bitmap  bit;
-    private String url;
+	private Bitmap bit;
+	private String url;
+	private JSONObject objStr;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,6 +70,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 		mCache = ACacheUtils.get(this);
 		initView();
 	}
+
 	private void initView() {
 		phone = (EditText) findViewById(R.id.phone);
 		cord = (EditText) findViewById(R.id.cord);
@@ -78,7 +82,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-				return imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+				return imm.hideSoftInputFromWindow(getCurrentFocus()
+						.getWindowToken(), 0);
 			}
 		});
 		getCord.setOnClickListener(this);
@@ -89,31 +94,33 @@ public class LogInActivity extends Activity implements OnClickListener {
 		String textStr4 = "<font color=\"#94cAE4\">隐私条款</font>";
 		now.setText(Html.fromHtml(textStr1 + textStr2 + textStr3 + textStr4));
 	}
+
 	/**
 	 * 验证码倒计时
 	 */
-	private CountDownTimer timer = new CountDownTimer(60000, 1000) {  
-        @Override  
-        public void onTick(long millisUntilFinished) {  
-        	getCord.setText((millisUntilFinished / 1000) + "秒后可重发");  
-        	getCord.setEnabled(false);
-        }  
-        @Override  
-        public void onFinish() {  
-        	getCord.setText("获取验证码"); 
-        	getCord.setEnabled(true);
-        }  
-    }; 
-    
+	private CountDownTimer timer = new CountDownTimer(60000, 1000) {
+		@Override
+		public void onTick(long millisUntilFinished) {
+			getCord.setText((millisUntilFinished / 1000) + "秒后可重发");
+			getCord.setEnabled(false);
+		}
+
+		@Override
+		public void onFinish() {
+			getCord.setText("获取验证码");
+			getCord.setEnabled(true);
+		}
+	};
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.getcord: // 获取验证码。
-			iPhone=phone.getText().toString();
+			iPhone = phone.getText().toString();
 			if (StringUtils.isMobileNo(iPhone)) {
 				getCode();
 				timer.start();
-			}else {
+			} else {
 				ToastUtil.show(getApplicationContext(), "手机号码格式不正确");
 			}
 			break;
@@ -124,6 +131,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
+
 	private void getCode() {
 		new Thread(new Runnable() {
 			@Override
@@ -132,6 +140,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 			}
 		}).start();
 	}
+
 	private void getLogIn() {
 		new Thread(new Runnable() {
 			@Override
@@ -144,11 +153,11 @@ public class LogInActivity extends Activity implements OnClickListener {
 
 	private void doCode() {
 		try {
-				iPhone = phone.getText().toString();
-				JSONObject obj = new JSONObject();
-				obj.put("mobilePhoneNumber", iPhone);
-				PostCLientUtils.doHttpsPost(Information.KONGCV_GET_SMSCODE,
-						JsonStrUtils.JsonStr(obj));
+			iPhone = phone.getText().toString();
+			JSONObject obj = new JSONObject();
+			obj.put("mobilePhoneNumber", iPhone);
+			PostCLientUtils.doHttpsPost(Information.KONGCV_GET_SMSCODE,
+					JsonStrUtils.JsonStr(obj));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -167,36 +176,26 @@ public class LogInActivity extends Activity implements OnClickListener {
 				obj.put("smsCode", iCord);
 				String doHttpsPost = PostCLientUtils.doHttpsPost(
 						Information.KONGCV_SIGNUP, JsonStrUtils.JsonStr(obj));
-				JSONObject obj2=new JSONObject(doHttpsPost);
+				JSONObject obj2 = new JSONObject(doHttpsPost);
 				String str = obj2.getString("result");
-				JSONObject objStr=new JSONObject(str);
+				objStr = new JSONObject(str);
 				String state = objStr.getString("state");
-				
-				if("ok".equals(state)){
-					String sessionToken = objStr.getString("sessionToken");
-					String user_id = objStr.getString("user_id");
-					//手机号码
-					mCache.put("USER", iPhone);
-					mCache.put("user_id", user_id);
-					mCache.put("sessionToken", sessionToken);
-					mCache.put("RegistrationID", JPushInterface.getRegistrationID(getApplicationContext()));
-		//			传递数据 走上传的接口
-					mHandler.sendEmptyMessage(0);
-				}else {
-					Looper.prepare();
-					ToastUtil.show(getBaseContext(), "注册失败！请60秒后重新注册！");
-					Looper.loop();
-				}
+				Message msg = mHandler.obtainMessage();
+				msg.what = 2;
+				msg.obj = state;
+				mHandler.sendMessage(msg);
 			} else {
-				Looper.prepare();
-				ToastUtil.show(getBaseContext(), "验证码输入错误！");
-				Looper.loop();
+				Message msg = mHandler.obtainMessage();
+				msg.what = 3;
+				mHandler.sendMessage(msg);
+
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	private void putUserInfo() {
 		new Thread(new Runnable() {
 
@@ -210,20 +209,20 @@ public class LogInActivity extends Activity implements OnClickListener {
 							Information.KONGCV_GET_USERINFO,
 							JsonStrUtils.JsonStr(object),
 							mCache.getAsString("sessionToken"));
-					//得到用户名和用户头像
-					JSONObject js=new JSONObject(jsoStr);
+					// 得到用户名和用户头像
+					JSONObject js = new JSONObject(jsoStr);
 					String result = js.getString("result");
-					JSONObject objStr=new JSONObject(result);
+					JSONObject objStr = new JSONObject(result);
 					String username = objStr.getString("username");
 					Log.e("loglog", result);
-					if(objStr.has("image")){
-							url = objStr.getJSONObject("image").getString("url");
-							bit = GetImage.getHttpBitmap(url);
-						} else {
-							url = "";
-							bit = null;
-						}
-					
+					if (objStr.has("image")) {
+						url = objStr.getJSONObject("image").getString("url");
+						bit = GetImage.getHttpBitmap(url);
+					} else {
+						url = "";
+						bit = null;
+					}
+
 					mCache.put("USERNAME", username);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -232,51 +231,85 @@ public class LogInActivity extends Activity implements OnClickListener {
 		}).start();
 
 	}
+
 	private Handler mHandler = new Handler() {
-		
+
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-			   putUserInfo();
-			   updateUser();
+				putUserInfo();
+				updateUser();
 				break;
+			case 1:
+				ToastUtil.show(getBaseContext(), "更新用户信息失败！");
+				break;
+			case 2:
+				String state = (String) msg.obj;
+				if ("ok".equals(state)) {
+
+					try {
+						String sessionToken = objStr.getString("sessionToken");
+						String user_id = objStr.getString("user_id");
+						mCache.put("USER", iPhone);// 用户手机号
+						mCache.put("user_id", user_id);// 用户user_id
+						mCache.put("sessionToken", sessionToken);// sessionToken
+						mCache.put("registrationID", JPushInterface
+								.getRegistrationID(getApplicationContext()));
+						// 传递数据 走上传的接口
+						mHandler.sendEmptyMessage(0);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+
+				} else {
+					ToastUtil.show(getBaseContext(), "验证码输入错误！");
+				}
+				break;
+			case 3:
+				ToastUtil.show(getBaseContext(), "验证码输入错误！");
+				break;
+
 			default:
 				break;
 			}
 		}
 	};
-	
+
 	private void updateUser() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					JSONObject obj=new JSONObject();
+					JSONObject obj = new JSONObject();
 					obj.put("mobilePhoneNumber", mCache.getAsString("USER"));
 					obj.put("user_name", mCache.getAsString("USERNAME"));
-					obj.put("device_token", mCache.getAsString("RegistrationID"));
+					obj.put("device_token",
+							mCache.getAsString("RegistrationID"));
 					obj.put("device_type", "android");
 					obj.put("license_plate", "");
-					obj.put("version", AndroidUtil.getVersion(getApplicationContext()));
-					String str = PostCLientUtils.doHttpsPost2(Information.KONGCV_PUT_USERINFO, 
-							JsonStrUtils.JsonStr(obj), mCache.getAsString("sessionToken"));
+					obj.put("version",
+							AndroidUtil.getVersion(getApplicationContext()));
+					String str = PostCLientUtils.doHttpsPost2(
+							Information.KONGCV_PUT_USERINFO,
+							JsonStrUtils.JsonStr(obj),
+							mCache.getAsString("sessionToken"));
 					Log.v("发布登录成功", str);
-					JSONObject obj2=new JSONObject(str);
+					JSONObject obj2 = new JSONObject(str);
 					String result = obj2.getString("result");
-					JSONObject objStr=new JSONObject(result);
+					JSONObject objStr = new JSONObject(result);
 					String state = objStr.getString("state");
-					if("ok".equals(state)){
-						//登录成功返回用户名和头像
+					if ("ok".equals(state)) {
+						// 登录成功返回用户名和头像
 						Intent i = new Intent();
 						i.putExtra("nick", mCache.getAsString("USERNAME"));
 						i.putExtra("bit", bit);
 						setResult(10, i);
 						finish();
-					}else {
-						Looper.prepare();
-						ToastUtil.show(getBaseContext(), "发布失败请尝试重新发布！");
-						Looper.loop();
+					} else {
+						Message msg = mHandler.obtainMessage();
+						msg.what = 1;
+						mHandler.sendMessage(msg);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -284,12 +317,13 @@ public class LogInActivity extends Activity implements OnClickListener {
 			}
 		}).start();
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
 	}
+
 	/**
 	 * 方法必须重写
 	 */

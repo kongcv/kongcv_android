@@ -1,11 +1,9 @@
 package com.kongcv.activity;
 
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,11 +12,7 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.ImageRun.GetImage;
-import com.kongcv.global.Information;
 import com.kongcv.utils.ACacheUtils;
-import com.kongcv.utils.JsonStrUtils;
-import com.kongcv.utils.PostCLientUtils;
 /**
  * 修改手机号成功的页面
  * @author kcw

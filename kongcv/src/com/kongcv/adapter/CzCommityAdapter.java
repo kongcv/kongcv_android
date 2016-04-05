@@ -28,7 +28,7 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	private List<ZyCommityAdapterBean> mList;
 	private TextView tv_username, tv_start, tv_end, tv_order, tv_price,
 			tv_state, tv_method;
-
+	
 	public CzCommityAdapter(Context context, List<ZyCommityAdapterBean> list) {
 		mContext = context;
 		mList = list;
@@ -38,12 +38,12 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	public int getCount() {
 		return mList.size();
 	}
-
+	
 	@Override
 	public Object getItem(int position) {
 		return position;
 	}
-
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -63,10 +63,10 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
 		iv_bohao = BaseViewHolder.get(convertView, R.id.iv_bohao);
 		iv_dingwei = BaseViewHolder.get(convertView, R.id.iv_dingwei);
+		iv_bohao.setVisibility(View.VISIBLE);
 		iv_bohao.setOnClickListener(this);
 		iv_bohao.setTag(position);
 
-		iv_bohao.setVisibility(View.VISIBLE);
 		tv_username.setText(mList.get(position).getUsername() == null ? ""
 				: mList.get(position).getUsername());
 		tv_start.setText(mList.get(position).getHire_start() == null ? ""

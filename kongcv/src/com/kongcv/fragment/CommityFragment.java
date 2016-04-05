@@ -87,30 +87,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 								i.putExtra("getField", field);
 								i.putExtra("mCommBean", mCommBean);
 								startActivity(i);
-								
-								
-								
-								
-								
-								/*if (0 == trade_state) {
-									Intent i = new Intent(getActivity(),
-											DetailsActivity.class);
-									// 传递数据
-									i.putExtra("mode", "community");
-									i.putExtra("trade_state", trade_state);
-									i.putExtra("park_id", parkId);
-									i.putExtra("getField", field);
-									startActivity(i);
-								} else if (1 == trade_state) {
-									Intent i = new Intent(getActivity(),
-											DetailsActivity.class);
-									// 传递数据
-									i.putExtra("mode", "community");
-									i.putExtra("trade_state", trade_state);
-									i.putExtra("park_id", parkId);
-									i.putExtra("getField", field);
-									startActivity(i);
-								}*/
 							}
 						}
 					});
@@ -121,28 +97,18 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				if(beansList!=null && beansList.size()>0){
 					czdapter = new CzCommityAdapter(getActivity(), beansList);
 					lv.setAdapter(czdapter);
-					lv.setOnItemClickListener(new OnItemClickListener() {
+					/*lv.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view,
 								int position, long id) {
 							if(position>=1 && beansList!=null && beansList.size()>0){
-								/*trade_state = beansList.get(position - 1)
-										.getTrade_state();
-								if (0 == trade_state) {
-									Intent i = new Intent(getActivity(),
-											DetailsActivity.class);
-									// 传递数据
-									i.putExtra("mode", "community");
-									i.putExtra("trade_state", trade_state);
-									startActivity(i);
-								}*/
 								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
 								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 										+ mobilePhoneNumber));
 								startActivity(intent);
 							}
 						}
-					});
+					});*/
 				}
 				break;
 			default:

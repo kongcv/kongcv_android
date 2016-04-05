@@ -43,14 +43,12 @@ public class NaviCustomActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.navis_activity);
 
 		// 语音播报开始
 		TTSController.getInstance(this).startSpeaking();
 		// 实时导航方式进行导航
 		AMapNavi.getInstance(this).startNavi(AMapNavi.GPSNaviMode);
-
 		initView(savedInstanceState);
 	}
 
@@ -131,6 +129,8 @@ public class NaviCustomActivity extends Activity implements
 				public void onCalculateRouteSuccess() {
 				}
 
+				
+				
 				public void onCalculateRouteFailure(int arg0) {
 				}
 
@@ -218,7 +218,6 @@ public class NaviCustomActivity extends Activity implements
 		setAmapNaviViewOptions();
 		AMapNavi.getInstance(this).setAMapNaviListener(getAMapNaviListener());
 		mAmapAMapNaviView.onResume();
-		
 		
 		JPushInterface.onResume(this);
 	}

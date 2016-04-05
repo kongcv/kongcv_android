@@ -62,7 +62,7 @@ public class DetailsActivity extends FragmentActivity{
 			if(trade_state!=-1)
 			args.putInt("trade_state", trade_state);	
 			fragment.setArguments(args);
-			fragmentTransaction.replace(R.id.fragmentmain, fragment);
+			fragmentTransaction.replace(R.id.fragmentmain, fragment);//
 			fragmentTransaction.commit();
 		}else {
 			fragmentTransaction.replace(R.id.fragmentmain, new DetailsFragment());

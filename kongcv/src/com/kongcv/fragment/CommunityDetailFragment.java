@@ -51,6 +51,7 @@ import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.global.DetailBean;
 import com.kongcv.global.DetailBean.ResultEntity;
+import com.kongcv.global.DetailBean.ResultEntity.LocationEntity;
 import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
 import com.kongcv.global.PayOneBean;
@@ -157,6 +158,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				mPay.setVisibility(View.VISIBLE);
 				mPay.setOnClickListener(this);
 				tv_reserveOrpay.setText("金额");
+				visiblePhone2(mCommBean);
 			}
 		}
 		if(park_id==null && price!=0){
@@ -232,7 +234,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 //		    ToastUtil.fixListViewHeight(mListPhone);
 		}
 	}
-
 	class ReadInfo extends PreReadTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... arg0) {
@@ -240,7 +241,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 			return null;
 		}
 	}
-	
 	private void init() {
 		mListPhone = (ListView) view.findViewById(R.id.detail_lv_phone);
 		detail_txt_yu = (TextView) view.findViewById(R.id.detail_txt_yu);
@@ -286,7 +286,7 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 	private UserBean userBean;
 	private String jpushStr;
 	private Gson gson;
-	
+	public static LocationEntity location;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -294,10 +294,17 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 			switch (msg.what) {
 			case 0:
 				String response=(String) msg.obj;
+				Log.d("经纬度详情页>>>", response);
+				Log.d("经纬度详情页>>>", response);
+				Log.d("经纬度详情页>>>", response);
 				gson = new Gson();
 				DetailBean bean = gson.fromJson(response, DetailBean.class);
 				result = bean.getResult();
 				payOneBean = new PayOneBean();
+				location = result.getLocation();
+				Log.d("空车位!!!", "location -> " + location.getLatitude()+"");
+				Log.d("空车位!!!", "location -> " + location.getLongitude()+"");
+				
 				String address = result.getAddress();
 				String s = new String(address);
 				String a[] = s.split("&");
@@ -451,19 +458,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 			default:
 				break;
 			}
-		}
-		private String returnHireMethodId(String hire_method) {
-			try {
-				JSONArray array = new JSONArray(hire_method);
-				for (int i = 0; i < array.length(); i++) {
-					String objectId = array.getJSONObject(i).getString("objectId");
-					Log.v("订单管理",objectId);
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return hire_method;
 		}
 	};
 	private ArrayList<String> hireMethodId;

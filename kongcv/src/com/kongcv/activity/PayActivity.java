@@ -119,7 +119,7 @@ public class PayActivity extends Activity implements OnClickListener {
 				if(mCommBean.getMode().equals("curb")){
 					if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
 						info.setPay_type("handsel");
-						price=mCommBean.getMoney()+"";
+					//	price=mCommBean.getMoney()+"";
 					}else{
 						info.setPay_type("balance");
 						price=(mCommBean.getPrice()-mCommBean.getMoney())+"";

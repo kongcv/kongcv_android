@@ -10,7 +10,7 @@
         android:layout_centerInParent="true"
         android:background="@drawable/bg_gv"
         android:padding="1.0dip" >
-
+		
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/gridview_net_image"
             android:layout_width="fill_parent"

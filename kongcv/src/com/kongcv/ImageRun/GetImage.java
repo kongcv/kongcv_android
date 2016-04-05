@@ -21,9 +21,7 @@ import android.util.Log;
 
 /**
  * 根据url下载图片
- * 
  * @author kcw
- * 
  */
 public class GetImage {
 	public static Bitmap getImage(String Url) throws Exception {
