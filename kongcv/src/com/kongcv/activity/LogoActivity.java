@@ -44,6 +44,7 @@ import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;
 import com.kongcv.utils.ACacheUtils;
+import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.HttpUtils;
 import com.kongcv.utils.JsonStrUtils;
@@ -183,6 +184,8 @@ public class LogoActivity extends Activity {
 					intent.putExtra("UpdateApk", fromJson.getResult().get(0).getApk().getUrl());
 					startService(intent);
 				}
+			}else{
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,24 +195,19 @@ public class LogoActivity extends Activity {
 	 * 加载获取id和url
 	 */
 	private void getData() {
-		ReadImgTask task = new ReadImgTask();
-		task.execute();
-		ReadBtnTask task2 = new ReadBtnTask();
-		task2.execute();
-		
-//		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
-//			ReadImgTask task = new ReadImgTask();
-//			task.execute();
-//			ReadBtnTask task2 = new ReadBtnTask();
-//			task2.execute();
-//		} else {
-//			List<String> doReadImg = doReadImg(mCache
-//					.getAsString("ReadImgTask"));
-//			Data.putData("url", doReadImg);//传递跑马灯图片url
-//			List<ModeAndObjId> doReadBtn = doReadBtn(mCache
-//					.getAsString("ReadBtnTask"));
-//			Data.putData("objectIddoReadBtn", doReadBtn);
-//		}
+		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
+			ReadImgTask task = new ReadImgTask();
+			task.execute();
+			ReadBtnTask task2 = new ReadBtnTask();
+			task2.execute();
+		} else {
+			List<String> doReadImg = doReadImg(mCache
+					.getAsString("ReadImgTask"));
+			Data.putData("url", doReadImg);//传递跑马灯图片url
+			List<ModeAndObjId> doReadBtn = doReadBtn(mCache
+					.getAsString("ReadBtnTask"));
+			Data.putData("objectIddoReadBtn", doReadBtn);
+		}
 	}
 	
 	private List<String> doReadImg(String str) {
@@ -219,11 +217,17 @@ public class LogoActivity extends Activity {
 			JSONArray numberList = demoJson.getJSONArray("result");
 			for (int i = 0; i < numberList.length(); i++) {
 				//之前类型的图片
-			
+				if(AndroidUtil.pictureOrT(this)){
 					  JSONObject object = numberList.getJSONObject(i).getJSONObject(
-								"picture");
+								"picture2");
 						String url = object.getString("url");
 						list.add(url);
+				}else{
+					JSONObject object = numberList.getJSONObject(i).getJSONObject(
+								"picture");
+					String url = object.getString("url");
+					list.add(url);
+				}
 			}
 			return list;
 		} catch (Exception e) {
@@ -231,6 +235,7 @@ public class LogoActivity extends Activity {
 		}
 		return null;
 	}
+	
 	
 	/**
 	 * 预加道路和社区

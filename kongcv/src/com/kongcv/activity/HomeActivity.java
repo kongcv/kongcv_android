@@ -38,10 +38,10 @@ import com.kongcv.fragment.CarwFragment;
 import com.kongcv.fragment.MineFragment;
 import com.kongcv.fragment.PublishFragment;
 import com.kongcv.global.FragOperManager;
+import com.kongcv.global.Information;
 import com.kongcv.global.MineCarmanagerBean;
 import com.kongcv.jPush.HttpHelper;
 import com.kongcv.utils.ACacheUtils;
-import com.kongcv.utils.Config;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.ExampleUtil;
 import com.kongcv.utils.Logger;
@@ -63,14 +63,6 @@ public class HomeActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		/*
-		 * if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		 * setTranslucentStatus(true); SystemBarTintManager tintManager = new
-		 * SystemBarTintManager(this);
-		 * tintManager.setStatusBarTintEnabled(true);
-		 * tintManager.setStatusBarTintResource(R.color.top_bg_color);// 通知栏所需颜色
-		 * }
-		 */
 		setContentView(R.layout.activity_home);
 		initLocation();
 		registerMessageReceiver();
@@ -136,10 +128,10 @@ public class HomeActivity extends FragmentActivity implements
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
 	}
 
-	private int i = 0;
+//	private int i = 0;
 	private MineCarmanagerBean bean;
 
-	@Override
+	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == HomeActivity.CWGL) {
@@ -155,7 +147,7 @@ public class HomeActivity extends FragmentActivity implements
 				rb1.setChecked(true);
 			}
 		}
-	}
+	}*/
 
 	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
 	private void init() {
@@ -172,7 +164,21 @@ public class HomeActivity extends FragmentActivity implements
 		rb1 = (RadioButton) findViewById(R.id.rb1);
 		rb0 = (RadioButton) findViewById(R.id.rb0);
 		rdoBtn.setOnCheckedChangeListener(this);
-		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
+		
+		Bundle bundle = getIntent().getBundleExtra("bundle");
+		if (bundle == null) {
+			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
+		}else{
+		//	HomeActivity.CWGL = 2;
+		//	i = 1;
+			bean = (MineCarmanagerBean) bundle.get(
+					"MineCarmanagerBean");
+			mPublishFragment = new PublishFragment();
+			Bundle args = new Bundle();
+			args.putSerializable("MineCarmanagerBean", bean);
+			mPublishFragment.setArguments(args);
+			rb1.setChecked(true);
+		}
 		getDisplay();
 	}
 
@@ -186,10 +192,10 @@ public class HomeActivity extends FragmentActivity implements
 
 	private void resetAliasAndTags() {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("udid", Config.udid);
+		params.put("udid", Information.udid);
 		String userInfo = null;
 		try {
-			userInfo = HttpHelper.post(Config.URL, params);
+			userInfo = HttpHelper.post(Information.URL, params);
 			Logger.e("userInfo获取到的值是 ", userInfo);
 			String phoneId = (String) Data.getData("Config.udid");
 			JPushInterface.setAliasAndTags(HomeActivity.this, phoneId, null);
@@ -276,8 +282,7 @@ public class HomeActivity extends FragmentActivity implements
 
 	@Override
 	public void onBackPressed() {
-		if (i == 0) {
-			// new SpotsDialog(this).show();
+		//if (i == 0) {
 			Builder builder = new Builder(HomeActivity.this,
 					AlertDialog.THEME_HOLO_DARK);
 			builder.setMessage("确定要退出当前应用吗？")
@@ -297,11 +302,11 @@ public class HomeActivity extends FragmentActivity implements
 									finish();
 								}
 							}).show();
-		} else {
+		/*} else {
 			Intent i = new Intent(this, MineCarmanagerActivity.class);
 			startActivity(i);
 			finish();
-		}
+		}*/
 	}
 
 	/**

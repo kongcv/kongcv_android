@@ -69,11 +69,9 @@ public class DetailsFragment extends Fragment implements
 		initView();
 		return view;
 	}
-
+	
 	private void initView() {
 		// TODO Auto-generated method stub
-		mDaoh = (ImageView) view.findViewById(R.id.details_daoh);
-		mDaoh.setOnClickListener(this);
 		addFragment();// 添加道边详情页
 		mViewPager = (ViewPager) view.findViewById(R.id.pager);
 		mViewPager.setOnPageChangeListener(this);
@@ -90,7 +88,8 @@ public class DetailsFragment extends Fragment implements
 		MyFragmentAdapter adapter = new MyFragmentAdapter(
 				getChildFragmentManager(), mFragmentList);
 		mViewPager.setAdapter(adapter);
-
+		mDaoh = (ImageView) view.findViewById(R.id.details_daoh);
+		mDaoh.setOnClickListener(this);
 		mCurrentCheckedRadioLeft = getCurrentCheckedRadioLeft();
 		mImageView = (ImageView) view.findViewById(R.id.img1);
 	}
@@ -107,9 +106,9 @@ public class DetailsFragment extends Fragment implements
 				field = extras.getString("field");
 			}
 			mFragmentList = new ArrayList<Fragment>();
-			/*stringExtra = extras.getString("MineSendFragment");
+			stringExtra = extras.getString("MineSendFragment");
 			string = extras.getString("stringExtra");
-			CurbMineReceiver = extras.getString("CurbMineReceiver");*/
+			CurbMineReceiver = extras.getString("CurbMineReceiver");
 			if(extras.containsKey("mCommBean"))
 			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
 			if (mode != null && park_id != null) {
@@ -131,7 +130,6 @@ public class DetailsFragment extends Fragment implements
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);
 					args.putDouble("price", price);
-
 					args.putString("field", field);
 					curbDetailFragment.setArguments(args);
 					mFragmentList.add(curbDetailFragment);
@@ -152,6 +150,9 @@ public class DetailsFragment extends Fragment implements
 					}
 					if (CurbMineReceiver != null) {
 						args.putString("CurbMineReceiver", CurbMineReceiver);
+					}
+					if(mCommBean!=null){
+						args.putSerializable("mCommBean", mCommBean);
 					}
 					args.putString("mode", mode);
 					args.putString("park_id", park_id);
@@ -210,7 +211,6 @@ public class DetailsFragment extends Fragment implements
 				}
 			}
 	}
-
 	private float getCurrentCheckedRadioLeft() {
 		// TODO Auto-generated method stub
 		if (mRadioButton1.isChecked()) {
@@ -253,27 +253,21 @@ public class DetailsFragment extends Fragment implements
 		case R.id.details_daoh:// 点击进入导航 闪过路线之后 导航 需传入当前坐标和item的经纬度值
 			loadJson();
 			break;
-
 		default:
 			break;
 		}
 	}
-	
 	private void loadJson() {
 		// TODO Auto-generated method stub
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("park_id", park_id);
 		params.put("mode", mode);
 		RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-		
 		Request<JSONObject> request = new NormalPostRequest(
 				Information.KONGCV_GET_PARK_INFO,
 				new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.d("空车位!!!", "response -> " + response.toString());
-						Log.d("空车位!!!", "response -> " + response.toString());
-						Log.d("空车位!!!", "response -> " + response.toString());
 						if (response.toString().equals("{}")) {
 							Looper.prepare();
 							ToastUtil.show(getActivity(), "没有数据！请重新搜索！");

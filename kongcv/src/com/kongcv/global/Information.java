@@ -8,17 +8,21 @@ import okhttp3.MediaType;
 
 /**
  * 全局信息
- * 
  * @author kcw
- * 
  */
 public class Information {
 
+	
+	
+	//设备唯一标识
+    public static String udid;
+    public static String SERVER;
+    //服务器
+    public static String URL="http://api.jpush.cn:8800/v2/push";
 	/**
 	 * 服务端URL地址
 	 */
 	public static final String SERVER_URL = "https://api.leancloud.cn/1.1/functions/";
-	
 	/**
 	 * 闪屏页时间
 	 */

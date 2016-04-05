@@ -20,10 +20,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -37,7 +35,6 @@ import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.calendar.TypeDialog;
 import com.kongcv.calendar.TypeDialog.LeaveMyDialogListener;
-import com.kongcv.global.CarBean;
 import com.kongcv.global.Community;
 import com.kongcv.global.Information;
 import com.kongcv.global.LocationInfo;
@@ -61,38 +58,22 @@ import com.kongcv.view.MySwitch.OnCheckedChangeListener;
  */
 public class PublishFragment extends Fragment implements OnClickListener {
 
-	private static final String TAG = "PublishFragment";
 	private HomeActivity homeActivity;
 	private ScrollView mScrollView;
-	private LinearLayout mLayout;
 	private ImageView ivPublish, ivType;
-	private TextView mDay, mTime, tvTorB, mTxtStart, mTxtEnd, mAddress,
-			tv_City;
+	private TextView tvTorB, mAddress, tv_City;
 	private PickDialog dialog;
 	private MultiSpinner mTvNoOr;
 	private int num = 0;
 	private AlertDialog dialog3;
 	private AlertDialog.Builder builder;
-	private Spinner spinner;
 	private TypeDialog dialog2;
 	private ACacheUtils mCache;
 	private PublishBean bean;
 	private String address;
-	private String park_descriptions;
-	private int park_area;
-	private int park_height;
-	private String park_details;
-	private List<String> hire_method_id_list;
-	private String firstAddress;
-	private String tail_num;
-	private String startTime;
-	private String endTime;
-	private int park_struct;
-	private CarBean car;
 	private boolean normal;
-	private String gate_cards;
-	private List<String>hire_price_list;
-	private List<String> hire_time_list;
+	private String park_details;
+	private String firstAddress;
 	/**
 	 * 发布
 	 */
@@ -100,8 +81,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			tv_car_high, gate_card;
 	ArrayList<TypeBean> items;
 	public static ArrayList<TypeBean> mydialog;
-	private ArrayList<TypeBean> mydialog2=new ArrayList<TypeBean>();
-	
 	PublishTypeAdapter adapter;
 	List<String> hire_method_id = new ArrayList<String>();
 	List<String> hire_price = new ArrayList<String>();
@@ -113,7 +92,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		mScrollView = (ScrollView) inflater.inflate(
 				R.layout.publish_community_activity, container, false);
 		homeActivity = (HomeActivity) getActivity();
-//		mFragmentManager = getActivity().getSupportFragmentManager();
 		mCache = ACacheUtils.get(getActivity());
 		initData();
 		if (HomeActivity.CWGL == 2) {
@@ -132,11 +110,12 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		ivType = (ImageView) mScrollView.findViewById(R.id.iv_type);
 		mTvNoOr = (MultiSpinner) mScrollView.findViewById(R.id.tv_NoOr);
 
-		textstart = (TextView) mScrollView.findViewById(R.id.publish_tv_timerstart);// 出租时间
+		textstart = (TextView) mScrollView
+				.findViewById(R.id.publish_tv_timerstart);// 出租时间
 		textend = (TextView) mScrollView.findViewById(R.id.tv_timerend);// 截至日期
 		textstart.setOnClickListener(this);
 		textend.setOnClickListener(this);
-		
+
 		view = mScrollView.findViewById(R.id.rl_publish_header);
 
 		park_detail = (EditText) mScrollView.findViewById(R.id.park_detail);
@@ -161,7 +140,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			}
 		});
 		mySwitch.setChecked(false);
-		
+
 		view.setOnClickListener(this);
 		tvTorB.setOnClickListener(this);
 		ivType.setOnClickListener(this);
@@ -177,74 +156,79 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	/**
 	 * 从车位管理跳转到此，显示相应的数据
 	 */
-	private int visibleInit=0;
+	private int visibleInit = 0;
+
 	private void visibleData() {
-		mydialog= new ArrayList<TypeBean>();
-		visibleInit=1;
+		mydialog = new ArrayList<TypeBean>();
+		visibleInit = 1;
 		Bundle extras = getArguments();
-		if(extras!=null){
-			MineCarmanagerBean carmanagerBean = (MineCarmanagerBean) extras.getSerializable("MineCarmanagerBean");
-			if(carmanagerBean!=null){
-				address=carmanagerBean.getAddress();
+		if (extras != null) {
+			MineCarmanagerBean carmanagerBean = (MineCarmanagerBean) extras
+					.getSerializable("MineCarmanagerBean");
+			if (carmanagerBean != null) {
+				address = carmanagerBean.getAddress();
 				firstAddress = address.substring(0, address.indexOf("&"));
 				park_details = address.substring(address.indexOf("&") + 1,
 						address.length());
 				park_detail.setText(park_details);
 				mAddress.setText(firstAddress);
-				tv_car_area.setText(carmanagerBean.getPark_area()+"");
-				tv_car_high.setText(carmanagerBean.getPark_height()+"");
+				tv_car_area.setText(carmanagerBean.getPark_area() + "");
+				tv_car_high.setText(carmanagerBean.getPark_height() + "");
 				mTvNoOr.setText(carmanagerBean.getNo_hire());
 				gate_card.setText(carmanagerBean.getGate_card());
 				park_description.setText(carmanagerBean.getPark_description());
 				tv_car_num.setText(carmanagerBean.getTail_num());
-				
+
 				textstart.setText(carmanagerBean.getHire_start());
 				textend.setText(carmanagerBean.getHire_end());
-				
+
 				Community community = (Community) Data.getData("community");
-				List<String> objectId = community.getObjectId();//类型id
-				List<String> method = community.getMethod();//类型名称'
+				List<String> objectId = community.getObjectId();// 类型id
+				List<String> method = community.getMethod();// 类型名称'
 				List<String> hireField = community.getHire_field();
-		//		ArrayList<TypeBean> item=new ArrayList<TypeBean>();
-				List<String> hireMethodList = carmanagerBean.getHire_method_id();
+				// ArrayList<TypeBean> item=new ArrayList<TypeBean>();
+				List<String> hireMethodList = carmanagerBean
+						.getHire_method_id();
 				List<String> hirePriceList = carmanagerBean.getHire_price();
 				List<String> hireTimeList = carmanagerBean.getHire_time();
 				typeBeansList = new ArrayList<TypeBean>();
-				for(int i=0;i<hireMethodList.size();i++){
-					TypeBean typeBean=new TypeBean();
-					
-					for(int ii=0;ii<objectId.size();ii++){
-						if(objectId.get(ii).equals(hireMethodList.get(i))){
-							typeBean.setDate(hireTimeList.get(i).toString()==null?"0":hireTimeList.get(i).toString());
+				for (int i = 0; i < hireMethodList.size(); i++) {
+					TypeBean typeBean = new TypeBean();
+
+					for (int ii = 0; ii < objectId.size(); ii++) {
+						if (objectId.get(ii).equals(hireMethodList.get(i))) {
+							typeBean.setDate(hireTimeList.get(i).toString() == null ? "0"
+									: hireTimeList.get(i).toString());
 							typeBean.setPrice(hirePriceList.get(i).toString());
 							typeBean.setMethod(method.get(ii).toString());
-							
-							hire_time.add(hireTimeList.get(i).toString()==null?"0":
-								hireTimeList.get(i).toString());
+
+							hire_time
+									.add(hireTimeList.get(i).toString() == null ? "0"
+											: hireTimeList.get(i).toString());
 							hire_field.add(hireField.get(ii).toString());
-							hire_method_id.add(hireMethodList.get(i).toString());
+							hire_method_id
+									.add(hireMethodList.get(i).toString());
 							hire_price.add(hirePriceList.get(i).toString());
 						}
 					}
 					mydialog.add(typeBean);
 				}
-				typeBeansList=mydialog;
-				LocationInfo info=new LocationInfo();
+				typeBeansList = mydialog;
+				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
 				info.setLongitude(carmanagerBean.getLongitude());
 				bean.setLocationInfo(info);
-				
-				
+
 				bean.setHireEnd(carmanagerBean.getHire_end());
 				bean.setHireStart(carmanagerBean.getHire_start());
 				normal = carmanagerBean.isNormal();
-				if(normal){
+				if (normal) {
 					mySwitch.setChecked(!normal);
-				}else{
+				} else {
 					mySwitch.setChecked(normal);
 				}
-				adapter=new PublishTypeAdapter(homeActivity, mydialog);
+				adapter = new PublishTypeAdapter(homeActivity, mydialog);
 				mListView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				ToastUtil.fixListViewHeight(mListView, -1);
@@ -276,6 +260,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		}
 		mTvNoOr.setDataList(multiSpinnerList);
 	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -339,9 +324,12 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				String tvCity = data.getStringExtra("tv_City");
 
 				mAddress.setText(str);// 设置文字
-				/*LocationInfo info = (LocationInfo) Data
-						.getData("location_info");*/
-				LocationInfo info=(LocationInfo) data.getSerializableExtra("info");
+				/*
+				 * LocationInfo info = (LocationInfo) Data
+				 * .getData("location_info");
+				 */
+				LocationInfo info = (LocationInfo) data
+						.getSerializableExtra("info");
 				bean.setLocationInfo(info);
 				bean.setCity(tvCity);
 				tv_City.setText(tvCity);
@@ -353,10 +341,11 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	}
 
 	// ---------------------------------必要的重写方法--------------------------------------------------
-	private int indexOf=0;
+	private int indexOf = 0;
+
 	private void typeCar() {
-		if(mydialog==null){
-			mydialog=new  ArrayList<TypeBean>();
+		if (mydialog == null) {
+			mydialog = new ArrayList<TypeBean>();
 		}
 		dialog2 = new TypeDialog(homeActivity, R.style.CustomDialog,
 				new LeaveMyDialogListener() {
@@ -364,21 +353,34 @@ public class PublishFragment extends Fragment implements OnClickListener {
 					public void refreshUI(ArrayList<TypeBean> item) {
 						// TODO Auto-generated method stub
 						if (null == items) {
-							if(visibleInit==0){
-  								items = item;
-							}else{
-								items=typeBeansList;
-								for(int i=0;i<item.size();i++){
-									if(hire_field.contains(item.get(i).getField())){
-										indexOf = hire_field.indexOf(item.get(i).getField());
-										hire_time.set(indexOf, item.get(i).getDate()==null?"0":item.get(i).getDate());
-										hire_price.set(indexOf, item.get(i).getPrice());
-										
-										items.get(i).setDate(item.get(i).getDate()==null?"0":item.get(i).getDate());
-										items.get(i).setPrice(item.get(i).getPrice());
-										items.get(i).setField(hire_field.get(i).toString());
-										items.get(i).setObjectId(hire_method_id.get(i).toString());
-									}else{
+							if (visibleInit == 0) {
+								items = item;
+							} else {
+								items = typeBeansList;
+								for (int i = 0; i < item.size(); i++) {
+									if (hire_field.contains(item.get(i)
+											.getField())) {
+										indexOf = hire_field.indexOf(item
+												.get(i).getField());
+										hire_time.set(indexOf, item.get(i)
+												.getDate() == null ? "0" : item
+												.get(i).getDate());
+										hire_price.set(indexOf, item.get(i)
+												.getPrice());
+
+										items.get(i)
+												.setDate(
+														item.get(i).getDate() == null ? "0"
+																: item.get(i)
+																		.getDate());
+										items.get(i).setPrice(
+												item.get(i).getPrice());
+										items.get(i).setField(
+												hire_field.get(i).toString());
+										items.get(i).setObjectId(
+												hire_method_id.get(i)
+														.toString());
+									} else {
 										Log.e("for if", "false");
 										items.addAll(item);
 									}
@@ -386,52 +388,78 @@ public class PublishFragment extends Fragment implements OnClickListener {
 							}
 						} else {
 							Log.e("items!=null", "items!=null");
-							if(visibleInit==0){
-								for(int i=0;i<item.size();i++){
-									if(hire_field.contains(item.get(i).getField())){
-										indexOf = hire_field.indexOf(item.get(i).getField());
-										hire_time.set(indexOf, item.get(i).getDate()==null?"0":item.get(i).getDate());
-										hire_price.set(indexOf, item.get(i).getPrice());
-										
-										items.get(i).setDate(item.get(i).getDate()==null?"0":item.get(i).getDate());
-										items.get(i).setPrice(item.get(i).getPrice());
-										items.get(i).setField(hire_field.get(i).toString());
-										items.get(i).setObjectId(hire_method_id.get(i).toString());
-									}else{
+							if (visibleInit == 0) {
+								for (int i = 0; i < item.size(); i++) {
+									if (hire_field.contains(item.get(i)
+											.getField())) {
+										indexOf = hire_field.indexOf(item
+												.get(i).getField());
+										hire_time.set(indexOf, item.get(i)
+												.getDate() == null ? "0" : item
+												.get(i).getDate());
+										hire_price.set(indexOf, item.get(i)
+												.getPrice());
+
+										items.get(i)
+												.setDate(
+														item.get(i).getDate() == null ? "0"
+																: item.get(i)
+																		.getDate());
+										items.get(i).setPrice(
+												item.get(i).getPrice());
+										items.get(i).setField(
+												hire_field.get(i).toString());
+										items.get(i).setObjectId(
+												hire_method_id.get(i)
+														.toString());
+									} else {
 										items.addAll(item);
 									}
 								}
-							}else{
-								for(int i=0;i<item.size();i++){
-									/*if(hire_field.contains(item.get(i).getField())){
-										indexOf = hire_field.indexOf(item.get(i).getField());
-										hire_time.set(indexOf, item.get(i).getDate()==null?"0":item.get(i).getDate());
-										hire_price.set(indexOf, item.get(i).getPrice());
-										items.get(i).setDate(item.get(i).getDate()==null?"0":item.get(i).getDate());
-										items.get(i).setPrice(item.get(i).getPrice());
-									}else{
-										for(int index=0;index<items.size();i++){
-											TypeBean typeBean=new TypeBean();
-											typeBean.setDate(item.get(i).getDate()==null?"0":item.get(i).getDate());
-											typeBean.setField(item.get(index).getField());
-											typeBean.setObjectId(item.get(index).getObjectId());
-											typeBean.setMethod(item.get(index).getMethod());
-											items.add(typeBean);
-										}
-									}*/
-									TypeBean typeBean=new TypeBean();
+							} else {
+								for (int i = 0; i < item.size(); i++) {
+									/*
+									 * if(hire_field.contains(item.get(i).getField
+									 * ())){ indexOf =
+									 * hire_field.indexOf(item.get
+									 * (i).getField()); hire_time.set(indexOf,
+									 * item
+									 * .get(i).getDate()==null?"0":item.get(i
+									 * ).getDate()); hire_price.set(indexOf,
+									 * item.get(i).getPrice());
+									 * items.get(i).setDate
+									 * (item.get(i).getDate()
+									 * ==null?"0":item.get(i).getDate());
+									 * items.get
+									 * (i).setPrice(item.get(i).getPrice());
+									 * }else{ for(int
+									 * index=0;index<items.size();i++){ TypeBean
+									 * typeBean=new TypeBean();
+									 * typeBean.setDate(
+									 * item.get(i).getDate()==null
+									 * ?"0":item.get(i).getDate());
+									 * typeBean.setField
+									 * (item.get(index).getField());
+									 * typeBean.setObjectId
+									 * (item.get(index).getObjectId());
+									 * typeBean.
+									 * setMethod(item.get(index).getMethod());
+									 * items.add(typeBean); } }
+									 */
+									TypeBean typeBean = new TypeBean();
 									typeBean.setDate(item.get(i).getDate());
 									typeBean.setField(item.get(i).getField());
-									typeBean.setObjectId(item.get(i).getObjectId());
+									typeBean.setObjectId(item.get(i)
+											.getObjectId());
 									typeBean.setMethod(item.get(i).getMethod());
 									items.add(typeBean);
 								}
 							}
 						}
-						mydialog=items;
-						
-						adapter = new PublishTypeAdapter(homeActivity,
-								items, new UpdateList() {
+						mydialog = items;
+
+						adapter = new PublishTypeAdapter(homeActivity, items,
+								new UpdateList() {
 									@Override
 									public void deteleList(
 											ArrayList<TypeBean> arrayList) {
@@ -447,14 +475,14 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		dialog2.setContentView(R.layout.publish_type_dialog);
 		dialog2.show();
 	}
-	
+
 	private TextView textstart;
 	private TextView textend;
 	private View view;
 	private ListView mListView;
 	private MySwitch mySwitch;
 	private ArrayList<TypeBean> typeBeansList;
-	
+
 	private void topOrbutm() {
 		builder = new Builder(getActivity());
 		builder.setTitle("选择车位类型");
@@ -492,24 +520,32 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	 */
 	private void postData(ArrayList<TypeBean> arrList) {
 		try {
-			if(arrList!=null){
-				if(visibleInit==0){
+			if (arrList != null) {
+				if (visibleInit == 0) {
 					for (int i = 0; i < arrList.size(); i++) {
-						if(!hire_price.contains(arrList.get(i).getPrice()) && !hire_method_id.contains(arrList.get(i).getObjectId())){
+						if (!hire_price.contains(arrList.get(i).getPrice())
+								&& !hire_method_id.contains(arrList.get(i)
+										.getObjectId())) {
 							hire_price.add(arrList.get(i).getPrice());
-						}else{
-							hire_price.set(hire_method_id.indexOf(arrList.get(i).getObjectId()),
-									arrList.get(i).getPrice());
+						} else {
+							hire_price.set(hire_method_id.indexOf(arrList
+									.get(i).getObjectId()), arrList.get(i)
+									.getPrice());
 						}
-						
-						if(!hire_method_id.contains(arrList.get(i).getObjectId())){
+
+						if (!hire_method_id.contains(arrList.get(i)
+								.getObjectId())) {
 							hire_method_id.add(arrList.get(i).getObjectId());
 						}
-						/*if (arrList.get(i).getDate() != null && !hire_time.contains(arrList.get(i).getDate())) {
-							hire_time.add(i,arrList.get(i).getDate()==null?"0":arrList.get(i).getDate());
-						}*/
+						/*
+						 * if (arrList.get(i).getDate() != null &&
+						 * !hire_time.contains(arrList.get(i).getDate())) {
+						 * hire_time
+						 * .add(i,arrList.get(i).getDate()==null?"0":arrList
+						 * .get(i).getDate()); }
+						 */
 						hire_time.add(arrList.get(i).getDate());
-						if(!hire_field.contains(arrList.get(i).getField())){
+						if (!hire_field.contains(arrList.get(i).getField())) {
 							hire_field.add(arrList.get(i).getField());
 						}
 					}
@@ -528,7 +564,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 
 			bean.setUserId(mCache.getAsString("user_id"));
 			bean.setAddress(mAddress.getText().toString());
-			
+
 			bean.setParkDetail(park_detail.getText().toString().trim());
 			bean.setParkDescription(park_description.getText().toString()
 					.trim());
@@ -537,17 +573,16 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			bean.setNoHire(list);
 			bean.setTailNum(tv_car_num.getText().toString().trim());
 			// bean.setCity(tv_City.getText().toString());// 自动定位获取得到
-			Log.e("hire_method_id",hire_method_id+"::");
-			Log.e("hire_field",hire_field+"::");
-			Log.e("hire_price",hire_price+"::");
-			Log.e("hire_field",hire_field+"::");
-			
-			
-			Log.e("getHireMethodId",bean.getHireMethodId()+"::");
-			Log.e("getHire_field",bean.getHire_field()+"::");
-			Log.e("getHirePrice",bean.getHirePrice()+"::");
-			Log.e("getHireTime",bean.getHireTime()+"::");
-			
+			Log.e("hire_method_id", hire_method_id + "::");
+			Log.e("hire_field", hire_field + "::");
+			Log.e("hire_price", hire_price + "::");
+			Log.e("hire_field", hire_field + "::");
+
+			Log.e("getHireMethodId", bean.getHireMethodId() + "::");
+			Log.e("getHire_field", bean.getHire_field() + "::");
+			Log.e("getHirePrice", bean.getHirePrice() + "::");
+			Log.e("getHireTime", bean.getHireTime() + "::");
+
 			Double area = Double.parseDouble(tv_car_area.getText().toString());
 			bean.setParkArea(area);
 			bean.setParkHeight(Double.parseDouble(tv_car_high.getText()
@@ -555,17 +590,17 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			bean.setGateCard(gate_card.getText().toString());
 			bean.setMode("community");
 			bean.setPersonal(1);
-			
+
 			bean.setHire_field(hire_field);
 			bean.setHirePrice(hire_price);
 			bean.setHireTime(hire_time);
 			bean.setHireMethodId(hire_method_id);
-			
+
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", bean.toString());
 			Log.e("发布的数据是：", json);
-			
+
 			MyThread thread = new MyThread(json);
 			thread.start();
 		} catch (Exception e) {
@@ -634,5 +669,5 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

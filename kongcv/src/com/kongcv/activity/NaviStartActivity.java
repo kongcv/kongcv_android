@@ -70,28 +70,33 @@ public class NaviStartActivity extends Activity implements
 	private boolean mIsMapLoaded = false;//地图加载
 	
 	// 记录地图点击事件相应情况，根据选择不同，地图响应不同
-	private int mMapClickMode = MAP_CLICK_NO;
-	private static final int MAP_CLICK_NO = 0;// 地图不接受点击事件
-	private static final int MAP_CLICK_START = 1;// 地图点击设置起点
-	private static final int MAP_CLICK_END = 2;// 地图点击设置终点
+//	private int mMapClickMode = MAP_CLICK_NO;
+//	private static final int MAP_CLICK_NO = 0;// 地图不接受点击事件
+//	private static final int MAP_CLICK_START = 1;// 地图点击设置起点
+//	private static final int MAP_CLICK_END = 2;// 地图点击设置终点
 
-	private final static int GPSNO = 0;// 使用我的位置进行计算、GPS定位还未成功状态
+//	private final static int GPSNO = 0;// 使用我的位置进行计算、GPS定位还未成功状态
 
-	private int mStartPointMethod = BY_MY_POSITION;
-	private static final int BY_MY_POSITION = 0;// 以我的位置作为起点
-	private static final int BY_MAP_POSITION = 1;// 以地图点选的点为起点
+//	private int mStartPointMethod = BY_MY_POSITION;
+//	private static final int BY_MY_POSITION = 0;// 以我的位置作为起点
+//	private static final int BY_MAP_POSITION = 1;// 以地图点选的点为起点
 	
-	private final static int CALCULATEERROR = 1;// 启动路径计算失败状态
+	/*private final static int CALCULATEERROR = 1;// 启动路径计算失败状态
 	private final static int CALCULATESUCCESS = 2;// 启动路径计算成功状态
-	
+*/	
 	private int mNaviMethod;
-	private static final int NAVI_METHOD = 0;// 执行模拟导航操作
-	private static final int ROUTE_METHOD = 1;// 执行计算线路操作
+	//private static final int NAVI_METHOD = 0;// 执行模拟导航操作
+	//private static final int ROUTE_METHOD = 1;// 执行计算线路操作
+	
+	private static final int ROUTE_METHOD = 0;// 执行计算线路操作
+	private static final int GPSNaviMode = 1;// 执行计算线路操作
+	
+	
 	
 	// 记录导航种类，用于记录当前选择是驾车还是步行
-	private int mTravelMethod = DRIVER_NAVI_METHOD;
+//	private int mTravelMethod = DRIVER_NAVI_METHOD;
 	private static final int DRIVER_NAVI_METHOD = 0;// 驾车导航
-	private static final int WALK_NAVI_METHOD = 1;// 步行导航
+//	private static final int WALK_NAVI_METHOD = 1;// 步行导航
 	
 	// 导航监听
 	private AMapNaviListener mAmapNaviListener;
@@ -132,7 +137,7 @@ public class NaviStartActivity extends Activity implements
 		// 在定位结束后，在合适的生命周期调用destroy()方法
 		// 其中如果间隔时间为-1，则定位只定一次
 		mLocationManger.requestLocationData(LocationProviderProxy.AMapNetwork,
-				60 * 1000, 15, this);
+				6 * 1000, 15, this);
 		mLocationManger.setGpsEnable(false);
 	}
 	/**
@@ -142,9 +147,7 @@ public class NaviStartActivity extends Activity implements
 		// 初始语音播报资源
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);// 设置声音控制
 		// 语音播报开始
-
 		mAmapNavi = AMapNavi.getInstance(this);// 初始化导航引擎
-
 		// 初始化Marker添加到地图
 		mStartMarker = mAmap.addMarker(new MarkerOptions()
 				.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
@@ -156,7 +159,6 @@ public class NaviStartActivity extends Activity implements
 				.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory
 						.decodeResource(getResources(),
 								R.drawable.location_marker))));
-
 	}
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -173,15 +175,33 @@ public class NaviStartActivity extends Activity implements
 		// TODO Auto-generated method stub
 
 	}
-
 	/**
 	 * 当GPS位置有更新时的回调函数
 	 */
 	@Override
 	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
-	}
+		if (location != null) {
+			mIsGetGPS = true;
+			mStartPoint = new NaviLatLng(location.getLatitude(),
+					location.getLongitude());
 
+			mGPSMarker.setPosition(new LatLng(mStartPoint.getLatitude(),
+					mStartPoint.getLongitude()));
+			mStartPoints.clear();
+			mStartPoints.add(mStartPoint);
+			dissmissGPSProgressDialog();
+			
+			double latitude = getIntent().getDoubleExtra("latitude", 0);
+			double longitude = getIntent().getDoubleExtra("longitude", 0);
+			NaviLatLng naviLatLng = new NaviLatLng(latitude,
+					longitude);
+			mEndPoints.add(naviLatLng);
+			initNavi();
+		} else {
+			ToastUtil.show(NaviStartActivity.this, "定位出现异常");
+		}
+	}
 	/**
 	 * 定位成功的回调函数
 	 */
@@ -239,7 +259,6 @@ public class NaviStartActivity extends Activity implements
 	    mAmap.addMarker(markerOptions);
 	    // Marker的计数器自增
 	    //markerCounts++;
-	  
 	//    LatLng position = markerOptions.getPosition();
 	}
 
@@ -262,8 +281,8 @@ public class NaviStartActivity extends Activity implements
 		}
 		showGPSProgressDialog();
 		
-		
-		mNaviMethod=NAVI_METHOD;
+		mNaviMethod=AMapNavi.GPSNaviMode;
+//		mNaviMethod=NAVI_METHOD;
 	}
 
 	
@@ -360,16 +379,11 @@ public class NaviStartActivity extends Activity implements
 					dissmissProgressDialog();
 					switch (mNaviMethod) {
 					case ROUTE_METHOD://在这里跳到显示路线显示页面
-						
-						//initNavi();
-						
+						initNavi();
 						break;
-					case NAVI_METHOD://在这里跳导航页面  ?? 能够进入导航 但是再次进入导航数据不发变化  
+					/*case NAVI_METHOD://在这里跳导航页面  ?? 能够进入导航 但是再次进入导航数据不发变化  
 						dissmissGPSProgressDialog();
-						//handler.postDelayed(this, 15000);
-						
 						handler.postAtTime(new Runnable() {
-							
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub
@@ -378,7 +392,18 @@ public class NaviStartActivity extends Activity implements
 								finish();
 							}
 						}, 3000);
-						
+						break;*/
+					case GPSNaviMode:
+						dissmissGPSProgressDialog();
+						mHandler.postAtTime(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								Intent intent=new Intent(NaviStartActivity.this, NaviCustomActivity.class);
+								startActivity(intent);
+								finish();
+							}
+						}, 3000);
 						break;
 					}
 				}
@@ -434,11 +459,7 @@ public class NaviStartActivity extends Activity implements
 		return mAmapNaviListener;
 	}
 	
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			
-		};
-	};
+	private Handler mHandler=new Handler(){};
 	/**
 	 * 返回键处理事件 返回回到AMap页面
 	 * */
@@ -466,7 +487,6 @@ public class NaviStartActivity extends Activity implements
 		// 以上两句必须重写
 		// 以下两句逻辑是为了保证进入首页开启定位和加入导航回调
 		AMapNavi.getInstance(this).setAMapNaviListener(getAMapNaviListener());
-		
 		TTSController.getInstance(this).startSpeaking();
 	}
 	@Override
@@ -478,18 +498,17 @@ public class NaviStartActivity extends Activity implements
 		// 下边逻辑是移除监听
 		AMapNavi.getInstance(this)
 				.removeAMapNaviListener(getAMapNaviListener());
+		TTSController.getInstance(this).stopSpeaking();
+		AMapNavi.getInstance(this).stopGPS();
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		mMapView.onDestroy();
-		
 		// 这是最后退出页，所以销毁导航和播报资源
 		AMapNavi.getInstance(this).destroy();// 销毁导航
-		TTSController.getInstance(this).stopSpeaking();
 		TTSController.getInstance(this).destroy();
-
 	}
 	
 	/**

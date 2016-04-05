@@ -125,7 +125,6 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 					com.kongcv.global.Information.KONGCV_GET_PARK_LIST,
 					JsonStrUtils.JsonStr(jso));
 			Message msg=new Message();
-			Log.d("加载出来的数据是>>>", doHttpsPost+"::");
 			JSONObject object=new JSONObject(doHttpsPost);
 			JSONArray jsonArray = object.getJSONArray("result");
 			if(jsonArray!=null && jsonArray.length()>0){
@@ -420,18 +419,35 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 		}
 		return null;
 	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			int position, long id) {
 		// TODO Auto-generated method stub
-		Log.d("onItemClick点击事件",position+">>>");
-		Log.e("onItemClick点击事件",position+">>>");
-		Log.v("onItemClick点击事件",position+">>>");
-		Intent data = new Intent();
+		/*Intent data = new Intent();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("MineCarmanagerBean", updateInfo.get(position - 1));
 		data.putExtra("bundle", bundle);
 		setResult(HomeActivity.CWGL, data);
+		finish();*/
+		Intent data = new Intent(this,HomeActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("MineCarmanagerBean", updateInfo.get(position - 1));
+		data.putExtra("bundle", bundle);
+		startActivity(data);
 		finish();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

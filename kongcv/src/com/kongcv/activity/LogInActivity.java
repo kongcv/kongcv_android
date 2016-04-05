@@ -198,7 +198,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 
 	private void putUserInfo() {
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				try {
@@ -222,16 +221,13 @@ public class LogInActivity extends Activity implements OnClickListener {
 						url = "";
 						bit = null;
 					}
-
 					mCache.put("USERNAME", username);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}).start();
-
 	}
-
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -247,7 +243,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 			case 2:
 				String state = (String) msg.obj;
 				if ("ok".equals(state)) {
-
 					try {
 						String sessionToken = objStr.getString("sessionToken");
 						String user_id = objStr.getString("user_id");

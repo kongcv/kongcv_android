@@ -20,8 +20,6 @@ import android.os.Environment;
 
 public class FileUtil {
     private static final String TAG = "FileUtil";
-	
-    
 	public static ArrayList<String> readLines(InputStream is) {
 		ArrayList<String> data = new ArrayList<String>();
 		

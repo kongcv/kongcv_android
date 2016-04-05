@@ -28,7 +28,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.dialog.SpotsDialog;
 import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;
@@ -127,8 +126,6 @@ public class SplashActivity extends Activity {
 					.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							/*Log.d("user!!!!",mCache.getAsString("USER"));
-							Log.d("user!!!!",mCache.getAsString("user_id"));*/
 							ToastUtil.show(getBaseContext(), "取消更新！");
 							dialog.dismiss();
 							mHandler.sendEmptyMessageDelayed(0,1500);
@@ -154,7 +151,6 @@ public class SplashActivity extends Activity {
 	 */
 	protected void enterHome() {
 		Intent intent = new Intent(this, HomeActivity.class);
-	//	Intent intent = new Intent(this, AMapAnimalActivity.class);
 		startActivity(intent);
 		finish();
 	}

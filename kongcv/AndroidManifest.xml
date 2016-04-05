@@ -7,7 +7,6 @@
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="18" />
-
     <permission
         android:name="com.kongcv.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
@@ -45,23 +44,21 @@
     <!-- 打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <!--  android:theme="@android:style/Theme.Light.NoTitleBar" -->
     <application
         android:name="com.kongcv.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
-      <!--   
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="391b9f56d2369696ea162e6f63bde8db" /> -->
+            android:value="391b9f56d2369696ea162e6f63bde8db" /> 
         <!-- <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="57b93074fc8d6509fe482a12126ca31e" /> -->
-            <meta-data
+           <!--  <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="d6de770d904051e27991c9a3cfe31568" />
+            android:value="d6de770d904051e27991c9a3cfe31568" /> -->
         
         <!-- android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" -->
         <activity
@@ -154,7 +151,7 @@
             android:exported="false" >
             <intent-filter android:priority="1000" >
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
- <!-- Required  显示通知栏 -->
+		 <!-- Required  显示通知栏 -->
                 <category android:name="com.kongcv" />
             </intent-filter>
             <intent-filter>
@@ -182,18 +179,18 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTRATION" />
- <!-- Required  用户注册SDK的intent -->
+ 				<!-- Required  用户注册SDK的intent -->
                 <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
- <!-- Required  用户接收SDK消息的intent -->
+ 				<!-- Required  用户接收SDK消息的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
- <!-- Required  用户接收SDK通知栏信息的intent -->
+ 				<!-- Required  用户接收SDK通知栏信息的intent -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
- <!-- Required  用户打开自定义通知栏的intent -->
+ 				<!-- Required  用户打开自定义通知栏的intent -->
                 <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
- <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+ 				<!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
                 <action android:name="cn.jpush.android.intent.CONNECTION" />
- <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+ 				<!-- 接收网络变化 连接/断开 since 1.6.3 -->
                 <category android:name="com.kongcv" />
             </intent-filter>
         </receiver>
@@ -206,7 +203,6 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="ca9af5e8766e94552a733c1e" />
- <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity
             android:name="com.kongcv.activity.WelcomeActivity"
@@ -302,7 +298,6 @@
             android:screenOrientation="behind" >
         </activity>
          <service android:name="com.kongcv.global.UpdateService"/>
-         <activity android:name="com.kongcv.activity.AMapAnimalActivity"/>
     </application>
     <!-- 56656d5ee0f55a68990010c9 -->
 	<!-- <meta-data android:name="UMENG_APPKEY" android:value="56f4a9fd67e58e66740000c6"> </meta-data>

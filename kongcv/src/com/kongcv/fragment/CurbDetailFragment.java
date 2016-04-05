@@ -43,6 +43,7 @@ import com.kongcv.calendar.PickDialog;
 import com.kongcv.calendar.PickDialogListener;
 import com.kongcv.global.CurbInfoBean;
 import com.kongcv.global.CurbInfoBean.ResultEntity;
+import com.kongcv.global.CurbInfoBean.ResultEntity.LocationEntity;
 import com.kongcv.global.CurbJpushBean;
 import com.kongcv.global.Information;
 import com.kongcv.global.JpushBean;
@@ -74,7 +75,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private DetailFragmentAdapter adapter;
 	private List<Map<String, Object>> maps = new ArrayList<Map<String, Object>>();
 	private String start, end;
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -142,8 +143,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		mListPhone.setVisibility(View.VISIBLE);
 		phoneList = new ArrayList<String>();
 		phoneList.add(mCommBean.getMobilePhoneNumber());
-		Log.v("电话号码>>>", mCommBean.getMobilePhoneNumber()+"<>");
-		Log.v("电话号码phoneList.size()>>>", phoneList.size()+"<>");
 		if(phoneList!=null && phoneList.size()>0){
 			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(), phoneList);
 			mListPhone.setAdapter(phoneNumberAdapter);
@@ -233,6 +232,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private ResultEntity result;
 	private String user;
 	private PayOneBean payBean;
+	public static  LocationEntity location;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -243,6 +243,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						btnInform.setText("此车位已出租");
 						btnInform.setOnClickListener(null);
 					}
+					location = result.getLocation();
 					curbDescribe.setText(result.getPark_description());
 					payBean = new PayOneBean();
 					List<String> hire_time = result.getHire_time();
@@ -358,12 +359,29 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					if(mCommBean!=null){
 						if(mCommBean.getTrade_state()==0){
 							if(mCommBean.getHandsel_state()==0){
-								tvCurbMoney.setText(mCommBean.getPrice()+"");
+						//		tvCurbMoney.setText(mCommBean.getPrice()+"");
+								if (method.equals("计时/小时")) {
+									if (hire_price.get(i).indexOf("/") != -1) {
+										String[] split = hire_price.get(i).split("/");
+										double p = Double.parseDouble(split[0]) / 4.00;
+										java.text.DecimalFormat df = new java.text.DecimalFormat(
+												"#.00");
+										tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+										toastOrNo = true;
+										tv_reserveOrpay.setText("定金");
+									} else {
+										double p = Double.parseDouble(hire_price.get(i)) / 4.00;
+										java.text.DecimalFormat df = new java.text.DecimalFormat(
+												"#.00");
+										tvCurbMoney.setText(p<1?"0"+df.format(p):df.format(p));
+										toastOrNo = true;
+									}
+								}
 							}else{
-								tvCurbMoney.setText((mCommBean.getMoney()-mCommBean.getPrice())+"");
+								tvCurbMoney.setText((mCommBean.getPrice()-mCommBean.getMoney())+"");
 							}
 						}else{
-							tvCurbMoney.setText("0");
+							tvCurbMoney.setText(mCommBean.getPrice()+"");
 						}
 					}else{
 						if (method.equals("计时/小时")) {

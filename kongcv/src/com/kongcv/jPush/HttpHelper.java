@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-import com.kongcv.utils.Config;
+import com.kongcv.global.Information;
 
 public class HttpHelper {
     private static final String CHARSET = "UTF-8";
@@ -20,7 +20,7 @@ public class HttpHelper {
         HttpURLConnection conn = null;
         DataOutputStream outStream = null;
         try {
-            URL url = new URL(Config.SERVER + path);
+            URL url = new URL(Information.SERVER + path);
             byte[] data = parseParams(params).getBytes(CHARSET);
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT);

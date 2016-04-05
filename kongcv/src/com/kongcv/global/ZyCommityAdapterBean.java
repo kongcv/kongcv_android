@@ -28,8 +28,13 @@ public class ZyCommityAdapterBean implements Serializable{
 	private String device_type;
 	private String device_token;
 	
-	
-	
+	private String mode;
+	public String getMode() {
+		return mode;
+	}
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
 	public double getMoney() {
 		return money;
 	}

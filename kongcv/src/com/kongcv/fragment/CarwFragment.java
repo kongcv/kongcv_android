@@ -89,8 +89,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	private void getType() {
 		// TODO Auto-generated method stub
 		if(data!=null){
-			Log.d("data==null???",data+"::");
-			Log.d("data==null???",data+"::");
 			ReadType reading = new ReadType();
 			reading.execute();
 		}

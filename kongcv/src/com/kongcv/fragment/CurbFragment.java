@@ -80,7 +80,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								park_id=beansList.get(position-1).getParkId();
 								field=beansList.get(position-1).getField();
 								mCommBean=beansList.get(position-1);
-						//		if (0 == trade_state) {
+								mCommBean.setMode("curb");
 									Intent i = new Intent(getActivity(),
 											DetailsActivity.class);
 									// 传递数据
@@ -90,7 +90,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 									i.putExtra("getField", field);
 									i.putExtra("mCommBean", mCommBean);
 									startActivity(i);
-						//		}
 							}
 						}
 					});
@@ -101,37 +100,19 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				if (beansList != null && beansList.size() > 0) {
 					czdapter = new CzCommityAdapter(getActivity(), beansList);
 					lv.setAdapter(czdapter);
-					lv.setOnItemClickListener(new OnItemClickListener() {
+					/*lv.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
 							if (beansList != null
 									&& beansList.size() >= position) {
-								/*trade_state = beansList.get(position-1)
-										.getTrade_state();
-								park_id=beansList.get(position-1).getParkId();
-								field=beansList.get(position-1).getField();
-								mCommBean=beansList.get(position-1);
-								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
-								Log.d("点击未完成的测试结果>>>",mCommBean.toString()+":::");
-								if (0 == trade_state) {
-									Intent i = new Intent(getActivity(),
-											DetailsActivity.class);
-									// 传递数据
-									i.putExtra("mode", "curb");
-									i.putExtra("trade_state", trade_state);
-									i.putExtra("park_id", park_id);
-									i.putExtra("getField", field);
-									i.putExtra("mCommBean", mCommBean);
-									startActivity(i);
-								}*/
 								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
 								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
 										+ mobilePhoneNumber));
 								startActivity(intent);
 							}
 						}
-					});
+					});*/
 				}
 				break;
 			default:
@@ -205,7 +186,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
-			Log.d("doResponse 道边>>>>>>>>>>>>>>", string);
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
@@ -281,7 +261,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private void doResponse2(String string) {
 		// TODO Auto-generated method stub
 		try {
-			Log.d("doResponse2 道边>>>>>>>>>>>>>>", string);
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {

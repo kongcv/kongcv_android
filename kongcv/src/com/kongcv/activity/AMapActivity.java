@@ -152,7 +152,6 @@ public class AMapActivity extends FragmentActivity implements
 
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_LOCATION_SEARCH)
 				.headers(Information.getHeaders())
@@ -179,7 +178,7 @@ public class AMapActivity extends FragmentActivity implements
 			}
 		});
 	}
-
+	
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -262,10 +261,10 @@ public class AMapActivity extends FragmentActivity implements
 				break;
 			default:
 				break;
+				
 			}
 		}
 	};
-
 	private void refresh(String readFrom) {
 		try {
 			JSONObject jsonObject = new JSONObject(readFrom);
@@ -275,9 +274,7 @@ public class AMapActivity extends FragmentActivity implements
 				List<String> objList = new ArrayList<String>(); // 车位的objectId
 				List<LatLng> latLngList = new ArrayList<LatLng>();// 经纬度集合
 				List<Integer> restList = new ArrayList<Integer>();// 获取到park_space表示是否出租
-																	// 后面判断出租还是未租
 				List<Double> priceList = new ArrayList<Double>();
-
 				List<String> parkList = new ArrayList<String>();
 				for (int index = 0; index < jsonArray.length(); index++) { // 每次加载5条
 					String address = jsonArray.getJSONObject(index).getString(
@@ -310,7 +307,6 @@ public class AMapActivity extends FragmentActivity implements
 				bean.setObjList(objList);
 				bean.setRestList(restList);
 				bean.setPriceList(priceList);
-
 			} else {
 				ToastUtil.show(getBaseContext(), "没有数据！");
 			}
@@ -667,7 +663,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 
 	private double price;
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
