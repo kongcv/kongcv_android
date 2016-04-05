@@ -47,6 +47,7 @@ import com.kongcv.utils.Data;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 public class SearchPublishActivity extends Activity implements
 		OnItemClickListener, AMapListViewListener, OnPoiSearchListener,
@@ -388,9 +389,6 @@ public class SearchPublishActivity extends Activity implements
 
 	// 刷新
 	public void onRefresh() {
-		Log.e("onRefresh", "正在刷新");
-		Log.e("onRefresh", "正在刷新");
-		Log.e("onRefresh", "正在刷新");
 		mHandler.postDelayed(new Runnable() {
 			public void run() {
 				nextPage();
@@ -401,11 +399,7 @@ public class SearchPublishActivity extends Activity implements
 
 	// 加载更多
 	public void onLoadMore() {
-		Log.e("onLoadMore", "正在刷新");
-		Log.e("onLoadMore", "正在刷新");
-		Log.e("onLoadMore", "正在刷新");
 		mHandler.postDelayed(new Runnable() {
-
 			public void run() {
 				nextPage();
 				onLoad();
@@ -420,15 +414,13 @@ public class SearchPublishActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
-	/**
-	 * 方法必须重写
-	 */
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

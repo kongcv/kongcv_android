@@ -56,6 +56,7 @@ import com.kongcv.utils.Data;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 public class SearchActivity extends FragmentActivity implements
 		AMapListViewListener, OnItemClickListener, TextWatcher,
@@ -508,15 +509,13 @@ public class SearchActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
-	/**
-	 * 方法必须重写
-	 */
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

@@ -28,6 +28,7 @@ import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class NickNameActivity extends Activity implements OnClickListener{
 
@@ -140,14 +141,15 @@ public class NickNameActivity extends Activity implements OnClickListener{
 		}).start();
 	}
 	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
+	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
-	public void onPause() {
+	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -17,6 +17,7 @@ import com.kongcv.fragment.DetailsFragment;
 import com.kongcv.global.JpushBean;
 import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.Data;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 测试textactivity
@@ -99,17 +100,18 @@ public class TestActivity extends FragmentActivity {
 			e.printStackTrace();
 		}
 	}
+	@Override
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
-
 
 	@Override
 	protected void onDestroy() {

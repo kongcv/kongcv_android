@@ -36,6 +36,7 @@ import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 /*
  * 车位管理页面
@@ -203,11 +204,13 @@ public class MineCarmanagerActivity extends Activity implements OnItemClickListe
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	private String city=null;
 	private ArrayList<MineCarmanagerBean> updateInfo(String doHttpsPost) {

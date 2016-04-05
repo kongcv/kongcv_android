@@ -16,6 +16,7 @@ import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 更改手机号
@@ -77,11 +78,12 @@ public class MineChangePhoneNumber extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
-
 }

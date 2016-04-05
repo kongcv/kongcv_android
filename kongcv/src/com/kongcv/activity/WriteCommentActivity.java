@@ -19,6 +19,7 @@ import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.JsonStrUtils;
+import com.umeng.analytics.MobclickAgent;
 
 public class WriteCommentActivity extends Activity implements OnClickListener,
 		OnRatingBarChangeListener {
@@ -120,22 +121,19 @@ public class WriteCommentActivity extends Activity implements OnClickListener,
 			boolean fromUser) {
 		// TODO Auto-generated method stub
 		ratingBar.setAlpha(rating);
-		/*Log.e("ratingBar setAlpha", ratingBar.getAlpha()+"::");
-		ratingBar.setStepSize(rating);
-		Log.e("ratingBar setStepSize", ratingBar.getStepSize()+"::");*/
-		
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

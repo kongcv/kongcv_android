@@ -12,6 +12,7 @@ import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.fragment.DetailsFragment;
 import com.kongcv.global.ZyCommityAdapterBean;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 详情activity 用于切换fragment 画面
  */
@@ -74,6 +75,7 @@ public class DetailsActivity extends FragmentActivity{
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	/**
 	 * 方法必须重写
@@ -82,6 +84,7 @@ public class DetailsActivity extends FragmentActivity{
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
 

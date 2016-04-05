@@ -36,6 +36,7 @@ import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.StringUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 空车位登录页面
@@ -317,6 +318,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 
 	/**
@@ -326,5 +328,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

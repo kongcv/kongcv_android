@@ -20,6 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.adapter.BasePagerAdapter;
+import com.umeng.analytics.MobclickAgent;
 
 public class WelcomeActivity extends Activity implements OnPageChangeListener
 		,OnClickListener{
@@ -105,11 +106,13 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
-	public void onPause() {
+	@Override
+	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 	@Override

@@ -45,6 +45,7 @@ import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.ExampleUtil;
 import com.kongcv.utils.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 空车位页面对所有fragment进行管理
@@ -59,7 +60,6 @@ public class HomeActivity extends FragmentActivity implements
 	public static int CWGL = 1;
 	// 定位
 	private LocationManagerProxy mLocationManger;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,11 +82,8 @@ public class HomeActivity extends FragmentActivity implements
 			}
 		}, 15000);// 15秒 未定位成功
 	}
-
 	private Handler mHandler = new Handler() {
 	};
-
-
 	@TargetApi(19)
 	private void setTranslucentStatus(boolean on) {
 		Window win = getWindow();
@@ -99,7 +96,6 @@ public class HomeActivity extends FragmentActivity implements
 		}
 		win.setAttributes(winParams);
 	}
-
 	private void getDisplay() {
 		// 方法1 Android获得屏幕的宽和高
 		WindowManager windowManager = getWindowManager();
@@ -127,10 +123,8 @@ public class HomeActivity extends FragmentActivity implements
 				.println(("First method:" + dm.toString() + "\n"
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
 	}
-
 //	private int i = 0;
 	private MineCarmanagerBean bean;
-
 	/*@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -218,6 +212,7 @@ public class HomeActivity extends FragmentActivity implements
 		isForeground = true;
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
@@ -225,6 +220,7 @@ public class HomeActivity extends FragmentActivity implements
 		isForeground = false;
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

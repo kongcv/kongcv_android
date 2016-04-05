@@ -27,6 +27,7 @@ import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 提现记录页面
@@ -180,12 +181,13 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

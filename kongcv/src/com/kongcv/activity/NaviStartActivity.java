@@ -39,6 +39,7 @@ import com.amap.api.navi.view.RouteOverLay;
 import com.kongcv.R;
 import com.kongcv.TTSController;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 导航页面 设置路径 导航以及语音播报
@@ -488,6 +489,7 @@ public class NaviStartActivity extends Activity implements
 		// 以下两句逻辑是为了保证进入首页开启定位和加入导航回调
 		AMapNavi.getInstance(this).setAMapNaviListener(getAMapNaviListener());
 		TTSController.getInstance(this).startSpeaking();
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	public void onPause() {
@@ -500,8 +502,9 @@ public class NaviStartActivity extends Activity implements
 				.removeAMapNaviListener(getAMapNaviListener());
 		TTSController.getInstance(this).stopSpeaking();
 		AMapNavi.getInstance(this).stopGPS();
+		MobclickAgent.onPause(this);
 	}
-
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();

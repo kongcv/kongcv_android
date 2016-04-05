@@ -23,6 +23,7 @@ import com.kongcv.global.AboutUsBean;
 import com.kongcv.global.Information;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 关于我们页面
@@ -125,12 +126,14 @@ public class MineAboutus extends Activity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

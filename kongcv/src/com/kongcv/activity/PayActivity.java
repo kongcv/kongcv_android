@@ -40,6 +40,7 @@ import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.pingplusplus.android.PaymentActivity;
 import com.pingplusplus.android.PingppLog;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 支付activity
@@ -385,12 +386,13 @@ public class PayActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
 
