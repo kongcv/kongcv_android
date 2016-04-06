@@ -102,7 +102,6 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 			mRadioButton1.performClick();
 			CHECKTYPE = 1;
 			initData1();
-			//mRadioButton1.performClick();
 			break;
 		case R.id.rent:// 点击租用时图标发生变化
 			iv_youjia.setImageResource(R.drawable.icon_youjiantou);

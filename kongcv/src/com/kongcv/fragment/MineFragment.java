@@ -74,7 +74,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mCache = ACacheUtils.get(getActivity());
 		updateUserInfo();
@@ -345,7 +344,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 						startActivityForResult(intent, 0);
 					}
 				}, 2000);
-				mHandler.sendEmptyMessage(1);
+			//	mHandler.sendEmptyMessage(1);
 			}
 			break;
 

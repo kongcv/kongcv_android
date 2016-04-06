@@ -2,11 +2,13 @@ package com.kongcv.adapter;
 
 import java.util.List;
 
+import android.R.dimen;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -16,8 +18,10 @@ import android.widget.TextView;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
+import com.kongcv.activity.HomeActivity;
 import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.BaseViewHolder;
+import com.kongcv.utils.Data;
 
 public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 
@@ -28,7 +32,7 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	private List<ZyCommityAdapterBean> mList;
 	private TextView tv_username, tv_start, tv_end, tv_order, tv_price,
 			tv_state, tv_method;
-	
+
 	public CzCommityAdapter(Context context, List<ZyCommityAdapterBean> list) {
 		mContext = context;
 		mList = list;
@@ -38,12 +42,12 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	public int getCount() {
 		return mList.size();
 	}
-	
+
 	@Override
 	public Object getItem(int position) {
 		return position;
 	}
-	
+
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -88,17 +92,28 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		phoneNumber = mList.get(position).getMobilePhoneNumber();
 		tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
 				.get(position).getMethod());
+		Log.e("widsssssss",  Data.getData("screenWidth")+"");
+		Log.e("hesssssss",  Data.getData("screenHeight")+"");
+		int screenWidth= (int) Data.getData("screenWidth");
+		int screenHeight=(int) Data.getData("screenHeight");
 		if (mList.get(position).getBitmap() != null) {
-			Drawable d = GetImage.resizeImage(mList.get(position).getBitmap(),
-					80, 80);
-			iv_dingwei.setImageDrawable(d);
+			if (screenWidth==1080&&screenHeight==1920) {
+				Drawable d = GetImage.resizeImage(mList.get(position)
+						.getBitmap(), 160, 160);
+				iv_dingwei.setImageDrawable(d);
+			}else{
+				Log.e("ssss"," ss");
+				Drawable d = GetImage.resizeImage(mList.get(position)
+						.getBitmap(), 80, 80);
+				iv_dingwei.setImageDrawable(d);
+			}
 		}
 		return convertView;
+		
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.iv_bohao:
 			phoneNumber = mList.get((int) v.getTag()).getMobilePhoneNumber();

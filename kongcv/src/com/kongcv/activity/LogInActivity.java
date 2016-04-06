@@ -280,12 +280,10 @@ public class LogInActivity extends Activity implements OnClickListener {
 					JSONObject obj = new JSONObject();
 					obj.put("mobilePhoneNumber", mCache.getAsString("USER"));
 					obj.put("user_name", mCache.getAsString("USERNAME"));
-					obj.put("device_token",
-							mCache.getAsString("RegistrationID"));
+					obj.put("device_token",mCache.getAsString("RegistrationID"));
 					obj.put("device_type", "android");
 					obj.put("license_plate", "");
-					obj.put("version",
-							AndroidUtil.getVersion(getApplicationContext()));
+					obj.put("version",AndroidUtil.getVersion(getApplicationContext()));
 					String str = PostCLientUtils.doHttpsPost2(
 							Information.KONGCV_PUT_USERINFO,
 							JsonStrUtils.JsonStr(obj),

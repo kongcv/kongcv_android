@@ -122,28 +122,10 @@ public class HomeActivity extends FragmentActivity implements
 		System.out
 				.println(("First method:" + dm.toString() + "\n"
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
+		Data.putData("screenWidth", screenWidth);
+		Data.putData("screenHeight", screenHeight);
 	}
-//	private int i = 0;
 	private MineCarmanagerBean bean;
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == HomeActivity.CWGL) {
-			if (data != null) {
-				HomeActivity.CWGL = 2;
-				i = 1;
-				bean = (MineCarmanagerBean) data.getBundleExtra("bundle").get(
-						"MineCarmanagerBean");
-				mPublishFragment = new PublishFragment();
-				Bundle args = new Bundle();
-				args.putSerializable("MineCarmanagerBean", bean);
-				mPublishFragment.setArguments(args);
-				rb1.setChecked(true);
-			}
-		}
-	}*/
-
-	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
 	private void init() {
 		JPushInterface.init(getApplicationContext());
 		mCache = ACacheUtils.get(this);
@@ -163,8 +145,6 @@ public class HomeActivity extends FragmentActivity implements
 		if (bundle == null) {
 			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
 		}else{
-		//	HomeActivity.CWGL = 2;
-		//	i = 1;
 			bean = (MineCarmanagerBean) bundle.get(
 					"MineCarmanagerBean");
 			mPublishFragment = new PublishFragment();
