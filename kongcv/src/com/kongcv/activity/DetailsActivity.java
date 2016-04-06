@@ -11,6 +11,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.fragment.DetailsFragment;
+import com.kongcv.global.SearchBean;
 import com.kongcv.global.ZyCommityAdapterBean;
 import com.umeng.analytics.MobclickAgent;
 /**
@@ -84,6 +85,41 @@ public class DetailsActivity extends FragmentActivity{
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
+	
+	/*
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		Intent intent=new Intent(this,AMapActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("bean", getBean());
+		bundle.putString("objectId", getCarObjectId());// 车位id
+		bundle.putString("mode", getMode());
+		bundle.putString("getField", getField());
+		intent.putExtras(bundle);
+		startActivity(intent);
+		finish();
+	}
+	private SearchBean getBean(){
+		SearchBean searchBean = (SearchBean) getIntent().getSerializableExtra("bean");
+		return searchBean;
+	}
+	private String getMode() {
+		Bundle bundle = getIntent().getExtras();
+		String object = (String) bundle.get("mode");
+		return object;
+	}
+	private String getField() {
+		Bundle bundle = getIntent().getExtras();
+		String field = (String) bundle.get("getField");
+		return field;
+	}
+	private String getCarObjectId() {
+		Bundle bundle = getIntent().getExtras();
+		String object = (String) bundle.get("objectId");
+		return object;
+	}*/
 }
 
 

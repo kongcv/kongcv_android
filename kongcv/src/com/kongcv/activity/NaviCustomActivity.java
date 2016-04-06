@@ -27,7 +27,6 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class NaviCustomActivity extends Activity implements
 		AMapNaviViewListener {
-
 	// 导航监听
 	private AMapNaviListener mAmapNaviListener;
 	private AMapNaviView mAmapAMapNaviView;

@@ -140,7 +140,7 @@ public class AMapActivity extends FragmentActivity implements
 			doSearch(json);
 		}
 	}
-	class ReadInfo extends PreReadTask<String, Void, Void> {
+	/*class ReadInfo extends PreReadTask<String, Void, Void> {
 		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -148,7 +148,7 @@ public class AMapActivity extends FragmentActivity implements
 			return null;
 		}
 	}
-
+*/
 	private boolean loadOrNo = true;
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
@@ -616,8 +616,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(1, 1000);
 				}
 			}
@@ -645,8 +646,10 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(i);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(2, 1000);
 				}
 			}
@@ -658,6 +661,7 @@ public class AMapActivity extends FragmentActivity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		//	searchBean = (SearchBean) getIntent().getSerializableExtra("bean");
 		if (position != 0) {
 			if (SearchActivity.latLng == null) {
 				ArrayList data = (ArrayList) beanList.getObjList();
@@ -672,15 +676,13 @@ public class AMapActivity extends FragmentActivity implements
 						Intent intent = new Intent(AMapActivity.this,
 								DetailsActivity.class);
 						Bundle bundle = new Bundle();
+						bundle.putSerializable("bean", searchBean);
+						bundle.putString("objectId", getCarObjectId());// 车位id
 						bundle.putString("mode", getMode());
-						bundle.putString("park_id", object);
-						/*
-						 * if(price!=0){ bundle.putInt("price", price);
-						 * bundle.putString("getField", getField()); }
-						 */
-						bundle.putDouble("price", price);
 						bundle.putString("getField", getField());
-
+						
+						bundle.putString("park_id", object);
+						bundle.putDouble("price", price);
 						intent.putExtras(bundle);
 						CurbAndObjectId bean = new CurbAndObjectId();
 						bean.setMode(getMode());
@@ -688,7 +690,7 @@ public class AMapActivity extends FragmentActivity implements
 						bean.setField(getField());
 						Data.putData("CurbAndObjectId", bean);// 车位类型id
 						startActivity(intent);
-						finish();
+				//		finish();
 					}
 				}, 1000);
 			}
@@ -774,8 +776,7 @@ public class AMapActivity extends FragmentActivity implements
 				setAItemNum.setImageResource(R.drawable.item_show);
 				setMapHeight();
 				setItemShow();
-		//		ToastUtil.fixListViewHeight(mListView, 2);
-				ToastUtil.fixListViewHeight(mListView, -1);
+				ToastUtil.fixListViewHeight(mListView, 2);
 				flag = !flag;
 			} else {
 				setAItemNum.setImageResource(R.drawable.item_show_sh);
@@ -801,8 +802,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按价格排序的请求json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
@@ -824,8 +826,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按距离排序的请求json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");

@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
-import com.kongcv.activity.HomeActivity;
 import com.kongcv.activity.MineInformationActivity;
 import com.kongcv.adapter.InfoNotifyAdapter;
 import com.kongcv.global.InfoBean;
@@ -63,10 +61,10 @@ public class MineReceiveFragment extends Fragment implements
 			lv.setAdapter(infoAdapter);
 			final Gson gson = new Gson();
 			lv.setOnItemClickListener(new OnItemClickListener() {
-
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
+					// TODO Auto-generated method stub
 					if (position != 0) {
 						String s = mLists.get(position - 1).getState();
 						String m = mLists.get(position - 1).getMode();
@@ -84,7 +82,6 @@ public class MineReceiveFragment extends Fragment implements
 							i.putExtra("CurbMineReceiver", json);
 							startActivity(i);
 						}
-
 					}
 				}
 			});
@@ -242,14 +239,6 @@ public class MineReceiveFragment extends Fragment implements
 
 	private void refresh() {
 		mRun(0, 10);
-	}
-
-	class ReadType extends PreReadTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... params) {
-			refresh();
-			return null;
-		}
 	}
 
 	@Override

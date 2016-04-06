@@ -60,7 +60,6 @@
                 android:layout_alignBottom="@+id/tv_getSearch"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:text="@string/tv_City"
                 android:textSize="@dimen/publish_txtSize" />
         </RelativeLayout>
 

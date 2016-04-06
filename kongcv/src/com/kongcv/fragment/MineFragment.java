@@ -146,7 +146,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 				break;
 			default:
 				break;
@@ -178,7 +177,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		String PHOTO_FILE_NAME = mCache.getAsString("USER") + ".png";
@@ -231,7 +230,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				}
 			}
 			break;
-
 		default:
 			break;
 		}
@@ -348,7 +346,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				mHandler.sendEmptyMessage(1);
 			}
 			break;
-
 		case R.id.tv_logn:
 			if (mCache.getAsString("USER") != null
 					&& mCache.getAsString("sessionToken") != null) {
@@ -380,7 +377,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 
 	// 为弹出窗口实现监听类
 	private OnClickListener itemsOnClick = new OnClickListener() {
-
 		public void onClick(View v) {
 			menuWindow.dismiss();
 			String PHOTO_FILE_NAME = mCache.getAsString("USER") + ".png";

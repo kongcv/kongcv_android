@@ -55,7 +55,6 @@ public class MinePopu extends PopupWindow {
              mMenuView.setOnTouchListener(new OnTouchListener() {
                      
                      public boolean onTouch(View v, MotionEvent event) {
-                             
                              int height = mMenuView.findViewById(R.id.pop_layout).getTop();
                              int y=(int) event.getY();
                              if(event.getAction()==MotionEvent.ACTION_UP){

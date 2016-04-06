@@ -62,7 +62,6 @@ public class SearchActivity extends FragmentActivity implements
 		AMapListViewListener, OnItemClickListener, TextWatcher,
 		OnGeocodeSearchListener, OnPoiSearchListener, OnKeyListener,
 		OnEditorActionListener, OnClickListener {
-	private String keyWord = "";// 要输入的poi搜索关键字
 	private int currentPage = 0;// 当前页面，从0开始计数
 	private PoiSearch.Query query;// Poi查询条件类
 	private PoiSearch poiSearch;// POI搜索
@@ -75,16 +74,12 @@ public class SearchActivity extends FragmentActivity implements
 	private String city = null;
 	private String a[] = null;
 
-	private ProgressDialog progDialog = null;// 搜索时进度条
 	public static final String KEY[] = new String[] { "ivDaoH", "txtFind",
 			"ivCome", "ivCity" };
 	private static GeocodeSearch geocoderSearch;// 经纬度搜索
 	private SearchAdapter adapter;
 	private PoiResult poiResult; // poi返回的结果
 	ArrayList<Map<String, Object>> mList;
-	private Drawable mDelete;
-	private int mCount;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,6 +87,7 @@ public class SearchActivity extends FragmentActivity implements
 		MyApplication.getInstance().addActivity(this);
 		init();
 	}
+
 	/**
 	 * 获取field
 	 */
@@ -130,7 +126,6 @@ public class SearchActivity extends FragmentActivity implements
 		lv.setAMapListViewListener(this);
 		lv.setPullLoadEnable(true);
 		lv.setPullRefreshEnable(false);
-
 		txtFind = (EditText) findViewById(R.id.txtfind);
 
 		ivDelete = (ImageView) findViewById(R.id.iv_delete);
@@ -144,18 +139,13 @@ public class SearchActivity extends FragmentActivity implements
 
 		txtFind.setOnKeyListener(this);
 		txtFind.setOnEditorActionListener(this);
-
 		mList = new ArrayList<Map<String, Object>>();
-		mCount = mList.size();
-		// 在初始化方法中设置图片的颜色
-		// ivDelete.setImageResource(R.drawable.delete_item);
-		// mDelete = this.getResources().getDrawable(
-		// R.drawable.delete_item_unselector);
+		
 		// 初始化中设置GeocodeSearch侦听 请求获取经纬度
 		geocoderSearch = new GeocodeSearch(SearchActivity.this);
 		geocoderSearch.setOnGeocodeSearchListener(this);
 	}
-	
+
 	/**
 	 * 响应地理编码
 	 */
@@ -163,6 +153,7 @@ public class SearchActivity extends FragmentActivity implements
 		GeocodeQuery query = new GeocodeQuery(name, city);// 第一个参数表示地址，第二个参数表示查询城市，中文或者中文全拼，citycode、adcode，
 		geocoderSearch.getFromLocationNameAsyn(query);// 设置同步地理编码请求
 	}
+
 	/**
 	 * 下一页
 	 */
@@ -192,8 +183,7 @@ public class SearchActivity extends FragmentActivity implements
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		String newText = s.toString().trim();
 		if (newText.length() > 0) {
-			
-				ivDelete.setImageResource(R.drawable.delete_item_unselector);
+			ivDelete.setImageResource(R.drawable.delete_item_unselector);
 		} else if (newText.length() <= 0) {
 			ivDelete.setImageResource(R.drawable.delete_item);
 		}
@@ -247,9 +237,6 @@ public class SearchActivity extends FragmentActivity implements
 		}
 	}
 
-	// <item android:drawable="@drawable/delete_item_unselector"
-	// android:state_pressed="true"></item>
-	// <item android:drawable="@drawable/delete_item"
 	/**
 	 * Button点击事件回调方法
 	 */
@@ -451,7 +438,6 @@ public class SearchActivity extends FragmentActivity implements
 			}, 1000);
 		}
 	}
-
 	private String getStrSearch(String str) {
 		String param = null;
 		if (str.indexOf("(") != -1) {
@@ -475,7 +461,6 @@ public class SearchActivity extends FragmentActivity implements
 			return -1;
 		}
 	}
-
 	/**
 	 * 回车键监听 回车之后走搜索 这一步没必要 现在都是下一步了
 	 */
@@ -500,7 +485,6 @@ public class SearchActivity extends FragmentActivity implements
 				lv.setAdapter(adapter);
 			}
 		}
-
 		return false;
 	}
 
@@ -510,13 +494,13 @@ public class SearchActivity extends FragmentActivity implements
 		JPushInterface.onResume(this);
 		MobclickAgent.onResume(this);
 	}
+
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-
 	/**
 	 * poi搜索
 	 */
@@ -524,7 +508,6 @@ public class SearchActivity extends FragmentActivity implements
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
 		// TODO Auto-generated method stub
 	}
-
 	@Override
 	public void onPoiSearched(PoiResult result, int rCode) {
 		// TODO Auto-generated method stub
@@ -554,13 +537,11 @@ public class SearchActivity extends FragmentActivity implements
 			ToastUtil.show(SearchActivity.this, R.string.no_result);
 		}
 	}
-
 	/** 停止刷新， */
 	private void onLoad() {
 		lv.stopLoadMore();
 		lv.setRefreshTime("刚刚");
 	}
-
 	@Override
 	public void onLoadMore() {
 		// TODO Auto-generated method stub
@@ -571,18 +552,15 @@ public class SearchActivity extends FragmentActivity implements
 			}
 		}, 2000);
 	}
-
 	@Override
 	public void onRefresh() {
 		// TODO Auto-generated method stub
 		searchButton();
 		onLoad();
 	}
-
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
-
 }

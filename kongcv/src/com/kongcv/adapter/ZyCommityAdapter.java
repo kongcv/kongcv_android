@@ -47,7 +47,7 @@ public class ZyCommityAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = View.inflate(mContext, R.layout.order_item, null);
+			convertView = View.inflate(mContext, R.layout.comm_order_item, null);
 		}
 		tv_username = BaseViewHolder.get(convertView, R.id.tv_username);
 		tv_start = BaseViewHolder.get(convertView, R.id.tv_start);

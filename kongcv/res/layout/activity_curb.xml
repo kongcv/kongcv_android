@@ -22,7 +22,6 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:src="@drawable/community_light" />
-
             <TextView
                 android:id="@+id/tv_curb_address"
                 android:layout_width="wrap_content"

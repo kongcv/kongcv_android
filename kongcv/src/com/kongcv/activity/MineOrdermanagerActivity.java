@@ -3,7 +3,9 @@ package com.kongcv.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -120,7 +122,6 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			}
 		});
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -131,25 +132,46 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 			TYPEORDER = 0;
 			cubf.refresh();
 			pager.setCurrentItem(0);
+			loading();
 			break;
 		case R.id.btn2: 
 			TYPEORDER = 1;
 			cubf.refresh();
 			pager.setCurrentItem(0);
+			loading();
 			break;
 		case R.id.btn_one:// 商业
 			cubf.refresh();
 			pager.setCurrentItem(0);
+			loading();
 			break;
 		case R.id.btn_two:// 个人
 			comf.refresh();
 			pager.setCurrentItem(1);
+			loading();
 			break;
 		default:
 			break;
 		}
 	}
-	
+	private ProgressDialog mypDialog;
+	private void loading() {
+		mypDialog = new ProgressDialog(this, R.style.MyDialogStyle);
+		mypDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mypDialog.setMessage("loading...");
+		mypDialog.setIndeterminate(false);
+		mypDialog.setCancelable(true);
+		mypDialog.show();
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				
+				mypDialog.dismiss();
+			}
+		}, 1000);
+	}
+	private Handler mHandler=new Handler(){};
 	@Override
 	protected void onResume() {
 		super.onResume();

@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
-import com.kongcv.activity.HomeActivity;
 import com.kongcv.activity.MineInformationActivity;
 import com.kongcv.activity.TestActivity;
 import com.kongcv.adapter.InfoNotifyAdapter;
@@ -39,7 +37,6 @@ import com.kongcv.global.JpushBeanAndInfoBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
-import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
@@ -126,6 +123,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	protected void mRun(final int skip, final int limit) {
 				JSONObject obj = new JSONObject();
 				try {
+				
 					obj.put("mobilePhoneNumber", mCache.getAsString("USER"));
 					obj.put("action", "send");
 					obj.put("skip", skip * 10);// 跳过几条数据
@@ -257,7 +255,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	}
 
 	private int skip = 0;
-
 	private void refresh() {
 		mRun(0, 10);
 	}
@@ -279,7 +276,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 				Loading();
 				onLoad();
 			}
-
 			private void Loading() {
 				mRun(skip, 10);
 			}
@@ -291,5 +287,5 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 		lv.stopLoadMore();
 		lv.setRefreshTime("刚刚");
 	}
-
 }
+

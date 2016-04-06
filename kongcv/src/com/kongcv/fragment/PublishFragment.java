@@ -147,9 +147,9 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		ivPublish.setOnClickListener(this);
 
 		mAddress = (TextView) mScrollView.findViewById(R.id.tv_getSearch);
-		mAddress.setText((CharSequence) Data.getData("address"));
 		mListView = (ListView) mScrollView.findViewById(R.id.listview);
-		tv_City.setText((CharSequence) Data.getData("wk"));
+//		mAddress.setText((CharSequence) Data.getData("address"));
+//		tv_City.setText((CharSequence) Data.getData("wk"));
 		initDay();
 	}
 
@@ -186,7 +186,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				List<String> objectId = community.getObjectId();// 类型id
 				List<String> method = community.getMethod();// 类型名称'
 				List<String> hireField = community.getHire_field();
-				// ArrayList<TypeBean> item=new ArrayList<TypeBean>();
 				List<String> hireMethodList = carmanagerBean
 						.getHire_method_id();
 				List<String> hirePriceList = carmanagerBean.getHire_price();

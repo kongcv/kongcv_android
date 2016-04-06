@@ -12,8 +12,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
-import android.view.Window;
-
 import cn.jpush.android.api.JPushInterface;
 
 import com.amap.api.location.AMapLocation;
@@ -69,35 +67,14 @@ public class NaviStartActivity extends Activity implements
 	private AMapNavi mAmapNavi;
 	private RouteOverLay mRouteOverLay;
 	private boolean mIsMapLoaded = false;//地图加载
-	
-	// 记录地图点击事件相应情况，根据选择不同，地图响应不同
-//	private int mMapClickMode = MAP_CLICK_NO;
-//	private static final int MAP_CLICK_NO = 0;// 地图不接受点击事件
-//	private static final int MAP_CLICK_START = 1;// 地图点击设置起点
-//	private static final int MAP_CLICK_END = 2;// 地图点击设置终点
-
-//	private final static int GPSNO = 0;// 使用我的位置进行计算、GPS定位还未成功状态
-
-//	private int mStartPointMethod = BY_MY_POSITION;
-//	private static final int BY_MY_POSITION = 0;// 以我的位置作为起点
-//	private static final int BY_MAP_POSITION = 1;// 以地图点选的点为起点
-	
-	/*private final static int CALCULATEERROR = 1;// 启动路径计算失败状态
-	private final static int CALCULATESUCCESS = 2;// 启动路径计算成功状态
-*/	
 	private int mNaviMethod;
-	//private static final int NAVI_METHOD = 0;// 执行模拟导航操作
-	//private static final int ROUTE_METHOD = 1;// 执行计算线路操作
-	
 	private static final int ROUTE_METHOD = 0;// 执行计算线路操作
 	private static final int GPSNaviMode = 1;// 执行计算线路操作
 	
 	
 	
 	// 记录导航种类，用于记录当前选择是驾车还是步行
-//	private int mTravelMethod = DRIVER_NAVI_METHOD;
 	private static final int DRIVER_NAVI_METHOD = 0;// 驾车导航
-//	private static final int WALK_NAVI_METHOD = 1;// 步行导航
 	
 	// 导航监听
 	private AMapNaviListener mAmapNaviListener;
@@ -105,7 +82,6 @@ public class NaviStartActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.startnavis_activity);
 		
 		initView(savedInstanceState);
@@ -133,12 +109,8 @@ public class NaviStartActivity extends Activity implements
 	private void initLocation() {
 		// TODO Auto-generated method stub
 		mLocationManger = LocationManagerProxy.getInstance(this);
-		// 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-		// 注意设置合适的定位时间的间隔，并且在合适时间调用removeUpdates()方法来取消定位请求
-		// 在定位结束后，在合适的生命周期调用destroy()方法
-		// 其中如果间隔时间为-1，则定位只定一次
 		mLocationManger.requestLocationData(LocationProviderProxy.AMapNetwork,
-				6 * 1000, 15, this);
+				10 * 1000, 15, this);
 		mLocationManger.setGpsEnable(false);
 	}
 	/**
@@ -182,26 +154,6 @@ public class NaviStartActivity extends Activity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
-		if (location != null) {
-			mIsGetGPS = true;
-			mStartPoint = new NaviLatLng(location.getLatitude(),
-					location.getLongitude());
-
-			mGPSMarker.setPosition(new LatLng(mStartPoint.getLatitude(),
-					mStartPoint.getLongitude()));
-			mStartPoints.clear();
-			mStartPoints.add(mStartPoint);
-			dissmissGPSProgressDialog();
-			
-			double latitude = getIntent().getDoubleExtra("latitude", 0);
-			double longitude = getIntent().getDoubleExtra("longitude", 0);
-			NaviLatLng naviLatLng = new NaviLatLng(latitude,
-					longitude);
-			mEndPoints.add(naviLatLng);
-			initNavi();
-		} else {
-			ToastUtil.show(NaviStartActivity.this, "定位出现异常");
-		}
 	}
 	/**
 	 * 定位成功的回调函数
@@ -241,10 +193,8 @@ public class NaviStartActivity extends Activity implements
 	/**
 	 * 点击map地图图标的操作显示
 	 */
-	//private int markerCounts=0;
 	@Override
 	public void onMapClick(LatLng latLng) {
-		
 		MarkerOptions markerOptions = new MarkerOptions();
 	    // 设置Marker的图标样式
 	    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.end));
@@ -258,9 +208,6 @@ public class NaviStartActivity extends Activity implements
 	    markerOptions.draggable(false);
 	    // 将Marker添加到地图上去
 	    mAmap.addMarker(markerOptions);
-	    // Marker的计数器自增
-	    //markerCounts++;
-	//    LatLng position = markerOptions.getPosition();
 	}
 	
 	/**
@@ -273,7 +220,6 @@ public class NaviStartActivity extends Activity implements
 		mEndPoints.clear();
 		mRouteOverLay = new RouteOverLay(mAmap, null);
 		AMapNaviPath naviPath = mAmapNavi.getNaviPath();
-		
 		// 获取路径规划线路，显示到地图上
 		mRouteOverLay.setRouteInfo(naviPath);
 		mRouteOverLay.addToMap();
@@ -281,9 +227,7 @@ public class NaviStartActivity extends Activity implements
 			mRouteOverLay.zoomToSpan();
 		}
 		showGPSProgressDialog();
-		
 		mNaviMethod=AMapNavi.GPSNaviMode;
-//		mNaviMethod=NAVI_METHOD;
 	}
 
 	
@@ -377,25 +321,13 @@ public class NaviStartActivity extends Activity implements
 				@Override
 				public void onCalculateRouteSuccess() {
 					dissmissProgressDialog();
-					dissmissProgressDialog();
 					switch (mNaviMethod) {
 					case ROUTE_METHOD://在这里跳到显示路线显示页面
 						initNavi();
 						break;
-					/*case NAVI_METHOD://在这里跳导航页面  ?? 能够进入导航 但是再次进入导航数据不发变化  
-						dissmissGPSProgressDialog();
-						handler.postAtTime(new Runnable() {
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								Intent intent=new Intent(NaviStartActivity.this, NaviCustomActivity.class);
-								startActivity(intent);
-								finish();
-							}
-						}, 3000);
-						break;*/
 					case GPSNaviMode:
 						dissmissGPSProgressDialog();
+						initNavi();
 						mHandler.postAtTime(new Runnable() {
 							@Override
 							public void run() {
@@ -442,7 +374,6 @@ public class NaviStartActivity extends Activity implements
 				@Override
 				public void onGpsOpenStatus(boolean arg0) {
 					// TODO Auto-generated method stub
-
 				}
 
 				/**
@@ -500,6 +431,7 @@ public class NaviStartActivity extends Activity implements
 		// 下边逻辑是移除监听
 		AMapNavi.getInstance(this)
 				.removeAMapNaviListener(getAMapNaviListener());
+		
 		TTSController.getInstance(this).stopSpeaking();
 		AMapNavi.getInstance(this).stopGPS();
 		MobclickAgent.onPause(this);
