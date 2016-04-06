@@ -782,6 +782,9 @@ public class AMapActivity extends FragmentActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_map_flexible:
+			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
+			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
+			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
 			if (flag) {
 				setAItemNum.setImageResource(R.drawable.item_show);
 				ToastUtil.fixListViewHeight(mListView, 2);

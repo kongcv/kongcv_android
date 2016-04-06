@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -30,7 +29,6 @@ import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
-import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -55,9 +53,6 @@ public class MineReceiveFragment extends Fragment implements
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					if(position!=0){
-						Log.e("点击的position=="+position, position-1+"::");
-						Log.e("点击的position=="+position, position-1+"::");
-						Log.e("点击的position=="+position, position-1+"::");
 						String s = mLists.get(position - 1).getState();
 						String m = mLists.get(position - 1).getMode();
 						String p = mLists.get(position - 1).getPark_id();

@@ -53,29 +53,31 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					String s = mLists.get(position-1).getState();
-					String m = mLists.get(position-1).getMode();
-					String p = mLists.get(position-1).getPark_id();
-					String f = mLists.get(position - 1).getHire_method_field();
-					if("未处理".equals(s)){
-						Intent i = new Intent(getActivity(),
-								DetailsActivity.class);
-						i.putExtra("mode", m);
-						i.putExtra("park_id", p);
-						i.putExtra("getField", f);
-						Gson gson=new Gson();
-						String json = gson.toJson(jpushBean);
-						i.putExtra("MineSendFragment", json);
-						startActivity(i);//未处理 跳转到详情页
-					}else if("已接受".equals(s)) {//跳转支付页面
-						Intent i = new Intent(getActivity(),
-								TestActivity.class);
-						Gson gson=new Gson();
-						String json = gson.toJson(jpushBean);
-						i.putExtra("MineSendFragment", json);
-						startActivity(i);
-					}else {
-						ToastUtil.show(getActivity(), "拒绝了 不做任何处理！");
+					if(position!=0){
+						String s = mLists.get(position-1).getState();
+						String m = mLists.get(position-1).getMode();
+						String p = mLists.get(position-1).getPark_id();
+						String f = mLists.get(position - 1).getHire_method_field();
+						if("未处理".equals(s)){
+							Intent i = new Intent(getActivity(),
+									DetailsActivity.class);
+							i.putExtra("mode", m);
+							i.putExtra("park_id", p);
+							i.putExtra("getField", f);
+							Gson gson=new Gson();
+							String json = gson.toJson(jpushBean);
+							i.putExtra("MineSendFragment", json);
+							startActivity(i);//未处理 跳转到详情页
+						}else if("已接受".equals(s)) {//跳转支付页面
+							Intent i = new Intent(getActivity(),
+									TestActivity.class);
+							Gson gson=new Gson();
+							String json = gson.toJson(jpushBean);
+							i.putExtra("MineSendFragment", json);
+							startActivity(i);
+						}else {
+							ToastUtil.show(getActivity(), "拒绝了 不做任何处理！");
+						}
 					}
 				}
 			});
