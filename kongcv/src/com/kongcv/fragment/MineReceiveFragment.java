@@ -36,6 +36,7 @@ import com.kongcv.global.JpushBeanAndInfoBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
+import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -62,6 +63,7 @@ public class MineReceiveFragment extends Fragment implements
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
+
 					if (position != 0) {
 						String s = mLists.get(position - 1).getState();
 						String m = mLists.get(position - 1).getMode();
