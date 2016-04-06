@@ -582,14 +582,20 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Log.e("getHirePrice", bean.getHirePrice() + "::");
 			Log.e("getHireTime", bean.getHireTime() + "::");
 
-			Double area = Double.parseDouble(tv_car_area.getText().toString());
-			bean.setParkArea(area);
-			bean.setParkHeight(Double.parseDouble(tv_car_high.getText()
-					.toString()));
+			Log.d("double解析>>>", tv_car_area.getText().toString()+"::::");
+			Log.d("double解析>>>", tv_car_area.getText().toString()+"::::");
+			Log.d("double解析>>>", tv_car_area.getText().toString()+"::::");
+			
+			if(tv_car_area.getText().toString()!=null){
+				Double area = Double.parseDouble(tv_car_area.getText().toString());
+				bean.setParkArea(area);
+			}
+			if(tv_car_high.getText().toString()!=null){
+				bean.setParkHeight(Double.parseDouble(tv_car_high.getText().toString()));
+			}
 			bean.setGateCard(gate_card.getText().toString());
 			bean.setMode("community");
 			bean.setPersonal(1);
-
 			bean.setHire_field(hire_field);
 			bean.setHirePrice(hire_price);
 			bean.setHireTime(hire_time);
