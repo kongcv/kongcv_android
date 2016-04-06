@@ -6,20 +6,20 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp" >
 
         <LinearLayout
             android:id="@+id/lv_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-             android:layout_marginLeft="20dp" >
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:paddingLeft="12dp"
                 android:text="14:22"
                 android:textColor="#A6A6A6"
                 android:textSize="12sp" />
@@ -59,8 +59,8 @@
                     android:id="@+id/tv_yuan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="7dp"
-                     android:layout_gravity="center_vertical"
                     android:text="元"
                     android:textColor="#5A5A5A"
                     android:textSize="14sp" />

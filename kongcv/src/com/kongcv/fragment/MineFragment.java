@@ -342,7 +342,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 					public void run() {
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
-						// startActivity(intent);
 						startActivityForResult(intent, 0);
 					}
 				}, 2000);

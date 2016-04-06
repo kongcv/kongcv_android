@@ -93,18 +93,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="35dp"
                 android:layout_toRightOf="@id/relativeLayout1"
                 android:text="@string/mine_rent"
                 android:textColor="@color/txt_pay"
-                android:textSize="24sp" />
+                android:textSize="24dp" />
 
             <ImageView
                 android:id="@+id/iv_xiala"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/rent"
                 android:src="@drawable/icon_xiajiantou" />
          
@@ -114,18 +114,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="31dp"
+                android:layout_marginLeft="25dp"
                 android:layout_toRightOf="@id/iv_xiala"
                 android:text="@string/mine_hire"
                 android:textColor="@color/txt_pay"
-                android:textSize="24sp" />
+                android:textSize="24dp" />
 
             <ImageView
                 android:id="@+id/iv_youjia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="40dp"
                 android:layout_toRightOf="@id/hire"
                 android:src="@drawable/icon_youjiantou" />

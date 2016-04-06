@@ -20,6 +20,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.activity.DetailsActivity;
+import com.kongcv.activity.HomeActivity;
+import com.kongcv.activity.MineInformationActivity;
 import com.kongcv.activity.TestActivity;
 import com.kongcv.adapter.InfoNotifyAdapter;
 import com.kongcv.global.InfoBean;
@@ -39,7 +41,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	private ArrayList<InfoBean> mList;
 	private InfoNotifyAdapter infoAdapter;
 	private ACacheUtils mCache;
-	
+	private MineInformationActivity infoActivity;
 	private View view;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -91,6 +93,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 		view = inflater.inflate(R.layout.minereceivefragment, container,
 				false);
 		mCache = ACacheUtils.get(getActivity());
+		infoActivity = (MineInformationActivity) getActivity();
 		initView();
 		mList = new ArrayList<InfoBean>();
 		getData1();
@@ -224,7 +227,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	// 刷新
 	@Override
 	public void onRefresh() {
-		mHandler.postDelayed(new Runnable() {
+		mHandler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
 				getData1();
@@ -237,7 +240,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	// 加载更多
 	@Override
 	public void onLoadMore() {
-		mHandler.postDelayed(new Runnable() {
+		mHandler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
 				getData2();

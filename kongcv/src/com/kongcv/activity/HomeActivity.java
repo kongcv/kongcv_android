@@ -296,6 +296,7 @@ public class HomeActivity extends FragmentActivity implements
 								public void onClick(DialogInterface dialog,
 										int which) {
 									finish();
+									//MyApplication.getInstance().exit();
 								}
 							}).show();
 		/*} else {

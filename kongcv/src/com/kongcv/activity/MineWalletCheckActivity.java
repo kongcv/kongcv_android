@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 	private TextView tvYear,tvMonth;
 	private DatePicker dp ;
 	private String time;
+	private Calendar cal ; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +55,13 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 		setContentView(R.layout.mine_check);
 		MyApplication.getInstance().addActivity(this);
 		initView();
-	
+		//TODO一点开就请求租用下的个人的数据
+		initData1();
+	    
 
 	}
 	private void initView() {
+		cal = Calendar.getInstance(); 
 		tvYear = (TextView) findViewById(R.id.tv_year);
 		tvMonth = (TextView) findViewById(R.id.tv_month);
 		iv_back = (ImageView) findViewById(R.id.iv_back);
@@ -72,6 +77,9 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 		mRadioButton2 = (RadioButton) findViewById(R.id.btn2);
 		mRadioButton1.setOnClickListener(this);
 		mRadioButton2.setOnClickListener(this);
+		tvYear.setText(cal.get(Calendar.YEAR)+"");
+		tvMonth.setText(cal.get(Calendar.MONTH)+1+"");
+	    time=tvYear.getText().toString()+"-"+tvMonth.getText().toString()+"-"+"1"+" "+"00:00:00";
 		tvYear.setOnClickListener(this);
 		tvMonth.setOnClickListener(this);
 	}
@@ -91,20 +99,24 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 		case R.id.hire:// 点击出租时图标发生变化
 			iv_xiala.setImageResource(R.drawable.icon_youjiantou);
 			iv_youjia.setImageResource(R.drawable.icon_xiajiantou);
+			mRadioButton1.performClick();
 			CHECKTYPE = 1;
+			initData1();
 			//mRadioButton1.performClick();
 			break;
 		case R.id.rent:// 点击租用时图标发生变化
 			iv_youjia.setImageResource(R.drawable.icon_youjiantou);
 			iv_xiala.setImageResource(R.drawable.icon_xiajiantou);
+			mRadioButton1.performClick();
 		    CHECKTYPE = 0;
+			initData1();
 			break;
-		case R.id.btn1:// 社区按钮
+		case R.id.btn1:// 社区按钮(个人)
 			mRadioButton2.setBackgroundColor(Color.TRANSPARENT);
 			mRadioButton1.setBackgroundResource(R.drawable.bg_shequ);
 			initData1();
 			break;
-		case R.id.btn2:// 道路按钮
+		case R.id.btn2:// 道路按钮(商业)
 			mRadioButton1.setBackgroundColor(Color.TRANSPARENT);
 			mRadioButton2.setBackgroundResource(R.drawable.bg_daolu);
 			initData2();
@@ -117,7 +129,7 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 	 * 自定义datePicker
 	 */
 	private void dateMyPicker(){
-		final Calendar cal = Calendar.getInstance(); 
+		
 		MyDatePickerDialog myDialog=new MyDatePickerDialog(this, R.style.MyDialog,new OnDateSetListener() {
 			@Override
 			public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -126,7 +138,7 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 				tvMonth.setText(monthOfYear+1+"");
 				String years=tvYear.getText().toString();
 				String month=tvMonth.getText().toString(); 
-			    time=years+"-"+month+"-"+"01"+" "+"00:00:00";
+			    time=years+"-"+month+"-"+"1"+" "+"00:00:00";
 			}
 		},
 		cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
