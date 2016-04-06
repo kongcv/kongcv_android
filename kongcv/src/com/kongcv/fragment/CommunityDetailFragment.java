@@ -1292,7 +1292,6 @@ public class CommunityDetailFragment extends Fragment implements OnClickListener
 				if(response.isSuccessful()){
 					try {
 						String string=response.body().string();
-					//	Log.d("onResponse", string+"<<>>");
 						JSONObject object=new JSONObject(string);
 						if (string.equals("{}") && object.getJSONObject("result")==null) {
 							Looper.prepare();

@@ -103,7 +103,7 @@ public class AMapActivity extends FragmentActivity implements
 	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
 
-	private LinearLayout layout;
+//	private LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +112,7 @@ public class AMapActivity extends FragmentActivity implements
 		getInfo();
 		initHigh();// 获取屏幕宽高
 		mapView = (MapView) findViewById(R.id.map);
-		layout = (LinearLayout) findViewById(R.id.ll_mapview);
+//		layout = (LinearLayout) findViewById(R.id.ll_mapview);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		loading();
 		init();
@@ -150,7 +150,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 
 	private boolean loadOrNo = true;
-
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
 		okhttp3.Request request = new okhttp3.Request.Builder()
@@ -159,7 +158,6 @@ public class AMapActivity extends FragmentActivity implements
 				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
 						objFrom)).build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response)
 					throws IOException {
@@ -171,7 +169,6 @@ public class AMapActivity extends FragmentActivity implements
 					mHandler.sendMessage(msg);
 				}
 			}
-
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
@@ -324,7 +321,6 @@ public class AMapActivity extends FragmentActivity implements
 		mypDialog.setCancelable(true);
 		mypDialog.show();
 	}
-
 	private void initView() {
 		// TODO Auto-generated method stub
 		/** 下拉刷新，上拉加载 */
@@ -347,50 +343,43 @@ public class AMapActivity extends FragmentActivity implements
 		rangePrice = (TextView) findViewById(R.id.tv_rangeandprice);
 		rangePrice.setOnClickListener(this);
 	}
-
+	
+	private int displayHeight;// 屏幕高度
+	private int displayWidth;// 屏幕宽度
 	private void initHigh() {
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		displayWidth = displayMetrics.widthPixels;
 		displayHeight = displayMetrics.heightPixels;
 	}
-
-	/**
-	 * 设置地图占三分之二
-	 */
-	private int displayHeight;// 屏幕高度
-	private int displayWidth;// 屏幕宽度
+	
 	private ImageView setAItemNum;
-
 	private void initMapHeight() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.5f + 0.5f));
 		mapView.setLayoutParams(params);
 	}
-
 	private void setMapHeight() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.8f + 0.5f));
 		mapView.setLayoutParams(params);
 	}
-
 	private void setItemShow() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.5f + 0.5f));
+				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.2f + 0.5f));
 		mListView.setLayoutParams(params);
 	}
-
+	
 	/**
 	 * 获取经纬度
-	 */
+	 *//*
 	private LatLonPoint getLatLonPoint() {
 		Bundle bundle = getIntent().getExtras();
 		double latitude = bundle.getDouble("latitude");
 		double longitude = bundle.getDouble("longitude");
 		LatLonPoint point = new LatLonPoint(latitude, longitude);
 		return point;
-	}
-
+	}*/
 	/**
 	 * 初始化AMap对象
 	 */
@@ -444,7 +433,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 
 	private void initMarkers() {
-		// beanList = (Bean) Data.getData("LIST");
 		beanList = bean;
 		if (beanList != null) {
 			addresslist = (ArrayList) beanList.getAddressList();
@@ -782,13 +770,12 @@ public class AMapActivity extends FragmentActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.iv_map_flexible:
-			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
-			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
-			Log.d("我是想优化 可是你不给时间啊>>>", flag+"::");
 			if (flag) {
 				setAItemNum.setImageResource(R.drawable.item_show);
-				ToastUtil.fixListViewHeight(mListView, 2);
 				setMapHeight();
+				setItemShow();
+		//		ToastUtil.fixListViewHeight(mListView, 2);
+				ToastUtil.fixListViewHeight(mListView, -1);
 				flag = !flag;
 			} else {
 				setAItemNum.setImageResource(R.drawable.item_show_sh);

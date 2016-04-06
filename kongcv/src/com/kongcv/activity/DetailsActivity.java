@@ -28,8 +28,6 @@ public class DetailsActivity extends FragmentActivity{
 		MyApplication.getInstance().addActivity(this);
 		getModeandParkId();
 	}
-	
-	
 	private void getModeandParkId(){
 		Intent intent = getIntent();
 		String mode = intent.getStringExtra("mode");
