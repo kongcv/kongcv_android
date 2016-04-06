@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:textColor="@color/txt_date"
-        android:textSize="@dimen/txt" />
+         android:textSize="@dimen/publish_txtSize" />
    
     
     <TextView
@@ -24,7 +24,7 @@
         android:layout_marginRight="18dp"
         android:layout_toLeftOf="@+id/radioButton"
         android:textColor="@color/txt_date"
-        android:textSize="@dimen/txt" />
+       android:textSize="@dimen/publish_txtSize"/>
 
     <TextView
         android:id="@+id/txt_date"
@@ -34,7 +34,7 @@
         android:layout_alignBottom="@+id/txt_method"
         android:layout_centerHorizontal="true"
         android:textColor="@color/txt_date"
-        android:textSize="@dimen/txt" />
+       android:textSize="@dimen/publish_txtSize"/>
 	<RadioButton
         android:id="@+id/radioButton"
         android:layout_width="wrap_content"

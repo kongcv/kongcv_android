@@ -21,6 +21,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.activity.DetailsActivity;
+import com.kongcv.activity.HomeActivity;
+import com.kongcv.activity.MineInformationActivity;
 import com.kongcv.adapter.InfoNotifyAdapter;
 import com.kongcv.global.InfoBean;
 import com.kongcv.global.Information;
@@ -41,6 +43,7 @@ public class MineReceiveFragment extends Fragment implements
 	private ArrayList<InfoBean> mList;
 	private InfoNotifyAdapter infoAdapter;
 	private ACacheUtils mCache;
+	private MineInformationActivity infoActivity;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			JpushBeanAndInfoBean jpushBeanAndInfoBean=(JpushBeanAndInfoBean) msg.obj;
@@ -92,6 +95,7 @@ public class MineReceiveFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.minereceivefragment, container,
 				false);
+		infoActivity = (MineInformationActivity) getActivity();
 		mCache = ACacheUtils.get(getActivity());
 		initView();
 		mList = new ArrayList<InfoBean>();
@@ -292,7 +296,7 @@ public class MineReceiveFragment extends Fragment implements
 	// 刷新
 	@Override
 	public void onRefresh() {
-		mHandler.postDelayed(new Runnable() {
+		mHandler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -309,7 +313,7 @@ public class MineReceiveFragment extends Fragment implements
 	// 加载更多
 	@Override
 	public void onLoadMore() {
-		mHandler.postDelayed(new Runnable() {
+		mHandler.postAtTime(new Runnable() {
 			@Override
 			public void run() {
 				Loading();
