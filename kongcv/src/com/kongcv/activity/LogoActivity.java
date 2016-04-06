@@ -51,6 +51,7 @@ import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.NormalPostRequest;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 public class LogoActivity extends Activity {
 	private ACacheUtils mCache;
@@ -379,9 +380,11 @@ public class LogoActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	public void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

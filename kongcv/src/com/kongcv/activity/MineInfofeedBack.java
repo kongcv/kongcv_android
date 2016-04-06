@@ -20,6 +20,7 @@ import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 信息反馈
  * @author kcw
@@ -122,11 +123,12 @@ public class MineInfofeedBack extends Activity implements OnClickListener{
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

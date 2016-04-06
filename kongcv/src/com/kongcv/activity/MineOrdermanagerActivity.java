@@ -24,6 +24,7 @@ import com.kongcv.R;
 import com.kongcv.adapter.OrederTabAdapter;
 import com.kongcv.fragment.CommityFragment;
 import com.kongcv.fragment.CurbFragment;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 订单管理页面
@@ -153,12 +154,13 @@ public class MineOrdermanagerActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 	
 }

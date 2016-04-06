@@ -25,6 +25,7 @@ import com.kongcv.fragment.CheckCommityFragment;
 import com.kongcv.fragment.CheckCurbFragment;
 import com.kongcv.utils.DateUtils;
 import com.kongcv.view.MyDatePickerDialog;
+import com.umeng.analytics.MobclickAgent;
 /*
  * 账单页面
  */
@@ -178,11 +179,12 @@ public class MineWalletCheckActivity extends FragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

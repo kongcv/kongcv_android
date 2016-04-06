@@ -31,6 +31,7 @@ import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.MD5Utils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 修改银行卡页面
@@ -290,12 +291,13 @@ public class MineCreditModifyActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

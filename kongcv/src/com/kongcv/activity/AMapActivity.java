@@ -67,6 +67,7 @@ import com.kongcv.utils.Data;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 点击跳转到地图导航 显示info信息页面
@@ -521,6 +522,7 @@ public class AMapActivity extends FragmentActivity implements
 		super.onResume();
 		mapView.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 
 	/**
@@ -531,6 +533,7 @@ public class AMapActivity extends FragmentActivity implements
 		JPushInterface.onPause(this);
 		super.onPause();
 		mapView.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	/**

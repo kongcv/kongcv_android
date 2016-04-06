@@ -29,6 +29,7 @@ import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 银行卡页面
@@ -232,11 +233,12 @@ public class MineWalletCreditActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

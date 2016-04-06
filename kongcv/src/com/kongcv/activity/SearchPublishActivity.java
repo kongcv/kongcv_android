@@ -47,6 +47,7 @@ import com.kongcv.utils.Data;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
+import com.umeng.analytics.MobclickAgent;
 
 public class SearchPublishActivity extends Activity implements
 		OnItemClickListener, AMapListViewListener, OnPoiSearchListener,
@@ -269,11 +270,11 @@ public class SearchPublishActivity extends Activity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		if (position != 0) {
 		final String str = (String) mList.get(position-1).get(SearchActivity.KEY[1]);
 		final String strCity = (String) mList.get(position-1).get(SearchActivity.KEY[3]);
 		String strSearch = getStrSearch(str);
 		getLatlon(strSearch,strCity);
-		
 		view.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -291,6 +292,7 @@ public class SearchPublishActivity extends Activity implements
 			}
 
 		}, 1000);
+		}
 	}
 	private String getStrSearch(String str){
 		 String param=null;
@@ -388,9 +390,6 @@ public class SearchPublishActivity extends Activity implements
 
 	// 刷新
 	public void onRefresh() {
-		Log.e("onRefresh", "正在刷新");
-		Log.e("onRefresh", "正在刷新");
-		Log.e("onRefresh", "正在刷新");
 		mHandler.postDelayed(new Runnable() {
 			public void run() {
 				nextPage();
@@ -401,11 +400,7 @@ public class SearchPublishActivity extends Activity implements
 
 	// 加载更多
 	public void onLoadMore() {
-		Log.e("onLoadMore", "正在刷新");
-		Log.e("onLoadMore", "正在刷新");
-		Log.e("onLoadMore", "正在刷新");
 		mHandler.postDelayed(new Runnable() {
-
 			public void run() {
 				nextPage();
 				onLoad();
@@ -420,15 +415,13 @@ public class SearchPublishActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
-	/**
-	 * 方法必须重写
-	 */
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override

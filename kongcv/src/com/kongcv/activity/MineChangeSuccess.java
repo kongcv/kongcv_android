@@ -13,6 +13,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.utils.ACacheUtils;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 修改手机号成功的页面
  * @author kcw
@@ -53,10 +54,12 @@ public class MineChangeSuccess extends Activity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

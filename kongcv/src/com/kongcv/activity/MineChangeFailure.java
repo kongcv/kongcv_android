@@ -10,6 +10,7 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
 import com.kongcv.R;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 更改手机号失败的页面
  * @author kcw
@@ -36,10 +37,12 @@ public class MineChangeFailure extends Activity implements OnClickListener{
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

@@ -27,6 +27,7 @@ import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.StringUtils;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 更改手机号的下一步页面
  * @author kcw
@@ -164,10 +165,12 @@ public class MineChangePhoneNext extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

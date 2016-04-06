@@ -25,6 +25,7 @@ import com.kongcv.adapter.TabAdapter;
 import com.kongcv.fragment.MineReceiveFragment;
 import com.kongcv.fragment.MineSendFragment;
 import com.kongcv.utils.ACacheUtils;
+import com.umeng.analytics.MobclickAgent;
 /*
  * 消息通知页面
  */
@@ -140,11 +141,12 @@ public class MineInformationActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

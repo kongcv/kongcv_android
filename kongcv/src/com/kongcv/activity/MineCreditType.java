@@ -39,6 +39,7 @@ import com.kongcv.adapter.CreditTypeAdapter;
 import com.kongcv.global.CardTypeBean;
 import com.kongcv.global.Information;
 import com.kongcv.utils.BitmapCache;
+import com.umeng.analytics.MobclickAgent;
 /**
  * 银行类型页面
  * @author kcw
@@ -161,11 +162,13 @@ public class MineCreditType extends Activity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 }

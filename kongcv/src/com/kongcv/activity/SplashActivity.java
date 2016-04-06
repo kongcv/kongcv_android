@@ -34,6 +34,7 @@ import com.kongcv.global.UpdateService;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.NormalPostRequest;
 import com.kongcv.utils.ToastUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 闪屏页面
@@ -140,7 +141,7 @@ public class SplashActivity extends Activity {
 					startService(intent);
 				}
 			}else if(fromJson.getResult().get(0).getVersion_Num()==currentVersionCode){
-				mHandler.sendEmptyMessageDelayed(0, 15000);
+				mHandler.sendEmptyMessageDelayed(0, 1500);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,14 +160,13 @@ public class SplashActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-	/**
-	 * 方法必须重写
-	 */
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }
 

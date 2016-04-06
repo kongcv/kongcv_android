@@ -20,6 +20,7 @@ import com.amap.api.navi.model.NaviInfo;
 import com.kongcv.R;
 import com.kongcv.TTSController;
 import com.kongcv.utils.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 处理语音导航播报模块
@@ -218,10 +219,10 @@ public class NaviCustomActivity extends Activity implements
 		setAmapNaviViewOptions();
 		AMapNavi.getInstance(this).setAMapNaviListener(getAMapNaviListener());
 		mAmapAMapNaviView.onResume();
-		
 		JPushInterface.onResume(this);
+		MobclickAgent.onResume(this);
 	}
-
+	
 	@Override
 	public void onPause() {
 		JPushInterface.onPause(this);
@@ -229,7 +230,7 @@ public class NaviCustomActivity extends Activity implements
 		super.onPause();
 		AMapNavi.getInstance(this)
 				.removeAMapNaviListener(getAMapNaviListener());
-
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
