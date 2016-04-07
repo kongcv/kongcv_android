@@ -330,6 +330,7 @@ public class CommunityDetailFragment extends Fragment implements
 				// 不可出租日
 				List<String> no_hire = result.getNo_hire();
 				tv_not_rent.setText(StringUtils.listToString(no_hire));
+				if(result.getPark_description()!=null || !result.getPark_description().equals(""))
 				txt_CarDescribe.setText(result.getPark_description());
 				txt_CarArea.setText(result.getPark_area() + "㎡");// 车位面积
 				txt_CarHigh.setText(result.getPark_height() + "m");
@@ -339,6 +340,7 @@ public class CommunityDetailFragment extends Fragment implements
 				} else {
 					txt_CarAddress.setText("地下");
 				}
+				if(result.getGate_card()!=null || !result.getGate_card().equals(""))
 				txt_CarCard.setText(result.getGate_card());
 				if (result.isNormal() == true) {
 					txt_CarRight.setText("是");

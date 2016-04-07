@@ -349,6 +349,17 @@ public class HomeActivity extends FragmentActivity implements
 		if (amapLocation != null) {
 			Double Latitude = amapLocation.getLatitude();
 			Double Longitude = amapLocation.getLongitude();
+			Bundle bundle = amapLocation.getExtras();
+			String desc = "";
+			if (null != bundle) {
+				desc = bundle.getString("desc");
+			}
+			String address = amapLocation.getCity()
+					+ amapLocation.getDistrict();
+			String wk=amapLocation.getCity();
+			wk=wk.substring(0,wk.length()-1);
+			Data.putData("address", address);//城市
+			Data.putData("wk", wk);//地址
 			LatLng latLng = new LatLng(Latitude, Longitude);
 			Data.putData("LatLng", latLng);
 		}

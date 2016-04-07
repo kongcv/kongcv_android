@@ -103,7 +103,6 @@ public class AMapActivity extends FragmentActivity implements
 	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
 
-//	private LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +111,6 @@ public class AMapActivity extends FragmentActivity implements
 		getInfo();
 		initHigh();// 获取屏幕宽高
 		mapView = (MapView) findViewById(R.id.map);
-//		layout = (LinearLayout) findViewById(R.id.ll_mapview);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		loading();
 		init();
@@ -140,15 +138,6 @@ public class AMapActivity extends FragmentActivity implements
 			doSearch(json);
 		}
 	}
-	/*class ReadInfo extends PreReadTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			doSearch(params[0]);
-			return null;
-		}
-	}
-*/
 	private boolean loadOrNo = true;
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
@@ -371,16 +360,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 	
 	/**
-	 * 获取经纬度
-	 *//*
-	private LatLonPoint getLatLonPoint() {
-		Bundle bundle = getIntent().getExtras();
-		double latitude = bundle.getDouble("latitude");
-		double longitude = bundle.getDouble("longitude");
-		LatLonPoint point = new LatLonPoint(latitude, longitude);
-		return point;
-	}*/
-	/**
 	 * 初始化AMap对象
 	 */
 	private void init() {
@@ -447,7 +426,7 @@ public class AMapActivity extends FragmentActivity implements
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.start))
 						.position((LatLng) latLngList.get(i)).title("停车场"));
-				locationMarker.showInfoWindow();
+				//locationMarker.showInfoWindow();
 			}
 			mypDialog.dismiss();
 		} else {
@@ -551,10 +530,8 @@ public class AMapActivity extends FragmentActivity implements
 		locationMarker.showInfoWindow();
 		animalDone();
 	}
-	
 	private void animalDone() {
 		// TODO Auto-generated method stub
-		Log.d("地图被点击了>>>>>>", "<<>>");
 		LayoutTransition transition = new LayoutTransition();  
 	    transition.setAnimator(LayoutTransition.CHANGE_APPEARING,  
 	            transition.getAnimator(LayoutTransition.CHANGE_APPEARING));  
@@ -801,9 +778,6 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSort("price_asc");
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
-					Log.v("按价格排序的请求json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
 				} else {
@@ -825,9 +799,6 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSort(null);
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
-					Log.v("按距离排序的请求json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
 				} else {
