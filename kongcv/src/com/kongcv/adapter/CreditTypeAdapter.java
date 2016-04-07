@@ -47,20 +47,6 @@ public class CreditTypeAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		 /* ViewHolder holder;
-	       if (convertView == null) {
-	            convertView = View.inflate(context, R.layout.mine_credit_type, null);
-	            holder = new ViewHolder();
-	            holder.tv_check = (TextView) convertView.findViewById(R.id.tv_check);
-	            holder.iv_credittype = (ImageView) convertView.findViewById(R.id.iv_credittype);
-	            holder.rl_type=(RelativeLayout) convertView.findViewById(R.id.rl_type);
-	            convertView.setTag(holder);
-	        }else{
-	            holder = (ViewHolder) convertView.getTag();
-	        }
-	        holder.iv_credittype.setImageBitmap(cList.get(position).getBitmap());
-	        holder.tv_check.setText(cList.get(position).getBank());*/
-	        
 		 if(convertView==null){
 				convertView=LayoutInflater.from(context).inflate(R.layout.mine_credit_type, 
 						parent, false);

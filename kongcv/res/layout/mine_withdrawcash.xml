@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:text="@string/mine_cash"
             android:textColor="@color/txt_color"
-            android:textSize="19sp" />
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/bt_checkHistory"
@@ -39,7 +39,7 @@
             android:text="提现记录"
             android:background="@android:color/transparent"
             android:textColor="#FF9C00"
-            android:textSize="14sp" />
+            android:textSize="18dp" />
     </RelativeLayout>
 
     <View
@@ -66,7 +66,7 @@
             style="@style/tv_mine"
             android:layout_marginLeft="11dp"
             android:text="@string/mine_debitcard"
-            android:textSize="14sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_balance"
@@ -76,7 +76,7 @@
             android:layout_marginLeft="29dp"
             android:layout_toRightOf="@id/tv_account"
             android:text=":"
-            android:textSize="16sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_card"
@@ -87,7 +87,7 @@
             android:layout_toRightOf="@id/tv_balance"
             android:text="请添加银行卡"
              android:textColor="#EBEBEB"
-            android:textSize="16sp"  />
+            android:textSize="18dp"  />
     </RelativeLayout>
     <!-- 金额 -->
 
@@ -101,17 +101,17 @@
             style="@style/tv_mine"
             android:layout_marginLeft="11dp"
             android:text="@string/mine_money"
-            android:textSize="14sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_checks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/tv_check"
             android:text=":"
-            android:textSize="16sp" />
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/et_checkmoney"
@@ -123,7 +123,7 @@
             android:background="@android:color/transparent"
             android:hint="请输入您要提现的金额"
             android:textColorHint="#EBEBEB"
-            android:textSize="16sp"
+            android:textSize="18dp"
             android:inputType="number" />
     </RelativeLayout>
     <!-- 密码 -->
@@ -138,7 +138,7 @@
             style="@style/tv_mine"
             android:layout_marginLeft="11dp"
             android:text="密码"
-            android:textSize="14sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_pwds"
@@ -148,7 +148,7 @@
             android:layout_marginLeft="45dp"
             android:layout_toRightOf="@id/tv_pwd"
             android:text=":"
-            android:textSize="16sp" />
+            android:textSize="18dp" />
 
         <EditText
             android:id="@+id/et_checkpwd"
@@ -163,7 +163,7 @@
             android:maxLength="6"
             android:password="true"
             android:textColorHint="#EBEBEB"
-            android:textSize="16sp" />
+            android:textSize="18dp" />
     </RelativeLayout>
 
     <Button
@@ -176,6 +176,6 @@
         android:background="@drawable/mine_tixain_selector"
         android:text="确 认 提 现"
         android:textColor="@color/base_bg_color"
-        android:textSize="17sp" />
+        android:textSize="18dp" />
 
 </LinearLayout>
