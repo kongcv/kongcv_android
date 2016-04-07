@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MineCarmanagerBean implements Serializable{
 
+	private static final long serialVersionUID = -9051341757800495459L;
 	private int park_struct;
 	private String address;
 	

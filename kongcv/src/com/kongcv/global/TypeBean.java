@@ -1,5 +1,9 @@
 package com.kongcv.global;
 
+/**
+ * @author kcw001
+ *
+ */
 public class TypeBean {
 
 	private String method,objectId,field,price,date;
@@ -72,5 +76,11 @@ public class TypeBean {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "TypeBean [method=" + method + ", objectId=" + objectId
+				+ ", field=" + field + ", price=" + price + ", date=" + date
+				+ "]";
+	}
 }

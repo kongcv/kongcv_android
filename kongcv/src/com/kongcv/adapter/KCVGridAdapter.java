@@ -67,10 +67,8 @@ public class KCVGridAdapter extends BaseAdapter {
 		int width = wm.getDefaultDisplay().getWidth();
 		params.width=width/3;
 		if(AndroidUtil.pictureOrT(mContext)){
-			Log.d("falg", "AndroidUtil.pictureOrT(mContext)");
 			params.height=width*100/450;
 		}else{
-			Log.d("else falg", "AndroidUtil.pictureOrT(mContext)");
 			params.height=width/4;
 		}
 		view.setLayoutParams(params);

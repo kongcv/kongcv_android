@@ -22,7 +22,6 @@ public class PublishTypeAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<SwipeLayout> openedItems;
 	private ArrayList<TypeBean> items;
-	UpdateList list;
 	public interface  UpdateList {
 		public void deteleList(ArrayList<TypeBean> items);
 	}
@@ -31,13 +30,18 @@ public class PublishTypeAdapter extends BaseAdapter {
 		this.context=context;
 		this.items=item;
 	}
+	UpdateList list;
 	public PublishTypeAdapter(Context context, ArrayList<TypeBean> item,UpdateList updateList) {
 		super();
 		this.context=context;
 		this.items=item;
 		openedItems = new ArrayList<SwipeLayout>();
-//		this.list=updateList;
+		this.list=updateList;
 	}
+	
+	
+	
+	
 	@Override
 	public int getCount() {
 		return items==null?0:items.size();
@@ -104,22 +108,18 @@ public class PublishTypeAdapter extends BaseAdapter {
 				openedItems.get(position).close(true);
 			}
 		});
-		
 		holder.mDelete.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				items.remove(position);//只是在列表中删除了这个选项 但是发布集合中的数据仍然存在/
-		//		list.deteleList(items);//删除
+				items.remove(position);
+				list.deteleList(items);//删除之后的item
 				openedItems.remove(sl);
 				// 只需要重新设置一下adapter  
 				notifyDataSetChanged();
 			}
 		});
-		for(int i=0;i<items.size();i++){
-			Log.e(i+"::items!!!", items.get(i).getDate()+":::::");
-		}
 		holder.tv_type.setText(items.get(position).getMethod());
 		holder.tv_price.setText(items.get(position).getPrice()==null?"0":items.get(position).getPrice());
 		holder.tv_date.setText(items.get(position).getDate()=="0"?null:items.get(position).getDate());

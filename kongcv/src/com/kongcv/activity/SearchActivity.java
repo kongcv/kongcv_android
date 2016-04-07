@@ -213,22 +213,6 @@ public class SearchActivity extends FragmentActivity implements
 					adapter.notifyDataSetChanged();
 				}
 			}
-
-			private String getCity(String district) {
-				// 广西壮族自治区玉林市玉州区
-				if (district.indexOf("市") >= 0) {
-					a = district.split("市");
-					city = a[0];
-					if (city.indexOf("省") >= 0) {
-						a = city.split("省");
-						city = a[1];
-					} else if (city.indexOf("区") >= 0) {
-						a = city.split("区");
-						city = a[1];
-					}
-				}
-				return city;
-			}
 		});
 		try {
 			inputTips.requestInputtips(newText, "");// 第一个参数表示提示关键字，第二个参数默认代表全国，也可以为城市区号
@@ -236,7 +220,21 @@ public class SearchActivity extends FragmentActivity implements
 			e.printStackTrace();
 		}
 	}
-
+	private String getCity(String district) {
+		// 广西壮族自治区玉林市玉州区
+		if (district.indexOf("市") >= 0) {
+			a = district.split("市");
+			city = a[0];
+			if (city.indexOf("省") >= 0) {
+				a = city.split("省");
+				city = a[1];
+			} else if (city.indexOf("区") >= 0) {
+				a = city.split("区");
+				city = a[1];
+			}
+		}
+		return city;
+	}
 	/**
 	 * Button点击事件回调方法
 	 */
@@ -352,8 +350,6 @@ public class SearchActivity extends FragmentActivity implements
 						bean.setSkip(0);
 						bean.setLocation_info(info);
 						bean.setMode(getMode());
-						ToastUtil.show(getApplicationContext(), latitude + ":"
-								+ longitude + "!");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -524,6 +520,7 @@ public class SearchActivity extends FragmentActivity implements
 							map.put(KEY[0], R.drawable.iv_daoh);// 加入图片
 							map.put(KEY[1], result.getPois().get(i).toString());// 文字
 							map.put(KEY[2], R.drawable.iv_come);
+							map.put(KEY[3], getCity(result.getPois().get(i).getCityName()));
 							mList.add(map);
 						}
 						adapter = new SearchAdapter(SearchActivity.this);

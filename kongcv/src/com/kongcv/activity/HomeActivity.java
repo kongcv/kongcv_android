@@ -122,28 +122,10 @@ public class HomeActivity extends FragmentActivity implements
 		System.out
 				.println(("First method:" + dm.toString() + "\n"
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
+		Data.putData("screenWidth", screenWidth);
+		Data.putData("screenHeight", screenHeight);
 	}
-//	private int i = 0;
 	private MineCarmanagerBean bean;
-	/*@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == HomeActivity.CWGL) {
-			if (data != null) {
-				HomeActivity.CWGL = 2;
-				i = 1;
-				bean = (MineCarmanagerBean) data.getBundleExtra("bundle").get(
-						"MineCarmanagerBean");
-				mPublishFragment = new PublishFragment();
-				Bundle args = new Bundle();
-				args.putSerializable("MineCarmanagerBean", bean);
-				mPublishFragment.setArguments(args);
-				rb1.setChecked(true);
-			}
-		}
-	}*/
-
-	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
 	private void init() {
 		JPushInterface.init(getApplicationContext());
 		mCache = ACacheUtils.get(this);
@@ -163,15 +145,16 @@ public class HomeActivity extends FragmentActivity implements
 		if (bundle == null) {
 			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
 		}else{
-		//	HomeActivity.CWGL = 2;
-		//	i = 1;
 			bean = (MineCarmanagerBean) bundle.get(
 					"MineCarmanagerBean");
-			mPublishFragment = new PublishFragment();
-			Bundle args = new Bundle();
-			args.putSerializable("MineCarmanagerBean", bean);
-			mPublishFragment.setArguments(args);
-			rb1.setChecked(true);
+			if(bean!=null){
+				mPublishFragment = new PublishFragment();
+				Bundle args = new Bundle();
+				args.putSerializable("MineCarmanagerBean", bean);
+				mPublishFragment.setArguments(args);
+				rb1.setChecked(true);
+				CWGL=2;
+			}
 		}
 		getDisplay();
 	}
@@ -295,8 +278,7 @@ public class HomeActivity extends FragmentActivity implements
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									finish();
-									//MyApplication.getInstance().exit();
+									MyApplication.getInstance().exit();
 								}
 							}).show();
 		/*} else {
@@ -367,17 +349,6 @@ public class HomeActivity extends FragmentActivity implements
 		if (amapLocation != null) {
 			Double Latitude = amapLocation.getLatitude();
 			Double Longitude = amapLocation.getLongitude();
-			Bundle bundle = amapLocation.getExtras();
-			String desc = "";
-			if (null != bundle) {
-				desc = bundle.getString("desc");
-			}
-			String address = amapLocation.getCity()
-					+ amapLocation.getDistrict();
-			String wk = amapLocation.getCity();
-			wk = wk.substring(0, wk.length() - 1);
-			Data.putData("address", address);// 城市
-			Data.putData("wk", wk);// 地址
 			LatLng latLng = new LatLng(Latitude, Longitude);
 			Data.putData("LatLng", latLng);
 		}
