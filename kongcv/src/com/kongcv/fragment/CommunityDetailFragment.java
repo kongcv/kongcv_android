@@ -335,7 +335,7 @@ public class CommunityDetailFragment extends Fragment implements
 				} else {
 					txt_CarRight.setText("否");
 				}
-				if (result.getPark_space() == 1) {
+				if (result.getPark_space() == 0) {
 					mInform.setText("此车位已出租");
 					mInform.setOnClickListener(null);
 				}

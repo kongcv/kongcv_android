@@ -43,10 +43,10 @@
     <string name="tv_nodata">非出租日/周</string>
     <string name="tv_car_area">车位面积</string>
     <string name="tv_car_high">车位限高</string>
-    <string name="tv_car_num">添加车牌尾号</string>
+    <string name="tv_car_num">车牌尾号</string>
     <string name="tv_car_right">是否正规车位</string>
     <string name="tv_car_address">地上/地下</string>
-    <string name="tv_card_system">有无门禁卡</string>
+    <string name="tv_card_system">门禁卡信息</string>
     <string name="tv_car_desc">车位描述</string>
     <string name="tv_car_type">出租类型</string>
     <string name="checkhistory">提现记录</string>
