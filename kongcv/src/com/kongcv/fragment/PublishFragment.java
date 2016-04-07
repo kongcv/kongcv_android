@@ -205,29 +205,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				mListView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				ToastUtil.fixListViewHeight(mListView, -1);
-				
-				/*typeBeansList = new ArrayList<TypeBean>();
-				for (int i = 0; i < hireMethodList.size(); i++) {
-					TypeBean typeBean = new TypeBean();
-					for (int ii = 0; ii < objectId.size(); ii++) {
-						if (objectId.get(ii).equals(hireMethodList.get(i))) {
-							typeBean.setDate(hireTimeList.get(i).toString() == null ? "0"
-									: hireTimeList.get(i).toString());
-							typeBean.setPrice(hirePriceList.get(i).toString());
-							typeBean.setMethod(method.get(ii).toString());
-
-							hire_time
-									.add(hireTimeList.get(i).toString() == null ? "0"
-											: hireTimeList.get(i).toString());
-							hire_field.add(hireField.get(ii).toString());
-							hire_method_id
-									.add(hireMethodList.get(i).toString());
-							hire_price.add(hirePriceList.get(i).toString());
-						}
-					}
-					mydialog.add(typeBean);
-				}
-				typeBeansList = mydialog;*/
 				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -340,7 +317,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		}
 
 	}
-
+	
 	// ---------------------------------必要的重写方法--------------------------------------------------
 	private ArrayList<TypeBean> items=new ArrayList<TypeBean>();
 	private void typeCar() {
@@ -462,17 +439,21 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				return;
 			}
 			String str = mTvNoOr.getText().toString();
-			String[] strArray = str.split(",");
-			List<String> list = new ArrayList<String>();
-			for (int i = 0; i < strArray.length; i++) {
-				list.add(strArray[i]);
+			if(!str.equals("请选择周数")){
+				String[] strArray = str.split(",");
+				List<String> list = new ArrayList<String>();
+				for (int i = 0; i < strArray.length; i++) {
+					list.add(strArray[i]);
+				}
+				bean.setNoHire(list);
+			}else{
+				bean.setNoHire(null);
 			}
 			bean.setUserId(mCache.getAsString("user_id"));
 			bean.setAddress(mAddress.getText().toString());
 			bean.setParkDetail(park_detail.getText().toString().trim());
 			bean.setParkDescription(park_description.getText().toString()
 					.trim());
-			bean.setNoHire(list);
 			bean.setTailNum(tv_car_num.getText().toString().trim());
 		    bean.setCity(tv_City.getText().toString());// 自动定位获取得到
 			if(tv_car_area.getText().toString()!=null && !tv_car_area.getText().toString().equals("")){
@@ -493,8 +474,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", json);
-			/*MyThread thread = new MyThread(json);
-			thread.start();*/
+			MyThread thread = new MyThread(json);
+			thread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -523,15 +504,16 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			String result = object.getString("result");
 			JSONObject object2 = new JSONObject(result);
 			String state = object2.getString("state");
-
+//{"result":"{\"state\":\"error\", \"code\":10, \"error\":\"出租信息-车位有相同记录,请重新编辑位置信息\"}"}
 			if ("ok".equals(state)) {
 				Looper.prepare();
 				ToastUtil.show(getActivity(), "发布成功！");
 				Looper.loop();
 				doRegistionId();// 发布数据之后 更新代码
 			} else {
+				String error = object2.getString("error");
 				Looper.prepare();
-				ToastUtil.show(getActivity(), "信息不全！");
+				ToastUtil.show(getActivity(), error);
 				Looper.loop();
 			}
 		} catch (Exception e) {
