@@ -113,6 +113,7 @@ public class AMapActivity extends FragmentActivity implements
 		loading();
 		init();
 	}
+	
 	private int getHire_type() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle.getInt("hire_type") == 2) {
@@ -120,6 +121,11 @@ public class AMapActivity extends FragmentActivity implements
 		} else {
 			return -1;
 		}
+	}
+	private String getAddress() {
+		Bundle bundle = getIntent().getExtras();
+		String address = (String) bundle.get("strAddress");
+		return address;
 	}
 
 	private void getInfo() {
@@ -134,6 +140,7 @@ public class AMapActivity extends FragmentActivity implements
 				searchBean.setHire_field(getField());
 				searchBean.setHire_method_id(getCarObjectId());
 			}
+			searchBean.setAddress(getAddress());
 			String json = gson.toJson(searchBean);
 			// TODO Auto-generated method stub
 			doSearch(json);
@@ -595,7 +602,6 @@ public class AMapActivity extends FragmentActivity implements
 				doRefresh();
 				onLoad();
 			}
-
 			private void doRefresh() {
 				// TODO Auto-generated method stub
 				if (searchBean != null) {
@@ -611,6 +617,7 @@ public class AMapActivity extends FragmentActivity implements
 					skip =0;
 					searchBean.setSkip(skip);
 					searchBean.setLimit(10);
+					searchBean.setAddress(getAddress());
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
 					doSearch(json);
@@ -644,6 +651,7 @@ public class AMapActivity extends FragmentActivity implements
 					skip = skip * 10;
 					searchBean.setSkip(skip);
 					searchBean.setLimit(10);
+					searchBean.setAddress(getAddress());
 					String json = gson.toJson(searchBean);
 					Log.d("第一次>>>", json);
 					doSearch(json);
@@ -801,6 +809,7 @@ public class AMapActivity extends FragmentActivity implements
 					}
 					searchBean.setSort("price_asc");
 					searchBean.setSkip(skip);
+					searchBean.setAddress(getAddress());
 					String json = gson.toJson(searchBean);
 					Log.d("按价格排序>>>", json+"<>");
 					doSearch(json);
@@ -826,6 +835,7 @@ public class AMapActivity extends FragmentActivity implements
 					}
 					searchBean.setSort(null);
 					searchBean.setSkip(skip);
+					searchBean.setAddress(getAddress());
 					String json = gson.toJson(searchBean);
 					Log.d("按距离排序>>>", json+"<>");
 					doSearch(json);

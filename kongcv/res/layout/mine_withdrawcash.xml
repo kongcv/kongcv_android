@@ -124,7 +124,7 @@
             android:hint="请输入您要提现的金额"
             android:textColorHint="#EBEBEB"
             android:textSize="18dp"
-            android:inputType="number" />
+           />
     </RelativeLayout>
     <!-- 密码 -->
 

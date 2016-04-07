@@ -6,14 +6,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
@@ -29,6 +21,14 @@ import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 import com.umeng.analytics.MobclickAgent;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+
 /**
  * 提现记录页面
  * 
@@ -40,7 +40,6 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 	private List<String> mList;
 	private List<String> timeList;
 	private CheckAdapter mAdapter;
-	// private ProgressDialog pro=null;
 	private ACacheUtils mCache;
 	private int skip = 0;
 	private Handler handler = new Handler() {
@@ -51,7 +50,6 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 						timeList);
 
 				lv.setAdapter(mAdapter);
-				// pro.dismiss();
 				break;
 			case 1:
 				ToastUtil.show(MineCheckHistory.this, "抱歉，没有更多数据哦！");
@@ -67,10 +65,8 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.minecheckhistory);
-		MyApplication.getInstance().addActivity(this);
-		// pro=ProgressDialog.show(this, "", "正在获取数据，请稍候");
-	
 		mCache = ACacheUtils.get(this);
+		MyApplication.getInstance().addActivity(this);
 		initView();
 		getData(0, 10);
 
@@ -90,11 +86,9 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 					obj.put("user_id", mCache.getAsString("user_id"));
 					obj.put("skip", skip * 10);
 					obj.put("limit", limit);
-					Log.i("objorder", obj.toString());
 					String doHttpsPost = PostCLientUtils.doHttpsPost(
 							Information.KONGCV_GET_WITHDRAW_DEPOSIT,
 							JsonStrUtils.JsonStr(obj));
-					Log.e("doHttpsPost", doHttpsPost);
 					JSONObject object = new JSONObject(doHttpsPost);
 					JSONArray array = object.getJSONArray("result");
 					Message msg = handler.obtainMessage();
@@ -144,7 +138,6 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 	@Override
 	public void onRefresh() {
 		handler.postAtTime(new Runnable() {
-
 			@Override
 			public void run() {
 				getData(0, 10);
@@ -183,6 +176,7 @@ public class MineCheckHistory extends Activity implements AMapListViewListener {
 		JPushInterface.onResume(this);
 		MobclickAgent.onResume(this);
 	}
+
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);

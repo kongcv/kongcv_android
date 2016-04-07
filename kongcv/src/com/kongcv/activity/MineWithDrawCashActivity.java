@@ -1,7 +1,7 @@
 package com.kongcv.activity;
 
-import org.json.JSONObject;
 
+import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,7 +33,6 @@ import com.kongcv.utils.MD5Utils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
-
 /**
  * 提现页面
  * 
@@ -60,6 +59,9 @@ public class MineWithDrawCashActivity extends Activity implements
 			case 0:
 				MineWalletActivity.COUNT = "second";
 				ToastUtil.show(MineWithDrawCashActivity.this, "提现成功");
+				Intent intent=new Intent();
+				intent.putExtra("tixian", money);
+				setResult(0,intent);
 				break;
 			case 1:
 				ToastUtil.show(MineWithDrawCashActivity.this, "提现失败");
@@ -106,10 +108,8 @@ public class MineWithDrawCashActivity extends Activity implements
 			String subCard = card.substring(card.length() - 4, card.length());
 			tv_card.setText(mCache.getAsString("bank") + "(" + subCard + ")");
 			tv_card.setTextColor(Color.parseColor("#1967C1"));
-
 		}
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -122,7 +122,6 @@ public class MineWithDrawCashActivity extends Activity implements
 		case R.id.bt_checkHistory:// 提现记录
 			Intent i = new Intent(this, MineCheckHistory.class);
 			startActivity(i);
-
 			break;
 		default:
 			break;
@@ -140,10 +139,8 @@ public class MineWithDrawCashActivity extends Activity implements
 			return;
 		} else {
 			age0 = Double.valueOf(money);
-
 		}
 		checkPwd();
-
 	}
 
 	/**
@@ -153,7 +150,6 @@ public class MineWithDrawCashActivity extends Activity implements
 		password = et_checkpwd.getText().toString().trim();
 		String pwd = mCache.getAsString("pwd");
 		pwds = MD5Utils.md5(password);
-		Log.i("密码ssssss", password);
 		if (TextUtils.isEmpty(password)) {
 			ToastUtil.show(getApplicationContext(), "请输入提现密码");
 			return;
@@ -170,25 +166,17 @@ public class MineWithDrawCashActivity extends Activity implements
 					try {
 						obj.put("user_id", mCache.getAsString("user_id"));
 						obj.put("passwd", pwds);
-						Log.v("objKKKKK", obj.toString());
-
 						String doHttpsPost = PostCLientUtils.doHttpsPost(
 								Information.KONGCV_VERIFY_PURSE_PASSWD,
 								JsonStrUtils.JsonStr(obj));
-
-						Log.i("hhjjlslsjdjl", doHttpsPost);
-
 						JSONObject objs = new JSONObject(doHttpsPost);
-						Log.i("hhjjlslsjdjl", objs + "");
 						if (objs != null) {
 							String str = objs.getString("result");
 							if (str != null) {
 								JSONObject objStr = new JSONObject(str);
 								String state = objStr.getString("state");
-
 								if (state.equals("ok")) {
 									checkMoneys();
-
 								} else {
 									Looper.prepare();
 									ToastUtil.show(
@@ -232,7 +220,6 @@ public class MineWithDrawCashActivity extends Activity implements
 							JsonStrUtils.JsonStr(obj));
 
 					JSONObject objs = new JSONObject(doHttpsPost);
-					Log.i("hhjjlslsjdjl", objs + "");
 					if (objs != null) {
 						String str = objs.getString("result");
 						JSONObject objStr = new JSONObject(str);
@@ -262,6 +249,7 @@ public class MineWithDrawCashActivity extends Activity implements
 		JPushInterface.onResume(this);
 		MobclickAgent.onResume(this);
 	}
+
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
