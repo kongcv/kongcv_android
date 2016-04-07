@@ -1,7 +1,14 @@
 package com.kongcv.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,7 +91,7 @@ public class MineAboutus extends Activity {
 		tv_e = (TextView) findViewById(R.id.tv_e);
 	}
 
-	private void initData() {
+/*	private void initData() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -120,8 +127,70 @@ public class MineAboutus extends Activity {
 			}
 
 		}).start();
-	}
+	}*/
+	/**
+	 * 网络请求数据
+	 */
+	public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType
+			.parse("application/json;charset=utf-8");
+	private final OkHttpClient client = new OkHttpClient();
+	private void initData() {
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("{}", null);
+			okhttp3.Request request = new okhttp3.Request.Builder()
+			.url(Information.KONGCV_GET_COMPANY_INFO)
+			.headers(Information.getHeaders())
+			.post(RequestBody.create(MEDIA_TYPE_MARKDOWN,
+					JsonStrUtils.JsonStr(obj))).build();
+			client.newCall(request).enqueue(new Callback() {
 
+				@Override
+				public void onResponse(Call arg0, okhttp3.Response arg1)
+						throws IOException {
+					if (arg1.isSuccessful()) {
+						doMRun(arg1.body().string());
+					}
+				}
+
+				@Override
+				public void onFailure(Call arg0, IOException arg1) {
+
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	private void doMRun(String str){
+		try {
+			JSONObject Resultobj = new JSONObject(str);
+			String result = Resultobj.getString("result");
+			JSONArray array = new JSONArray(result);
+			Log.i("result", result);
+			mList = new ArrayList<AboutUsBean>();
+			AboutUsBean as;
+			for (int i = 0; i < array.length(); i++) {
+				as = new AboutUsBean();
+				String info = array.getJSONObject(i).getString("info");
+				String name = array.getJSONObject(i).getString("name");
+				as.setInfo(info);
+				as.setName(name);
+				mList.add(as);
+
+			}
+			Message msg = Message.obtain();
+			msg.obj = mList;
+			msg.what = 0;
+			handler.sendMessage(msg);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
+
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
