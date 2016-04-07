@@ -102,8 +102,6 @@ public class AMapActivity extends FragmentActivity implements
 	private int i = 0;
 	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
-
-//	private LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +110,6 @@ public class AMapActivity extends FragmentActivity implements
 		getInfo();
 		initHigh();// 获取屏幕宽高
 		mapView = (MapView) findViewById(R.id.map);
-//		layout = (LinearLayout) findViewById(R.id.ll_mapview);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		loading();
 		init();
@@ -140,15 +137,6 @@ public class AMapActivity extends FragmentActivity implements
 			doSearch(json);
 		}
 	}
-	/*class ReadInfo extends PreReadTask<String, Void, Void> {
-		@Override
-		protected Void doInBackground(String... params) {
-			// TODO Auto-generated method stub
-			doSearch(params[0]);
-			return null;
-		}
-	}
-*/
 	private boolean loadOrNo = true;
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
@@ -172,11 +160,10 @@ public class AMapActivity extends FragmentActivity implements
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
-				Log.e("GridViewOkHttp", arg1.toString());
+				Log.e("KONGCV_LOCATION_SEARCH", arg1.toString());
 			}
 		});
 	}
-	
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -185,12 +172,14 @@ public class AMapActivity extends FragmentActivity implements
 			case 0:
 				try {
 					String Str = (String) msg.obj;
-					JSONObject object = new JSONObject(Str);
-					if (object.getJSONArray("result") != null
-							&& object.getJSONArray("result").length() > 0) {
-						refresh(Str);
-					} else {
-						loadOrNo = false;
+					if(Str!=null){
+						JSONObject object = new JSONObject(Str);
+						if (object.getJSONArray("result") != null
+								&& object.getJSONArray("result").length() > 0) {
+							refresh(Str);
+						} else {
+							loadOrNo = false;
+						}
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -202,32 +191,40 @@ public class AMapActivity extends FragmentActivity implements
 					if (dlist != null) {
 						dlist.clear();
 					}
-					priceList = (ArrayList) bean.getPriceList();
-					addresslist = (ArrayList) bean.getAddressList();
-					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-							R.layout.amap_listview_item, new String[] {
-									"tv_address", "tv_detail", "tv_rest",
-									"tv_price" }, new int[] {
-									R.id.amap_tv_address, R.id.amap_tv_detail,
-									R.id.amap_tv_rest, R.id.amap_tv_price });
-					mListView.setAdapter(mAdapter1);
-					mAdapter1.notifyDataSetChanged();
+					if(bean!=null){
+						priceList = (ArrayList) bean.getPriceList();
+						addresslist = (ArrayList) bean.getAddressList();
+					}
+					if(getData()!=null){
+						mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
+								R.layout.amap_listview_item, new String[] {
+										"tv_address", "tv_detail", "tv_rest",
+										"tv_price" }, new int[] {
+										R.id.amap_tv_address, R.id.amap_tv_detail,
+										R.id.amap_tv_rest, R.id.amap_tv_price });
+						mListView.setAdapter(mAdapter1);
+						mAdapter1.notifyDataSetChanged();
+					}
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
 				break;
 			case 2:
 				if (loadOrNo) {
-					priceList = (ArrayList) bean.getPriceList();
-					addresslist = (ArrayList) bean.getAddressList();
-					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-							R.layout.amap_listview_item, new String[] {
-									"tv_address", "tv_detail", "tv_rest",
-									"tv_price" }, new int[] {
-									R.id.amap_tv_address, R.id.amap_tv_detail,
-									R.id.amap_tv_rest, R.id.amap_tv_price });
-					mListView.setAdapter(mAdapter1);
-					mAdapter1.notifyDataSetChanged();
+					if(bean!=null){
+						priceList = (ArrayList) bean.getPriceList();
+						addresslist = (ArrayList) bean.getAddressList();
+					}
+					if(getData()!=null){
+						mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
+								R.layout.amap_listview_item, new String[] {
+										"tv_address", "tv_detail", "tv_rest",
+										"tv_price" }, new int[] {
+										R.id.amap_tv_address, R.id.amap_tv_detail,
+										R.id.amap_tv_rest, R.id.amap_tv_price });
+						mListView.setAdapter(mAdapter1);
+						mAdapter1.notifyDataSetChanged();
+					}
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
 				}
@@ -236,25 +233,29 @@ public class AMapActivity extends FragmentActivity implements
 				if (dlist != null) {
 					dlist.clear();
 				}
-				mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-						R.layout.amap_listview_item, new String[] {
-								"tv_address", "tv_detail", "tv_rest",
-								"tv_price" }, new int[] { R.id.amap_tv_address,
-								R.id.amap_tv_detail, R.id.amap_tv_rest,
-								R.id.amap_tv_price });
-				mListView.setAdapter(mAdapter1);
-				mAdapter1.notifyDataSetChanged();
-				break;
-			case 4:
-				if (dlist != null) {
+				if(getData()!=null){
 					mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
 							R.layout.amap_listview_item, new String[] {
 									"tv_address", "tv_detail", "tv_rest",
-									"tv_price" }, new int[] {
-									R.id.amap_tv_address, R.id.amap_tv_detail,
-									R.id.amap_tv_rest, R.id.amap_tv_price });
+									"tv_price" }, new int[] { R.id.amap_tv_address,
+									R.id.amap_tv_detail, R.id.amap_tv_rest,
+									R.id.amap_tv_price });
 					mListView.setAdapter(mAdapter1);
 					mAdapter1.notifyDataSetChanged();
+				}
+				break;
+			case 4:
+				if (dlist != null) {
+					if(getData()!=null){
+						mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
+								R.layout.amap_listview_item, new String[] {
+										"tv_address", "tv_detail", "tv_rest",
+										"tv_price" }, new int[] {
+										R.id.amap_tv_address, R.id.amap_tv_detail,
+										R.id.amap_tv_rest, R.id.amap_tv_price });
+						mListView.setAdapter(mAdapter1);
+						mAdapter1.notifyDataSetChanged();
+					}
 				}
 				break;
 			default:
@@ -371,16 +372,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 	
 	/**
-	 * 获取经纬度
-	 *//*
-	private LatLonPoint getLatLonPoint() {
-		Bundle bundle = getIntent().getExtras();
-		double latitude = bundle.getDouble("latitude");
-		double longitude = bundle.getDouble("longitude");
-		LatLonPoint point = new LatLonPoint(latitude, longitude);
-		return point;
-	}*/
-	/**
 	 * 初始化AMap对象
 	 */
 	private void init() {
@@ -406,8 +397,8 @@ public class AMapActivity extends FragmentActivity implements
 								.position(
 										new LatLng(latLng.latitude,
 												latLng.longitude))
-								.title("搜索地点的位置"));
-						locationMarker.showInfoWindow();
+								.title(""));
+				//		locationMarker.showInfoWindow();
 						SearchActivity.latLng = null;
 						mypDialog.dismiss();
 					} else {
@@ -421,8 +412,8 @@ public class AMapActivity extends FragmentActivity implements
 										new LatLng(
 												SearchActivity.latLng.latitude,
 												SearchActivity.latLng.longitude))
-								.title("搜索地点的位置"));
-						locationMarker.showInfoWindow();
+								.title(""));
+					//	locationMarker.showInfoWindow();
 						SearchActivity.latLng = null;
 						mypDialog.dismiss();
 					}
@@ -447,7 +438,7 @@ public class AMapActivity extends FragmentActivity implements
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.start))
 						.position((LatLng) latLngList.get(i)).title("停车场"));
-				locationMarker.showInfoWindow();
+				//locationMarker.showInfoWindow();
 			}
 			mypDialog.dismiss();
 		} else {
@@ -551,10 +542,8 @@ public class AMapActivity extends FragmentActivity implements
 		locationMarker.showInfoWindow();
 		animalDone();
 	}
-	
 	private void animalDone() {
 		// TODO Auto-generated method stub
-		Log.d("地图被点击了>>>>>>", "<<>>");
 		LayoutTransition transition = new LayoutTransition();  
 	    transition.setAnimator(LayoutTransition.CHANGE_APPEARING,  
 	            transition.getAnimator(LayoutTransition.CHANGE_APPEARING));  
@@ -616,10 +605,8 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					doSearch(json);
-					mHandler.sendEmptyMessageDelayed(1, 1000);
+			//		mHandler.sendEmptyMessageDelayed(1, 1000);
 				}
 			}
 		}, 1500);
@@ -645,12 +632,9 @@ public class AMapActivity extends FragmentActivity implements
 					i = i + 2;
 					searchBean.setSkip(i);
 					String json = gson.toJson(searchBean);
-					Log.v("json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					
 					doSearch(json);
-					mHandler.sendEmptyMessageDelayed(2, 1000);
+		//			mHandler.sendEmptyMessageDelayed(2, 1000);
 				}
 			}
 		}, 1500);
@@ -661,7 +645,6 @@ public class AMapActivity extends FragmentActivity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		//	searchBean = (SearchBean) getIntent().getSerializableExtra("bean");
 		if (position != 0) {
 			if (SearchActivity.latLng == null) {
 				ArrayList data = (ArrayList) beanList.getObjList();
@@ -801,9 +784,6 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSort("price_asc");
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
-					Log.v("按价格排序的请求json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
 				} else {
@@ -825,9 +805,6 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSort(null);
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
-					Log.v("按距离排序的请求json", json);
-					/*ReadInfo info = new ReadInfo();
-					info.execute(json);*/
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
 				} else {

@@ -245,30 +245,33 @@ public class SearchActivity extends FragmentActivity implements
 			} else {
 				mList.clear();
 				LatLng data = (LatLng) Data.getData("LatLng");
-				Location_info info = new Location_info();
-				info.setLatitude(data.latitude);
-				info.setLongitude(data.longitude);
-				Bundle bundle = new Bundle();
-				bean = new SearchBean();
-				bean.setAddress(Data.getData("wk").toString());
-				bean.setHire_field(getField());
-				bean.setHire_method_id(getData());
-				bean.setLimit(10);
-				bean.setSkip(0);
-				bean.setLocation_info(info);
-				bean.setMode(getMode());
-				bundle.putString("mode", getMode());// 道路社区
-				bundle.putString("objectId", getData());// 车位id
-				bundle.putString("getField", getField());//
-				bundle.putSerializable("bean", bean);
-				if (getHire_type() == 2) {
-					bundle.putInt("hire_type", getHire_type());
+				if(data!=null){
+					Location_info info = new Location_info();
+					info.setLatitude(data.latitude);
+					info.setLongitude(data.longitude);
+					Bundle bundle = new Bundle();
+					bean = new SearchBean();
+					if(Data.getData("wk")!=null)
+					bean.setAddress(Data.getData("wk").toString());
+					bean.setHire_field(getField());
+					bean.setHire_method_id(getData());
+					bean.setLimit(10);
+					bean.setSkip(0);
+					bean.setLocation_info(info);
+					bean.setMode(getMode());
+					bundle.putString("mode", getMode());// 道路社区
+					bundle.putString("objectId", getData());// 车位id
+					bundle.putString("getField", getField());//
+					bundle.putSerializable("bean", bean);
+					if (getHire_type() == 2) {
+						bundle.putInt("hire_type", getHire_type());
+					}
+					Intent intent = new Intent(SearchActivity.this,
+							AMapActivity.class);
+					intent.putExtras(bundle);
+					hintKbTwo();
+					startActivity(intent);
 				}
-				Intent intent = new Intent(SearchActivity.this,
-						AMapActivity.class);
-				intent.putExtras(bundle);
-				hintKbTwo();
-				startActivity(intent);
 			}
 			break;
 		case R.id.iv_delete:// 删除时清空数据

@@ -30,7 +30,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="北京市聚龙花园"
                 android:textColor="@color/txt_detail"
                 android:textSize="@dimen/publish_txtSize" />
         </LinearLayout>
@@ -374,7 +373,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:paddingLeft="15dp"
-                android:text="有无门禁卡："
+                android:text="门禁卡信息："
                 android:textColor="@color/txt_detail"
                 android:textSize="@dimen/publish_txtSize" />
         </RelativeLayout>

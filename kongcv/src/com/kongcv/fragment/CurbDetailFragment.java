@@ -109,7 +109,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		CurbMineReceiver=arguments.getString("CurbMineReceiver");//我收到的
 		mCommBean=(ZyCommityAdapterBean) arguments.getSerializable("mCommBean");//订单管理 跳转过来的
 		if(mCommBean!=null){
-			Log.d("mCommBean getModeAndParkId", mCommBean.toString()+"<>");
 			if(mCommBean.getTrade_state()==1){
 				btnInform.setVisibility(View.GONE);
 				btnPayTo.setVisibility(View.GONE);
@@ -429,7 +428,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
-			if (dataList != null) {
+			if (dataList != null && dataList.size()>0) {
 				adapter = new DetailFragmentAdapter(getActivity());
 				adapter.setDataSource(dataList);
 				curbInfoListView.setAdapter(adapter);
