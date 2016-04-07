@@ -110,7 +110,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 
 	private void initView() {
 		lv = (AMapListView) view.findViewById(R.id.lv);
-		lv.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
+		lv.setPullLoadEnable(true);
 		lv.setAMapListViewListener(this);
 	}
 	/**

@@ -91,49 +91,10 @@ public class MineAboutus extends Activity {
 		tv_e = (TextView) findViewById(R.id.tv_e);
 	}
 
-/*	private void initData() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				JSONObject obj = new JSONObject();
-				try {
-					obj.put("{}", null);
-					String doHttpsPost = PostCLientUtils.doHttpsPost(
-							Information.KONGCV_GET_COMPANY_INFO,
-							JsonStrUtils.JsonStr(obj));
-					JSONObject Resultobj = new JSONObject(doHttpsPost);
-					String result = Resultobj.getString("result");
-					JSONArray array = new JSONArray(result);
-					Log.i("result", result);
-					mList = new ArrayList<AboutUsBean>();
-					AboutUsBean as;
-					for (int i = 0; i < array.length(); i++) {
-						as = new AboutUsBean();
-						String info = array.getJSONObject(i).getString("info");
-						String name = array.getJSONObject(i).getString("name");
-						as.setInfo(info);
-						as.setName(name);
-						mList.add(as);
-
-					}
-					Message msg = Message.obtain();
-					msg.obj = mList;
-					msg.what = 0;
-					handler.sendMessage(msg);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-		}).start();
-	}*/
-	/**
-	 * 网络请求数据
-	 */
 	public static final MediaType MEDIA_TYPE_MARKDOWN = MediaType
 			.parse("application/json;charset=utf-8");
 	private final OkHttpClient client = new OkHttpClient();
+	
 	private void initData() {
 		JSONObject obj = new JSONObject();
 		try {

@@ -216,20 +216,14 @@ public class MineFragment extends Fragment implements OnClickListener {
 		switch (resultCode) {
 		
 		case 6:
-			Log.e("sssss", "1233");
-			Log.e("sssss", "1233");
 			if (data != null) {
 				user_name = data.getStringExtra("nick");
 				Bitmap bit = data.getParcelableExtra("bit");
 				String url=data.getStringExtra("urlsssss");
-				Log.e("urlsswwww", url);
 				if (user_name != null) {
-					Log.e("user_nameuser_name", user_name);
 					uName.setText(user_name);
 				} 
-				
 				if (bit != null) {
-					Log.e("sssss", "1233");
 					mFace.setImageBitmap(bit);
 				} else {
 					mFace.setImageResource(R.drawable.defaulto);
@@ -246,7 +240,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 		default:
 			break;
 		}
-	//	super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -385,7 +378,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 	}
 
 	/**
-	 * 修改用户名称 仿ios 修改
+	 * 修改用户名称 防ios 修改
 	 */
 	private void setUserNickName() {
 		Intent intent = new Intent(getActivity(), NickNameActivity.class);
