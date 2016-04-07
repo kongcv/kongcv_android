@@ -374,7 +374,6 @@ public class CommunityDetailFragment extends Fragment implements
 					payOneBean.setProperty_id(result.getProperty()
 							.getObjectId());
 				}
-				// Data.putData("PayOneBean", payOneBean);
 				if (mineSendFragment != null) {
 					rl_time_pay_start.setVisibility(View.VISIBLE);
 					rl_time_pay_end.setVisibility(View.VISIBLE);
@@ -447,9 +446,9 @@ public class CommunityDetailFragment extends Fragment implements
 					JSONObject objStr = new JSONObject(str);
 					String state = objStr.getString("state");
 					if ("ok".equals(state)) {
-						ToastUtil.show(getActivity(), "JPUSH！发送消息成功！");
+						ToastUtil.show(getActivity(), "JPUSH!发送消息成功!");
 					} else {
-						ToastUtil.show(getActivity(), "订单确认失败！");
+						ToastUtil.show(getActivity(), "订单确认失败!");
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -622,12 +621,6 @@ public class CommunityDetailFragment extends Fragment implements
 						}
 						data.setPrice(jpushBean3.getPrice());
 						String json = gson3.toJson(data);
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json
-								+ ">>>>>>>>>>::");
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json
-								+ ">>>>>>>>>>::");
-						Log.e("设置测试支付回传extra_flag>>>>>>>>>>::", json
-								+ ">>>>>>>>>>::");
 						doPay(json);
 					}
 				} catch (Exception e) {
@@ -797,49 +790,6 @@ public class CommunityDetailFragment extends Fragment implements
 
 	private void consentJPush() {
 		// TODO Auto-generated method stub
-		/*
-		 * new Thread(new Runnable() {
-		 * 
-		 * @Override public void run() { // TODO Auto-generated method stub
-		 * consent(); } }).start();
-		 */
-		/*
-		 * try { UserBean fromJson = userBean; Gson gson = new Gson(); JpushBean
-		 * jpushBean = gson.fromJson(stringExtra, JpushBean.class); JSONObject
-		 * obj = new JSONObject(); obj.put("mobilePhoneNumber",
-		 * jpushBean.getOwn_mobile()); obj.put("push_type", "verify_accept");//
-		 * 租用请求 obj.put("device_token", jpushBean.getOwn_device_token());
-		 * obj.put("device_type", jpushBean.getOwn_device_type()); String
-		 * asString = mCache.getAsString("user_id"); obj.put("user_id",
-		 * asString);
-		 * 
-		 * JSONObject extras = new JSONObject(); extras.put("park_id",
-		 * jpushBean.getPark_id());// 得到车位的objectId extras.put("mode",
-		 * jpushBean.getMode()); extras.put("hire_method_id",
-		 * jpushBean.getHire_method_id()); extras.put("address",
-		 * jpushBean.getAddress()); extras.put("hire_start",
-		 * jpushBean.getHire_start()); // 事件和日期 extras.put("hire_end",
-		 * jpushBean.getHire_end()); extras.put("own_device_token",
-		 * mCache.getAsString("RegistrationID")); extras.put("own_device_type",
-		 * fromJson.getDevice_type());
-		 * extras.put("own_mobile",mCache.getAsString("USER"));// 自己的手机号
-		 * extras.put("push_type", "verify_accept"); extras.put("price",
-		 * jpushBean.getPrice()); extras.put("hire_method_field",
-		 * jpushBean.getHire_method_field()); obj.put("extras", extras);
-		 * 
-		 * String doHttpsPost = PostCLientUtils.doHttpsPost(
-		 * Information.KONGCV_JPUSH_MESSAGE_P2P, JsonStrUtils.JsonStr(obj));//
-		 * 发送Jpush通知
-		 * 
-		 * JSONObject obj2 = new JSONObject(doHttpsPost); String str =
-		 * obj2.getString("result"); JSONObject objStr = new JSONObject(str);
-		 * String state = objStr.getString("state"); if ("ok".equals(state)) {
-		 * Looper.prepare(); ToastUtil.show(getActivity(), "已同意对方的支付请求！");
-		 * Looper.loop(); } else { Looper.prepare();
-		 * ToastUtil.show(getActivity(), "接收对方请求失败！"); Looper.loop(); } } catch
-		 * (Exception e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
 		try {
 			UserBean fromJson = userBean;
 			Gson gson = new Gson();
@@ -858,7 +808,8 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("address", jpushBean.getAddress());
 			extras.put("hire_start", jpushBean.getHire_start()); // 事件和日期
 			extras.put("hire_end", jpushBean.getHire_end());
-			extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+	//		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+			extras.put("own_device_token", JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", fromJson.getDevice_type());
 			extras.put("own_mobile", mCache.getAsString("USER"));// 自己的手机号
 			extras.put("push_type", "verify_accept");
@@ -1059,12 +1010,6 @@ public class CommunityDetailFragment extends Fragment implements
 
 	private void sendInform() {
 		// TODO Auto-generated method stub
-		/*
-		 * new Thread(new Runnable() {
-		 * 
-		 * @Override public void run() { // TODO Auto-generated method stub
-		 * JPushInform();// JPush通知 } }).start();
-		 */
 		try {
 			Gson gson = new Gson();
 			JpushBean fromJson = null;
@@ -1094,7 +1039,6 @@ public class CommunityDetailFragment extends Fragment implements
 			String asString = mCache.getAsString("user_id");
 			Log.v("asString", asString);
 			obj.put("user_id", asString);// 自己的id
-
 			JSONObject extras = new JSONObject();
 			if (mineSendFragment == null && strExtra == null
 					&& CurbMineReceiver == null) {
@@ -1109,7 +1053,9 @@ public class CommunityDetailFragment extends Fragment implements
 					+ detail_txt_yu.getText().toString());
 			extras.put("hire_start", time_pay_start.getText().toString()); // 事件和日期
 			extras.put("hire_end", time_pay_end.getText().toString());
-			extras.put("own_device_token", mCache.getAsString("RegistrationID"));//
+	    //  mCache.put("RegistrationID", JPushInterface.getRegistrationID(getActivity()));
+		//	extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+			extras.put("own_device_token", JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", "android");
 			extras.put("own_mobile", mCache.getAsString("USER"));
 
@@ -1118,7 +1064,6 @@ public class CommunityDetailFragment extends Fragment implements
 					Double.valueOf(tv_pay_number.getText().toString()));
 			obj.put("extras", extras);
 			Log.v("发送jPushJPUSH!!", JsonStrUtils.JsonStr(obj));
-
 			okhttp3.Request request = new okhttp3.Request.Builder()
 					.url(Information.KONGCV_JPUSH_MESSAGE_P2P)
 					.headers(Information.getHeaders())
@@ -1144,103 +1089,23 @@ public class CommunityDetailFragment extends Fragment implements
 					Log.e("KONGCV_JPUSH_MESSAGE_P2P", arg1.toString());
 				}
 			});
-			/*
-			 * String doHttpsPost = PostCLientUtils.doHttpsPost(
-			 * Information.KONGCV_JPUSH_MESSAGE_P2P,
-			 * JsonStrUtils.JsonStr(obj));// 发送Jpush通知 Log.v("JPUSH!!",
-			 * doHttpsPost); Log.v("JPUSH!!", doHttpsPost); JSONObject obj2 =
-			 * new JSONObject(doHttpsPost); String str =
-			 * obj2.getString("result"); JSONObject objStr = new
-			 * JSONObject(str); String state = objStr.getString("state"); if
-			 * ("ok".equals(state)) { Looper.prepare();
-			 * ToastUtil.show(getActivity(), "JPUSH！发送消息成功！"); Looper.loop(); }
-			 * else { Looper.prepare(); ToastUtil.show(getActivity(),
-			 * "订单确认失败！"); Looper.loop(); }
-			 */
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-
-	/**
-	 * 发JPush通知
-	 */
-	/*
-	 * private void JPushInform() { try { Gson gson=new Gson(); JpushBean
-	 * fromJson =null;
-	 * 
-	 * if(mineSendFragment!=null){ fromJson = gson.fromJson(mineSendFragment,
-	 * JpushBean.class); mode=fromJson.getMode();
-	 * hire_method_id=fromJson.getHire_method_id();
-	 * field=fromJson.getHire_method_field(); }else if(strExtra!=null){ fromJson
-	 * = gson.fromJson(strExtra, JpushBean.class); mode=fromJson.getMode();
-	 * hire_method_id=fromJson.getHire_method_id();
-	 * field=fromJson.getHire_method_field(); }else if(CurbMineReceiver!=null){
-	 * fromJson = gson.fromJson(CurbMineReceiver, JpushBean.class);
-	 * mode=fromJson.getMode(); hire_method_id=fromJson.getHire_method_id();
-	 * field=fromJson.getHire_method_field(); } UserBean data = userBean;
-	 * JSONObject obj = new JSONObject(); obj.put("mobilePhoneNumber",
-	 * data.getMobilePhoneNumber());// 对方手机号 obj.put("push_type",
-	 * "verify_request");// 租用请求 obj.put("device_token",
-	 * data.getDevice_token()); obj.put("device_type", data.getDevice_type());
-	 * 
-	 * String asString = mCache.getAsString("user_id"); Log.v("asString",
-	 * asString); obj.put("user_id", asString);// 自己的id
-	 * 
-	 * JSONObject extras = new JSONObject(); if(mineSendFragment==null &&
-	 * strExtra==null && CurbMineReceiver==null){ extras.put("park_id",
-	 * park_id); }else{ extras.put("park_id",fromJson.getPark_id()); }
-	 * extras.put("mode", mode);// extras.put("hire_method_id", hire_method_id);
-	 * extras.put("hire_method_field", field); extras.put("address",
-	 * mTxtAddress.getText().toString() + detail_txt_yu.getText().toString());
-	 * extras.put("hire_start", time_pay_start.getText().toString()); // 事件和日期
-	 * extras.put("hire_end", time_pay_end.getText().toString());
-	 * extras.put("own_device_token", mCache.getAsString("RegistrationID"));//
-	 * extras.put("own_device_type", "android"); extras.put("own_mobile",
-	 * mCache.getAsString("USER"));
-	 * 
-	 * extras.put("push_type", "verify_request"); extras.put("price",
-	 * Double.valueOf(tv_pay_number.getText().toString())); obj.put("extras",
-	 * extras); Log.v("发送jPushJPUSH!!", JsonStrUtils.JsonStr(obj)); String
-	 * doHttpsPost = PostCLientUtils.doHttpsPost(
-	 * Information.KONGCV_JPUSH_MESSAGE_P2P, JsonStrUtils.JsonStr(obj));//
-	 * 发送Jpush通知 Log.v("JPUSH!!", doHttpsPost); Log.v("JPUSH!!", doHttpsPost);
-	 * JSONObject obj2 = new JSONObject(doHttpsPost); String str =
-	 * obj2.getString("result"); JSONObject objStr = new JSONObject(str); String
-	 * state = objStr.getString("state"); if ("ok".equals(state)) {
-	 * Looper.prepare(); ToastUtil.show(getActivity(), "JPUSH！发送消息成功！");
-	 * Looper.loop(); } else { Looper.prepare(); ToastUtil.show(getActivity(),
-	 * "订单确认失败！"); Looper.loop(); } } catch (Exception e) { // TODO
-	 * Auto-generated catch block e.printStackTrace(); } }
-	 */
 	/**
 	 * 获取详情页面信息并解析
 	 */
 	private void Details() {
-		/*
-		 * try { JSONObject obj = new JSONObject(); obj.put("park_id", park_id);
-		 * obj.put("mode", mode); // 值需要传递 String doHttpsPost = PostCLientUtils
-		 * .doHttpsPost(Information.KONGCV_GET_PARK_INFO,
-		 * JsonStrUtils.JsonStr(obj)); if (doHttpsPost.equals("{}")) {
-		 * Looper.prepare(); ToastUtil.show(getActivity(), "没有数据！请重新搜索！");
-		 * Looper.loop(); // this.getActivity().finish(); Intent intent = new
-		 * Intent(getActivity(), SearchActivity.class); startActivity(intent);
-		 * getActivity().finish(); }else{ Gson gson = new Gson(); DetailBean
-		 * bean = gson.fromJson(doHttpsPost, DetailBean.class); ResultEntity
-		 * result = bean.getResult(); Message msg = mHandler.obtainMessage();
-		 * msg.what = 0; msg.obj = result; mHandler.sendMessage(msg); } } catch
-		 * (Exception e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
 		FormBody body = new FormBody.Builder().add("park_id", park_id)
 				.add("mode", mode).build();
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_PARK_INFO)
 				.headers(Information.getHeaders()).post(body).build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-
+			
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response)
 					throws IOException {

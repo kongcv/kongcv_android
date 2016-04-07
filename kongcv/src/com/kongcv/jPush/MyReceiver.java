@@ -20,14 +20,12 @@ import com.kongcv.utils.ExampleUtil;
 public class MyReceiver extends BroadcastReceiver {
 
 	private static final String TAG = "JPush";
-	private String printBundle;
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Bundle bundle = intent.getExtras();
-		printBundle = printBundle(bundle);
 		Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction()
-				+ ", extras: " + printBundle);
-		// Log.v("服务器推送下来的附加字段！！！extras", printBundle(bundle));
+				+ ", extras: " + printBundle(bundle));
+	    Log.v("服务器推送下来的附加字段！！！extras", printBundle(bundle));
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 			String regId = bundle
 					.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -50,6 +48,7 @@ public class MyReceiver extends BroadcastReceiver {
 					.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 			try {
+				String printBundle = printBundle(bundle);
 				JSONObject obj = new JSONObject(printBundle);
 				if (!obj.getString("push_type").equals("charge_info")) {
 					// 打开自定义的Activity
@@ -68,7 +67,7 @@ public class MyReceiver extends BroadcastReceiver {
 				.getAction())) {
 			Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 			try {
-				// String jsoStr = printBundle(bundle);
+				String printBundle = printBundle(bundle);
 				JSONObject obj = new JSONObject(printBundle);
 				if (!obj.getString("push_type").equals("charge_info")) {
 					// 打开自定义的Activity
@@ -100,13 +99,11 @@ public class MyReceiver extends BroadcastReceiver {
 			Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
 		}
 	}
-
 	// 打印所有的 intent extra 数据
 	private static String printBundle(Bundle bundle) {
 		String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
 		return extras;
 	}
-
 	// send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
 		if (HomeActivity.isForeground) {
@@ -123,7 +120,6 @@ public class MyReceiver extends BroadcastReceiver {
 				} catch (JSONException e) {
 
 				}
-
 			}
 			context.sendBroadcast(msgIntent);
 		}

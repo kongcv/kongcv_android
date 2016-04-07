@@ -139,7 +139,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_GET_COMMENT,
 					JsonStrUtils.JsonStr(object));
-			Log.v("KONGCV_GET_COMMENT", doHttpsPost);
 			Gson gson = new Gson();
 			JsonRootBean rootBean = gson.fromJson(doHttpsPost, JsonRootBean.class);
 			List<Result> result = rootBean.getResult();

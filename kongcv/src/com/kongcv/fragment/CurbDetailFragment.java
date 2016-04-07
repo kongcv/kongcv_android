@@ -31,6 +31,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
@@ -268,11 +270,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					UserBean userBean = gson.fromJson(user, UserBean.class);
 					payBean.setHirer_id(userBean.getObjectId());
 					payBean.setLicense_plate(userBean.getLicense_plate());
-					// payBean.setUnit_price(unit_price);// 单位价格判断
-					// payBean.setPrice(0); //价格
-					/**
-					 * 需要判断当前模式是否为计时模式
-					 */
 					Data.putData("CurbPayOneBean", payBean);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -311,14 +308,15 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			case 2:
 				try {
 					String doHttpsPost=(String) msg.obj;
+					Log.d("道边>>>", "道边"+doHttpsPost);
 					JSONObject obj2 = new JSONObject(doHttpsPost);
 					String str = obj2.getString("result");
 					JSONObject objStr = new JSONObject(str);
 					String state = objStr.getString("state");
 					if ("ok".equals(state)) {
-						ToastUtil.show(getActivity(), "订单成功确认！");
+						ToastUtil.show(getActivity(), "订单成功确认!");
 					} else {
-						ToastUtil.show(getActivity(), "订单确认失败，请尝试重新操作！");
+						ToastUtil.show(getActivity(), "订单确认失败，请尝试重新操作!");
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -763,13 +761,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private OkHttpClient client = new OkHttpClient();
 	private void sendInform() {
 		// TODO Auto-generated method stub
-		/*new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				JPushInform();// JPush通知
-			}
-		}).start();*/
 		okhttp3.Request request=new okhttp3.Request.Builder()
 		  .url(Information.KONGCV_JPUSH_MESSAGE_P2P)
 		  .headers(Information.getHeaders())
@@ -928,7 +919,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			extras.put("hire_start", "");// 出租截止时间和日期
 			extras.put("hire_end", "");
 		}
-		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+//		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+		extras.put("own_device_token",  JPushInterface.getRegistrationID(getActivity()));
 		extras.put("own_device_type", "android");
 		extras.put("own_mobile", mCache.getAsString("USER"));
 		extras.put("push_type", "verify_request");
