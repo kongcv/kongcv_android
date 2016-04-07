@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import com.google.gson.Gson;
 import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
-import com.kongcv.activity.HomeActivity;
 import com.kongcv.activity.MineInformationActivity;
 import com.kongcv.activity.TestActivity;
 import com.kongcv.adapter.InfoNotifyAdapter;
@@ -39,7 +37,6 @@ import com.kongcv.global.JpushBeanAndInfoBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
-import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
@@ -54,10 +51,10 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	private String status;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			JpushBeanAndInfoBean jpushBeanAndInfoBean=(JpushBeanAndInfoBean) msg.obj;
-			final ArrayList<InfoBean> mLists=jpushBeanAndInfoBean.infoList;
-			final JpushBean jpushBean=jpushBeanAndInfoBean.jpushBean;
-			
+			JpushBeanAndInfoBean jpushBeanAndInfoBean = (JpushBeanAndInfoBean) msg.obj;
+			final ArrayList<InfoBean> mLists = jpushBeanAndInfoBean.infoList;
+			final JpushBean jpushBean = jpushBeanAndInfoBean.jpushBean;
+
 			infoAdapter = new InfoNotifyAdapter(getActivity(), mLists);
 			lv.setAdapter(infoAdapter);
 			lv.setOnItemClickListener(new OnItemClickListener() {
@@ -65,28 +62,27 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					if(position!=0){
-						String s = mLists.get(position-1).getState();
-						String m = mLists.get(position-1).getMode();
-						String p = mLists.get(position-1).getPark_id();
+						String s = mLists.get(position - 1).getState();
+						String m = mLists.get(position - 1).getMode();
+						String p = mLists.get(position - 1).getPark_id();
 						String f = mLists.get(position - 1).getHire_method_field();
-						if("未处理".equals(s)){
+						if ("未处理".equals(s)) {
 							Intent i = new Intent(getActivity(),
 									DetailsActivity.class);
 							i.putExtra("mode", m);
 							i.putExtra("park_id", p);
 							i.putExtra("getField", f);
-							Gson gson=new Gson();
+							Gson gson = new Gson();
 							String json = gson.toJson(jpushBean);
 							i.putExtra("MineSendFragment", json);
-							startActivity(i);//未处理 跳转到详情页
-						}else if("已接受".equals(s)) {//跳转支付页面
-							Intent i = new Intent(getActivity(),
-									TestActivity.class);
-							Gson gson=new Gson();
+							startActivity(i);// 未处理 跳转到详情页
+						} else if ("已接受".equals(s)) {// 跳转支付页面
+							Intent i = new Intent(getActivity(), TestActivity.class);
+							Gson gson = new Gson();
 							String json = gson.toJson(jpushBean);
 							i.putExtra("MineSendFragment", json);
 							startActivity(i);
-						}else {
+						} else {
 							ToastUtil.show(getActivity(), "拒绝了 不做任何处理！");
 						}
 					}
@@ -259,7 +255,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 	}
 
 	private int skip = 0;
-
 	private void refresh() {
 		mRun(0, 10);
 	}
@@ -281,7 +276,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 				Loading();
 				onLoad();
 			}
-
 			private void Loading() {
 				mRun(skip, 10);
 			}
@@ -293,5 +287,5 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 		lv.stopLoadMore();
 		lv.setRefreshTime("刚刚");
 	}
-
 }
+

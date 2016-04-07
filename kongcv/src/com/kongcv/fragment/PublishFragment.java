@@ -79,13 +79,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	 */
 	private EditText park_detail, park_description, tv_car_num, tv_car_area,
 			tv_car_high, gate_card;
-	ArrayList<TypeBean> items;
-	public static ArrayList<TypeBean> mydialog;
+	
 	PublishTypeAdapter adapter;
-	List<String> hire_method_id = new ArrayList<String>();
-	List<String> hire_price = new ArrayList<String>();
-	List<String> hire_time = new ArrayList<String>();
-	List<String> hire_field = new ArrayList<String>();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -140,27 +135,21 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			}
 		});
 		mySwitch.setChecked(false);
-
 		view.setOnClickListener(this);
 		tvTorB.setOnClickListener(this);
 		ivType.setOnClickListener(this);
 		ivPublish.setOnClickListener(this);
 
 		mAddress = (TextView) mScrollView.findViewById(R.id.tv_getSearch);
-		mAddress.setText((CharSequence) Data.getData("address"));
 		mListView = (ListView) mScrollView.findViewById(R.id.listview);
-		tv_City.setText((CharSequence) Data.getData("wk"));
 		initDay();
 	}
 
 	/**
 	 * 从车位管理跳转到此，显示相应的数据
 	 */
-	private int visibleInit = 0;
-
+	private TypeBean typeBean;
 	private void visibleData() {
-		mydialog = new ArrayList<TypeBean>();
-		visibleInit = 1;
 		Bundle extras = getArguments();
 		if (extras != null) {
 			MineCarmanagerBean carmanagerBean = (MineCarmanagerBean) extras
@@ -186,15 +175,40 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				List<String> objectId = community.getObjectId();// 类型id
 				List<String> method = community.getMethod();// 类型名称'
 				List<String> hireField = community.getHire_field();
-				// ArrayList<TypeBean> item=new ArrayList<TypeBean>();
+				
 				List<String> hireMethodList = carmanagerBean
 						.getHire_method_id();
 				List<String> hirePriceList = carmanagerBean.getHire_price();
 				List<String> hireTimeList = carmanagerBean.getHire_time();
-				typeBeansList = new ArrayList<TypeBean>();
+				
+				for (int i = 0; i < hireMethodList.size(); i++) {
+					typeBean = new TypeBean();
+					for (int ii = 0; ii < objectId.size(); ii++) {
+						if (objectId.get(ii).equals(hireMethodList.get(i))) {
+							typeBean.setDate(hireTimeList.get(i).toString() == null ? ""
+									: hireTimeList.get(i).toString());
+							typeBean.setPrice(hirePriceList.get(i).toString());
+							typeBean.setMethod(method.get(ii).toString());
+						}
+					}
+					items.add(typeBean);
+				}
+				adapter = new PublishTypeAdapter(homeActivity, items,
+						new UpdateList() {
+							@Override
+							public void deteleList(
+									ArrayList<TypeBean> arrayList) {
+								// TODO Auto-generated method stub
+								items = arrayList;//删除之后的
+							}
+						});
+				mListView.setAdapter(adapter);
+				adapter.notifyDataSetChanged();
+				ToastUtil.fixListViewHeight(mListView, -1);
+				
+				/*typeBeansList = new ArrayList<TypeBean>();
 				for (int i = 0; i < hireMethodList.size(); i++) {
 					TypeBean typeBean = new TypeBean();
-
 					for (int ii = 0; ii < objectId.size(); ii++) {
 						if (objectId.get(ii).equals(hireMethodList.get(i))) {
 							typeBean.setDate(hireTimeList.get(i).toString() == null ? "0"
@@ -213,7 +227,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 					}
 					mydialog.add(typeBean);
 				}
-				typeBeansList = mydialog;
+				typeBeansList = mydialog;*/
 				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -228,10 +242,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				} else {
 					mySwitch.setChecked(normal);
 				}
-				adapter = new PublishTypeAdapter(homeActivity, mydialog);
-				mListView.setAdapter(adapter);
-				adapter.notifyDataSetChanged();
-				ToastUtil.fixListViewHeight(mListView, -1);
 				if (0 == carmanagerBean.getPark_struct()) {
 					tvTorB.setText("地上");
 				} else {
@@ -294,11 +304,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.iv_publish: // 将订单消息数据 提交到后台
 			if (ToastUtil.isLogIn(mCache.getAsString("USER"))) {
-				if (mydialog != null) {//
-					postData(mydialog);
-				} else {
-					ToastUtil.show(getActivity(), "请点击选择类型！");
-				}
+				postData();
 			} else {
 				Intent intent = new Intent(getActivity(), LogInActivity.class);
 				startActivity(intent);
@@ -322,12 +328,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			if (data != null) {// 获取子activity put的数据
 				String str = data.getStringExtra("addressName");
 				String tvCity = data.getStringExtra("tv_City");
-
 				mAddress.setText(str);// 设置文字
-				/*
-				 * LocationInfo info = (LocationInfo) Data
-				 * .getData("location_info");
-				 */
 				LocationInfo info = (LocationInfo) data
 						.getSerializableExtra("info");
 				bean.setLocationInfo(info);
@@ -341,130 +342,21 @@ public class PublishFragment extends Fragment implements OnClickListener {
 	}
 
 	// ---------------------------------必要的重写方法--------------------------------------------------
-	private int indexOf = 0;
-
+	private ArrayList<TypeBean> items=new ArrayList<TypeBean>();
 	private void typeCar() {
-		if (mydialog == null) {
-			mydialog = new ArrayList<TypeBean>();
-		}
 		dialog2 = new TypeDialog(homeActivity, R.style.CustomDialog,
 				new LeaveMyDialogListener() {
 					@Override
-					public void refreshUI(ArrayList<TypeBean> item) {
+					public void refreshDate(TypeBean item) {
 						// TODO Auto-generated method stub
-						if (null == items) {
-							if (visibleInit == 0) {
-								items = item;
-							} else {
-								items = typeBeansList;
-								for (int i = 0; i < item.size(); i++) {
-									if (hire_field.contains(item.get(i)
-											.getField())) {
-										indexOf = hire_field.indexOf(item
-												.get(i).getField());
-										hire_time.set(indexOf, item.get(i)
-												.getDate() == null ? "0" : item
-												.get(i).getDate());
-										hire_price.set(indexOf, item.get(i)
-												.getPrice());
-
-										items.get(i)
-												.setDate(
-														item.get(i).getDate() == null ? "0"
-																: item.get(i)
-																		.getDate());
-										items.get(i).setPrice(
-												item.get(i).getPrice());
-										items.get(i).setField(
-												hire_field.get(i).toString());
-										items.get(i).setObjectId(
-												hire_method_id.get(i)
-														.toString());
-									} else {
-										Log.e("for if", "false");
-										items.addAll(item);
-									}
-								}
-							}
-						} else {
-							Log.e("items!=null", "items!=null");
-							if (visibleInit == 0) {
-								for (int i = 0; i < item.size(); i++) {
-									if (hire_field.contains(item.get(i)
-											.getField())) {
-										indexOf = hire_field.indexOf(item
-												.get(i).getField());
-										hire_time.set(indexOf, item.get(i)
-												.getDate() == null ? "0" : item
-												.get(i).getDate());
-										hire_price.set(indexOf, item.get(i)
-												.getPrice());
-
-										items.get(i)
-												.setDate(
-														item.get(i).getDate() == null ? "0"
-																: item.get(i)
-																		.getDate());
-										items.get(i).setPrice(
-												item.get(i).getPrice());
-										items.get(i).setField(
-												hire_field.get(i).toString());
-										items.get(i).setObjectId(
-												hire_method_id.get(i)
-														.toString());
-									} else {
-										items.addAll(item);
-									}
-								}
-							} else {
-								for (int i = 0; i < item.size(); i++) {
-									/*
-									 * if(hire_field.contains(item.get(i).getField
-									 * ())){ indexOf =
-									 * hire_field.indexOf(item.get
-									 * (i).getField()); hire_time.set(indexOf,
-									 * item
-									 * .get(i).getDate()==null?"0":item.get(i
-									 * ).getDate()); hire_price.set(indexOf,
-									 * item.get(i).getPrice());
-									 * items.get(i).setDate
-									 * (item.get(i).getDate()
-									 * ==null?"0":item.get(i).getDate());
-									 * items.get
-									 * (i).setPrice(item.get(i).getPrice());
-									 * }else{ for(int
-									 * index=0;index<items.size();i++){ TypeBean
-									 * typeBean=new TypeBean();
-									 * typeBean.setDate(
-									 * item.get(i).getDate()==null
-									 * ?"0":item.get(i).getDate());
-									 * typeBean.setField
-									 * (item.get(index).getField());
-									 * typeBean.setObjectId
-									 * (item.get(index).getObjectId());
-									 * typeBean.
-									 * setMethod(item.get(index).getMethod());
-									 * items.add(typeBean); } }
-									 */
-									TypeBean typeBean = new TypeBean();
-									typeBean.setDate(item.get(i).getDate());
-									typeBean.setField(item.get(i).getField());
-									typeBean.setObjectId(item.get(i)
-											.getObjectId());
-									typeBean.setMethod(item.get(i).getMethod());
-									items.add(typeBean);
-								}
-							}
-						}
-						mydialog = items;
-
+						items.add(item);
 						adapter = new PublishTypeAdapter(homeActivity, items,
 								new UpdateList() {
 									@Override
 									public void deteleList(
 											ArrayList<TypeBean> arrayList) {
 										// TODO Auto-generated method stub
-										items = arrayList;
+										items = arrayList;//删除之后的
 									}
 								});
 						mListView.setAdapter(adapter);
@@ -475,14 +367,11 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		dialog2.setContentView(R.layout.publish_type_dialog);
 		dialog2.show();
 	}
-
 	private TextView textstart;
 	private TextView textend;
 	private View view;
 	private ListView mListView;
 	private MySwitch mySwitch;
-	private ArrayList<TypeBean> typeBeansList;
-
 	private void topOrbutm() {
 		builder = new Builder(getActivity());
 		builder.setTitle("选择车位类型");
@@ -514,46 +403,63 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		dialog3 = builder.create();
 		dialog3.show();
 	}
-
 	/**
 	 * 发布页面的数据
 	 */
-	private void postData(ArrayList<TypeBean> arrList) {
+	private List<String> hire_method_id,hire_price,hire_time,hire_field;
+	private void postData() {
 		try {
-			if (arrList != null) {
-				if (visibleInit == 0) {
-					for (int i = 0; i < arrList.size(); i++) {
-						if (!hire_price.contains(arrList.get(i).getPrice())
-								&& !hire_method_id.contains(arrList.get(i)
-										.getObjectId())) {
-							hire_price.add(arrList.get(i).getPrice());
-						} else {
-							hire_price.set(hire_method_id.indexOf(arrList
-									.get(i).getObjectId()), arrList.get(i)
-									.getPrice());
-						}
-
-						if (!hire_method_id.contains(arrList.get(i)
-								.getObjectId())) {
-							hire_method_id.add(arrList.get(i).getObjectId());
-						}
-						/*
-						 * if (arrList.get(i).getDate() != null &&
-						 * !hire_time.contains(arrList.get(i).getDate())) {
-						 * hire_time
-						 * .add(i,arrList.get(i).getDate()==null?"0":arrList
-						 * .get(i).getDate()); }
-						 */
-						hire_time.add(arrList.get(i).getDate());
-						if (!hire_field.contains(arrList.get(i).getField())) {
-							hire_field.add(arrList.get(i).getField());
-						}
-					}
+			if(items!=null && items.size()>0){
+				hire_method_id = new ArrayList<String>();
+				hire_price = new ArrayList<String>();
+				hire_time = new ArrayList<String>();
+				hire_field = new ArrayList<String>();
+				for(int index=0;index<items.size();index++){
+					hire_field.add(items.get(index).getField()==null?"0":items.get(index).getField());
+					hire_price.add(items.get(index).getPrice()==null?"0":items.get(index).getPrice());
+					hire_time.add(items.get(index).getDate()==null?"0":items.get(index).getDate());
+					hire_method_id.add(items.get(index).getObjectId()==null?"0":items.get(index).getObjectId());
+				}
+				if(bean.getHire_field()!=null && bean.getHireTime()!=null 
+						&& bean.getHireMethodId()!=null && bean.getHirePrice()!=null){
+					bean.setHire_field(null);
+					bean.setHirePrice(null);
+					bean.setHireTime(null);
+					bean.setHireMethodId(null);
 				}
 				bean.setHire_field(hire_field);
 				bean.setHirePrice(hire_price);
 				bean.setHireTime(hire_time);
 				bean.setHireMethodId(hire_method_id);
+			}else {
+				bean.setHire_field(null);
+				bean.setHirePrice(null);
+				bean.setHireTime(null);
+				bean.setHireMethodId(null);
+				ToastUtil.show(getActivity(), "出租类型为空!");
+				return;
+			}
+			if(mAddress.getText().toString().equals("")){
+				ToastUtil.show(getActivity(), "请先点击搜索地址!");
+				return;
+			}
+			if(park_detail.getText().toString().equals("")){
+				ToastUtil.show(getActivity(), "补充详细地址不能为空!");
+				return;
+			}
+			if(!textstart.getText().toString().equals("起租日期 ")){
+				Log.d("起租日期", textstart.getText().toString());
+				bean.setHireStart(textstart.getText().toString() + " 00:00:00");
+			}else{
+				ToastUtil.show(getActivity(), "起租日期不能为空!");
+				return;
+			}
+			if(!textend.getText().toString().equals("截止日期 ")){
+				Log.d("截止日期", textend.getText().toString());
+				bean.setHireEnd(textend.getText().toString() + " 00:00:00");
+			}else{
+				ToastUtil.show(getActivity(), "截止日期不能为空!");
+				return;
 			}
 			String str = mTvNoOr.getText().toString();
 			String[] strArray = str.split(",");
@@ -561,36 +467,24 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			for (int i = 0; i < strArray.length; i++) {
 				list.add(strArray[i]);
 			}
-
 			bean.setUserId(mCache.getAsString("user_id"));
 			bean.setAddress(mAddress.getText().toString());
-
 			bean.setParkDetail(park_detail.getText().toString().trim());
 			bean.setParkDescription(park_description.getText().toString()
 					.trim());
-			bean.setHireStart(textstart.getText().toString() + " 00:00:00");
-			bean.setHireEnd(textend.getText().toString() + " 00:00:00");
 			bean.setNoHire(list);
 			bean.setTailNum(tv_car_num.getText().toString().trim());
-			// bean.setCity(tv_City.getText().toString());// 自动定位获取得到
-			Log.e("hire_method_id", hire_method_id + "::");
-			Log.e("hire_field", hire_field + "::");
-			Log.e("hire_price", hire_price + "::");
-			Log.e("hire_field", hire_field + "::");
-
-			Log.e("getHireMethodId", bean.getHireMethodId() + "::");
-			Log.e("getHire_field", bean.getHire_field() + "::");
-			Log.e("getHirePrice", bean.getHirePrice() + "::");
-			Log.e("getHireTime", bean.getHireTime() + "::");
-
-			Double area = Double.parseDouble(tv_car_area.getText().toString());
-			bean.setParkArea(area);
-			bean.setParkHeight(Double.parseDouble(tv_car_high.getText()
-					.toString()));
+		    bean.setCity(tv_City.getText().toString());// 自动定位获取得到
+			if(tv_car_area.getText().toString()!=null && !tv_car_area.getText().toString().equals("")){
+				Double area = Double.parseDouble(tv_car_area.getText().toString());
+				bean.setParkArea(area);
+			}
+			if(tv_car_high.getText().toString()!=null && !tv_car_high.getText().toString().equals("")){
+				bean.setParkHeight(Double.parseDouble(tv_car_high.getText().toString()));
+			}
 			bean.setGateCard(gate_card.getText().toString());
 			bean.setMode("community");
 			bean.setPersonal(1);
-
 			bean.setHire_field(hire_field);
 			bean.setHirePrice(hire_price);
 			bean.setHireTime(hire_time);
@@ -598,11 +492,9 @@ public class PublishFragment extends Fragment implements OnClickListener {
 
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
-			Log.e("发布的数据是：", bean.toString());
 			Log.e("发布的数据是：", json);
-
-			MyThread thread = new MyThread(json);
-			thread.start();
+			/*MyThread thread = new MyThread(json);
+			thread.start();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

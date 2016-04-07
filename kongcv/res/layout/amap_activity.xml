@@ -5,20 +5,21 @@
     android:orientation="vertical" >
 
     <!-- map页面 -->
-
-    <LinearLayout
+    <com.amap.api.maps.MapView
+         android:id="@+id/map"
+         android:layout_width="match_parent"
+         android:layout_height="295dp" 
+         />
+   <!--  <LinearLayout
         android:id="@+id/ll_mapview"
         android:layout_width="fill_parent"
         android:layout_height="295dp" >
-
         <com.amap.api.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="295dp" />
-    </LinearLayout>
-
+    </LinearLayout> -->
     <!-- map info页面 -->
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
@@ -29,7 +30,6 @@
             android:layout_centerVertical="true"
             android:paddingLeft="15dp"
             android:text="排序" />
-
         <ImageView
             android:id="@+id/iv_map_flexible"
             android:layout_width="wrap_content"

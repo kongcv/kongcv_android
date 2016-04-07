@@ -51,7 +51,6 @@
                 android:paddingLeft="@dimen/public_header_paddingLeft"
                 android:paddingTop="80dp"
                 android:singleLine="true"
-                android:text="我的位置"
                 android:textSize="@dimen/publish_txtSize" />
 
             <TextView
@@ -61,7 +60,6 @@
                 android:layout_alignBottom="@+id/tv_getSearch"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:text="@string/tv_City"
                 android:textSize="@dimen/publish_txtSize" />
         </RelativeLayout>
 

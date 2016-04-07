@@ -144,7 +144,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 				break;
 			default:
 				break;
@@ -162,16 +161,16 @@ public class MineFragment extends Fragment implements OnClickListener {
 					JsonStrUtils.JsonStr(object),
 					mCache.getAsString("sessionToken"));
 			JSONObject obj = new JSONObject(jsoStr);
-			Log.e("hahawwww","haha");
+			Log.e("hahawwww", "haha");
 			if (obj.has("result")) {
-				Log.e("haha","haha");
+				Log.e("haha", "haha");
 				JSONObject result = obj.getJSONObject("result");
 				if (result != null) {
 					user_name = obj.getJSONObject("result").getString(
 							"username");
-					Log.e("hahassseee","haha");
+					Log.e("hahassseee", "haha");
 					if (obj.getJSONObject("result").has("image")) {
-						Log.e("hahasswww","haha");
+						Log.e("hahasswww", "haha");
 						url = obj.getJSONObject("result")
 								.getJSONObject("image").getString("url");
 						bit = GetImage.getHttpBitmap(url);
@@ -213,23 +212,27 @@ public class MineFragment extends Fragment implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
-		switch (resultCode) {
-		
+	switch (resultCode) {
 		case 6:
 			if (data != null) {
 				user_name = data.getStringExtra("nick");
 				Bitmap bit = data.getParcelableExtra("bit");
-				String url=data.getStringExtra("urlsssss");
+				String url = data.getStringExtra("urlsssss");
+				Log.e("urlsswwww", url);
 				if (user_name != null) {
+					Log.e("user_nameuser_name", user_name);
 					uName.setText(user_name);
-				} 
+				}
+
 				if (bit != null) {
+					Log.e("sssss", "1233");
 					mFace.setImageBitmap(bit);
 				} else {
 					mFace.setImageResource(R.drawable.defaulto);
 				}
 			}
 			break;
+
 		case 0:
 			if (data != null) {
 				user_name = data.getStringExtra("user_name");
@@ -240,6 +243,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 		default:
 			break;
 		}
+		// super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -348,14 +352,13 @@ public class MineFragment extends Fragment implements OnClickListener {
 								LogInActivity.class);
 						Log.e("iv_mine", "iv_mine");
 						startActivityForResult(intent, 0);
-					//	startActivity(intent);
+						// startActivity(intent);
 					}
 				}, 2000);
-				//updateUserInfo();
+				// updateUserInfo();
 				// mHandler.sendEmptyMessage(1);
 			}
 			break;
-
 		case R.id.tv_logn:
 			if (mCache.getAsString("USER") != null
 					&& mCache.getAsString("sessionToken") != null) {
@@ -378,7 +381,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 	}
 
 	/**
-	 * 修改用户名称 防ios 修改
+	 * 修改用户名称 仿ios 修改
 	 */
 	private void setUserNickName() {
 		Intent intent = new Intent(getActivity(), NickNameActivity.class);
@@ -387,7 +390,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 
 	// 为弹出窗口实现监听类
 	private OnClickListener itemsOnClick = new OnClickListener() {
-
 		public void onClick(View v) {
 			menuWindow.dismiss();
 			String PHOTO_FILE_NAME = mCache.getAsString("USER") + ".png";

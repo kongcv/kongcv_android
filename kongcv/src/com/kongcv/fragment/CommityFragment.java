@@ -97,18 +97,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				if(beansList!=null && beansList.size()>0){
 					czdapter = new CzCommityAdapter(getActivity(), beansList);
 					lv.setAdapter(czdapter);
-					/*lv.setOnItemClickListener(new OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-							if(position>=1 && beansList!=null && beansList.size()>0){
-								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
-								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-										+ mobilePhoneNumber));
-								startActivity(intent);
-							}
-						}
-					});*/
+					lv.setOnItemClickListener(null);
 				}
 				break;
 			default:
@@ -172,7 +161,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	}
 
 	private final OkHttpClient client = new OkHttpClient();
-
 	private void postHttp(String json, final int i) {
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
@@ -214,7 +202,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		}, 2000);
 
 	}
-
 	@Override
 	public void onLoadMore() {
 		mHandler.postDelayed(new Runnable() {
@@ -284,7 +271,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 							url = objStr.getJSONObject("image")
 									.getString("url");
 							Bitmap httpBitmap = GetImage.getHttpBitmap(url);
-						//	Bitmap bitMap = GetImage.getImage(url);
 							mCommBean.setBitmap(httpBitmap);
 							mCommBean.setImage(url);
 						}
@@ -298,6 +284,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
+					mCommBean.setMode("community");
 					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();
@@ -317,7 +304,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
-			Log.d("doResponse社区>>>>>", string+"::");
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
@@ -383,6 +369,8 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
+					mCommBean.setMode("community");
+					
 					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();

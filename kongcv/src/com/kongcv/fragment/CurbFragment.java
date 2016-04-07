@@ -3,21 +3,18 @@ package com.kongcv.fragment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -81,15 +78,15 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 								field=beansList.get(position-1).getField();
 								mCommBean=beansList.get(position-1);
 								mCommBean.setMode("curb");
-									Intent i = new Intent(getActivity(),
-											DetailsActivity.class);
-									// 传递数据
-									i.putExtra("mode", "curb");
-									i.putExtra("trade_state", trade_state);
-									i.putExtra("park_id", park_id);
-									i.putExtra("getField", field);
-									i.putExtra("mCommBean", mCommBean);
-									startActivity(i);
+								Intent i = new Intent(getActivity(),
+										DetailsActivity.class);
+								// 传递数据
+								i.putExtra("mode", "curb");
+								i.putExtra("trade_state", trade_state);
+								i.putExtra("park_id", park_id);
+								i.putExtra("getField", field);
+								i.putExtra("mCommBean", mCommBean);
+								startActivity(i);
 							}
 						}
 					});
@@ -100,19 +97,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				if (beansList != null && beansList.size() > 0) {
 					czdapter = new CzCommityAdapter(getActivity(), beansList);
 					lv.setAdapter(czdapter);
-					/*lv.setOnItemClickListener(new OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> parent,
-								View view, int position, long id) {
-							if (beansList != null
-									&& beansList.size() >= position) {
-								mobilePhoneNumber = beansList.get(position-1).getMobilePhoneNumber();
-								Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
-										+ mobilePhoneNumber));
-								startActivity(intent);
-							}
-						}
-					});*/
+					lv.setOnItemClickListener(null);
 				}
 				break;
 			default:
@@ -129,7 +114,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		refresh();
 		return view;
 	}
-
 	private void initView() {
 		mCache = ACacheUtils.get(getActivity());
 		lv = (AMapListView) view.findViewById(R.id.lv);
@@ -148,14 +132,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			getCurbOrCommInfo(breakJsonStr(str[1]), 1);
 		}
 	}
-
 	/**
 	 * 网络请求
 	 */
 	private final OkHttpClient client = new OkHttpClient();
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
-		Log.d("i==" + i, jsonStr + ":");
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())
@@ -245,6 +227,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setParkId(park_id);
 					mCommBean.setHandsel_state(handsel_state);
 					mCommBean.setMobilePhoneNumber(mobilePhoneNumber);
+					mCommBean.setMode("curb");
 					beansList.add(mCommBean);
 				}
 				Message msg = mHandler.obtainMessage();
@@ -317,6 +300,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
+					mCommBean.setMode("curb");
 					beansList.add(mCommBean);
 				}
 				Message msg = mHandler.obtainMessage();

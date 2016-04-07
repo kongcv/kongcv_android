@@ -147,11 +147,14 @@ public class HomeActivity extends FragmentActivity implements
 		}else{
 			bean = (MineCarmanagerBean) bundle.get(
 					"MineCarmanagerBean");
-			mPublishFragment = new PublishFragment();
-			Bundle args = new Bundle();
-			args.putSerializable("MineCarmanagerBean", bean);
-			mPublishFragment.setArguments(args);
-			rb1.setChecked(true);
+			if(bean!=null){
+				mPublishFragment = new PublishFragment();
+				Bundle args = new Bundle();
+				args.putSerializable("MineCarmanagerBean", bean);
+				mPublishFragment.setArguments(args);
+				rb1.setChecked(true);
+				CWGL=2;
+			}
 		}
 		getDisplay();
 	}
@@ -275,8 +278,7 @@ public class HomeActivity extends FragmentActivity implements
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									finish();
-									//MyApplication.getInstance().exit();
+									MyApplication.getInstance().exit();
 								}
 							}).show();
 		/*} else {
@@ -347,17 +349,6 @@ public class HomeActivity extends FragmentActivity implements
 		if (amapLocation != null) {
 			Double Latitude = amapLocation.getLatitude();
 			Double Longitude = amapLocation.getLongitude();
-			Bundle bundle = amapLocation.getExtras();
-			String desc = "";
-			if (null != bundle) {
-				desc = bundle.getString("desc");
-			}
-			String address = amapLocation.getCity()
-					+ amapLocation.getDistrict();
-			String wk = amapLocation.getCity();
-			wk = wk.substring(0, wk.length() - 1);
-			Data.putData("address", address);// 城市
-			Data.putData("wk", wk);// 地址
 			LatLng latLng = new LatLng(Latitude, Longitude);
 			Data.putData("LatLng", latLng);
 		}

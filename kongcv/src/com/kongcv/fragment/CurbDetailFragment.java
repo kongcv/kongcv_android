@@ -186,10 +186,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				}
 			}
 		}
-		
 	}
-	
-	
 	class ReadInfo extends PreReadTask<String, Void, Void> {
 		@Override
 		protected Void doInBackground(String... arg0) {
@@ -244,7 +241,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						btnInform.setOnClickListener(null);
 					}
 					location = result.getLocation();
+					if(result.getPark_description()!=null)
 					curbDescribe.setText(result.getPark_description());
+					
 					payBean = new PayOneBean();
 					List<String> hire_time = result.getHire_time();
 					hire_price = result.getHire_price();

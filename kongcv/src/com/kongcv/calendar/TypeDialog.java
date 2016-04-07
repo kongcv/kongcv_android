@@ -10,7 +10,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -22,13 +21,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.kongcv.R;
-import com.kongcv.fragment.PublishFragment;
 import com.kongcv.global.Community;
 import com.kongcv.global.TimeBean;
 import com.kongcv.global.TypeBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
-import com.kongcv.utils.StringUtils;
 import com.kongcv.utils.ToastUtil;
 
 /**
@@ -44,12 +41,8 @@ public class TypeDialog extends Dialog implements TextWatcher,
 	private ArrayAdapter<String> adapter;
 	private LeaveMyDialogListener listener;
 
-	TypeBean bean = new TypeBean();
 	TimeBean timer = new TimeBean();
-	ArrayList<TypeBean> items = new ArrayList<TypeBean>();
-	ArrayList<TypeBean> typeBeans;
 	ArrayList<String> onItemSelectedId = new ArrayList<String>();
-	private List<String> list = new ArrayList<String>();
 	private ImageView mSubmit;
 	private View mTxt1, mTxt2, mPicker;
 	private ACacheUtils mCache;
@@ -62,14 +55,10 @@ public class TypeDialog extends Dialog implements TextWatcher,
 	private List<String> curbObjectId = new ArrayList<String>();
 	private List<String> commField = new ArrayList<String>();
 	private List<String> curbField = new ArrayList<String>();
-	private boolean flag = true;
-	private boolean StartOrEnd = true;
-	private String start;
-	private String end;
-	private int i = 0;
+
 	
 	public interface LeaveMyDialogListener {
-		public void refreshUI(ArrayList<TypeBean> item);
+		public void refreshDate(TypeBean item);
 	}
 	public TypeDialog(Context context) {
 		super(context);
@@ -90,12 +79,13 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		this.listener = listener;
 	}
 
+	private boolean flag = true, StartOrEnd = true;
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.tv_day:
-			i = 0;
 			flag = true;
 			findViewById(R.id.tv_txt1).setVisibility(View.VISIBLE);
 			findViewById(R.id.tv_txt2).setVisibility(View.INVISIBLE);
@@ -103,96 +93,58 @@ public class TypeDialog extends Dialog implements TextWatcher,
 			adapterData(commMethod, spinner);
 			break;
 		case R.id.tv_time:
-			i = 1;
 			flag = false;
 			findViewById(R.id.tv_txt2).setVisibility(View.VISIBLE);
 			findViewById(R.id.tv_txt1).setVisibility(View.INVISIBLE);
 			mPicker.setVisibility(View.VISIBLE);
 			adapterData(curbMethod, spinner);
 			break;
-		case R.id.iv_submit://提交的时候
-			typeBeans=PublishFragment.mydialog;
-			for(int i=0;i<typeBeans.size();i++){
-				System.out.println("typeBeans.get(i).getField():"+typeBeans.get(i).getField());
-				System.out.println("typeBeans.get(i):"+typeBeans.get(i).toString());
-			}
-			System.out.println("bean.getData():"+bean.getDate());
-			System.out.println("bean.getData():"+bean.getDate());
-			System.out.println("bean.getData():"+bean.getDate());
-			System.out.println("bean.getField():"+bean.getField());
-			if(typeBeans!=null && typeBeans.size()>0){
-				for(int i=0;i<typeBeans.size();i++){
-						if ("".equals(price.getText().toString()) && tvPrice==null) {
-							ToastUtil.show(context, "价格不能为0！");
-							return;
-						} else {
-							if (StringUtils.isNumber(price.getText().toString()) == null) {
-								ToastUtil.show(context, "价格不能为0！");
-								return;
-							} else {
-								if (tvPrice == null) {
-									ToastUtil.show(context, "价格不能为空！");
-									return;
-								} else {
-									if (StringUtils.isNum(tvPrice)) {
-										bean.setPrice(tvPrice + result);
-										if (end != null && start != null) {
-											String date = start + "--" + end;
-											bean.setDate(date==null?"0":date);
-										}
-									} else {
-										ToastUtil.show(context, "无效的价格数据！");
-										return;
-									}
-								}
-							}
-						}
-				}
-			}else{
-				if(price.getText().toString()==null && tvPrice==null && !StringUtils.isNum(tvPrice)) {
-					ToastUtil.show(context, "价格不能为0！");
-					return;
-				} else {
-					if (StringUtils.isNumber(price.getText().toString()) == null) {
-						ToastUtil.show(context, "价格不能为0！");
-						return;
+		case R.id.iv_submit:// 提交的时候
+			if (tvPrice != null) {
+				bean.setPrice(tvPrice);
+				if (flag) {
+					if (bean.getField() != null && bean.getMethod() != null
+							&& bean.getObjectId() != null) {
+						listener.refreshDate(bean);
 					} else {
-						if (tvPrice == null) {
-							ToastUtil.show(context, "价格不能为空！");
+						bean.setMethod(commMethod.get(0));
+						bean.setObjectId(commObjectId.get(0));
+						bean.setField(commField.get(0));
+						listener.refreshDate(bean);
+					}
+				} else {
+					if (startStr != null && endStr != null) {
+						if (startStr.equals(endStr)) {
+							ToastUtil.show(context, "起始时间相同!");
 							return;
 						} else {
-							if (StringUtils.isNum(tvPrice)) {
-								bean.setPrice(tvPrice + result);
-								if (end != null && start != null) {
-									String date = end + "--" + start;
-									bean.setDate(date==null?"0":date);
-								}else{
-									if(flag){
-										bean.setDate("0");
-									}else{
-										ToastUtil.show(context, "未设置起始出租时间!");
-										return;
-									}
-								}
+							if (bean.getField() != null
+									&& bean.getMethod() != null
+									&& bean.getObjectId() != null
+									&& bean.getDate() != null) {
+								listener.refreshDate(bean);
 							} else {
-								ToastUtil.show(context, "无效的价格数据！");
-								return;
+								bean.setDate(startStr+":"+endStr);
+								bean.setMethod(curbMethod.get(0));
+								bean.setObjectId(curbObjectId.get(0));
+								bean.setField(curbField.get(0));
+								listener.refreshDate(bean);
 							}
 						}
+					} else {
+						ToastUtil.show(context, "请填写时间信息!");
+						return;
 					}
 				}
+			} else {
+				ToastUtil.show(context, "请填写价格信息!");
+				return;
 			}
-			if(bean.getDate()==null){
-				bean.setDate("0");
-			}
-			items.add(bean);
-			listener.refreshUI(items);
 			dismiss();
 			break;
 		case R.id.type_et_start:
 			StartOrEnd = true;
 			timePicker();
-
 			break;
 		case R.id.type_et_end:
 			StartOrEnd = false;
@@ -203,6 +155,8 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		}
 	}
 
+	private String startStr = null, endStr = null;
+
 	private void timePicker() {
 		TimePickerDialog time = new TimePickerDialog(context, R.style.MyDialog,
 				new OnTimeSetListener() {
@@ -211,16 +165,17 @@ public class TypeDialog extends Dialog implements TextWatcher,
 							int minute) {
 						// TODO Auto-generated method stub
 						if (StartOrEnd) {
-							start = hourOfDay + ":" + minute;
-							mStart.setText(start);
+							mStart.setText(hourOfDay + ":" + minute);
+							startStr = mStart.getText().toString();
 						} else {
-							end = hourOfDay + ":" + minute;
-							mEnd.setText(end);
+							mEnd.setText(hourOfDay + ":" + minute);
+							endStr = mEnd.getText().toString();
 						}
 					}
-				}, 12, 30, true);
+				}, 12, 00, true);
 		time.show();
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -250,7 +205,7 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		mTime.setOnClickListener(this);
 		spinner.setOnItemSelectedListener(this);
 		price.addTextChangedListener(this);
-		
+
 		Community community = (Community) Data.getData("community");
 		if (community != null) {
 			List<String> method = community.getMethod();
@@ -270,7 +225,6 @@ public class TypeDialog extends Dialog implements TextWatcher,
 		}
 		adapterData(commMethod, spinner);
 		mPicker = findViewById(R.id.ll);
-	//	mPicker.setVisibility(View.GONE);
 		mPicker.setVisibility(View.INVISIBLE);
 	}
 
@@ -290,16 +244,18 @@ public class TypeDialog extends Dialog implements TextWatcher,
 	private String object;
 	private List data;
 	private String result = null;
+
+	private TypeBean bean;
 	private String tvPrice = null;
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		bean = new TypeBean();
 		if (flag) {
 			result = commMethod.get(position).substring(
 					commMethod.get(position).length() - 1);
-
 			bean.setMethod(commMethod.get(position));
 			bean.setObjectId(commObjectId.get(position));
 			bean.setField(commField.get(position));
@@ -307,7 +263,6 @@ public class TypeDialog extends Dialog implements TextWatcher,
 			bean.setMethod(curbMethod.get(position));
 			result = curbMethod.get(position).substring(
 					curbMethod.get(position).length() - 1);
-
 			bean.setMethod(curbMethod.get(position));
 			bean.setObjectId(curbObjectId.get(position));
 			bean.setField(curbField.get(position));

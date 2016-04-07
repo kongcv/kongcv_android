@@ -50,7 +50,6 @@ public class GetImage {
 		Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
 				height, matrix, true);
 		return new BitmapDrawable(resizedBitmap);
-
 	}
 	/**
      * 根据URL获取Bitmap

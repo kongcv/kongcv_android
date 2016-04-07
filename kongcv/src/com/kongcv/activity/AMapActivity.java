@@ -103,7 +103,7 @@ public class AMapActivity extends FragmentActivity implements
 	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
 
-	private LinearLayout layout;
+//	private LinearLayout layout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,7 +112,7 @@ public class AMapActivity extends FragmentActivity implements
 		getInfo();
 		initHigh();// 获取屏幕宽高
 		mapView = (MapView) findViewById(R.id.map);
-		layout = (LinearLayout) findViewById(R.id.ll_mapview);
+//		layout = (LinearLayout) findViewById(R.id.ll_mapview);
 		mapView.onCreate(savedInstanceState);// 此方法必须重写
 		loading();
 		init();
@@ -140,7 +140,7 @@ public class AMapActivity extends FragmentActivity implements
 			doSearch(json);
 		}
 	}
-	class ReadInfo extends PreReadTask<String, Void, Void> {
+	/*class ReadInfo extends PreReadTask<String, Void, Void> {
 		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -148,9 +148,8 @@ public class AMapActivity extends FragmentActivity implements
 			return null;
 		}
 	}
-
+*/
 	private boolean loadOrNo = true;
-
 	private void doSearch(String objFrom) {
 		// TODO Auto-generated method stub
 		okhttp3.Request request = new okhttp3.Request.Builder()
@@ -159,7 +158,6 @@ public class AMapActivity extends FragmentActivity implements
 				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
 						objFrom)).build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response)
 					throws IOException {
@@ -171,7 +169,6 @@ public class AMapActivity extends FragmentActivity implements
 					mHandler.sendMessage(msg);
 				}
 			}
-
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
@@ -324,7 +321,6 @@ public class AMapActivity extends FragmentActivity implements
 		mypDialog.setCancelable(true);
 		mypDialog.show();
 	}
-
 	private void initView() {
 		// TODO Auto-generated method stub
 		/** 下拉刷新，上拉加载 */
@@ -347,50 +343,43 @@ public class AMapActivity extends FragmentActivity implements
 		rangePrice = (TextView) findViewById(R.id.tv_rangeandprice);
 		rangePrice.setOnClickListener(this);
 	}
-
+	
+	private int displayHeight;// 屏幕高度
+	private int displayWidth;// 屏幕宽度
 	private void initHigh() {
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		displayWidth = displayMetrics.widthPixels;
 		displayHeight = displayMetrics.heightPixels;
 	}
-
-	/**
-	 * 设置地图占三分之二
-	 */
-	private int displayHeight;// 屏幕高度
-	private int displayWidth;// 屏幕宽度
+	
 	private ImageView setAItemNum;
-
 	private void initMapHeight() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.5f + 0.5f));
 		mapView.setLayoutParams(params);
 	}
-
 	private void setMapHeight() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.8f + 0.5f));
 		mapView.setLayoutParams(params);
 	}
-
 	private void setItemShow() {// 初始化地图宽高
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.5f + 0.5f));
+				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.2f + 0.5f));
 		mListView.setLayoutParams(params);
 	}
-
+	
 	/**
 	 * 获取经纬度
-	 */
+	 *//*
 	private LatLonPoint getLatLonPoint() {
 		Bundle bundle = getIntent().getExtras();
 		double latitude = bundle.getDouble("latitude");
 		double longitude = bundle.getDouble("longitude");
 		LatLonPoint point = new LatLonPoint(latitude, longitude);
 		return point;
-	}
-
+	}*/
 	/**
 	 * 初始化AMap对象
 	 */
@@ -444,7 +433,6 @@ public class AMapActivity extends FragmentActivity implements
 	}
 
 	private void initMarkers() {
-		// beanList = (Bean) Data.getData("LIST");
 		beanList = bean;
 		if (beanList != null) {
 			addresslist = (ArrayList) beanList.getAddressList();
@@ -628,8 +616,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(1, 1000);
 				}
 			}
@@ -657,8 +646,10 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(i);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(2, 1000);
 				}
 			}
@@ -670,6 +661,7 @@ public class AMapActivity extends FragmentActivity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		//	searchBean = (SearchBean) getIntent().getSerializableExtra("bean");
 		if (position != 0) {
 			if (SearchActivity.latLng == null) {
 				ArrayList data = (ArrayList) beanList.getObjList();
@@ -684,15 +676,13 @@ public class AMapActivity extends FragmentActivity implements
 						Intent intent = new Intent(AMapActivity.this,
 								DetailsActivity.class);
 						Bundle bundle = new Bundle();
+						bundle.putSerializable("bean", searchBean);
+						bundle.putString("objectId", getCarObjectId());// 车位id
 						bundle.putString("mode", getMode());
-						bundle.putString("park_id", object);
-						/*
-						 * if(price!=0){ bundle.putInt("price", price);
-						 * bundle.putString("getField", getField()); }
-						 */
-						bundle.putDouble("price", price);
 						bundle.putString("getField", getField());
-
+						
+						bundle.putString("park_id", object);
+						bundle.putDouble("price", price);
 						intent.putExtras(bundle);
 						CurbAndObjectId bean = new CurbAndObjectId();
 						bean.setMode(getMode());
@@ -700,7 +690,7 @@ public class AMapActivity extends FragmentActivity implements
 						bean.setField(getField());
 						Data.putData("CurbAndObjectId", bean);// 车位类型id
 						startActivity(intent);
-						finish();
+				//		finish();
 					}
 				}, 1000);
 			}
@@ -784,8 +774,9 @@ public class AMapActivity extends FragmentActivity implements
 		case R.id.iv_map_flexible:
 			if (flag) {
 				setAItemNum.setImageResource(R.drawable.item_show);
-				ToastUtil.fixListViewHeight(mListView, 2);
 				setMapHeight();
+				setItemShow();
+				ToastUtil.fixListViewHeight(mListView, 2);
 				flag = !flag;
 			} else {
 				setAItemNum.setImageResource(R.drawable.item_show_sh);
@@ -811,8 +802,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按价格排序的请求json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");
@@ -834,8 +826,9 @@ public class AMapActivity extends FragmentActivity implements
 					searchBean.setSkip(0);
 					String json = gson.toJson(searchBean);
 					Log.v("按距离排序的请求json", json);
-					ReadInfo info = new ReadInfo();
-					info.execute(json);
+					/*ReadInfo info = new ReadInfo();
+					info.execute(json);*/
+					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
 				} else {
 					ToastUtil.show(getApplicationContext(), "没有数据啦~~");

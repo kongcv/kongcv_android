@@ -5,6 +5,9 @@ import java.util.List;
 import android.R.dimen;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
 import com.kongcv.activity.HomeActivity;
 import com.kongcv.global.ZyCommityAdapterBean;
+import com.kongcv.utils.AndroidUtil;
 import com.kongcv.utils.BaseViewHolder;
 import com.kongcv.utils.Data;
 
@@ -52,11 +56,11 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	public long getItemId(int position) {
 		return position;
 	}
-
+	private Drawable d;
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = View.inflate(mContext, R.layout.order_item, null);
+			convertView = View.inflate(mContext, R.layout.comm_order_item, null);
 		}
 		tv_username = BaseViewHolder.get(convertView, R.id.tv_username);
 		tv_start = BaseViewHolder.get(convertView, R.id.tv_start);
@@ -67,7 +71,7 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
 		iv_bohao = BaseViewHolder.get(convertView, R.id.iv_bohao);
 		iv_dingwei = BaseViewHolder.get(convertView, R.id.iv_dingwei);
-		iv_bohao.setVisibility(View.VISIBLE);
+	//	iv_bohao.setVisibility(View.VISIBLE);
 		iv_bohao.setOnClickListener(this);
 		iv_bohao.setTag(position);
 
@@ -92,26 +96,33 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		phoneNumber = mList.get(position).getMobilePhoneNumber();
 		tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
 				.get(position).getMethod());
-		Log.e("widsssssss",  Data.getData("screenWidth")+"");
-		Log.e("hesssssss",  Data.getData("screenHeight")+"");
-		int screenWidth= (int) Data.getData("screenWidth");
-		int screenHeight=(int) Data.getData("screenHeight");
+		
 		if (mList.get(position).getBitmap() != null) {
-			if (screenWidth==1080&&screenHeight==1920) {
-				Drawable d = GetImage.resizeImage(mList.get(position)
-						.getBitmap(), 160, 160);
-				iv_dingwei.setImageDrawable(d);
+			if(AndroidUtil.pictureOrT(mContext)){
+				d = GetImage.resizeImage(mList.get(position).getBitmap(),
+						160, 160);
 			}else{
-				Log.e("ssss"," ss");
-				Drawable d = GetImage.resizeImage(mList.get(position)
-						.getBitmap(), 80, 80);
+				d = GetImage.resizeImage(mList.get(position).getBitmap(),
+						80, 80);
+			}
+			iv_dingwei.setTag(d);
+			if (iv_dingwei.getTag() != null && iv_dingwei.getTag().equals(d)) {
 				iv_dingwei.setImageDrawable(d);
 			}
+		}else{
+			Resources res=mContext.getResources();
+			Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.logo);
+			if(AndroidUtil.pictureOrT(mContext)){
+				d = GetImage.resizeImage(bmp,
+						160, 160);
+			}else{
+				d = GetImage.resizeImage(bmp,
+						80, 80);
+			}
+			iv_dingwei.setImageDrawable(d);
 		}
 		return convertView;
-		
 	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {

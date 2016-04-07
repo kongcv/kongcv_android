@@ -123,7 +123,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			Community community;
-			List<String> objectIdList,hire_fieldList,methodList,urlList;// objectId
+			List<String> objectIdList,hire_fieldList,methodList,urlList;
 			switch (msg.what) {
 			case 0:
 				community = (Community) msg.obj;
@@ -447,7 +447,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	/**
 	 * 类型图片点击实现跳转到搜索页
 	 */
-	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view,
 			final int position, long id) {

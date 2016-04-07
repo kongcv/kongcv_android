@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -37,6 +38,7 @@ import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
+import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -59,11 +61,10 @@ public class MineReceiveFragment extends Fragment implements
 			lv.setAdapter(infoAdapter);
 			final Gson gson = new Gson();
 			lv.setOnItemClickListener(new OnItemClickListener() {
-
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-
+					// TODO Auto-generated method stub
 					if (position != 0) {
 						String s = mLists.get(position - 1).getState();
 						String m = mLists.get(position - 1).getMode();
@@ -81,7 +82,6 @@ public class MineReceiveFragment extends Fragment implements
 							i.putExtra("CurbMineReceiver", json);
 							startActivity(i);
 						}
-
 					}
 				}
 			});
@@ -239,14 +239,6 @@ public class MineReceiveFragment extends Fragment implements
 
 	private void refresh() {
 		mRun(0, 10);
-	}
-
-	class ReadType extends PreReadTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... params) {
-			refresh();
-			return null;
-		}
 	}
 
 	@Override
