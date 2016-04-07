@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="北京市聚龙花园"
                 android:textColor="@color/txt_detail"
                 android:textSize="@dimen/publish_txtSize" />
         </LinearLayout>
@@ -143,7 +142,8 @@
                 android:paddingLeft="15dp"
                 android:text="@string/tv_car_type"
                 android:textColor="@color/txt_detail"
-                android:textSize="@dimen/publish_txtSize" />
+                android:textSize="@dimen/publish_txtSize" 
+                />
 
             <TextView
                 android:id="@+id/txt_date"
@@ -208,7 +208,6 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="200dp" >
-
             <Button
                 android:id="@+id/curb_inform"
                 android:layout_width="wrap_content"
@@ -218,7 +217,6 @@
                 android:text="订单确认"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/publish_txtSize" />
-
             <Button
                 android:id="@+id/curb_pay"
                 android:layout_width="wrap_content"

@@ -137,26 +137,12 @@ public class CommunityDetailFragment extends Fragment implements
 		mCommBean = (ZyCommityAdapterBean) arguments
 				.getSerializable("mCommBean");// 订单管理 跳撞过来的
 		if (mCommBean != null) {
-			Log.d("mCommBean getModeAndParkId", mCommBean.toString() + "<>");
 			if (mCommBean.getTrade_state() == 1) {
 				mInform.setVisibility(View.GONE);
 				mPay.setVisibility(View.GONE);
 				visiblePhone2(mCommBean);
 				tv_reserveOrpay.setText("交易完成");
 			} else {
-				/*
-				 * if(mCommBean.getHandsel_state()==0){
-				 * LastTradeId=mCommBean.getObjectId();
-				 * mInform.setVisibility(View.GONE);
-				 * mPay.setVisibility(View.VISIBLE);
-				 * mPay.setOnClickListener(this); tv_reserveOrpay.setText("定金");
-				 * }else if(mCommBean.getHandsel_state()==1){
-				 * LastTradeId=mCommBean.getObjectId();
-				 * mInform.setVisibility(View.GONE);
-				 * mPay.setVisibility(View.VISIBLE);
-				 * mPay.setOnClickListener(this); tv_reserveOrpay.setText("差额");
-				 * }
-				 */
 				LastTradeId = mCommBean.getObjectId();
 				mInform.setVisibility(View.GONE);
 				mPay.setVisibility(View.VISIBLE);
@@ -171,8 +157,6 @@ public class CommunityDetailFragment extends Fragment implements
 		
 		 ReadInfo task = new ReadInfo(); 
 		 task.execute();
-		 
-	//	Details();
 	}
 
 	private void visiblePhone2(ZyCommityAdapterBean mCommBean2) {
@@ -330,8 +314,11 @@ public class CommunityDetailFragment extends Fragment implements
 				// 不可出租日
 				List<String> no_hire = result.getNo_hire();
 				tv_not_rent.setText(StringUtils.listToString(no_hire));
-				if(result.getPark_description()!=null || !result.getPark_description().equals(""))
-				txt_CarDescribe.setText(result.getPark_description());
+				
+				if(!result.getPark_description().equals("")){
+					Log.d("大红门锦元>>>111", result.getPark_description()+"<><>");
+					txt_CarDescribe.setText(result.getPark_description());
+				}
 				txt_CarArea.setText(result.getPark_area() + "㎡");// 车位面积
 				txt_CarHigh.setText(result.getPark_height() + "m");
 				txt_CarNum.setText(result.getTail_num());
@@ -340,8 +327,10 @@ public class CommunityDetailFragment extends Fragment implements
 				} else {
 					txt_CarAddress.setText("地下");
 				}
-				if(result.getGate_card()!=null || !result.getGate_card().equals(""))
-				txt_CarCard.setText(result.getGate_card());
+				if(!result.getGate_card().equals("")){
+					Log.d("大红门锦元>>>222", result.getGate_card()+"<><>");
+					txt_CarCard.setText(result.getGate_card());
+				}
 				if (result.isNormal() == true) {
 					txt_CarRight.setText("是");
 				} else {

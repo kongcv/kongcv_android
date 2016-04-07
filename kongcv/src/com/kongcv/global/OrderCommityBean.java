@@ -5,54 +5,6 @@ import java.util.List;
 import android.graphics.Bitmap;
 
 public class OrderCommityBean {
-	/**
-	 * money : 100 coupon : 0 hire_end :
-	 * {"__type":"Date","iso":"2015-09-30T15:00:00.000Z"} handsel_state : 0
-	 * trade_state : 1 balance : 0 handsel : 0 pay_tool : alipy action : 0
-	 * hire_start : {"__type":"Date","iso":"2015-09-30T15:00:00.000Z"}
-	 * extra_flag : 1 price : 10 user :
-	 * {"__type":"Pointer","className":"_User","objectId"
-	 * :"5629973860b28da5c9b6ca16"} pay_state : 2 hire_method :
-	 * {"picture":{"__type":"File","id":"564db1a100b0ee7f59dcc12d","name":
-	 * "Rectangle 214 Copy 5.png"
-	 * ,"url":"http://ac-ATcs8k4n.clouddn.com/58711ad1c423e06a.png"
-	 * },"park_type":
-	 * ["5620a6dc60b27457e84bb21d","5620a6d060b27457e84bb0fe"],"method"
-	 * :"全时/天","hire_type":0,"objectId":"561f4cb460b22ed7ca73ab6c","createdAt":
-	 * "2015-10-15T06:50:28.044Z","updatedAt":"2015-11-19T11:25:21.753Z"}
-	 * park_community :
-	 * {"address":"聚龙花园8a&88888","hire_end":{"__type":"Date","iso"
-	 * :"2015-10-17T10:00:00.000Z"
-	 * },"long_time":false,"park_height":0,"park_hide"
-	 * :0,"city":"beijing","normal"
-	 * :true,"hire_price":["10","10","10","10","10","10"
-	 * ],"gate_card":"xxxxx","hire_start"
-	 * :{"__type":"Date","iso":"2015-10-17T00:00:00.000Z"
-	 * },"hire_method":[{"__type"
-	 * :"Pointer","className":"kongcv_hire_method","objectId"
-	 * :"561f4cb460b22ed7ca73ab6c"
-	 * },{"__type":"Pointer","className":"kongcv_hire_method"
-	 * ,"objectId":"56373dd160b294bc66269806"
-	 * },{"__type":"Pointer","className":"kongcv_hire_method"
-	 * ,"objectId":"56346a4f60b2260e5d7c7800"
-	 * },{"__type":"Pointer","className":"kongcv_hire_method"
-	 * ,"objectId":"561f4ca660b2ce30d1f3b6e2"
-	 * },{"__type":"Pointer","className":"kongcv_hire_method"
-	 * ,"objectId":"561f4cde60b27457e8330b57"
-	 * },{"__type":"Pointer","className":"kongcv_hire_method"
-	 * ,"objectId":"561f4cd400b08664c528889f"
-	 * }],"park_space":1,"hire_time":["0","0"
-	 * ,"9:00 - 20:00","1:00 - 8:00","9:00 - 20:00"
-	 * ,"22:00 - 8:00"],"location":{"__type"
-	 * :"GeoPoint","latitude":39.930686,"longitude"
-	 * :116.440887},"struct":0,"user"
-	 * :{"__type":"Pointer","className":"_User","objectId"
-	 * :"5621f512ddb2dd000ac16189"
-	 * },"objectId":"5624964860b27db44f08fd83","createdAt"
-	 * :"2015-10-19T07:05:44.748Z","updatedAt":"2015-12-31T03:44:58.593Z"}
-	 * objectId : 56723baaddb2084a55637cc5 createdAt : 2015-12-17T04:35:54.409Z
-	 * updatedAt : 2015-12-29T09:17:17.696Z
-	 */
 
 	private List<ResultEntity> result;
 
@@ -82,7 +34,6 @@ public class OrderCommityBean {
 		 */
 		private HireStartEntity hire_start;
 		private String extra_flag;
-	//	private int price;
 		private double price;
 		/**
 		 * __type : Pointer className : _User objectId :

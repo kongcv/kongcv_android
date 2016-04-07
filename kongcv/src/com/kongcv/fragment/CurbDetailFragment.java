@@ -240,7 +240,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						btnInform.setOnClickListener(null);
 					}
 					location = result.getLocation();
-					if(result.getPark_description()!=null || !result.getPark_description().equals(""))
+					if(result.getPark_description()!=null)
 					curbDescribe.setText(result.getPark_description());
 					
 					payBean = new PayOneBean();
