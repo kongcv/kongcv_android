@@ -161,16 +161,13 @@ public class MineFragment extends Fragment implements OnClickListener {
 					JsonStrUtils.JsonStr(object),
 					mCache.getAsString("sessionToken"));
 			JSONObject obj = new JSONObject(jsoStr);
-			Log.e("hahawwww", "haha");
 			if (obj.has("result")) {
-				Log.e("haha", "haha");
 				JSONObject result = obj.getJSONObject("result");
 				if (result != null) {
 					user_name = obj.getJSONObject("result").getString(
 							"username");
 					Log.e("hahassseee", "haha");
 					if (obj.getJSONObject("result").has("image")) {
-						Log.e("hahasswww", "haha");
 						url = obj.getJSONObject("result")
 								.getJSONObject("image").getString("url");
 						bit = GetImage.getHttpBitmap(url);
@@ -218,7 +215,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 				user_name = data.getStringExtra("nick");
 				Bitmap bit = data.getParcelableExtra("bit");
 				String url = data.getStringExtra("urlsssss");
-				Log.e("urlsswwww", url);
 				if (user_name != null) {
 					Log.e("user_nameuser_name", user_name);
 					uName.setText(user_name);

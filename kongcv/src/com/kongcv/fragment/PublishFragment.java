@@ -205,29 +205,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				mListView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				ToastUtil.fixListViewHeight(mListView, -1);
-				
-				/*typeBeansList = new ArrayList<TypeBean>();
-				for (int i = 0; i < hireMethodList.size(); i++) {
-					TypeBean typeBean = new TypeBean();
-					for (int ii = 0; ii < objectId.size(); ii++) {
-						if (objectId.get(ii).equals(hireMethodList.get(i))) {
-							typeBean.setDate(hireTimeList.get(i).toString() == null ? "0"
-									: hireTimeList.get(i).toString());
-							typeBean.setPrice(hirePriceList.get(i).toString());
-							typeBean.setMethod(method.get(ii).toString());
-
-							hire_time
-									.add(hireTimeList.get(i).toString() == null ? "0"
-											: hireTimeList.get(i).toString());
-							hire_field.add(hireField.get(ii).toString());
-							hire_method_id
-									.add(hireMethodList.get(i).toString());
-							hire_price.add(hirePriceList.get(i).toString());
-						}
-					}
-					mydialog.add(typeBean);
-				}
-				typeBeansList = mydialog;*/
 				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -493,8 +470,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", json);
-			/*MyThread thread = new MyThread(json);
-			thread.start();*/
+			MyThread thread = new MyThread(json);
+			thread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

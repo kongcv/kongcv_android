@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -165,10 +166,34 @@ public class TypeDialog extends Dialog implements TextWatcher,
 							int minute) {
 						// TODO Auto-generated method stub
 						if (StartOrEnd) {
-							mStart.setText(hourOfDay + ":" + minute);
+							if(hourOfDay<10){
+								if(minute<10){
+									mStart.setText("0"+hourOfDay + ":0" + minute);
+								}else{
+									mStart.setText("0"+hourOfDay + ":" + minute);
+								}
+							}else{
+								if(minute<10){
+									mStart.setText(hourOfDay + ":0" + minute);
+								}else{
+									mStart.setText(hourOfDay + ":" + minute);
+								}
+							}
 							startStr = mStart.getText().toString();
 						} else {
-							mEnd.setText(hourOfDay + ":" + minute);
+							if(hourOfDay<10){
+								if(minute<10){
+									mEnd.setText("0"+hourOfDay + ":0" + minute);
+								}else{
+									mEnd.setText("0"+hourOfDay + ":" + minute);
+								}
+							}else{
+								if(minute<10){
+									mEnd.setText(hourOfDay + ":0" + minute);
+								}else{
+									mEnd.setText(hourOfDay + ":" + minute);
+								}
+							}
 							endStr = mEnd.getText().toString();
 						}
 					}
@@ -293,6 +318,7 @@ public class TypeDialog extends Dialog implements TextWatcher,
 	@Override
 	public void afterTextChanged(Editable s) {
 		tvPrice = s.toString();
+		tvPrice=tvPrice+result;
 	}
 
 }
