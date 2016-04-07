@@ -32,6 +32,7 @@ import cn.jpush.android.api.JPushInterface;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
@@ -80,7 +81,9 @@ public class MineCreditType extends Activity {
 		setContentView(R.layout.mine_credit_type_list);
 		mQueue = Volley.newRequestQueue(this);
 		imageLoader = new ImageLoader(mQueue, new BitmapCache());
+		
 		initView();
+		MyApplication.getInstance().addActivity(this);
 		init();
 	}
 	private void init() {

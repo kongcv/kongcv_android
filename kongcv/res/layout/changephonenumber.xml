@@ -158,6 +158,8 @@
             android:layout_marginLeft="22dp"
             android:background="@android:color/transparent"
             android:maxLines="1"
+            android:inputType="phone"
+            android:maxLength="11"
             android:singleLine="true"
             android:textColorHint="#D8D8D8"
             android:textSize="12sp" />

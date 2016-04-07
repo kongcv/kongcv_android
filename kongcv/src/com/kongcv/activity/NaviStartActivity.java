@@ -34,6 +34,7 @@ import com.amap.api.navi.model.AMapNaviPath;
 import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.navi.view.RouteOverLay;
+import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.TTSController;
 import com.kongcv.utils.ToastUtil;
@@ -85,6 +86,7 @@ public class NaviStartActivity extends Activity implements
 		setContentView(R.layout.startnavis_activity);
 		
 		initView(savedInstanceState);
+		MyApplication.getInstance().addActivity(this);
 		initLocation();
 		initMapAndNavi();
 	}

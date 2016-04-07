@@ -122,8 +122,6 @@ public class HomeActivity extends FragmentActivity implements
 		System.out
 				.println(("First method:" + dm.toString() + "\n"
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
-		Data.putData("screenWidth", screenWidth);
-		Data.putData("screenHeight", screenHeight);
 	}
 	private MineCarmanagerBean bean;
 	private void init() {
@@ -212,7 +210,6 @@ public class HomeActivity extends FragmentActivity implements
 		super.onDestroy();
 	}
 
-	// for receive customer msg from jpush server
 	private MessageReceiver mMessageReceiver;
 	public static final String MESSAGE_RECEIVED_ACTION = "com.kongcv.MESSAGE_RECEIVED_ACTION";
 	public static final String KEY_TITLE = "title";
@@ -281,11 +278,6 @@ public class HomeActivity extends FragmentActivity implements
 									MyApplication.getInstance().exit();
 								}
 							}).show();
-		/*} else {
-			Intent i = new Intent(this, MineCarmanagerActivity.class);
-			startActivity(i);
-			finish();
-		}*/
 	}
 
 	/**

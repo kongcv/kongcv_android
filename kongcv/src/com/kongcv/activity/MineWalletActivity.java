@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import cn.jpush.android.api.JPushInterface;
 
+import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.global.CardTypeBean;
 import com.kongcv.global.Information;
@@ -21,7 +20,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -75,6 +73,7 @@ public class MineWalletActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mine_wallet);
 		mCache = ACacheUtils.get(this);
+		MyApplication.getInstance().addActivity(this);
 		initView();
 		initData();
 	}
@@ -147,10 +146,8 @@ public class MineWalletActivity extends Activity implements OnClickListener {
 					String doHttpsPost = PostCLientUtils.doHttpsPost(
 							Information.KONGCV_GET_PURSE,
 							JsonStrUtils.JsonStr(obj));
-					Log.i("doHttpsPost结果是", doHttpsPost);
 					JSONObject Resultobj = new JSONObject(doHttpsPost);
 					String result = Resultobj.getString("result");
-					Log.i("result结果是", result);
 					Message msg=handler.obtainMessage();
 					if(!result.equals("[]")) {
 						JSONArray arry = new JSONArray(result);
@@ -192,6 +189,7 @@ public class MineWalletActivity extends Activity implements OnClickListener {
 		JPushInterface.onResume(this);
 		MobclickAgent.onResume(this);
 	}
+
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);

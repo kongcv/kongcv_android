@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
 
+import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.global.Information;
 import com.kongcv.utils.ACacheUtils;
@@ -115,6 +116,7 @@ public class MineCreditModifyActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mine_modifycredit);
 		mCache = ACacheUtils.get(this);
+		MyApplication.getInstance().addActivity(this);
 		initView();
 	}
 

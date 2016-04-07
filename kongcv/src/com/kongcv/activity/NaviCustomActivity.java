@@ -17,6 +17,7 @@ import com.amap.api.navi.AMapNaviViewOptions;
 import com.amap.api.navi.model.AMapNaviInfo;
 import com.amap.api.navi.model.AMapNaviLocation;
 import com.amap.api.navi.model.NaviInfo;
+import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.TTSController;
 import com.kongcv.utils.Utils;
@@ -50,6 +51,7 @@ public class NaviCustomActivity extends Activity implements
 		// 实时导航方式进行导航
 		AMapNavi.getInstance(this).startNavi(AMapNavi.GPSNaviMode);
 		initView(savedInstanceState);
+		MyApplication.getInstance().addActivity(this);
 	}
 
 	private void initView(Bundle savedInstanceState) {
