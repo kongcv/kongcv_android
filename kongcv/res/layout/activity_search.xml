@@ -27,7 +27,6 @@
             android:layout_marginLeft="35dp"
             android:layout_toLeftOf="@+id/iv_search"
             android:background="@drawable/search_bk"
-            android:hint="不输入即搜索周边车位"
             android:gravity="center_vertical"
             android:paddingLeft="43dp"
             android:singleLine="true"

@@ -127,16 +127,14 @@ public class SearchActivity extends FragmentActivity implements
 		lv.setPullLoadEnable(true);
 		lv.setPullRefreshEnable(false);
 		txtFind = (EditText) findViewById(R.id.txtfind);
-
+		txtFind.setHint("不输入即搜索周边车位");
 		ivDelete = (ImageView) findViewById(R.id.iv_delete);
 		ivSearch = (TextView) findViewById(R.id.iv_search);
 		ivBack = (ImageView) findViewById(R.id.iv_back);
-
 		txtFind.addTextChangedListener(this);
 		ivDelete.setOnClickListener(this);
 		ivSearch.setOnClickListener(this);
 		ivBack.setOnClickListener(this);
-
 		txtFind.setOnKeyListener(this);
 		txtFind.setOnEditorActionListener(this);
 		mList = new ArrayList<Map<String, Object>>();
