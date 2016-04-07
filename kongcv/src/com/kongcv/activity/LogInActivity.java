@@ -298,7 +298,6 @@ public class LogInActivity extends Activity implements OnClickListener {
 						Intent i = new Intent();
 						i.putExtra("nick", mCache.getAsString("USERNAME"));
 						i.putExtra("bit", bit);
-						i.putExtra("urlsssss", url);
 						setResult(6, i);
 						finish();
 					} else {
