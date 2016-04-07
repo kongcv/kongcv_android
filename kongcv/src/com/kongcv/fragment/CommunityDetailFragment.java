@@ -315,8 +315,8 @@ public class CommunityDetailFragment extends Fragment implements
 				List<String> no_hire = result.getNo_hire();
 				tv_not_rent.setText(StringUtils.listToString(no_hire));
 				
+				
 				if(!result.getPark_description().equals("")){
-					Log.d("大红门锦元>>>111", result.getPark_description()+"<><>");
 					txt_CarDescribe.setText(result.getPark_description());
 				}
 				txt_CarArea.setText(result.getPark_area() + "㎡");// 车位面积
@@ -328,7 +328,6 @@ public class CommunityDetailFragment extends Fragment implements
 					txt_CarAddress.setText("地下");
 				}
 				if(!result.getGate_card().equals("")){
-					Log.d("大红门锦元>>>222", result.getGate_card()+"<><>");
 					txt_CarCard.setText(result.getGate_card());
 				}
 				if (result.isNormal() == true) {
