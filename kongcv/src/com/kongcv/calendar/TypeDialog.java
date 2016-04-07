@@ -42,11 +42,7 @@ public class TypeDialog extends Dialog implements TextWatcher,
 	private LeaveMyDialogListener listener;
 
 	TimeBean timer = new TimeBean();
-	//ArrayList<TypeBean> items = new ArrayList<TypeBean>();
-	//TypeBean items;
-	// ArrayList<TypeBean> typeBeans;
 	ArrayList<String> onItemSelectedId = new ArrayList<String>();
-	private List<String> list = new ArrayList<String>();
 	private ImageView mSubmit;
 	private View mTxt1, mTxt2, mPicker;
 	private ACacheUtils mCache;
@@ -62,7 +58,6 @@ public class TypeDialog extends Dialog implements TextWatcher,
 
 	
 	public interface LeaveMyDialogListener {
-	//	public void refreshUI(ArrayList<TypeBean> item);
 		public void refreshDate(TypeBean item);
 	}
 	public TypeDialog(Context context) {
@@ -110,12 +105,12 @@ public class TypeDialog extends Dialog implements TextWatcher,
 				if (flag) {
 					if (bean.getField() != null && bean.getMethod() != null
 							&& bean.getObjectId() != null) {
-					//	items.add(bean);
 						listener.refreshDate(bean);
 					} else {
 						bean.setMethod(commMethod.get(0));
 						bean.setObjectId(commObjectId.get(0));
 						bean.setField(commField.get(0));
+						listener.refreshDate(bean);
 					}
 				} else {
 					if (startStr != null && endStr != null) {
@@ -127,12 +122,13 @@ public class TypeDialog extends Dialog implements TextWatcher,
 									&& bean.getMethod() != null
 									&& bean.getObjectId() != null
 									&& bean.getDate() != null) {
-							//	items.add(bean);
 								listener.refreshDate(bean);
 							} else {
+								bean.setDate(startStr+":"+endStr);
 								bean.setMethod(curbMethod.get(0));
 								bean.setObjectId(curbObjectId.get(0));
 								bean.setField(curbField.get(0));
+								listener.refreshDate(bean);
 							}
 						}
 					} else {
