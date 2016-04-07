@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -249,12 +251,14 @@ public class SearchPublishActivity extends Activity implements
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
+					
 					Intent intent = new Intent(SearchPublishActivity.this,
 							PublishFragment.class);
 					intent.putExtra("addressName", str);
 					intent.putExtra("tv_City", strCity);
 					intent.putExtra("info", info);
 					setResult(RESULT_OK, intent);
+					hintKbTwo();
 					finish();
 				}
 
@@ -291,13 +295,25 @@ public class SearchPublishActivity extends Activity implements
 			adapter.notifyDataSetChanged();
 			break;
 		case R.id.iv_back:// 点击回退到 fragment
+			hintKbTwo();
 			this.finish();
 			break;
 		default:
 			break;
 		}
 	}
-
+	/**
+	 * 关闭软键盘
+	 */
+	private void hintKbTwo() {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm.isActive() && getCurrentFocus() != null) {
+			if (getCurrentFocus().getWindowToken() != null) {
+				imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+						InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+		}
+	}
 	/**
 	 * 点击搜索按钮
 	 */

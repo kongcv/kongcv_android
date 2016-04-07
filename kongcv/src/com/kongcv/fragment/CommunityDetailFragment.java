@@ -118,12 +118,10 @@ public class CommunityDetailFragment extends Fragment implements
 		getDeviceToken();
 		return view;
 	}
-
 	/**
 	 * 一开始获取到mode和park_id
 	 */
 	private ZyCommityAdapterBean mCommBean = null;
-
 	private void getModeAndParkId() {
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
@@ -410,7 +408,6 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
-					Log.v("CurbMineReceiver", "!!!" + CurbMineReceiver);
 				}
 				break;
 			case 1:

@@ -50,7 +50,6 @@ public class MineSheZhiActivity extends Activity implements OnClickListener {
 		mCache.remove("user_id");
 		mCache.remove("sessionToken");
 		mCache.remove("registrationID");
-		
 	}
 	private void initView() {
 		rl_addnumber = (RelativeLayout) findViewById(R.id.rl_addnumber);

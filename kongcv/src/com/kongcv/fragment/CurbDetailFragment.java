@@ -355,7 +355,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					if(mCommBean!=null){
 						if(mCommBean.getTrade_state()==0){
 							if(mCommBean.getHandsel_state()==0){
-						//		tvCurbMoney.setText(mCommBean.getPrice()+"");
 								if (method.equals("计时/小时")) {
 									if (hire_price.get(i).indexOf("/") != -1) {
 										String[] split = hire_price.get(i).split("/");

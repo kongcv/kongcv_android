@@ -57,7 +57,6 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.google.gson.Gson;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
-import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.global.Bean;
 import com.kongcv.global.CurbAndObjectId;
 import com.kongcv.global.Information;
@@ -99,7 +98,7 @@ public class AMapActivity extends FragmentActivity implements
 	private ArrayList addresslist, latLngList, restList, priceList;
 	private String temp;
 	private Bean beanList;
-	private int i = 0;
+	private int skip = 0;
 	private int numCheck = -1;
 	private final OkHttpClient client = new OkHttpClient();
 	@Override
@@ -131,6 +130,9 @@ public class AMapActivity extends FragmentActivity implements
 			if (numCheck == 2) {
 				searchBean.setHire_field(null);
 				searchBean.setHire_method_id(null);
+			}else{
+				searchBean.setHire_field(getField());
+				searchBean.setHire_method_id(getCarObjectId());
 			}
 			String json = gson.toJson(searchBean);
 			// TODO Auto-generated method stub
@@ -172,6 +174,7 @@ public class AMapActivity extends FragmentActivity implements
 			case 0:
 				try {
 					String Str = (String) msg.obj;
+					Log.d("刷新>>>", Str+"<>");
 					if(Str!=null){
 						JSONObject object = new JSONObject(Str);
 						if (object.getJSONArray("result") != null
@@ -264,6 +267,7 @@ public class AMapActivity extends FragmentActivity implements
 			}
 		}
 	};
+	
 	private void refresh(String readFrom) {
 		try {
 			JSONObject jsonObject = new JSONObject(readFrom);
@@ -273,12 +277,15 @@ public class AMapActivity extends FragmentActivity implements
 				List<String> objList = new ArrayList<String>(); // 车位的objectId
 				List<LatLng> latLngList = new ArrayList<LatLng>();// 经纬度集合
 				List<Integer> restList = new ArrayList<Integer>();// 获取到park_space表示是否出租
-				List<Double> priceList = new ArrayList<Double>();
+	//			List<Double> priceList = new ArrayList<Double>();
+				List<String> priceList = new ArrayList<String>();
 				List<String> parkList = new ArrayList<String>();
 				for (int index = 0; index < jsonArray.length(); index++) { // 每次加载5条
 					String address = jsonArray.getJSONObject(index).getString(
 							"address");// 地址信息
 					addressList.add(address);// 地址集合
+					JSONArray arrayPrice = jsonArray.getJSONObject(index).getJSONArray("hire_price");
+					JSONArray arrayMethod = jsonArray.getJSONObject(index).getJSONArray("hire_method");
 					// 经纬度
 					JSONObject object = jsonArray.getJSONObject(index)
 							.getJSONObject("location");
@@ -287,9 +294,15 @@ public class AMapActivity extends FragmentActivity implements
 					LatLng latLng = new LatLng(latitude, longitude);
 					latLngList.add(latLng);
 					if (numCheck != 2) {
-						double field = jsonArray.getJSONObject(index)
+						for(int i=0;i<arrayMethod.length();i++){
+							if(arrayMethod.getJSONObject(i).getString("objectId").equals(getCarObjectId())){
+								String string = arrayPrice.get(i).toString();
+								priceList.add(string);
+							}
+						}
+						/*double field = jsonArray.getJSONObject(index)
 								.getDouble(getField());
-						priceList.add(field);
+						priceList.add(field);*/
 					}
 					int park_space = jsonArray.getJSONObject(index).getInt(
 							"park_space");
@@ -334,11 +347,9 @@ public class AMapActivity extends FragmentActivity implements
 						"tv_detail", "tv_rest", "tv_price" }, new int[] {
 						R.id.amap_tv_address, R.id.amap_tv_detail,
 						R.id.amap_tv_rest, R.id.amap_tv_price });
-
 		mListView.setAdapter(mAdapter1);
 		mListView.setAMapListViewListener(this);
 		mListView.setOnItemClickListener(this);
-
 		setAItemNum = (ImageView) findViewById(R.id.iv_map_flexible);
 		setAItemNum.setOnClickListener(this);
 		rangePrice = (TextView) findViewById(R.id.tv_rangeandprice);
@@ -370,7 +381,6 @@ public class AMapActivity extends FragmentActivity implements
 				LayoutParams.FILL_PARENT, (int) (displayHeight * 0.2f + 0.5f));
 		mListView.setLayoutParams(params);
 	}
-	
 	/**
 	 * 初始化AMap对象
 	 */
@@ -398,7 +408,6 @@ public class AMapActivity extends FragmentActivity implements
 										new LatLng(latLng.latitude,
 												latLng.longitude))
 								.title(""));
-				//		locationMarker.showInfoWindow();
 						SearchActivity.latLng = null;
 						mypDialog.dismiss();
 					} else {
@@ -413,7 +422,6 @@ public class AMapActivity extends FragmentActivity implements
 												SearchActivity.latLng.latitude,
 												SearchActivity.latLng.longitude))
 								.title(""));
-					//	locationMarker.showInfoWindow();
 						SearchActivity.latLng = null;
 						mypDialog.dismiss();
 					}
@@ -422,7 +430,6 @@ public class AMapActivity extends FragmentActivity implements
 			setUpMap();// 设置侦听
 		}
 	}
-
 	private void initMarkers() {
 		beanList = bean;
 		if (beanList != null) {
@@ -437,8 +444,7 @@ public class AMapActivity extends FragmentActivity implements
 						.anchor(0.5f, 1)
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.start))
-						.position((LatLng) latLngList.get(i)).title("停车场"));
-				//locationMarker.showInfoWindow();
+						.position((LatLng) latLngList.get(i)).title(""));
 			}
 			mypDialog.dismiss();
 		} else {
@@ -455,8 +461,7 @@ public class AMapActivity extends FragmentActivity implements
 						.position(
 								new LatLng(location_info.getLatitude(),
 										location_info.getLongitude()))
-						.title("搜索地点的位置"));
-				locationMarker.showInfoWindow();
+						.title(""));
 				mypDialog.dismiss();
 			}
 		}
@@ -599,14 +604,17 @@ public class AMapActivity extends FragmentActivity implements
 					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
+					}else{
+						searchBean.setHire_field(getField());
+						searchBean.setHire_method_id(getCarObjectId());
 					}
-					i = i + 10;
-					searchBean.setSkip(i);
+					skip =0;
+					searchBean.setSkip(skip);
 					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
 					Log.v("json", json);
 					doSearch(json);
-			//		mHandler.sendEmptyMessageDelayed(1, 1000);
+					mHandler.sendEmptyMessageDelayed(1, 1000);
 				}
 			}
 		}, 1500);
@@ -628,19 +636,25 @@ public class AMapActivity extends FragmentActivity implements
 					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
+					}else{
+						searchBean.setHire_field(getField());
+						searchBean.setHire_method_id(getCarObjectId());
 					}
-					i = i + 2;
-					searchBean.setSkip(i);
+					skip++;
+					skip = skip * 10;
+					searchBean.setSkip(skip);
+					searchBean.setLimit(10);
 					String json = gson.toJson(searchBean);
-					
+					Log.d("第一次>>>", json);
 					doSearch(json);
-		//			mHandler.sendEmptyMessageDelayed(2, 1000);
+					mHandler.sendEmptyMessageDelayed(2, 1000);
 				}
 			}
 		}, 1500);
 	}
 
-	private double price;
+	//private double price;
+	private String price;
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -650,7 +664,8 @@ public class AMapActivity extends FragmentActivity implements
 				ArrayList data = (ArrayList) beanList.getObjList();
 				final String object = (String) data.get(position - 1);
 				if (numCheck != 2) {
-					price = (Double) priceList.get(position - 1);
+				//	price = (Double) priceList.get(position - 1);
+					price = priceList.get(position - 1).toString();
 				}
 				view.postDelayed(new Runnable() {
 					@Override
@@ -665,7 +680,10 @@ public class AMapActivity extends FragmentActivity implements
 						bundle.putString("getField", getField());
 						
 						bundle.putString("park_id", object);
-						bundle.putDouble("price", price);
+						String a[] = price.split("/");
+						bundle.putDouble("price", Double.parseDouble(a[0]));
+						Log.d("a[]", a[0]);
+					//	bundle.putString("price", price);
 						intent.putExtras(bundle);
 						CurbAndObjectId bean = new CurbAndObjectId();
 						bean.setMode(getMode());
@@ -673,7 +691,6 @@ public class AMapActivity extends FragmentActivity implements
 						bean.setField(getField());
 						Data.putData("CurbAndObjectId", bean);// 车位类型id
 						startActivity(intent);
-				//		finish();
 					}
 				}, 1000);
 			}
@@ -687,10 +704,8 @@ public class AMapActivity extends FragmentActivity implements
 		String field = (String) bundle.get("getField");
 		return field;
 	}
-
 	/**
 	 * 获取到field id
-	 * 
 	 * @return
 	 */
 	private String getCarObjectId() {
@@ -780,10 +795,14 @@ public class AMapActivity extends FragmentActivity implements
 					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
+					}else{
+						searchBean.setHire_field(getField());
+						searchBean.setHire_method_id(getCarObjectId());
 					}
 					searchBean.setSort("price_asc");
-					searchBean.setSkip(0);
+					searchBean.setSkip(skip);
 					String json = gson.toJson(searchBean);
+					Log.d("按价格排序>>>", json+"<>");
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(3, 1000);
 				} else {
@@ -801,10 +820,14 @@ public class AMapActivity extends FragmentActivity implements
 					if (numCheck == 2) {
 						searchBean.setHire_field(null);
 						searchBean.setHire_method_id(null);
+					}else{
+						searchBean.setHire_field(getField());
+						searchBean.setHire_method_id(getCarObjectId());
 					}
 					searchBean.setSort(null);
-					searchBean.setSkip(0);
+					searchBean.setSkip(skip);
 					String json = gson.toJson(searchBean);
+					Log.d("按距离排序>>>", json+"<>");
 					doSearch(json);
 					mHandler.sendEmptyMessageDelayed(4, 1000);
 				} else {

@@ -76,6 +76,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		mCache = ACacheUtils.get(getActivity());
 		updateUserInfo();
+		Log.e("update", "update");
 	}
 
 	private void updateUserInfo() {
@@ -153,6 +154,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 
 	private void updateUser() {
 		try {
+			Log.e("update", "update");
 			JSONObject object = new JSONObject();
 			object.put("mobilePhoneNumber", mCache.getAsString("USER"));
 			object.put("user_id", mCache.getAsString("user_id"));
@@ -160,6 +162,7 @@ public class MineFragment extends Fragment implements OnClickListener {
 					Information.KONGCV_GET_USERINFO,
 					JsonStrUtils.JsonStr(object),
 					mCache.getAsString("sessionToken"));
+			Log.e("update", jsoStr);
 			JSONObject obj = new JSONObject(jsoStr);
 			if (obj.has("result")) {
 				JSONObject result = obj.getJSONObject("result");
