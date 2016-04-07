@@ -65,7 +65,6 @@ public class MineFragment extends Fragment implements OnClickListener {
 	private View linearLayout;
 	private TextView uName;
 	private CircleImageView mFace;
-
 	private ACacheUtils mCache;
 	private String user_name;
 	// 自定义的弹出框类
@@ -162,21 +161,28 @@ public class MineFragment extends Fragment implements OnClickListener {
 					JsonStrUtils.JsonStr(object),
 					mCache.getAsString("sessionToken"));
 			JSONObject obj = new JSONObject(jsoStr);
-			JSONObject result = obj.getJSONObject("result");
-			if (result != null) {
-				user_name = obj.getJSONObject("result").getString("username");
-				if (obj.getJSONObject("result").has("image")) {
-					url = obj.getJSONObject("result").getJSONObject("image")
-							.getString("url");
-					bit = GetImage.getHttpBitmap(url);
-					mHandler.sendEmptyMessage(1);
+			Log.e("hahawwww", "haha");
+			if (obj.has("result")) {
+				Log.e("haha", "haha");
+				JSONObject result = obj.getJSONObject("result");
+				if (result != null) {
+					user_name = obj.getJSONObject("result").getString(
+							"username");
+					Log.e("hahassseee", "haha");
+					if (obj.getJSONObject("result").has("image")) {
+						Log.e("hahasswww", "haha");
+						url = obj.getJSONObject("result")
+								.getJSONObject("image").getString("url");
+						bit = GetImage.getHttpBitmap(url);
+						mHandler.sendEmptyMessage(1);
+					}
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		String PHOTO_FILE_NAME = mCache.getAsString("USER") + ".png";
@@ -206,33 +212,38 @@ public class MineFragment extends Fragment implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
-		switch (resultCode) {
-		case 0:
-			if (data != null) {
-				user_name = data.getStringExtra("user_name");
-				uName.setText(user_name);
-			}
-			break;
-		case 10:
+	switch (resultCode) {
+		case 6:
 			if (data != null) {
 				user_name = data.getStringExtra("nick");
-				if (user_name != null) {
-					uName.setText(user_name);
-				} else {
-					uName.setText("登录");
-				}
 				Bitmap bit = data.getParcelableExtra("bit");
+				String url = data.getStringExtra("urlsssss");
+				Log.e("urlsswwww", url);
+				if (user_name != null) {
+					Log.e("user_nameuser_name", user_name);
+					uName.setText(user_name);
+				}
+
 				if (bit != null) {
+					Log.e("sssss", "1233");
 					mFace.setImageBitmap(bit);
 				} else {
 					mFace.setImageResource(R.drawable.defaulto);
 				}
 			}
 			break;
+
+		case 0:
+			if (data != null) {
+				user_name = data.getStringExtra("user_name");
+				uName.setText(user_name);
+			}
+			break;
+
 		default:
 			break;
 		}
-		super.onActivityResult(requestCode, resultCode, data);
+		// super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
@@ -339,10 +350,13 @@ public class MineFragment extends Fragment implements OnClickListener {
 					public void run() {
 						Intent intent = new Intent(getActivity(),
 								LogInActivity.class);
+						Log.e("iv_mine", "iv_mine");
 						startActivityForResult(intent, 0);
+						// startActivity(intent);
 					}
 				}, 2000);
-			//	mHandler.sendEmptyMessage(1);
+				// updateUserInfo();
+				// mHandler.sendEmptyMessage(1);
 			}
 			break;
 		case R.id.tv_logn:

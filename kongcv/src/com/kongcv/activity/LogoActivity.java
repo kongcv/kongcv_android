@@ -111,7 +111,6 @@ public class LogoActivity extends Activity {
 	}
 	CheckUpdate fromJson;
 	private void readServiceCode() {
-		// TODO Auto-generated method stub
 			Map<String, String> params = new HashMap<String, String>();  
 			params.put("app_type", "user");  
 			RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());

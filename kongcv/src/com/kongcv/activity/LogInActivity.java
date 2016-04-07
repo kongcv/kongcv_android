@@ -217,6 +217,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 					Log.e("loglog", result);
 					if (objStr.has("image")) {
 						url = objStr.getJSONObject("image").getString("url");
+						Log.e("url", url);
 						bit = GetImage.getHttpBitmap(url);
 					} else {
 						url = "";
@@ -250,8 +251,7 @@ public class LogInActivity extends Activity implements OnClickListener {
 						mCache.put("USER", iPhone);// 用户手机号
 						mCache.put("user_id", user_id);// 用户user_id
 						mCache.put("sessionToken", sessionToken);// sessionToken
-						mCache.put("registrationID", JPushInterface
-								.getRegistrationID(getApplicationContext()));
+						mCache.put("registrationID", JPushInterface.getRegistrationID(getApplicationContext()));
 						// 传递数据 走上传的接口
 						mHandler.sendEmptyMessage(0);
 					} catch (JSONException e) {
@@ -298,7 +298,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 						Intent i = new Intent();
 						i.putExtra("nick", mCache.getAsString("USERNAME"));
 						i.putExtra("bit", bit);
-						setResult(10, i);
+						i.putExtra("urlsssss", url);
+						setResult(6, i);
 						finish();
 					} else {
 						Message msg = mHandler.obtainMessage();
