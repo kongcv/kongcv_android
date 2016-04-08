@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
-                        android:text="空车位"
+                        android:text="新浪微博:空车位"
                         android:layout_marginTop="5dp"
                         android:textColor="#BCBCBC"
                         android:textSize="14sp" />
@@ -102,7 +102,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
-                        android:text="QQ:112334433"
+                        android:text="服务QQ:111111"
                         android:textColor="#BCBCBC"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -125,7 +125,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
-                        android:text="微信公众号:FDS3432"
+                        android:text="微信公众号:空车位停车"
                         android:textColor="#BCBCBC"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -148,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
-                        android:text="Email:414134222@qq.com"
+                        android:text="邮箱:kf@kongcv.com"
                         android:textColor="#BCBCBC"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
-                        android:text="Email:123"
+                        android:text="网站:www.kongcv.com"
                         android:textColor="#BCBCBC"
                         android:textSize="14sp" />
                 </LinearLayout>
