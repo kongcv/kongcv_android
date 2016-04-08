@@ -55,7 +55,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private String[] str = new String[] { "customer", "hirer" };
 	private int skip = 0, limit = 10, trade_state;
 	private double price;
-	private List<ZyCommityAdapterBean> beansList;
+	private List<ZyCommityAdapterBean> beansList,beansList2;
 	private String method, username, start, end, objectId, hire_method, user,
 			url, mobilePhoneNumber, parkId, field, address,device_type,device_token;
 	private Handler mHandler = new Handler() {
@@ -93,9 +93,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				}
 				break;
 			case 1:
-				beansList = (List<ZyCommityAdapterBean>) msg.obj;
-				if(beansList!=null && beansList.size()>0){
-					czdapter = new CzCommityAdapter(getActivity(), beansList);
+				beansList2 = (List<ZyCommityAdapterBean>) msg.obj;
+				if(beansList2!=null && beansList2.size()>0){
+					czdapter = new CzCommityAdapter(getActivity(), beansList2);
 					lv.setAdapter(czdapter);
 					lv.setOnItemClickListener(null);
 				}
@@ -162,6 +162,20 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 
 	private final OkHttpClient client = new OkHttpClient();
 	private void postHttp(String json, final int i) {
+		if(i==0){
+			if(beansList!=null && beansList.size()>0){
+				beansList.clear();
+				zydapter = new ZyCommityAdapter(getActivity(), beansList);
+				zydapter.notifyDataSetChanged();
+			}
+		}else{
+			if(beansList2!=null && beansList2.size()>0){
+				beansList2.clear();
+				czdapter = new CzCommityAdapter(getActivity(), beansList2);
+				czdapter.notifyDataSetChanged();
+			}
+		}
+		
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())
@@ -180,7 +194,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					}
 				}
 			}
-
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
@@ -230,7 +243,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
-				beansList = new ArrayList<ZyCommityAdapterBean>();
+				beansList2 = new ArrayList<ZyCommityAdapterBean>();
 				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
@@ -285,11 +298,11 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setMode("community");
-					beansList.add(mCommBean);
+					beansList2.add(mCommBean);
 				}
 				Message msg = Message.obtain();
 				msg.what = 1;
-				msg.obj = beansList;
+				msg.obj = beansList2;
 				mHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
@@ -370,7 +383,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setMode("community");
-					
 					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();

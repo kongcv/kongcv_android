@@ -75,7 +75,6 @@ public class MineInformationActivity extends FragmentActivity {
 		pager.setAdapter(mAdapter);
 		iv_back=(ImageView) findViewById(R.id.iv_back);
 		iv_back.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				finish();
