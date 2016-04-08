@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
-
 import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.global.Information;
@@ -94,12 +92,11 @@ public class MineWithDrawCashActivity extends Activity implements
 		tv_card = (TextView) findViewById(R.id.tv_card);
 		withdraw_lin = (LinearLayout) findViewById(R.id.withdraw_lin);
 		withdraw_lin.setOnTouchListener(new OnTouchListener() {
-
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-				return imm.hideSoftInputFromWindow(getCurrentFocus()
-						.getWindowToken(), 0);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+	            return false;
 			}
 		});
 		if (mCache.getAsString("bank") != null
