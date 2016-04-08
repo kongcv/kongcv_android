@@ -362,7 +362,7 @@ public class CommunityDetailFragment extends Fragment implements
 				payOneBean.setMode(mode);// 社区道路这个值需要传递
 				String days = DateUtils.getDays(payOneBean.getHire_start(),
 						payOneBean.getHire_end(), true);
-				int dayInt = Integer.parseInt(days);
+				int dayInt = Integer.parseInt(days)+1;
 				if (dayInt > 0) {
 					payOneBean.setExtra_flag("1");
 				} else {
@@ -1174,10 +1174,10 @@ public class CommunityDetailFragment extends Fragment implements
 						}
 					}
 				}
-				parseInt = Integer.parseInt(days);
+				parseInt = Integer.parseInt(days)+1;
 				parseInt = parseInt - day;
 			} else {
-				parseInt = Integer.parseInt(days);
+				parseInt = Integer.parseInt(days)+1;
 			}
 			days = parseInt + "";
 		} catch (Exception e) {
@@ -1187,46 +1187,6 @@ public class CommunityDetailFragment extends Fragment implements
 		return days;
 	}
 
-	/**
-	 * 计算金额
-	 */
-	private double countMoney(String[] a, String days, String mode) {
-		// TODO Auto-generated method stub
-		double m = 0;
-		double parseInt = Integer.parseInt(days);// 天数
-		double dayPrice = 0.0;
-		double monthPrice = 0.0;
-		int per = Integer.parseInt(a[0]);// 单价
-		if (a[1].equals("天")) {
-			dayPrice = (double) (parseInt * per);
-		} else if (a[1].equals("月")) {
-			monthPrice = parseInt / 30.0 * per;// 这样为保持2位
-			java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-			String s = df.format(monthPrice);
-			monthPrice = Double.valueOf(s);// double
-		}
-		m = dayPrice + monthPrice;
-		return m;
-	}
-
-	/**
-	 * 插入通知接受数据
-	 */
-	/*
-	 * private void InsertAccept() { // TODO Auto-generated method stub new
-	 * Thread(new Runnable() {
-	 * 
-	 * @Override public void run() { try { // TODO Auto-generated method stub
-	 * Gson gson=new Gson(); JpushBean jpushBean = gson.fromJson(stringExtra,
-	 * JpushBean.class); JSONObject object=new JSONObject();
-	 * object.put("req_mobile", mCache.getAsString("USER"));
-	 * object.put("user_mobile", jpushBean.getOwn_mobile());
-	 * object.put("park_id", jpushBean.getPark_id()); object.put("mode",
-	 * jpushBean.getMode()); String doHttpsPost =
-	 * PostCLientUtils.doHttpsPost(Information.KONGCV_INSERT_ACCEPT,
-	 * JsonStrUtils.JsonStr(object)); Log.v("插入通知接受数据", doHttpsPost); } catch
-	 * (Exception e) { e.printStackTrace(); } } }).start(); }
-	 */
 
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {

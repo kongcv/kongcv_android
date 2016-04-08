@@ -484,7 +484,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						if (text != null && text.indexOf("/") != -1) {
 							String a[] = text.split("/");
 							double price = Double.parseDouble(a[0]);
-							int dayNum = Integer.parseInt(days);
+							int dayNum = Integer.parseInt(days)+1;
 							if (a[1].equals("小时")) {
 								double p = price / 8.00;
 								java.text.DecimalFormat df = new java.text.DecimalFormat(
@@ -503,7 +503,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 							text = (String) dataList.get(index).get(KEY[0]);
 							if (text.indexOf("/") != -1) {
 								String[] split = text.split("/");
-								int dayNum = Integer.parseInt(days);
+								int dayNum = Integer.parseInt(days)+1;
 								if (split[1].equals("小时")) {
 									double p = price / 8.00;
 									java.text.DecimalFormat df = new java.text.DecimalFormat(
@@ -540,7 +540,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						if (text != null && text.indexOf("/") != -1) {
 							String a[] = text.split("/");
 							double price = Double.parseDouble(a[0]);
-							int dayNum = Integer.parseInt(days);
+							int dayNum = Integer.parseInt(days)+1;
 							if (a[1].equals("小时")) {
 								double p = price / 8.00;
 								java.text.DecimalFormat df = new java.text.DecimalFormat(
@@ -559,7 +559,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 							text = (String) dataList.get(index).get(KEY[0]);
 							if (text.indexOf("/") != -1) {
 								String[] split = text.split("/");
-								int dayNum = Integer.parseInt(days);
+								int dayNum = Integer.parseInt(days)+1;
 								if (split[1].equals("小时")) {
 									double p = price / 8.00;
 									java.text.DecimalFormat df = new java.text.DecimalFormat(
@@ -636,7 +636,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 										fromJson.getHire_end(), true);
 								int dayInt=0;
 								if(days!=null && !days.isEmpty()){
-									dayInt = Integer.parseInt(days);
+									dayInt = Integer.parseInt(days)+1;
 								}
 								if (dayInt > 0) {
 									payBean.setExtra_flag("1");
@@ -652,7 +652,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 							if(!start.equals(" 年  月  日") && !end.equals(" 年  月  日")){
 								String days = DateUtils.getDays(start,
 										end, true);
-								int dayInt = Integer.parseInt(days);
+								int dayInt = Integer.parseInt(days)+1;
 								if (dayInt > 0) {
 									payBean.setExtra_flag("1");
 								} else {
@@ -967,7 +967,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				if (string != null && string.indexOf("/") != -1) {
 					String a[] = string.split("/");
 					double price = Double.parseDouble(a[0]);
-					int dayNum = Integer.parseInt(days);
+					int dayNum = Integer.parseInt(days)+1;
 					if (a[1].equals("小时")) {
 						double p = price / 4.00;
 						java.text.DecimalFormat df = new java.text.DecimalFormat(
@@ -986,7 +986,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					string = (String) dataList.get(position).get(KEY[0]);
 					if (string.indexOf("/") != -1) {
 						String[] split = string.split("/");
-						int dayNum = Integer.parseInt(days);
+						int dayNum = Integer.parseInt(days)+1;
 						if (split[1].equals("小时")) {
 							double p = price / 4.00;
 							java.text.DecimalFormat df = new java.text.DecimalFormat(

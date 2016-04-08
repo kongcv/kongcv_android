@@ -289,20 +289,21 @@ public class AMapActivity extends FragmentActivity implements
 		/** 下拉刷新，上拉加载 */
 		mListView = (AMapListView) findViewById(R.id.add_xListView);// 这个listview是在这个layout里面
 		mListView.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
-
-		mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
-				R.layout.amap_listview_item, new String[] { "tv_address",
-						"tv_detail", "tv_rest", "tv_price" }, new int[] {
-						R.id.amap_tv_address, R.id.amap_tv_detail,
-						R.id.amap_tv_rest, R.id.amap_tv_price });
-		mListView.setAdapter(mAdapter1);
-		
 		mListView.setAMapListViewListener(this);
 		mListView.setOnItemClickListener(this);
 		setAItemNum = (ImageView) findViewById(R.id.iv_map_flexible);
 		setAItemNum.setOnClickListener(this);
 		rangePrice = (TextView) findViewById(R.id.tv_rangeandprice);
 		rangePrice.setOnClickListener(this);
+		
+		if(getData()!=null && getData().size()>0){
+			mAdapter1 = new SimpleAdapter(AMapActivity.this, getData(),
+					R.layout.amap_listview_item, new String[] { "tv_address",
+							"tv_detail", "tv_rest", "tv_price" }, new int[] {
+							R.id.amap_tv_address, R.id.amap_tv_detail,
+							R.id.amap_tv_rest, R.id.amap_tv_price });
+			mListView.setAdapter(mAdapter1);
+		}
 	}
 	
 	private int displayHeight;// 屏幕高度

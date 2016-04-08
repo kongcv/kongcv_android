@@ -148,7 +148,7 @@ public class DateUtils {
 		try {
 			java.util.Date date = myFormatter.parse(point1);
 			java.util.Date mydate = myFormatter.parse(point2);
-			day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000)+1;
+			day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000);
 			if (flag)
 				day = Math.abs(day);
 		} catch (Exception e) {
@@ -223,8 +223,8 @@ public class DateUtils {
 	 */
 	public static List<Date> dateSplit(Date startDate, Date endDate)
 	        throws Exception {
-	    if (!startDate.before(endDate))
-	        throw new Exception("开始时间应该在结束时间之后");
+	   /* if (!startDate.before(endDate))
+	        throw new Exception("开始时间应该在结束时间之后");*/
 	    Long spi = endDate.getTime() - startDate.getTime();
 	    Long step = spi / (24 * 60 * 60 * 1000);// 相隔天数
 
