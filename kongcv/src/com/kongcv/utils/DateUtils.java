@@ -148,7 +148,7 @@ public class DateUtils {
 		try {
 			java.util.Date date = myFormatter.parse(point1);
 			java.util.Date mydate = myFormatter.parse(point2);
-			day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000);
+			day = (date.getTime() - mydate.getTime()) / (24 * 60 * 60 * 1000)+1;
 			if (flag)
 				day = Math.abs(day);
 		} catch (Exception e) {

@@ -9,9 +9,7 @@ public class Bean implements Serializable{	private static final long serialVers
 	private List<LatLng> latLngList;
 	private List<String> park_id;
 	private List<Integer> restList;//是否出租
-	private List<Double> priceList;
-	/*private List<Integer> priceList;*/
-	
+	private List<String> priceList;
 	/**
 	 * @return the addressList
 	 */
@@ -70,13 +68,13 @@ public class Bean implements Serializable{	private static final long serialVers
 	/**
 	 * @return the priceList
 	 */
-	public List<Double> getPriceList() {
+	public List<String> getPriceList() {
 		return priceList;
 	}
 	/**
 	 * @param priceList the priceList to set
 	 */
-	public void setPriceList(List<Double> priceList) {
+	public void setPriceList(List<String> priceList) {
 		this.priceList = priceList;
 	}
 	/**

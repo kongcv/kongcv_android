@@ -43,6 +43,7 @@ public class MineSheZhiActivity extends Activity implements OnClickListener {
 		MyApplication.getInstance().addActivity(this);
 		initView();
 	}
+
 	private void initView() {
 		rl_addnumber = (RelativeLayout) findViewById(R.id.rl_addnumber);
 		rl_infofeedback = (RelativeLayout) findViewById(R.id.rl_infofeedback);

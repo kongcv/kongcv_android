@@ -176,7 +176,6 @@ public class SearchActivity extends FragmentActivity implements
 	public void beforeTextChanged(CharSequence s, int start, int count,
 			int after) {
 	}
-
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		String newText = s.toString().trim();
@@ -251,6 +250,7 @@ public class SearchActivity extends FragmentActivity implements
 					info.setLongitude(data.longitude);
 					Bundle bundle = new Bundle();
 					bean = new SearchBean();
+					
 					if(Data.getData("wk")!=null)
 					bean.setAddress(Data.getData("wk").toString());
 					bean.setHire_field(getField());
@@ -390,7 +390,7 @@ public class SearchActivity extends FragmentActivity implements
 			long id) {
 		// TODO Auto-generated method stub
 		if (position != 0) {
-			String str = (String) mList.get(position - 1).get(
+			final String str = (String) mList.get(position - 1).get(
 					SearchActivity.KEY[1]);
 			String strCity = (String) mList.get(position - 1).get(
 					SearchActivity.KEY[3]);
@@ -408,6 +408,8 @@ public class SearchActivity extends FragmentActivity implements
 							Bundle bundle = new Bundle();
 							bundle.putDouble("latitude", latitude);
 							bundle.putDouble("longitude", longitude);
+							//strCity
+							bundle.putString("strAddress", str);
 							Intent intent = new Intent(SearchActivity.this,
 									AMapActivity.class);
 							intent.putExtras(bundle);

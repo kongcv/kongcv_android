@@ -154,7 +154,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 		}
 	};
 	
-	
 	private void GridViewOkHttp(final ModeAndObjId andObjId,final String img){
 		FormBody body = new FormBody.Builder()
 	     .add("park_type_id", andObjId.objList)
@@ -472,8 +471,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 					String communityId = objectId.get(position);
 					List<String> hire_field = community.getHire_field();
 					String field = hire_field.get(position);
-					Log.e("if whichClick field", field+":");
-					Log.e("if whichClick mode", community.getMode()+":");
+					
 					
 					bundle.putString("objectId", communityId);//车位id
 					bundle.putString("mode", community.getMode());//道路
@@ -493,8 +491,6 @@ public class CarwFragment extends Fragment implements OnClickListener,
 					String communityId = objectId.get(position);
 					List<String> hire_field = community.getHire_field();
 					String field = hire_field.get(position);
-					Log.e("else whichClick field", field+":");
-					Log.e("else whichClick mode", community.getMode()+":");
 					
 					bundle.putString("objectId", communityId);//车位id
 					bundle.putString("mode", community.getMode());//道路

@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:textColor="@color/amap_address"
-        android:text="小区"
         />
     
     <TextView
@@ -24,7 +23,6 @@
         android:textSize="@dimen/amap_hire_price"
         android:textColor="@color/amap_hire_price"
         android:layout_below="@+id/amap_tv_address"
-        android:text="小区"
         />
     <TextView
         android:id="@+id/amap_tv_rest"
@@ -32,7 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/amap_tv_detail"
         android:layout_alignParentRight="true"
-        android:text="未租" 
         android:layout_alignRight="@+id/amap_tv_price"  
         android:layout_marginRight="15dp"
         />
@@ -41,7 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="¥ 59"
         android:textColor="#f07c7c"
         android:textSize="@dimen/amap_hire_price" 
         android:layout_alignBottom="@+id/amap_tv_detail"

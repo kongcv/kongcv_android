@@ -346,9 +346,12 @@ public class HomeActivity extends FragmentActivity implements
 			if (null != bundle) {
 				desc = bundle.getString("desc");
 			}
+			Log.d("定位desc>>>", desc+":");
 			String address = amapLocation.getCity()
 					+ amapLocation.getDistrict();
+			Log.d("定位address>>>", address+":");
 			String wk=amapLocation.getCity();
+			Log.d("定位city>>>", wk+":");
 			wk=wk.substring(0,wk.length()-1);
 			Data.putData("address", address);//城市
 			Data.putData("wk", wk);//地址
