@@ -165,11 +165,13 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 		if(i==0){
 			if(beansList!=null && beansList.size()>0){
 				beansList.clear();
-				czdapter.notifyDataSetChanged();
+				zydapter = new ZyCommityAdapter(getActivity(), beansList);
+				zydapter.notifyDataSetChanged();
 			}
 		}else{
 			if(beansList2!=null && beansList2.size()>0){
 				beansList2.clear();
+				czdapter = new CzCommityAdapter(getActivity(), beansList2);
 				czdapter.notifyDataSetChanged();
 			}
 		}

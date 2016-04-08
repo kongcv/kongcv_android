@@ -142,15 +142,16 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 		if(i==0){
 			if(beansList!=null && beansList.size()>0){
 				beansList.clear();
+				zydapter=new ZyCurbAdapter(getActivity(), beansList);
 				zydapter.notifyDataSetChanged();
 			}
 		}else{
 			if(beansList2!=null && beansList2.size()>0){
 				beansList2.clear();
+				czdapter=new CzCommityAdapter(getActivity(), beansList2);
 				czdapter.notifyDataSetChanged();
 			}
 		}
-		
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())

@@ -105,10 +105,11 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 				d = GetImage.resizeImage(mList.get(position).getBitmap(),
 						80, 80);
 			}
-			iv_dingwei.setTag(d);
+			iv_dingwei.setImageDrawable(d);
+			/*iv_dingwei.setTag(d);
 			if (iv_dingwei.getTag() != null && iv_dingwei.getTag().equals(d)) {
 				iv_dingwei.setImageDrawable(d);
-			}
+			}*/
 		}else{
 			Resources res=mContext.getResources();
 			Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.logo);
