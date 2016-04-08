@@ -53,6 +53,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private double price,money;
 	private int trade_state;
 	private List<ZyCommityAdapterBean> beansList;
+	private List<ZyCommityAdapterBean> beansList2;
 	private String[] str = new String[] { "customer", "hirer" };
 	private String method, username, start, end, objectId, hire_method, user,device_type,device_token,
 			url, mobilePhoneNumber, park_curb, address,park_id,field;
@@ -93,9 +94,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				}
 				break;
 			case 1:
-				beansList = (ArrayList<ZyCommityAdapterBean>) msg.obj;
-				if (beansList != null && beansList.size() > 0) {
-					czdapter = new CzCommityAdapter(getActivity(), beansList);
+				beansList2 = (ArrayList<ZyCommityAdapterBean>) msg.obj;
+				if (beansList2 != null && beansList2.size() > 0) {
+					czdapter = new CzCommityAdapter(getActivity(), beansList2);
 					lv.setAdapter(czdapter);
 					lv.setOnItemClickListener(null);
 				}
@@ -138,6 +139,18 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private final OkHttpClient client = new OkHttpClient();
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
+		if(i==0){
+			if(beansList!=null && beansList.size()>0){
+				beansList.clear();
+				zydapter.notifyDataSetChanged();
+			}
+		}else{
+			if(beansList2!=null && beansList2.size()>0){
+				beansList2.clear();
+				czdapter.notifyDataSetChanged();
+			}
+		}
+		
 		okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())
@@ -247,7 +260,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
-				beansList = new ArrayList<ZyCommityAdapterBean>();
+				beansList2 = new ArrayList<ZyCommityAdapterBean>();
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
 					JSONObject ob = array.getJSONObject(i);
@@ -301,11 +314,11 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setMode("curb");
-					beansList.add(mCommBean);
+					beansList2.add(mCommBean);
 				}
 				Message msg = mHandler.obtainMessage();
 				msg.what = 1;
-				msg.obj = beansList;
+				msg.obj = beansList2;
 				mHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
