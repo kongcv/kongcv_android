@@ -30,15 +30,18 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
+import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
 import com.kongcv.activity.MineOrdermanagerActivity;
 import com.kongcv.adapter.CzCommityAdapter;
 import com.kongcv.adapter.ZyCommityAdapter;
+import com.kongcv.fragment.CurbFragment.ReadType;
 import com.kongcv.global.Information;
 import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
+import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -128,13 +131,21 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	 * 初始化数据和下拉刷新数据
 	 */
 	public void refresh() {
-		if (MineOrdermanagerActivity.TYPEORDER == 0) {
-			postHttp(info(str[0]), 0);
-		} else {
-			postHttp(info(str[1]), 1);
+		ReadType readType = new ReadType();
+		readType.execute();
+	}
+	class ReadType extends PreReadTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			if (MineOrdermanagerActivity.TYPEORDER == 0) {
+				postHttp(info(str[0]), 0);
+			} else {
+				postHttp(info(str[1]), 1);
+			}
+			return null;
 		}
 	}
-
 	/**
 	 * 参数
 	 * 
@@ -162,26 +173,47 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 
 	private final OkHttpClient client = new OkHttpClient();
 	private void postHttp(String json, final int i) {
-		if(i==0){
-			if(beansList!=null && beansList.size()>0){
+		if(beansList!=null){
+			beansList.clear();
+			zydapter = new ZyCommityAdapter(getActivity(), beansList);
+			zydapter.notifyDataSetChanged();
+		}
+		if(beansList2!=null){
+			beansList2.clear();
+			czdapter = new CzCommityAdapter(getActivity(), beansList2);
+			czdapter.notifyDataSetChanged();
+		}
+		
+		/*if(i==0){
+			if(beansList!=null){
 				beansList.clear();
 				zydapter = new ZyCommityAdapter(getActivity(), beansList);
 				zydapter.notifyDataSetChanged();
 			}
 		}else{
-			if(beansList2!=null && beansList2.size()>0){
+			if(beansList2!=null){
 				beansList2.clear();
 				czdapter = new CzCommityAdapter(getActivity(), beansList2);
 				czdapter.notifyDataSetChanged();
 			}
+		}*/
+		try {
+			String doHttpsPost = PostCLientUtils.doHttpsPost(Information.KONGCV_GET_TRADE_LIST, json);
+			if (i == 0) {
+				doResponse(doHttpsPost);
+			} else {
+				doResponse2(doHttpsPost);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		/*okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())
 				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, json))
 				.build();
-		client.newCall(request).enqueue(new okhttp3.Callback() {
+		 client.newCall(request).enqueue(new okhttp3.Callback() {
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response)
 					throws IOException {
@@ -199,9 +231,10 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				// TODO Auto-generated method stub
 				Log.e("KONGCV_GET_TRADE_LIST", arg1.toString());
 			}
-		});
+		});*/
 	}
 
+	
 	@Override
 	public void onRefresh() {
 		mHandler.postDelayed(new Runnable() {
@@ -246,6 +279,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 				beansList2 = new ArrayList<ZyCommityAdapterBean>();
 				ZyCommityAdapterBean mCommBean = null;
 				for (int i = 0; i < array.length(); i++) {
+					if(mCommBean!=null){
+						mCommBean = new ZyCommityAdapterBean();
+					}
 					mCommBean = new ZyCommityAdapterBean();
 					JSONObject ob = array.getJSONObject(i);
 					if (ob.has("hire_start")) {
@@ -320,6 +356,9 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
+				if(beansList!=null){
+					beansList.clear();
+				}
 				beansList = new ArrayList<ZyCommityAdapterBean>();
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
@@ -345,8 +384,7 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					// 价钱
 					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
-					objectId = array.getJSONObject(i).getJSONObject("user")
-							.getString("objectId");
+					objectId = array.getJSONObject(i).getString("objectId");
 					// 租用人的地址
 					if (array.getJSONObject(i).has("park_community")) {
 						String park_community = array.getJSONObject(i)
@@ -377,12 +415,15 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					}
 					// 订单状态
 					trade_state = array.getJSONObject(i).getInt("trade_state");
-					if (address != null)
-					mCommBean.setAddress(address);
+					if (address != null){
+						mCommBean.setAddress(address);
+					}
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setMode("community");
+					Log.d("订单号 msg_id", objectId);
+					Log.d("订单号>>><<<", mCommBean.toString()+"<>");
 					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();

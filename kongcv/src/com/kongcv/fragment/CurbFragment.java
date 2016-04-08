@@ -28,8 +28,10 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.kongcv.R;
 import com.kongcv.ImageRun.GetImage;
+import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
 import com.kongcv.activity.MineOrdermanagerActivity;
+import com.kongcv.activity.LogoActivity.ModeAndObjId;
 import com.kongcv.adapter.CzCommityAdapter;
 import com.kongcv.adapter.ZyCurbAdapter;
 import com.kongcv.global.Information;
@@ -37,6 +39,7 @@ import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
+import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
 
@@ -127,32 +130,62 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	 */
 	private int skip = 0;
 	public void refresh() {
-		if (MineOrdermanagerActivity.TYPEORDER == 0) {
-			getCurbOrCommInfo(breakJsonStr(str[0]), 0);
-		} else {
-			getCurbOrCommInfo(breakJsonStr(str[1]), 1);
-		}
+		ReadType readType = new ReadType();
+		readType.execute();
 	}
 	/**
 	 * 网络请求
 	 */
+	class ReadType extends PreReadTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			if (MineOrdermanagerActivity.TYPEORDER == 0) {
+				getCurbOrCommInfo(breakJsonStr(str[0]), 0);
+			} else {
+				getCurbOrCommInfo(breakJsonStr(str[1]), 1);
+			}
+			return null;
+		}
+	}
 	private final OkHttpClient client = new OkHttpClient();
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
-		if(i==0){
-			if(beansList!=null && beansList.size()>0){
+		if(beansList!=null){
+			beansList.clear();
+			zydapter=new ZyCurbAdapter(getActivity(), beansList);
+			zydapter.notifyDataSetChanged();
+		}
+		if(beansList2!=null){
+			beansList2.clear();
+			czdapter=new CzCommityAdapter(getActivity(), beansList2);
+			czdapter.notifyDataSetChanged();
+		}
+		/*if(i==0){
+			if(beansList!=null){
 				beansList.clear();
 				zydapter=new ZyCurbAdapter(getActivity(), beansList);
 				zydapter.notifyDataSetChanged();
 			}
 		}else{
-			if(beansList2!=null && beansList2.size()>0){
+			if(beansList2!=null){
 				beansList2.clear();
 				czdapter=new CzCommityAdapter(getActivity(), beansList2);
 				czdapter.notifyDataSetChanged();
 			}
+		}*/
+		try {
+			String doHttpsPost = PostCLientUtils.doHttpsPost(Information.KONGCV_GET_TRADE_LIST, jsonStr);
+			if (i == 0) {
+				doResponse(doHttpsPost);
+			} else {
+				doResponse2(doHttpsPost);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		okhttp3.Request request = new okhttp3.Request.Builder()
+		/*okhttp3.Request request = new okhttp3.Request.Builder()
 				.url(Information.KONGCV_GET_TRADE_LIST)
 				.headers(Information.getHeaders())
 				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
@@ -176,7 +209,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 				// TODO Auto-generated method stub
 				Log.e("KONGCV_GET_TRADE_LIST", arg1.toString());
 			}
-		});
+		});*/
 	}
 	private ZyCommityAdapterBean mCommBean = null;
 	private void doResponse(String string) {
@@ -185,6 +218,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
+				if(beansList!=null){
+					beansList.clear();
+				}
 				beansList = new ArrayList<ZyCommityAdapterBean>();
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();
