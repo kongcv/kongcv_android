@@ -338,12 +338,8 @@ public class CommunityDetailFragment extends Fragment implements
 						.getHire_end().getIso(), false));
 				if(mCommBean!=null){
 					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");
-					JpushBean fromJson = gson.fromJson(stringExtra,
-							JpushBean.class);
-					time_pay_start.setVisibility(View.VISIBLE);
-					time_pay_end.setVisibility(View.VISIBLE);
-					time_pay_start.setText(fromJson.getHire_start());
-					time_pay_end.setText(fromJson.getHire_end());
+					time_pay_start.setText(mCommBean.getHire_start());
+					time_pay_end.setText(mCommBean.getHire_end());
 				}
 				if (stringExtra != null) {
 					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");

@@ -43,14 +43,7 @@ public class MineSheZhiActivity extends Activity implements OnClickListener {
 		MyApplication.getInstance().addActivity(this);
 		initView();
 	}
-	private void removeACache() {
-		// TODO Auto-generated method stub
-		mCache.remove("USERNAME");
-		mCache.remove("USER");
-		mCache.remove("user_id");
-		mCache.remove("sessionToken");
-		mCache.remove("registrationID");
-	}
+
 	private void initView() {
 		rl_addnumber = (RelativeLayout) findViewById(R.id.rl_addnumber);
 		rl_infofeedback = (RelativeLayout) findViewById(R.id.rl_infofeedback);
@@ -110,7 +103,7 @@ public class MineSheZhiActivity extends Activity implements OnClickListener {
 				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						removeACache();
+			         	mCache.clear();
 						MyApplication.getInstance().exit();
 					}
 				})

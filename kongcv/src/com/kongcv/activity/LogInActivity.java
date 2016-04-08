@@ -83,8 +83,8 @@ public class LogInActivity extends Activity implements OnClickListener {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-				return imm.hideSoftInputFromWindow(getCurrentFocus()
-						.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            	return false;
 			}
 		});
 		getCord.setOnClickListener(this);

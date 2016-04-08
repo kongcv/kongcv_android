@@ -24,7 +24,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="¥60"
-        android:textColor="#666666"
+        android:textColor="#FF692A"
         android:textSize="18dp" />
 
 </RelativeLayout>

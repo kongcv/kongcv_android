@@ -91,10 +91,12 @@ public class MineCreditModifyActivity extends Activity implements
 						if (state.equals("ok")) {
 							ToastUtil.show(MineCreditModifyActivity.this,
 									"修改成功");
-							Intent i=new Intent(MineCreditModifyActivity.this,MineWalletCreditActivity.class);
+							Intent i = new Intent(
+									MineCreditModifyActivity.this,
+									MineWalletCreditActivity.class);
 							MineCreditAddActivity.TAG = "old";
 							startActivity(i);
-					
+
 							finish();
 						} else {
 							ToastUtil.show(MineCreditModifyActivity.this,
@@ -139,13 +141,14 @@ public class MineCreditModifyActivity extends Activity implements
 		et_credithost.setText(Data.getData("hostName").toString());
 		et_creditnumber.setText(Data.getData("hostCode").toString());
 		tv_credittype.setText(Data.getData("bank").toString());
-		modify_lin=(LinearLayout) findViewById(R.id.modify_lin);
+		modify_lin = (LinearLayout) findViewById(R.id.modify_lin);
 		iv_yuan.setImageBitmap((Bitmap) Data.getData("choiceBankImg"));
 		modify_lin.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-				return imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				return false;
 			}
 		});
 	}
@@ -240,7 +243,7 @@ public class MineCreditModifyActivity extends Activity implements
 			Data.putData("pwd", pwds);
 			mCache.put("pwd", pwds);
 		}
-		
+
 		/**
 		 * 接口请求数据
 		 */
@@ -257,19 +260,21 @@ public class MineCreditModifyActivity extends Activity implements
 					bank_card.put("bank_icon_url", Data.getData("banUrl"));
 					// 银行卡类型
 					Data.putData("bank", NewType);
-					
+
 					obj.put("bank_card", bank_card);
 					obj.put("passwd", pwds);
-					if (!newHostCode.equals(Data.getData("hostCode").toString())) {
+					if (!newHostCode
+							.equals(Data.getData("hostCode").toString())) {
 						// 银行卡卡号
 						Data.putData("hostCode", newHostCode);
 						MineCreditAddActivity.TAG = "card";
 						obj.put("action", "card");
-						Log.e("sssss+++++++",MineCreditAddActivity.TAG );
+						Log.e("sssss+++++++", MineCreditAddActivity.TAG);
 					} else if (!(password.equals(modifyPassword))) {
 						MineCreditAddActivity.TAG = "passwd";
 						obj.put("action", "passwd");
-						Log.e("sssss+++++++VVVVVVVVVVVV",MineCreditAddActivity.TAG );
+						Log.e("sssss+++++++VVVVVVVVVVVV",
+								MineCreditAddActivity.TAG);
 					}
 					Log.i("objobjobjobjobj", obj.toString());
 					String doHttpsPost = PostCLientUtils.doHttpsPost(
@@ -295,6 +300,7 @@ public class MineCreditModifyActivity extends Activity implements
 		JPushInterface.onResume(this);
 		MobclickAgent.onResume(this);
 	}
+
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
