@@ -859,51 +859,6 @@ public class CommunityDetailFragment extends Fragment implements
 		}
 	}
 
-	/**
-	 * 接受 出租房给求租房
-	 */
-	/*
-	 * private void consent() { // TODO Auto-generated method stub try {
-	 * UserBean fromJson = userBean; Gson gson = new Gson(); JpushBean jpushBean
-	 * = gson.fromJson(stringExtra, JpushBean.class);
-	 * 
-	 * JSONObject obj = new JSONObject(); obj.put("mobilePhoneNumber",
-	 * jpushBean.getOwn_mobile()); obj.put("push_type", "verify_accept");// 租用请求
-	 * obj.put("device_token", jpushBean.getOwn_device_token());
-	 * obj.put("device_type", jpushBean.getOwn_device_type()); String asString =
-	 * mCache.getAsString("user_id"); obj.put("user_id", asString);
-	 * 
-	 * JSONObject extras = new JSONObject(); extras.put("park_id",
-	 * jpushBean.getPark_id());// 得到车位的objectId extras.put("mode",
-	 * jpushBean.getMode()); extras.put("hire_method_id",
-	 * jpushBean.getHire_method_id()); extras.put("address",
-	 * jpushBean.getAddress()); extras.put("hire_start",
-	 * jpushBean.getHire_start()); // 事件和日期 extras.put("hire_end",
-	 * jpushBean.getHire_end());
-	 * 
-	 * extras.put("own_device_token", mCache.getAsString("RegistrationID"));
-	 * 
-	 * extras.put("own_device_type", fromJson.getDevice_type());
-	 * extras.put("own_mobile",mCache.getAsString("USER"));// 自己的手机号
-	 * extras.put("push_type", "verify_accept"); extras.put("price",
-	 * jpushBean.getPrice()); extras.put("hire_method_field",
-	 * jpushBean.getHire_method_field()); obj.put("extras", extras);
-	 * 
-	 * String doHttpsPost = PostCLientUtils.doHttpsPost(
-	 * Information.KONGCV_JPUSH_MESSAGE_P2P, JsonStrUtils.JsonStr(obj));//
-	 * 发送Jpush通知
-	 * 
-	 * JSONObject obj2 = new JSONObject(doHttpsPost); String str =
-	 * obj2.getString("result"); JSONObject objStr = new JSONObject(str); String
-	 * state = objStr.getString("state"); if ("ok".equals(state)) {
-	 * Looper.prepare(); ToastUtil.show(getActivity(), "已同意对方的支付请求！");
-	 * Looper.loop(); } else { Looper.prepare(); ToastUtil.show(getActivity(),
-	 * "接收对方请求失败！"); Looper.loop(); }
-	 * 
-	 * } catch (Exception e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } }
-	 */
-
 	public class MyPushMsgState extends Thread {
 		private String object;
 		private int state;
@@ -1114,7 +1069,7 @@ public class CommunityDetailFragment extends Fragment implements
 						if (string.equals("{}")
 								&& object.getJSONObject("result") == null) {
 							Looper.prepare();
-							ToastUtil.show(getActivity(), "没有数据！请重新搜索！");
+							ToastUtil.show(getActivity(), "没有数据!请重新搜索!");
 							Looper.loop();
 							Intent intent = new Intent(getActivity(),
 									SearchActivity.class);

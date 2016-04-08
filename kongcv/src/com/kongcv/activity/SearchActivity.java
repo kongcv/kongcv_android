@@ -250,6 +250,7 @@ public class SearchActivity extends FragmentActivity implements
 					info.setLongitude(data.longitude);
 					Bundle bundle = new Bundle();
 					bean = new SearchBean();
+					
 					if(Data.getData("wk")!=null)
 					bean.setAddress(Data.getData("wk").toString());
 					bean.setHire_field(getField());
