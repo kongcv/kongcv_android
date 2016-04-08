@@ -118,10 +118,12 @@ public class CommunityDetailFragment extends Fragment implements
 		getDeviceToken();
 		return view;
 	}
+
 	/**
 	 * 一开始获取到mode和park_id
 	 */
 	private ZyCommityAdapterBean mCommBean = null;
+
 	private void getModeAndParkId() {
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
@@ -152,9 +154,19 @@ public class CommunityDetailFragment extends Fragment implements
 		if (park_id == null && price != 0) {
 			park_id = (String) Data.getData("PARK_ID");
 		}
-		
-		 ReadInfo task = new ReadInfo(); 
-		 task.execute();
+		if (CurbMineReceiver != null) {
+			consent.setVisibility(View.VISIBLE);
+			refuse.setVisibility(View.VISIBLE);
+			consent.setOnClickListener(this);
+			refuse.setOnClickListener(this);
+
+			mInform.setVisibility(View.GONE);
+			mPay.setVisibility(View.GONE);
+		}
+		Intent intent = getActivity().getIntent();
+		stringExtra = intent.getStringExtra("own_device_token");
+		ReadInfo task = new ReadInfo();
+		task.execute();
 	}
 
 	private void visiblePhone2(ZyCommityAdapterBean mCommBean2) {
@@ -175,8 +187,6 @@ public class CommunityDetailFragment extends Fragment implements
 	 * 打开jpush消息通知调到页面并返回携带的数据
 	 */
 	private void getDeviceToken() {
-		Intent intent = getActivity().getIntent();
-		stringExtra = intent.getStringExtra("own_device_token");
 		if (stringExtra != null) {
 			Log.v("打开通知栏获取的消息回调！", stringExtra);
 			Gson gson = new Gson();
@@ -225,6 +235,7 @@ public class CommunityDetailFragment extends Fragment implements
 			// ToastUtil.fixListViewHeight(mListPhone);
 		}
 	}
+
 	class ReadInfo extends PreReadTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... arg0) {
@@ -297,24 +308,58 @@ public class CommunityDetailFragment extends Fragment implements
 				String a[] = s.split("&");
 				mTxtAddress.setText(a[0]);
 				detail_txt_yu.setText(a[1]);
-				if (GTMDateUtil.GTMToLocal(result.getHire_start().getIso(),
-						false) != null
-						&& GTMDateUtil.GTMToLocal(
-								result.getHire_end().getIso(), false) != null) {
+				/*if (stringExtra == null) {
+					if (GTMDateUtil.GTMToLocal(result.getHire_start().getIso(),
+							false) != null
+							&& GTMDateUtil.GTMToLocal(result.getHire_end()
+									.getIso(), false) != null) {
+						txt_start.setText(GTMDateUtil.GTMToLocal(result
+								.getHire_start().getIso(), false));
+						txt_end.setText(GTMDateUtil.GTMToLocal(result
+								.getHire_end().getIso(), false));
+					} else {
+						txt_start.setText(" 年  月  日");
+						txt_end.setText(" 年  月  日");
+					}
+				} else {
+					JpushBean fromJson = gson.fromJson(stringExtra,
+							JpushBean.class);
+					time_pay_start.setText(fromJson.getHire_start());
+					time_pay_end.setText(fromJson.getHire_end());
 					txt_start.setText(GTMDateUtil.GTMToLocal(result
 							.getHire_start().getIso(), false));
-					txt_end.setText(GTMDateUtil.GTMToLocal(result.getHire_end()
-							.getIso(), false));
-				} else {
-					txt_start.setText(" 年  月  日");
-					txt_end.setText(" 年  月  日");
+					txt_end.setText(GTMDateUtil.GTMToLocal(result
+							.getHire_end().getIso(), false));
+				}*/
+				
+				txt_start.setText(GTMDateUtil.GTMToLocal(result
+						.getHire_start().getIso(), false));
+				txt_end.setText(GTMDateUtil.GTMToLocal(result
+						.getHire_end().getIso(), false));
+				if(mCommBean!=null){
+					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");
+					JpushBean fromJson = gson.fromJson(stringExtra,
+							JpushBean.class);
+					time_pay_start.setVisibility(View.VISIBLE);
+					time_pay_end.setVisibility(View.VISIBLE);
+					time_pay_start.setText(fromJson.getHire_start());
+					time_pay_end.setText(fromJson.getHire_end());
 				}
+				if (stringExtra != null) {
+					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");
+					JpushBean fromJson = gson.fromJson(stringExtra,
+							JpushBean.class);
+					time_pay_start.setVisibility(View.VISIBLE);
+					time_pay_end.setVisibility(View.VISIBLE);
+					time_pay_start.setText(fromJson.getHire_start());
+					time_pay_end.setText(fromJson.getHire_end());
+				}
+				
 				// 不可出租日
 				List<String> no_hire = result.getNo_hire();
 				tv_not_rent.setText(StringUtils.listToString(no_hire));
-				
-				
-				if(!result.getPark_description().equals("")){
+
+				if (!result.getPark_description().equals("")) {
 					txt_CarDescribe.setText(result.getPark_description());
 				}
 				txt_CarArea.setText(result.getPark_area() + "㎡");// 车位面积
@@ -325,7 +370,7 @@ public class CommunityDetailFragment extends Fragment implements
 				} else {
 					txt_CarAddress.setText("地下");
 				}
-				if(!result.getGate_card().equals("")){
+				if (!result.getGate_card().equals("")) {
 					txt_CarCard.setText(result.getGate_card());
 				}
 				if (result.isNormal() == true) {
@@ -349,10 +394,11 @@ public class CommunityDetailFragment extends Fragment implements
 				/**
 				 * 租用时间 租用时间这个 需要处理一部分
 				 */
-				payOneBean.setHire_start(GTMDateUtil.GTMToLocal(result
+			/*	payOneBean.setHire_start(GTMDateUtil.GTMToLocal(result
 						.getHire_start().getIso(), true));
 				payOneBean.setHire_end(GTMDateUtil.GTMToLocal(result
-						.getHire_end().getIso(), true));
+						.getHire_end().getIso(), true));*/
+				
 				payOneBean.setUser_id(mCache.getAsString("user_id"));
 				if (user.contains("license_plate")) {
 					payOneBean.setLicense_plate(userBean.getLicense_plate());// 车牌号
@@ -360,9 +406,14 @@ public class CommunityDetailFragment extends Fragment implements
 				payOneBean.setHirer_id(userBean.getObjectId());
 				payOneBean.setPark_id(park_id);
 				payOneBean.setMode(mode);// 社区道路这个值需要传递
-				String days = DateUtils.getDays(payOneBean.getHire_start(),
-						payOneBean.getHire_end(), true);
-				int dayInt = Integer.parseInt(days)+1;
+				/*String days = DateUtils.getDays(payOneBean.getHire_start(),
+						payOneBean.getHire_end(), true);*/
+				String days = DateUtils.getDays(GTMDateUtil.GTMToLocal(result
+						.getHire_start().getIso(), true),
+						GTMDateUtil.GTMToLocal(result
+								.getHire_end().getIso(), true), true);
+				
+				int dayInt = Integer.parseInt(days) + 1;
 				if (dayInt > 0) {
 					payOneBean.setExtra_flag("1");
 				} else {
@@ -383,8 +434,6 @@ public class CommunityDetailFragment extends Fragment implements
 							JpushBean.class);
 					String hire_start = fromJson.getHire_start();
 					String hire_end = fromJson.getHire_end();
-					Log.v("mineSendFragment hire_start", hire_start);
-					Log.v("mineSendFragment hire_end", hire_end);
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
@@ -398,7 +447,6 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
-					Log.v("strExtra", "!!!" + strExtra);
 				}
 				if (CurbMineReceiver != null) {
 					JpushBean fromJson = gson.fromJson(CurbMineReceiver,
@@ -579,7 +627,13 @@ public class CommunityDetailFragment extends Fragment implements
 			break;
 		case R.id.detail_button_consent:// 接收
 			Gson gson = new Gson();
-			JpushBean jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			JpushBean jpushBean = null;
+			if (stringExtra != null) {
+				jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			}
+			if (CurbMineReceiver != null) {
+				jpushBean = gson.fromJson(CurbMineReceiver, JpushBean.class);
+			}
 			MyPushMsgState pushMsgState = new MyPushMsgState(
 					jpushBean.getMessage_id(), 1);// objectId
 			pushMsgState.start();
@@ -587,7 +641,13 @@ public class CommunityDetailFragment extends Fragment implements
 			break;
 		case R.id.detail_button_refuse://
 			Gson gson2 = new Gson();
-			JpushBean jpushBean2 = gson2.fromJson(stringExtra, JpushBean.class);
+			JpushBean jpushBean2 = null;
+			if (stringExtra != null) {
+				jpushBean2 = gson2.fromJson(stringExtra, JpushBean.class);
+			}
+			if (CurbMineReceiver != null) {
+				jpushBean2 = gson2.fromJson(CurbMineReceiver, JpushBean.class);
+			}
 			MyPushMsgState pushMsgState2 = new MyPushMsgState(
 					jpushBean2.getMessage_id(), 2);// objectId
 			pushMsgState2.start();
@@ -616,6 +676,13 @@ public class CommunityDetailFragment extends Fragment implements
 								data.setUnit_price(string);
 							}
 						}
+						/*payOneBean.setHire_start(GTMDateUtil.GTMToLocal(result
+								.getHire_start().getIso(), true));
+						payOneBean.setHire_end(GTMDateUtil.GTMToLocal(result
+								.getHire_end().getIso(), true));*/
+						data.setHire_start(jpushBean3.getHire_start()+" 00:00:00");
+						data.setHire_end(jpushBean3.getHire_end()+" 00:00:00");
+						
 						data.setPrice(jpushBean3.getPrice());
 						String json = gson3.toJson(data);
 						doPay(json);
@@ -733,7 +800,14 @@ public class CommunityDetailFragment extends Fragment implements
 		try {
 			UserBean fromJson = userBean;
 			Gson gson = new Gson();
-			JpushBean jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			JpushBean jpushBean = null;
+			if (stringExtra != null) {
+				jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			}
+			if (CurbMineReceiver != null) {
+				jpushBean = gson.fromJson(CurbMineReceiver, JpushBean.class);
+			}
+
 			JSONObject obj = new JSONObject();
 			obj.put("mobilePhoneNumber", jpushBean.getOwn_mobile());// 对方手机号
 			obj.put("push_type", "verify_reject");// 租用请求
@@ -790,7 +864,13 @@ public class CommunityDetailFragment extends Fragment implements
 		try {
 			UserBean fromJson = userBean;
 			Gson gson = new Gson();
-			JpushBean jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			JpushBean jpushBean = null;
+			if (stringExtra != null) {
+				jpushBean = gson.fromJson(stringExtra, JpushBean.class);
+			}
+			if (CurbMineReceiver != null) {
+				jpushBean = gson.fromJson(CurbMineReceiver, JpushBean.class);
+			}
 			JSONObject obj = new JSONObject();
 			obj.put("mobilePhoneNumber", jpushBean.getOwn_mobile());
 			obj.put("push_type", "verify_accept");// 租用请求
@@ -805,21 +885,24 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("address", jpushBean.getAddress());
 			extras.put("hire_start", jpushBean.getHire_start()); // 事件和日期
 			extras.put("hire_end", jpushBean.getHire_end());
-	//		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
-			extras.put("own_device_token", JPushInterface.getRegistrationID(getActivity()));
+			// extras.put("own_device_token",
+			// mCache.getAsString("RegistrationID"));
+			extras.put("own_device_token",
+					JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", fromJson.getDevice_type());
 			extras.put("own_mobile", mCache.getAsString("USER"));// 自己的手机号
 			extras.put("push_type", "verify_accept");
 			extras.put("price", jpushBean.getPrice());
 			extras.put("hire_method_field", jpushBean.getHire_method_field());
 			obj.put("extras", extras);
+			Log.d("发送jpush时间>>>", JsonStrUtils.JsonStr(obj));
+			Log.d("发送jpush时间>>>", JsonStrUtils.JsonStr(obj));
 			okhttp3.Request request = new okhttp3.Request.Builder()
 					.url(Information.KONGCV_JPUSH_MESSAGE_P2P)
 					.headers(Information.getHeaders())
 					.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
 							JsonStrUtils.JsonStr(obj))).build();
 			client.newCall(request).enqueue(new okhttp3.Callback() {
-
 				@Override
 				public void onResponse(Call arg0, okhttp3.Response response)
 						throws IOException {
@@ -895,7 +978,6 @@ public class CommunityDetailFragment extends Fragment implements
 			} else {
 				Log.v("改变消息推送状态接口", "改变消息推送状态失败！");//
 			}
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1005,9 +1087,12 @@ public class CommunityDetailFragment extends Fragment implements
 					+ detail_txt_yu.getText().toString());
 			extras.put("hire_start", time_pay_start.getText().toString()); // 事件和日期
 			extras.put("hire_end", time_pay_end.getText().toString());
-	    //  mCache.put("RegistrationID", JPushInterface.getRegistrationID(getActivity()));
-		//	extras.put("own_device_token", mCache.getAsString("RegistrationID"));
-			extras.put("own_device_token", JPushInterface.getRegistrationID(getActivity()));
+			// mCache.put("RegistrationID",
+			// JPushInterface.getRegistrationID(getActivity()));
+			// extras.put("own_device_token",
+			// mCache.getAsString("RegistrationID"));
+			extras.put("own_device_token",
+					JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", "android");
 			extras.put("own_mobile", mCache.getAsString("USER"));
 
@@ -1047,6 +1132,7 @@ public class CommunityDetailFragment extends Fragment implements
 		}
 
 	}
+
 	/**
 	 * 获取详情页面信息并解析
 	 */
@@ -1057,7 +1143,7 @@ public class CommunityDetailFragment extends Fragment implements
 				.url(Information.KONGCV_GET_PARK_INFO)
 				.headers(Information.getHeaders()).post(body).build();
 		client.newCall(request).enqueue(new okhttp3.Callback() {
-			
+
 			@Override
 			public void onResponse(Call arg0, okhttp3.Response response)
 					throws IOException {
@@ -1174,10 +1260,10 @@ public class CommunityDetailFragment extends Fragment implements
 						}
 					}
 				}
-				parseInt = Integer.parseInt(days)+1;
+				parseInt = Integer.parseInt(days) + 1;
 				parseInt = parseInt - day;
 			} else {
-				parseInt = Integer.parseInt(days)+1;
+				parseInt = Integer.parseInt(days) + 1;
 			}
 			days = parseInt + "";
 		} catch (Exception e) {
@@ -1186,7 +1272,6 @@ public class CommunityDetailFragment extends Fragment implements
 		}
 		return days;
 	}
-
 
 	@Override
 	public boolean onKey(View v, int keyCode, KeyEvent event) {

@@ -55,6 +55,7 @@ import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.DateUtils;
+import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
@@ -132,6 +133,9 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				}
 			}
 		}
+		Intent intent = getActivity().getIntent();
+		stringExtra = intent.getStringExtra("own_device_token");
+		
 		ReadInfo task = new ReadInfo();
 		task.execute();
 	}
@@ -157,8 +161,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private String LastTradeId=null;
 	private void getDeviceToken() {
 		// TODO Auto-generated method stub
-		Intent intent = getActivity().getIntent();
-		stringExtra = intent.getStringExtra("own_device_token");
 		if (stringExtra != null) {
 			Log.v("道边打开通知栏获取的消息回调！", stringExtra);
 			Gson gson = new Gson();
@@ -185,6 +187,14 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					btnPayTo.setVisibility(View.GONE);
 					btnPayTo.setOnClickListener(null);
 				}
+			}
+			if(fromJson.getHire_start().equals("") && fromJson.getHire_end().equals("")){
+				Log.d(" if 收到jpush发过来的时间显示>>>start<<<", fromJson.getHire_start()+"<>");
+				Log.d(" if 收到jpush发过来的时间显示>>>end<<<", fromJson.getHire_end()+"<>");
+			}
+			if(fromJson.getHire_start()==null && fromJson.getHire_end()==null){
+				Log.d("null if 收到jpush发过来的时间显示>>>start<<<", fromJson.getHire_start()+"<>");
+				Log.d("null if 收到jpush发过来的时间显示>>>end<<<", fromJson.getHire_end()+"<>");
 			}
 		}
 	}
@@ -244,7 +254,12 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					location = result.getLocation();
 					if(result.getPark_description()!=null)
 					curbDescribe.setText(result.getPark_description());
-					
+					if(stringExtra!=null){
+						Gson gson=new Gson();
+						CurbJpushBean fromJson = gson.fromJson(stringExtra, CurbJpushBean.class);
+						curbStart.setText(fromJson.getHire_start());
+						curbEnd.setText(fromJson.getHire_end());
+					}
 					payBean = new PayOneBean();
 					List<String> hire_time = result.getHire_time();
 					hire_price = result.getHire_price();
@@ -261,6 +276,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					/**
 					 * 租用的起始时间 需要判断当前模式是记时小时 还是其他
 					 */
+					/*data.setHire_start(jpushBean3.getHire_start());
+					data.setHire_end(jpushBean3.getHire_end());*/
 					payBean.setUser_id(mCache.getAsString("user_id"));
 					payBean.setPark_id(park_id);
 					payBean.setCurb_rate(rate);

@@ -370,7 +370,6 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setObjectId(objectId);
 					mCommBean.setTrade_state(trade_state);
 					mCommBean.setMode("community");
-					
 					beansList.add(mCommBean);
 				}
 				Message msg = Message.obtain();

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,19 +48,19 @@ public class MineReceiveFragment extends Fragment implements
 	private AMapListView lv;
 	private View view;
 	private ArrayList<InfoBean> mList;
+	private ArrayList<JpushBean> jpushBeans;
 	private InfoNotifyAdapter infoAdapter;
 	private ACacheUtils mCache;
 	private String status;
-	private JSONObject extras;
 	private MineInformationActivity infoActivity;
+	Gson gson = new Gson();
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			JpushBeanAndInfoBean jpushBeanAndInfoBean = (JpushBeanAndInfoBean) msg.obj;
 			final ArrayList<InfoBean> mLists = jpushBeanAndInfoBean.infoList;
-			final JpushBean jpushBean = jpushBeanAndInfoBean.jpushBean;
+			final ArrayList<JpushBean> mListJpush = jpushBeanAndInfoBean.jpushBean;
 			infoAdapter = new InfoNotifyAdapter(getActivity(), mLists);
 			lv.setAdapter(infoAdapter);
-			final Gson gson = new Gson();
 			lv.setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
@@ -78,7 +79,8 @@ public class MineReceiveFragment extends Fragment implements
 							i.putExtra("mode", m);
 							i.putExtra("park_id", p);
 							i.putExtra("getField", f);
-							String json = gson.toJson(jpushBean);
+							String json = gson.toJson(mListJpush
+									.get(position - 1));
 							i.putExtra("CurbMineReceiver", json);
 							startActivity(i);
 						}
@@ -96,7 +98,6 @@ public class MineReceiveFragment extends Fragment implements
 		infoActivity = (MineInformationActivity) getActivity();
 		mCache = ACacheUtils.get(getActivity());
 		initView();
-		mList = new ArrayList<InfoBean>();
 		refresh();
 		return view;
 	}
@@ -115,9 +116,8 @@ public class MineReceiveFragment extends Fragment implements
 	private final OkHttpClient client = new OkHttpClient();
 
 	protected void mRun(final int skip, final int limit) {
-
-		JSONObject obj = new JSONObject();
 		try {
+			JSONObject obj = new JSONObject();
 			obj.put("mobilePhoneNumber", mCache.getAsString("USER"));
 			obj.put("action", "recv");
 			obj.put("skip", skip * 10);// 跳过几条数据
@@ -137,7 +137,6 @@ public class MineReceiveFragment extends Fragment implements
 						doMRun(arg1.body().string());
 					}
 				}
-
 				@Override
 				public void onFailure(Call arg0, IOException arg1) {
 
@@ -149,76 +148,94 @@ public class MineReceiveFragment extends Fragment implements
 	}
 
 	private void doMRun(String str) {
-		Message msg = mHandler.obtainMessage();
 		try {
+			Message msg = mHandler.obtainMessage();
 			JSONObject object = new JSONObject(str);
 			JSONArray array = object.getJSONArray("result");
-			InfoBean bean;
-			JpushBean jpushBean = null;
-			mList.clear();
-			for (int i = 0; i < array.length(); i++) {
-				bean = new InfoBean();
-				jpushBean = new JpushBean();
-				int state = array.getJSONObject(i).getInt("state");
-				String hire_method_id = array.getJSONObject(i)
-						.getJSONObject("extras").getString("hire_method_id");
-				String park_id = array.getJSONObject(i).getJSONObject("extras")
-						.getString("park_id");
-				String address = array.getJSONObject(i).getJSONObject("extras")
-						.getString("address");
-				String own_device_token = array.getJSONObject(i)
-						.getJSONObject("extras").getString("own_device_token");
-				String own_mobile = array.getJSONObject(i)
-						.getJSONObject("extras").getString("own_mobile");
-				String hire_end = array.getJSONObject(i)
-						.getJSONObject("extras").getString("hire_end");
-				String mode = array.getJSONObject(i).getJSONObject("extras")
-						.getString("mode");
-				String push_type = array.getJSONObject(i)
-						.getJSONObject("extras").getString("push_type");
-				String hire_method_field = array.getJSONObject(i)
-						.getJSONObject("extras").getString("hire_method_field");
-				String hire_start = array.getJSONObject(i)
-						.getJSONObject("extras").getString("hire_start");
-				String own_device_type = array.getJSONObject(i)
-						.getJSONObject("extras").getString("own_device_type");
-				int price = array.getJSONObject(i).getJSONObject("extras")
-						.getInt("price");
-				String createdAt = array.getJSONObject(i)
-						.getString("createdAt");
-				if (state == 0) {
-					status = "未处理";
-				} else if (state == 1) {
-					status = "已接受";
-				} else {
-					status = "已拒绝";
+			if (array != null && array.length() > 0) {
+				InfoBean bean;
+				JpushBean jpushBean = null;
+				if (mList != null) {
+					mList.clear();
 				}
-				jpushBean.setHire_method_id(hire_method_id);
-				jpushBean.setPark_id(park_id);
-				jpushBean.setAddress(address);
-				jpushBean.setOwn_device_token(own_device_token);
-				jpushBean.setOwn_mobile(own_mobile);
-				jpushBean.setHire_end(hire_end);
-				jpushBean.setMode(mode);
-				jpushBean.setPush_type(push_type);
-				jpushBean.setHire_method_field(hire_method_field);
-				jpushBean.setHire_start(hire_start);
-				jpushBean.setOwn_device_type(own_device_type);
-				jpushBean.setPrice(price);
+				mList = new ArrayList<InfoBean>();
+				jpushBeans = new ArrayList<JpushBean>();
+				for (int i = 0; i < array.length(); i++) {
+					bean = new InfoBean();
+					jpushBean = new JpushBean();
+					int state = array.getJSONObject(i).getInt("state");
+					String hire_method_id = array.getJSONObject(i)
+							.getJSONObject("extras")
+							.getString("hire_method_id");
 
-				bean.setAddress(address);
-				bean.setHire_start(GTMDateUtil.GTMToLocal(createdAt, true));
-				bean.setMode(mode);
-				bean.setState(status);
-				bean.setPark_id(park_id);
-				bean.setHire_method_field(hire_method_field);
-				mList.add(bean);
+					String message_id = array.getJSONObject(i)
+							.getJSONObject("user").getString("objectId");
+					String park_id = array.getJSONObject(i)
+							.getJSONObject("extras").getString("park_id");
+					String address = array.getJSONObject(i)
+							.getJSONObject("extras").getString("address");
+					String own_device_token = array.getJSONObject(i)
+							.getJSONObject("extras")
+							.getString("own_device_token");
+					String own_mobile = array.getJSONObject(i)
+							.getJSONObject("extras").getString("own_mobile");
+					String hire_end = array.getJSONObject(i)
+							.getJSONObject("extras").getString("hire_end");
+					String mode = array.getJSONObject(i)
+							.getJSONObject("extras").getString("mode");
+					String push_type = array.getJSONObject(i)
+							.getJSONObject("extras").getString("push_type");
+					String hire_method_field = array.getJSONObject(i)
+							.getJSONObject("extras")
+							.getString("hire_method_field");
+					String hire_start = array.getJSONObject(i)
+							.getJSONObject("extras").getString("hire_start");
+					String own_device_type = array.getJSONObject(i)
+							.getJSONObject("extras")
+							.getString("own_device_type");
+					int price = array.getJSONObject(i).getJSONObject("extras")
+							.getInt("price");
+					String createdAt = array.getJSONObject(i).getString(
+							"createdAt");
+					if (state == 0) {
+						status = "未处理";
+					} else if (state == 1) {
+						status = "已接受";
+					} else {
+						status = "已拒绝";
+					}
+					jpushBean.setMessage_id(message_id);
+					jpushBean.setHire_method_id(hire_method_id);
+					jpushBean.setPark_id(park_id);
+					jpushBean.setAddress(address);
+					jpushBean.setOwn_device_token(own_device_token);
+					jpushBean.setOwn_mobile(own_mobile);
+					jpushBean.setHire_end(hire_end);
+					jpushBean.setMode(mode);
+					jpushBean.setPush_type(push_type);
+					jpushBean.setHire_method_field(hire_method_field);
+					jpushBean.setHire_start(hire_start);
+					jpushBean.setOwn_device_type(own_device_type);
+					jpushBean.setPrice(price);
+
+					bean.setAddress(address);
+					bean.setHire_start(GTMDateUtil.GTMToLocal(createdAt, true));
+					bean.setMode(mode);
+					bean.setState(status);
+					bean.setPark_id(park_id);
+					bean.setHire_method_field(hire_method_field);
+					mList.add(bean);
+					jpushBeans.add(jpushBean);
+				}
+				for(int i=0;i<mList.size();i++){
+					Log.d("i=="+i, mList.get(i).toString());
+				}
+				JpushBeanAndInfoBean jpushBeanAndInfoBean = new JpushBeanAndInfoBean(
+						jpushBeans, mList);
+				msg.what = 0;
+				msg.obj = jpushBeanAndInfoBean;
+				mHandler.sendMessage(msg);
 			}
-			JpushBeanAndInfoBean jpushBeanAndInfoBean = new JpushBeanAndInfoBean(
-					jpushBean, mList);
-			msg.what = 0;
-			msg.obj = jpushBeanAndInfoBean;
-			mHandler.sendMessage(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
