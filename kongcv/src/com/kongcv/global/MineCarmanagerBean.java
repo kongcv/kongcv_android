@@ -308,7 +308,20 @@ public class MineCarmanagerBean implements Serializable{
 	public void setHire_method_id(List<String> hire_method_id) {
 		this.hire_method_id = hire_method_id;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "MineCarmanagerBean [park_struct=" + park_struct + ", address="
+				+ address + ", hire_end=" + hire_end + ", park_height="
+				+ park_height + ", park_hide=" + park_hide + ", city=" + city
+				+ ", normal=" + normal + ", no_hire=" + no_hire
+				+ ", park_area=" + park_area + ", hire_price=" + hire_price
+				+ ", gate_card=" + gate_card + ", hire_start=" + hire_start
+				+ ", tail_num=" + tail_num + ", park_description="
+				+ park_description + ", park_space=" + park_space
+				+ ", hire_time=" + hire_time + ", latitude=" + latitude
+				+ ", longitude=" + longitude + ", hire_method_id="
+				+ hire_method_id + ", objectId=" + objectId + "]";
+	}
 	
 }

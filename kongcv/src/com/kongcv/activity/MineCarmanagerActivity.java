@@ -25,18 +25,13 @@ import com.kongcv.MyApplication;
 import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.adapter.CarManagerAdapter;
-import com.kongcv.global.CarBean;
-import com.kongcv.global.CarBean.HireEndEntity;
-import com.kongcv.global.CarBean.HireStartEntity;
 import com.kongcv.global.MineCarmanagerBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
-import com.kongcv.utils.ToastUtil;
 import com.kongcv.view.AMapListView;
 import com.kongcv.view.AMapListView.AMapListViewListener;
-import com.umeng.analytics.MobclickAgent;
 
 /*
  * 车位管理页面
@@ -46,9 +41,6 @@ public class MineCarmanagerActivity extends Activity implements
 
 	private AMapListView listView;
 	private CarManagerAdapter mAdapter;
-	private List<CarBean> mList;
-	private List<HireStartEntity> startList;
-	private List<HireEndEntity> endList;
 	private ImageView iv_back;
 	private int park_area, park_struct;
 	private String hire_method_id, tail_num, gate_card, park_description,
@@ -60,22 +52,13 @@ public class MineCarmanagerActivity extends Activity implements
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case 0:
-				if (skip != 0) {
-					mAdapter = new CarManagerAdapter(
-							MineCarmanagerActivity.this, mList, startList,
-							endList);
-					listView.setAdapter(mAdapter);
-					mAdapter.notifyDataSetChanged();
-					ToastUtil.show(getApplicationContext(), "没有更多数据！");
-				} else {
-					ToastUtil.show(getApplicationContext(), "没有更多数据！");
-				}
-				break;
 			case 1:
 				updateInfo = (ArrayList<MineCarmanagerBean>) msg.obj;
+				for(int i=0;i<updateInfo.size();i++){
+					Log.d("i=="+i, updateInfo.get(i).toString()+"<>");
+				}
 				mAdapter = new CarManagerAdapter(MineCarmanagerActivity.this,
-						mList, startList, endList);
+						updateInfo);
 				listView.setAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
 				break;
@@ -131,29 +114,22 @@ public class MineCarmanagerActivity extends Activity implements
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					com.kongcv.global.Information.KONGCV_GET_PARK_LIST,
 					JsonStrUtils.JsonStr(jso));
-			Message msg = new Message();
+			Log.d("加载出来的数据是>>>", doHttpsPost + "::");
 			JSONObject object = new JSONObject(doHttpsPost);
 			JSONArray jsonArray = object.getJSONArray("result");
+			Message msg = handler.obtainMessage();
 			if (jsonArray != null && jsonArray.length() > 0) {
-				if (mList != null && startList != null && endList != null) {
-					mList.clear();
-					startList.clear();
-					endList.clear();
-				}
 				updateInfo = updateInfo(doHttpsPost);
 				msg.what = 1;
 				msg.obj = updateInfo;
-			} else {
-				msg.what = 0;
-			}
-			handler.sendMessage(msg);
+				handler.sendMessage(msg);
+			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void initView() {
-		mList = new ArrayList<CarBean>();
 		listView = (AMapListView) this.findViewById(R.id.iv_carmanager);
 		iv_back = (ImageView) findViewById(R.id.iv_back);
 		iv_back.setOnClickListener(new OnClickListener() {
@@ -210,31 +186,24 @@ public class MineCarmanagerActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 		JPushInterface.onResume(this);
-		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		JPushInterface.onPause(this);
 		super.onPause();
-		MobclickAgent.onPause(this);
 	}
 
 	private String city = null;
 
 	private ArrayList<MineCarmanagerBean> updateInfo(String doHttpsPost) {
-		JSONObject Resultobj;
+		ArrayList<MineCarmanagerBean> items=null;
 		try {
-			Resultobj = new JSONObject(doHttpsPost);
+			JSONObject Resultobj = new JSONObject(doHttpsPost);
 			String result = Resultobj.getString("result");
 			JSONArray array = new JSONArray(result);
-			startList = new ArrayList<HireStartEntity>();
-			endList = new ArrayList<HireEndEntity>();
-			CarBean bean;
-			HireStartEntity start;
-			HireEndEntity end;
 
-			ArrayList<MineCarmanagerBean> items = new ArrayList<MineCarmanagerBean>();
+			items= new ArrayList<MineCarmanagerBean>();
 			MineCarmanagerBean carmanagerBean;
 			List<String> price_list = new ArrayList<String>();
 			List<String> hireTimeList = new ArrayList<String>();
@@ -242,7 +211,6 @@ public class MineCarmanagerActivity extends Activity implements
 			List<String> hireMethodIdList = new ArrayList<String>();
 			String noHrieString = null;
 			for (int i = 0; i < array.length(); i++) {
-				bean = new CarBean();
 				carmanagerBean = new MineCarmanagerBean();
 				String address = array.getJSONObject(i).getString("address");
 				int park_hide = array.getJSONObject(i).getInt("park_hide");
@@ -254,72 +222,39 @@ public class MineCarmanagerActivity extends Activity implements
 				double longitude = array.getJSONObject(i)
 						.getJSONObject("location").getDouble("longitude");
 				// 出租方式id
-				String hire_method = array.getJSONObject(i).getString(
-						"hire_method");
-				JSONArray arrays = new JSONArray(hire_method);
-		//		List<String> lists = new ArrayList<String>();
-				for (int y = 0; y < arrays.length(); y++) {
-					hire_method_id = arrays.getJSONObject(y).getString(
-							"objectId");
-		//			lists.add(hire_method_id);
-					hireMethodIdList.add(hire_method_id);
-				}
 				JSONObject obj = array.getJSONObject(i);
 				if (obj.has("park_area")) {
 					// 车位面积
 					park_area = obj.getInt("park_area");
-					bean.setPark_area(park_area);
 				} else {
 					park_area = -1;
-					bean.setPark_area(park_area);
 				}
 				// 车位限高
 				if (obj.has("park_height")) {
 					park_height = obj.getInt("park_height");
-					bean.setPark_height(park_height);
 				} else {
 					park_height = -1;
-					bean.setPark_height(park_height);
 				}
 				// 地上，地下
 				if (obj.has("park_struct")) {
 					park_struct = obj.getInt("park_struct");
-					bean.setPark_struct(park_struct);
-				} else {
-					// 0是地上，默认值
-					bean.setPark_struct(0);
 				}
 				// 是否正规车位
 				if (obj.has("normal")) {
 					normal = obj.getBoolean("normal");
-					bean.setNormal(normal);
-				} else {
-					// 默认是false
-					bean.setNormal(false);
 				}
 				// 限行尾号
 				if (obj.has("tail_num")) {
 					tail_num = obj.getString("tail_num");
-					bean.setTail_num(tail_num);
-				} else {
-					bean.setTail_num("");
 				}
 				// 门禁卡
 				if (obj.has("gate_card")) {
 					gate_card = obj.getString("gate_card");
-					bean.setGate_card(gate_card);
-				} else {
-					bean.setGate_card("");
 				}
 				// 车位描述
 				if (obj.has("park_description")) {
 					park_description = obj.getString("park_description");
-					bean.setPark_description(park_description);
-				} else {
-					bean.setPark_description("");
 				}
-				start = new HireStartEntity();
-				end = new HireEndEntity();
 				if (obj.has("hire_start")) {
 					hire_start = GTMDateUtil.GTMToLocal(
 							obj.getJSONObject("hire_start").getString("iso"),
@@ -328,9 +263,6 @@ public class MineCarmanagerActivity extends Activity implements
 						String[] str = hire_start.split(" ");
 						hire_start = str[0];
 					}
-					start.setIso(hire_start);
-				} else {
-					start.setIso(hire_start);
 				}
 				if (obj.has("hire_end")) {
 					hire_end = GTMDateUtil.GTMToLocal(
@@ -340,29 +272,29 @@ public class MineCarmanagerActivity extends Activity implements
 						String[] str = hire_end.split(" ");
 						hire_end = str[0];
 					}
-					end.setIso(hire_end);
-				} else {
-					end.setIso("");
 				}
 				// 非出租日
 				if (obj.has("no_hire")) {
 					no_hire = obj.getString("no_hire");
-					JSONArray jsonArray = new JSONArray(no_hire);
-					List<String> list = new ArrayList<String>();
-					for (int is = 0; is < jsonArray.length(); is++) {
-						String jsonObject = jsonArray.getString(is);
-						list.add(jsonObject);
-					}
-					StringBuilder builder = new StringBuilder();
-					boolean flag = false;
-					for (String string : list) {
-						if (flag) {
-							builder.append(",");
-						} else {
-							flag = true;
+					Log.d("no_hire字段>>>", no_hire+"<>");
+					if(no_hire!=null){
+						JSONArray jsonArray = new JSONArray(no_hire);
+						List<String> list = new ArrayList<String>();
+						for (int is = 0; is < jsonArray.length(); is++) {
+							String jsonObject = jsonArray.getString(is);
+							list.add(jsonObject);
 						}
-						builder.append(string);
-						noHrieString = builder.toString();
+						StringBuilder builder = new StringBuilder();
+						boolean flag = false;
+						for (String string : list) {
+							if (flag) {
+								builder.append(",");
+							} else {
+								flag = true;
+							}
+							builder.append(string);
+							noHrieString = builder.toString();
+						}
 					}
 				}
 				// 出租价格
@@ -384,22 +316,26 @@ public class MineCarmanagerActivity extends Activity implements
 					hire_time_list.add(jsonObjects);
 					hireTimeList.add(jsonObjects);
 				}
-				
 				String objectId = array.getJSONObject(i).getString("objectId");
-				bean.setAddress(address);
-				bean.setPark_hide(park_hide);
-				bean.setObjectId(objectId);
-				bean.setCity(city);
-				bean.setHire_method(hire_method_id);
-				mList.add(bean);
-				startList.add(start);
-				endList.add(end);
-
+				String hire_method = array.getJSONObject(i).getString(
+						"hire_method");
+				Log.d("hire_method>>>", hire_method+"<>");
+				JSONArray arrays = new JSONArray(hire_method);
+				for (int y = 0; y < arrays.length(); y++) {
+					hire_method_id = arrays.getJSONObject(y).getString(
+							"objectId");
+					Log.d("hire_method_id>>>", hire_method_id+"<>");
+					hireMethodIdList.add(hire_method_id);
+				}
+				
+				
+				
 				carmanagerBean.setAddress(address);
 				carmanagerBean.setPark_hide(park_hide);
 				carmanagerBean.setCity(city);
 				carmanagerBean.setLatitude(latitude);
 				carmanagerBean.setLongitude(longitude);
+				carmanagerBean.setHire_method_id(hireMethodIdList);
 				carmanagerBean.setPark_area(park_area);
 				carmanagerBean.setPark_height(park_hide);
 				carmanagerBean.setPark_struct(park_struct);
@@ -413,10 +349,9 @@ public class MineCarmanagerActivity extends Activity implements
 						: hire_start);
 				carmanagerBean.setHire_end(hire_end == null ? "" : hire_end);//
 				carmanagerBean.setNo_hire(noHrieString);
-				carmanagerBean.setObjectId(objectId);
-				carmanagerBean.setHire_method_id(hireMethodIdList);
 				carmanagerBean.setHire_price(hirePriceList);
 				carmanagerBean.setHire_time(hireTimeList);
+				carmanagerBean.setObjectId(objectId);
 				items.add(carmanagerBean);
 			}
 			return items;
@@ -424,20 +359,24 @@ public class MineCarmanagerActivity extends Activity implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return items;
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		Log.d("onItemClick点击事件", position + ">>>");
+		Log.e("onItemClick点击事件", position + ">>>");
+		Log.v("onItemClick点击事件", updateInfo.get(position - 1).toString() + ">>>");
+		Log.v("onItemClick点击事件", updateInfo.get(position - 1).toString() + ">>>");
 		if(position!=0){
-			Intent data = new Intent(this, HomeActivity.class);
+			Intent data = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("MineCarmanagerBean",
 					updateInfo.get(position - 1));
 			data.putExtra("bundle", bundle);
-			startActivity(data);
+			setResult(HomeActivity.CWGL, data);
 			finish();
 		}
 	}

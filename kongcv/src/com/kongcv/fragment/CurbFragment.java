@@ -33,6 +33,7 @@ import com.kongcv.activity.DetailsActivity;
 import com.kongcv.activity.MineOrdermanagerActivity;
 import com.kongcv.activity.LogoActivity.ModeAndObjId;
 import com.kongcv.adapter.CzCommityAdapter;
+import com.kongcv.adapter.ZyCommityAdapter;
 import com.kongcv.adapter.ZyCurbAdapter;
 import com.kongcv.global.Information;
 import com.kongcv.global.ZyCommityAdapterBean;
@@ -61,6 +62,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private String method, username, start, end, objectId, hire_method, user,device_type,device_token,
 			url, mobilePhoneNumber, park_curb, address,park_id,field;
 	private int limit = 10,handsel_state;
+	
 	private Handler mHandler = new Handler() {
 		@SuppressWarnings("unchecked")
 		public void handleMessage(android.os.Message msg) {
@@ -68,8 +70,15 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			case 0:
 				beansList = (List<ZyCommityAdapterBean>) msg.obj;
 				if (beansList != null && beansList.size() > 0) {
-					zydapter = new ZyCurbAdapter(getActivity(), beansList);
-					lv.setAdapter(zydapter);
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							zydapter = new ZyCurbAdapter(getActivity(), beansList);
+							lv.setAdapter(zydapter);
+							zydapter.notifyDataSetChanged();
+						}
+					});
 					lv.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
@@ -99,9 +108,16 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			case 1:
 				beansList2 = (ArrayList<ZyCommityAdapterBean>) msg.obj;
 				if (beansList2 != null && beansList2.size() > 0) {
-					czdapter = new CzCommityAdapter(getActivity(), beansList2);
-					lv.setAdapter(czdapter);
-					lv.setOnItemClickListener(null);
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							czdapter = new CzCommityAdapter(getActivity(), beansList2);
+							lv.setAdapter(czdapter);
+							czdapter.notifyDataSetChanged();
+							lv.setOnItemClickListener(null);
+						}
+					});
 				}
 				break;
 			default:
@@ -109,11 +125,12 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			}
 		};
 	};
-
+	MineOrdermanagerActivity activity;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.curbfragment, container, false);
+		activity=(MineOrdermanagerActivity) getActivity();
 		initView();
 		refresh();
 		return view;
@@ -152,14 +169,28 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
 		if(beansList!=null){
-			beansList.clear();
-			zydapter=new ZyCurbAdapter(getActivity(), beansList);
-			zydapter.notifyDataSetChanged();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					beansList.clear();
+			//		zydapter=new ZyCurbAdapter(getActivity(), beansList);
+					zydapter.notifyDataSetChanged();
+					lv.setOnItemClickListener(null);
+				}
+			});
 		}
 		if(beansList2!=null){
-			beansList2.clear();
-			czdapter=new CzCommityAdapter(getActivity(), beansList2);
-			czdapter.notifyDataSetChanged();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					beansList2.clear();
+				//	czdapter=new CzCommityAdapter(getActivity(), beansList2);
+					czdapter.notifyDataSetChanged();
+					lv.setOnItemClickListener(null);
+				}
+			});
 		}
 		/*if(i==0){
 			if(beansList!=null){

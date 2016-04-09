@@ -25,7 +25,7 @@ public class MyReceiver extends BroadcastReceiver {
 		Bundle bundle = intent.getExtras();
 		Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction()
 				+ ", extras: " + printBundle(bundle));
-	    Log.v("服务器推送下来的附加字段！！！extras", printBundle(bundle));
+	   // Log.v("服务器推送下来的附加字段！！！extras", printBundle(bundle));
 		if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
 			String regId = bundle
 					.getString(JPushInterface.EXTRA_REGISTRATION_ID);

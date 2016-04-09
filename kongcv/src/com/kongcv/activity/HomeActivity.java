@@ -66,10 +66,34 @@ public class HomeActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_home);
 		initLocation();
 		registerMessageReceiver();
-		newThreadToReset();
+	//	newThreadToReset();
 		init();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		Bundle bundle = data.getBundleExtra("bundle");
+		if (bundle != null) {
+			bean = (MineCarmanagerBean) bundle.get(
+					"MineCarmanagerBean");
+			Log.d("<Tag home>", bean.toString()+"<>");
+			if(bean!=null){
+				mPublishFragment = new PublishFragment();
+				Bundle args = new Bundle();
+				args.putSerializable("MineCarmanagerBean", bean);
+				mPublishFragment.setArguments(args);
+				rb1.setChecked(true);
+				CWGL=2;
+				Log.d("<Tag home>", bean.toString()+"<>");
+				/*manager.chHideFrag(mCarwFragment);
+				manager.chHideFrag(mMineFragment);
+				manager.chAddFrag(mPublishFragment, "mPublishFragment", false);*/
+			}
+		}
+		
+	}
 	private void initLocation() {
 		mLocationManger = LocationManagerProxy
 				.getInstance(getApplicationContext());
@@ -84,7 +108,7 @@ public class HomeActivity extends FragmentActivity implements
 	}
 	private Handler mHandler = new Handler() {
 	};
-	@TargetApi(19)
+	/*@TargetApi(19)
 	private void setTranslucentStatus(boolean on) {
 		Window win = getWindow();
 		WindowManager.LayoutParams winParams = win.getAttributes();
@@ -122,7 +146,7 @@ public class HomeActivity extends FragmentActivity implements
 		System.out
 				.println(("First method:" + dm.toString() + "\n"
 						+ "Second method:" + "Y=" + screenWidth + ";X=" + screenHeight));
-	}
+	}*/
 	private MineCarmanagerBean bean;
 	private void init() {
 		JPushInterface.init(getApplicationContext());
@@ -139,7 +163,8 @@ public class HomeActivity extends FragmentActivity implements
 		rb0 = (RadioButton) findViewById(R.id.rb0);
 		rdoBtn.setOnCheckedChangeListener(this);
 		
-		Bundle bundle = getIntent().getBundleExtra("bundle");
+		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
+		/*Bundle bundle = getIntent().getBundleExtra("bundle");
 		if (bundle == null) {
 			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
 		}else{
@@ -152,9 +177,9 @@ public class HomeActivity extends FragmentActivity implements
 				mPublishFragment.setArguments(args);
 				rb1.setChecked(true);
 				CWGL=2;
+				Log.d("<Tag home>", bean.toString()+"<>");
 			}
-		}
-		getDisplay();
+		}*/
 	}
 
 	private void newThreadToReset() {
@@ -216,7 +241,6 @@ public class HomeActivity extends FragmentActivity implements
 	public static final String KEY_MESSAGE = "message";
 	public static final String KEY_EXTRAS = "extras";
 	private ACacheUtils mCache;
-
 	/**
 	 * 注册广播服务
 	 */

@@ -121,8 +121,8 @@ public class PublishTypeAdapter extends BaseAdapter {
 			}
 		});
 		holder.tv_type.setText(items.get(position).getMethod());
-		holder.tv_price.setText(items.get(position).getPrice()==null?"0":items.get(position).getPrice());
-		holder.tv_date.setText(items.get(position).getDate()=="0"?null:items.get(position).getDate());
+		holder.tv_price.setText(items.get(position).getPrice()==null?"":items.get(position).getPrice());
+		holder.tv_date.setText(items.get(position).getDate()==""?null:items.get(position).getDate());
 		return convertView;
 	}
 	public class  ViewHolder{

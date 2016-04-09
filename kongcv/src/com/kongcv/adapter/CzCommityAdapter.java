@@ -3,6 +3,7 @@ package com.kongcv.adapter;
 import java.util.List;
 
 import android.R.dimen;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -58,7 +59,7 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 	}
 	private Drawable d;
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
 			convertView = View.inflate(mContext, R.layout.comm_order_item, null);
 		}
@@ -72,48 +73,57 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		iv_bohao = BaseViewHolder.get(convertView, R.id.iv_bohao);
 		iv_dingwei = BaseViewHolder.get(convertView, R.id.iv_dingwei);
 		iv_bohao.setOnClickListener(this);
-		if (mList.get(position).getBitmap() != null) {
-			if(AndroidUtil.pictureOrT(mContext)){
-				d = GetImage.resizeImage(mList.get(position).getBitmap(),
-						160, 160);
-			}else{
-				d = GetImage.resizeImage(mList.get(position).getBitmap(),
-						80, 80);
+		
+			((Activity) mContext).runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if(mList.size()>position){
+					if (mList.get(position).getBitmap() != null) {
+						if(AndroidUtil.pictureOrT(mContext)){
+							d = GetImage.resizeImage(mList.get(position).getBitmap(),
+									160, 160);
+						}else{
+							d = GetImage.resizeImage(mList.get(position).getBitmap(),
+									80, 80);
+						}
+						iv_dingwei.setImageDrawable(d);
+					}else{
+						Resources res=mContext.getResources();
+						Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.logo);
+						if(AndroidUtil.pictureOrT(mContext)){
+							d = GetImage.resizeImage(bmp,
+									160, 160);
+						}else{
+							d = GetImage.resizeImage(bmp,
+									80, 80);
+						}
+						iv_dingwei.setImageDrawable(d);
+					}
+				}
+				}
+			});
+			tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
+					.get(position).getMethod());
+			tv_username.setText(mList.get(position).getUsername() == null ? ""
+					: mList.get(position).getUsername());
+			tv_start.setText(mList.get(position).getHire_start() == null ? ""
+					: mList.get(position).getHire_start());
+			tv_end.setText(mList.get(position).getHire_end() == null ? "" : mList
+					.get(position).getHire_end());
+			tv_order.setText(mList.get(position).getObjectId() == null ? "" : mList
+					.get(position).getObjectId());
+			tv_price.setText(mList.get(position).getPrice() + "");
+			state = mList.get(position).getTrade_state();
+			// 1代表已完成,0代表未完成
+			if (state == 1) {
+				tv_state.setText("已完成");
+				tv_state.setTextColor(Color.parseColor("#76d25a"));
+			} else {
+				tv_state.setText("未完成");
+				tv_state.setTextColor(Color.parseColor("#FF692A"));
 			}
-			iv_dingwei.setImageDrawable(d);
-		}else{
-			Resources res=mContext.getResources();
-			Bitmap bmp=BitmapFactory.decodeResource(res, R.drawable.logo);
-			if(AndroidUtil.pictureOrT(mContext)){
-				d = GetImage.resizeImage(bmp,
-						160, 160);
-			}else{
-				d = GetImage.resizeImage(bmp,
-						80, 80);
-			}
-			iv_dingwei.setImageDrawable(d);
-		}
-		tv_method.setText(mList.get(position).getMethod() == null ? "" : mList
-				.get(position).getMethod());
-		tv_username.setText(mList.get(position).getUsername() == null ? ""
-				: mList.get(position).getUsername());
-		tv_start.setText(mList.get(position).getHire_start() == null ? ""
-				: mList.get(position).getHire_start());
-		tv_end.setText(mList.get(position).getHire_end() == null ? "" : mList
-				.get(position).getHire_end());
-		tv_order.setText(mList.get(position).getObjectId() == null ? "" : mList
-				.get(position).getObjectId());
-		tv_price.setText(mList.get(position).getPrice() + "");
-		state = mList.get(position).getTrade_state();
-		// 1代表已完成,0代表未完成
-		if (state == 1) {
-			tv_state.setText("已完成");
-			tv_state.setTextColor(Color.parseColor("#76d25a"));
-		} else {
-			tv_state.setText("未完成");
-			tv_state.setTextColor(Color.parseColor("#FF692A"));
-		}
-		phoneNumber = mList.get(position).getMobilePhoneNumber();
+			phoneNumber = mList.get(position).getMobilePhoneNumber();
 		return convertView;
 	}
 	@Override

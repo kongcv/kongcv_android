@@ -175,13 +175,44 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				List<String> objectId = community.getObjectId();// 类型id
 				List<String> method = community.getMethod();// 类型名称'
 				List<String> hireField = community.getHire_field();
-				
 				List<String> hireMethodList = carmanagerBean
 						.getHire_method_id();
 				List<String> hirePriceList = carmanagerBean.getHire_price();
 				List<String> hireTimeList = carmanagerBean.getHire_time();
 				
-				for (int i = 0; i < hireMethodList.size(); i++) {
+				Log.d("hireMethodList i==", hireMethodList+"<>");
+				Log.d("hirePriceList i==", hirePriceList+"<>");
+				Log.d("hireTimeList i==", hireTimeList+"<>");
+				Log.d("objectId i==", objectId+"<>");
+				Log.d("method i==", method+"<>");
+				Log.d("hireField i==", hireField+"<>");
+				for(int i=0;i<hireMethodList.size();i++){
+					typeBean = new TypeBean();
+					for(int ii=0;ii<objectId.size();ii++){
+						if(objectId.get(ii).equals(hireMethodList.get(i))){
+							typeBean.setField(hireField.get(ii));
+							typeBean.setDate(hireTimeList.get(i));
+							typeBean.setObjectId(hireMethodList.get(i));
+							typeBean.setPrice(hirePriceList.get(i));
+							typeBean.setMethod(method.get(ii));
+						}
+					}
+					if(typeBean.getMethod()!=null)
+					items.add(typeBean);
+				}
+				adapter = new PublishTypeAdapter(homeActivity, items,
+						new UpdateList() {
+							@Override
+							public void deteleList(
+									ArrayList<TypeBean> arrayList) {
+								// TODO Auto-generated method stub
+								items = arrayList;//删除之后的
+							}
+						});
+				mListView.setAdapter(adapter);
+				adapter.notifyDataSetChanged();
+				ToastUtil.fixListViewHeight(mListView, -1);
+				/*for (int i = 0; i < hireMethodList.size(); i++) {
 					typeBean = new TypeBean();
 					for (int ii = 0; ii < objectId.size(); ii++) {
 						if (objectId.get(ii).equals(hireMethodList.get(i))) {
@@ -204,7 +235,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 						});
 				mListView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
-				ToastUtil.fixListViewHeight(mListView, -1);
+				ToastUtil.fixListViewHeight(mListView, -1);*/
 				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -395,7 +426,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 					hire_field.add(items.get(index).getField()==null?"0":items.get(index).getField());
 					hire_price.add(items.get(index).getPrice()==null?"0":items.get(index).getPrice());
 					hire_time.add(items.get(index).getDate()==null?"0":items.get(index).getDate());
-					hire_method_id.add(items.get(index).getObjectId()==null?"0":items.get(index).getObjectId());
+					hire_method_id.add(items.get(index).getObjectId());
 				}
 				if(bean.getHire_field()!=null && bean.getHireTime()!=null 
 						&& bean.getHireMethodId()!=null && bean.getHirePrice()!=null){
@@ -474,8 +505,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", json);
-			MyThread thread = new MyThread(json);
-			thread.start();
+			/*MyThread thread = new MyThread(json);
+			thread.start();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

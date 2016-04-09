@@ -56,26 +56,28 @@ public class ZyCurbAdapter extends BaseAdapter {
 		tv_state = BaseViewHolder.get(convertView, R.id.tv_state);
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
 
-		tv_username.setText(mList.get(position).getAddress() == null ? ""
-				: mList.get(position).getAddress());
-		
-		tv_start.setText(mList.get(position).getHire_start() == null ? ""
-				: mList.get(position).getHire_start());
-		tv_end.setText(mList.get(position).getHire_end() == null ? "" : mList
-				.get(position).getHire_end());
-		tv_order.setText(mList.get(position).getObjectId() == null ? "" : mList
-				.get(position).getObjectId());
-		tv_price.setText(mList.get(position).getPrice() + "");
-		state = mList.get(position).getTrade_state();
-		// 1代表已完成,0代表未完成
-		if (state == 1) {
-			tv_state.setText("已完成");
-			tv_state.setTextColor(Color.parseColor("#76d25a"));
-		} else {
-			tv_state.setText("未完成");
-			tv_state.setTextColor(Color.parseColor("#FF692A"));
+		if(mList.size()>position){
+			tv_username.setText(mList.get(position).getAddress() == null ? ""
+					: mList.get(position).getAddress());
+			
+			tv_start.setText(mList.get(position).getHire_start() == null ? ""
+					: mList.get(position).getHire_start());
+			tv_end.setText(mList.get(position).getHire_end() == null ? "" : mList
+					.get(position).getHire_end());
+			tv_order.setText(mList.get(position).getObjectId() == null ? "" : mList
+					.get(position).getObjectId());
+			tv_price.setText(mList.get(position).getPrice() + "");
+			state = mList.get(position).getTrade_state();
+			// 1代表已完成,0代表未完成
+			if (state == 1) {
+				tv_state.setText("已完成");
+				tv_state.setTextColor(Color.parseColor("#76d25a"));
+			} else {
+				tv_state.setText("未完成");
+				tv_state.setTextColor(Color.parseColor("#FF692A"));
+			}
+			tv_method.setText(mList.get(position).getMethod());
 		}
-		tv_method.setText(mList.get(position).getMethod());
 		return convertView;
 	}
 

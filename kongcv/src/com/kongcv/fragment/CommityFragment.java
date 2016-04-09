@@ -68,8 +68,16 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			case 0:
 				beansList = (ArrayList<ZyCommityAdapterBean>) msg.obj;
 				if(beansList!=null && beansList.size()>0){
-					zydapter = new ZyCommityAdapter(getActivity(), beansList);
-					lv.setAdapter(zydapter);
+					activity.runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							zydapter = new ZyCommityAdapter(getActivity(), beansList);
+							lv.setAdapter(zydapter);
+							zydapter.notifyDataSetChanged();
+						}
+					});
 					lv.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent, View view,
@@ -98,9 +106,16 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 			case 1:
 				beansList2 = (List<ZyCommityAdapterBean>) msg.obj;
 				if(beansList2!=null && beansList2.size()>0){
-					czdapter = new CzCommityAdapter(getActivity(), beansList2);
-					lv.setAdapter(czdapter);
-					lv.setOnItemClickListener(null);
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							czdapter = new CzCommityAdapter(getActivity(), beansList2);
+							lv.setAdapter(czdapter);
+							czdapter.notifyDataSetChanged();
+							lv.setOnItemClickListener(null);
+						}
+					});
 				}
 				break;
 			default:
@@ -110,11 +125,12 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	};
 
 	private View view;
-
+	MineOrdermanagerActivity activity;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.commityfragment, container, false);
+		activity=(MineOrdermanagerActivity) getActivity();
 		initView();
 		refresh();
 		return view;
@@ -174,14 +190,28 @@ public class CommityFragment extends Fragment implements AMapListViewListener {
 	private final OkHttpClient client = new OkHttpClient();
 	private void postHttp(String json, final int i) {
 		if(beansList!=null){
-			beansList.clear();
-			zydapter = new ZyCommityAdapter(getActivity(), beansList);
-			zydapter.notifyDataSetChanged();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					beansList.clear();
+				//	zydapter = new ZyCommityAdapter(getActivity(), beansList);
+					zydapter.notifyDataSetChanged();
+					lv.setOnItemClickListener(null);
+				}
+			});
 		}
 		if(beansList2!=null){
-			beansList2.clear();
-			czdapter = new CzCommityAdapter(getActivity(), beansList2);
-			czdapter.notifyDataSetChanged();
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					beansList2.clear();
+				//	czdapter = new CzCommityAdapter(getActivity(), beansList2);
+					czdapter.notifyDataSetChanged();
+					lv.setOnItemClickListener(null);
+				}
+			});
 		}
 		
 		/*if(i==0){
