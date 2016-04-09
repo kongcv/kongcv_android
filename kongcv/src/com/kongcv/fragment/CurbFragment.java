@@ -1,25 +1,17 @@
 package com.kongcv.fragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +23,7 @@ import com.kongcv.ImageRun.GetImage;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.DetailsActivity;
 import com.kongcv.activity.MineOrdermanagerActivity;
-import com.kongcv.activity.LogoActivity.ModeAndObjId;
 import com.kongcv.adapter.CzCommityAdapter;
-import com.kongcv.adapter.ZyCommityAdapter;
 import com.kongcv.adapter.ZyCurbAdapter;
 import com.kongcv.global.Information;
 import com.kongcv.global.ZyCommityAdapterBean;
@@ -70,15 +60,9 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			case 0:
 				beansList = (List<ZyCommityAdapterBean>) msg.obj;
 				if (beansList != null && beansList.size() > 0) {
-					activity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							zydapter = new ZyCurbAdapter(getActivity(), beansList);
-							lv.setAdapter(zydapter);
-							zydapter.notifyDataSetChanged();
-						}
-					});
+					zydapter = new ZyCurbAdapter(getActivity(), beansList);
+					lv.setAdapter(zydapter);
+					zydapter.notifyDataSetChanged();
 					lv.setOnItemClickListener(new OnItemClickListener() {
 						@Override
 						public void onItemClick(AdapterView<?> parent,
@@ -108,17 +92,21 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			case 1:
 				beansList2 = (ArrayList<ZyCommityAdapterBean>) msg.obj;
 				if (beansList2 != null && beansList2.size() > 0) {
-					activity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							czdapter = new CzCommityAdapter(getActivity(), beansList2);
-							lv.setAdapter(czdapter);
-							czdapter.notifyDataSetChanged();
-							lv.setOnItemClickListener(null);
-						}
-					});
+					czdapter = new CzCommityAdapter(getActivity(), beansList2);
+					lv.setAdapter(czdapter);
+					czdapter.notifyDataSetChanged();
+					lv.setOnItemClickListener(null);
 				}
+				break;
+			case 2:
+				beansList.clear();
+				zydapter.notifyDataSetChanged();
+				lv.setOnItemClickListener(null);
+				break;
+			case 3:
+				beansList2.clear();
+				czdapter.notifyDataSetChanged();
+				lv.setOnItemClickListener(null);
 				break;
 			default:
 				break;
@@ -165,46 +153,8 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			return null;
 		}
 	}
-	private final OkHttpClient client = new OkHttpClient();
 	private void getCurbOrCommInfo(String jsonStr, final int i) {
 		// TODO Auto-generated method stub
-		if(beansList!=null){
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					beansList.clear();
-			//		zydapter=new ZyCurbAdapter(getActivity(), beansList);
-					zydapter.notifyDataSetChanged();
-					lv.setOnItemClickListener(null);
-				}
-			});
-		}
-		if(beansList2!=null){
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					beansList2.clear();
-				//	czdapter=new CzCommityAdapter(getActivity(), beansList2);
-					czdapter.notifyDataSetChanged();
-					lv.setOnItemClickListener(null);
-				}
-			});
-		}
-		/*if(i==0){
-			if(beansList!=null){
-				beansList.clear();
-				zydapter=new ZyCurbAdapter(getActivity(), beansList);
-				zydapter.notifyDataSetChanged();
-			}
-		}else{
-			if(beansList2!=null){
-				beansList2.clear();
-				czdapter=new CzCommityAdapter(getActivity(), beansList2);
-				czdapter.notifyDataSetChanged();
-			}
-		}*/
 		try {
 			String doHttpsPost = PostCLientUtils.doHttpsPost(Information.KONGCV_GET_TRADE_LIST, jsonStr);
 			if (i == 0) {
@@ -249,9 +199,6 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
-				if(beansList!=null){
-					beansList.clear();
-				}
 				beansList = new ArrayList<ZyCommityAdapterBean>();
 				for (int i = 0; i < array.length(); i++) {
 					mCommBean = new ZyCommityAdapterBean();

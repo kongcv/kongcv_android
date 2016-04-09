@@ -505,8 +505,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", json);
-			/*MyThread thread = new MyThread(json);
-			thread.start();*/
+			MyThread thread = new MyThread(json);
+			thread.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -3,11 +3,13 @@ package com.kongcv.activity;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,14 +44,16 @@ public class MineInfofeedBack extends Activity implements OnClickListener{
 		initView();
 	}
 
-
+	
 	private void initView() {
 		bt_send=(Button) findViewById(R.id.bt_send);
 		bt_send.setOnClickListener(this);
 		et_infomationfeed=(EditText) findViewById(R.id.et_infomationfeed);
 		iv_back=(ImageView) findViewById(R.id.iv_back);
 		iv_back.setOnClickListener(this);
-		
+	//	et_infomationfeed.setFocusable(true);
+	/*	InputMethodManager imm = (InputMethodManager)MineInfofeedBack.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);*/
 	}
 
 	@Override

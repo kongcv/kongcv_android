@@ -72,8 +72,9 @@ public class CzCommityAdapter extends BaseAdapter implements OnClickListener {
 		tv_method = BaseViewHolder.get(convertView, R.id.tv_method);
 		iv_bohao = BaseViewHolder.get(convertView, R.id.iv_bohao);
 		iv_dingwei = BaseViewHolder.get(convertView, R.id.iv_dingwei);
+		iv_bohao.setTag(position);
 		iv_bohao.setOnClickListener(this);
-		
+		iv_bohao.setVisibility(View.VISIBLE);
 			((Activity) mContext).runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
