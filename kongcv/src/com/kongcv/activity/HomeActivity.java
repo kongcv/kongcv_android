@@ -74,6 +74,7 @@ public class HomeActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode != RESULT_CANCELED){
 			Bundle bundle = data.getBundleExtra("bundle");
 			if (bundle != null) {
 				bean = (MineCarmanagerBean) bundle.getSerializable(
@@ -87,6 +88,7 @@ public class HomeActivity extends FragmentActivity implements
 					CWGL=2;
 				}
 			}
+		}
 	}
 	private void initLocation() {
 		mLocationManger = LocationManagerProxy
