@@ -74,7 +74,6 @@ public class HomeActivity extends FragmentActivity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-			if(data.hasExtra("bundle"));
 			Bundle bundle = data.getBundleExtra("bundle");
 			if (bundle != null) {
 				bean = (MineCarmanagerBean) bundle.getSerializable(

@@ -25,11 +25,6 @@ public class PublishTypeAdapter extends BaseAdapter {
 	public interface  UpdateList {
 		public void deteleList(ArrayList<TypeBean> items);
 	}
-	public PublishTypeAdapter(Context context, ArrayList<TypeBean> item) {
-		super();
-		this.context=context;
-		this.items=item;
-	}
 	UpdateList list;
 	public PublishTypeAdapter(Context context, ArrayList<TypeBean> item,UpdateList updateList) {
 		super();
@@ -105,7 +100,11 @@ public class PublishTypeAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				openedItems.get(position).close(true);
+				if(openedItems.size()>position){
+					openedItems.get(position).close(true);
+				}else{
+					openedItems.get(0).close(true);
+				}
 			}
 		});
 		holder.mDelete.setOnClickListener(new OnClickListener() {

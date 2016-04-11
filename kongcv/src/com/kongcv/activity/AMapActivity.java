@@ -605,15 +605,17 @@ public class AMapActivity extends FragmentActivity implements
 	}
 
 	//private double price;
-	private String price;
+	private String price,object;
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
 		if (position != 0) {
 			if (SearchActivity.latLng == null) {
-				ArrayList data = (ArrayList) beanList.getObjList();
-				final String object = (String) data.get(position - 1);
+				if(beanList.getObjList()!=null){
+					ArrayList data = (ArrayList) beanList.getObjList();
+					object = (String) data.get(position - 1);
+				}
 				if (numCheck != 2) {
 					price = priceList.get(position - 1).toString();
 				}
