@@ -13,7 +13,7 @@
 	<classpathentry exported="true" kind="lib" path="libs/okhttp-3.2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/okio-1.6.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/umeng-analytics-v5.6.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/AMap_3DMap_v2.6.0_20150914.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/AMap_3DMap_V3.3.0_20160331.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

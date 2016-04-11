@@ -11,7 +11,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -56,7 +55,6 @@ import com.kongcv.global.ZyCommityAdapterBean;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.Data;
 import com.kongcv.utils.DateUtils;
-import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
@@ -103,7 +101,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	 */
 	private String strExtra, CurbMineReceiver;
 	private ZyCommityAdapterBean mCommBean = null;
-
+	private boolean flagCheckState=false;
 	private void getModeAndParkId() {
 		// TODO Auto-generated method stub
 		Bundle arguments = getArguments();
@@ -115,7 +113,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		CurbMineReceiver = arguments.getString("CurbMineReceiver");// 我收到的
 		mCommBean = (ZyCommityAdapterBean) arguments
 				.getSerializable("mCommBean");// 订单管理 跳转过来的
-
 		if (strExtra != null) {
 			visiblePhone2(strExtra);
 		}
@@ -136,8 +133,10 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					LastTradeId = mCommBean.getObjectId();
 					btnInform.setVisibility(View.GONE);
 					btnPayTo.setVisibility(View.VISIBLE);
-					btnPayTo.setOnClickListener(this);
 					tv_reserveOrpay.setText("差额");
+					btnPayTo.setOnClickListener(this);
+					if(mCommBean.getCheck_state()!=2)
+					flagCheckState=true;
 				}
 			}
 		}
@@ -289,6 +288,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 								CurbJpushBean.class);
 						curbStart.setText(fromJson.getHire_start());
 						curbEnd.setText(fromJson.getHire_end());
+						
+						LastTradeId = fromJson.getTrade_id();
 					}
 					if (stringExtra != null) {
 						Gson gson = new Gson();
@@ -296,6 +297,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 								CurbJpushBean.class);
 						curbStart.setText(fromJson.getHire_start());
 						curbEnd.setText(fromJson.getHire_end());
+						
+						LastTradeId = fromJson.getTrade_id();
 					}
 					if (mineSendFragment != null) {
 						Gson gson = new Gson();
@@ -303,6 +306,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 								mineSendFragment, CurbJpushBean.class);
 						curbStart.setText(fromJson.getHire_start());
 						curbEnd.setText(fromJson.getHire_end());
+						
+						LastTradeId = fromJson.getTrade_id();
 					}
 					payBean = new PayOneBean();
 					List<String> hire_time = result.getHire_time();
@@ -731,87 +736,91 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		case R.id.curb_pay:// 支付
 			// 获取订单号 接着跳转到支付页面
 			try {
-				if (LastTradeId != null) {
-					Message msg = mHandler.obtainMessage();
-					msg.what = 1;
-					msg.obj = LastTradeId;
-					mHandler.sendMessage(msg);
-				} else {
-					if (payBean != null) {
-						Gson gson = new Gson();
-						JpushBean fromJson = null;
-						if (stringExtra != null) {
-							fromJson = gson.fromJson(stringExtra,
-									JpushBean.class);
-						} else if (mineSendFragment != null) {
-							fromJson = gson.fromJson(mineSendFragment,
-									JpushBean.class);
-						}
-						if (fromJson != null) {
-							String fromJsonStart = fromJson.getHire_start();
-							String fromJsonEnd = fromJson.getHire_end();
-							if (fromJsonStart != null && fromJsonEnd != null
-									&& !fromJsonStart.isEmpty()
-									&& !fromJsonEnd.isEmpty()) {
-								String days = DateUtils.getDays(
-										fromJson.getHire_start(),
-										fromJson.getHire_end(), true);
-								int dayInt = 0;
-								if (days != null && !days.isEmpty()) {
-									dayInt = Integer.parseInt(days) + 1;
-								}
-								if (dayInt > 0) {
-									payBean.setExtra_flag("1");
+				if(!flagCheckState){
+					if (LastTradeId != null) {
+						Message msg = mHandler.obtainMessage();
+						msg.what = 1;
+						msg.obj = LastTradeId;
+						mHandler.sendMessage(msg);
+					} else {
+						if (payBean != null) {
+							Gson gson = new Gson();
+							JpushBean fromJson = null;
+							if (stringExtra != null) {
+								fromJson = gson.fromJson(stringExtra,
+										JpushBean.class);
+							} else if (mineSendFragment != null) {
+								fromJson = gson.fromJson(mineSendFragment,
+										JpushBean.class);
+							}
+							if (fromJson != null) {
+								String fromJsonStart = fromJson.getHire_start();
+								String fromJsonEnd = fromJson.getHire_end();
+								if (fromJsonStart != null && fromJsonEnd != null
+										&& !fromJsonStart.isEmpty()
+										&& !fromJsonEnd.isEmpty()) {
+									String days = DateUtils.getDays(
+											fromJson.getHire_start(),
+											fromJson.getHire_end(), true);
+									int dayInt = 0;
+									if (days != null && !days.isEmpty()) {
+										dayInt = Integer.parseInt(days) + 1;
+									}
+									if (dayInt > 0) {
+										payBean.setExtra_flag("1");
+									} else {
+										payBean.setExtra_flag("0");
+									}
 								} else {
 									payBean.setExtra_flag("0");
 								}
 							} else {
-								payBean.setExtra_flag("0");
-							}
-						} else {
-							String start = curbStart.getText().toString();
-							String end = curbEnd.getText().toString();
-							if (!start.equals(" 年  月  日")
-									&& !end.equals(" 年  月  日")) {
-								String days = DateUtils.getDays(start, end,
-										true);
-								int dayInt = Integer.parseInt(days) + 1;
-								if (dayInt > 0) {
-									payBean.setExtra_flag("1");
+								String start = curbStart.getText().toString();
+								String end = curbEnd.getText().toString();
+								if (!start.equals(" 年  月  日")
+										&& !end.equals(" 年  月  日")) {
+									String days = DateUtils.getDays(start, end,
+											true);
+									int dayInt = Integer.parseInt(days) + 1;
+									if (dayInt > 0) {
+										payBean.setExtra_flag("1");
+									} else {
+										payBean.setExtra_flag("0");
+									}
 								} else {
 									payBean.setExtra_flag("0");
 								}
-							} else {
-								payBean.setExtra_flag("0");
-							}
 
-						}
-						hire_method_id = fromJson.getHire_method_id();
-						String hire_method = result.getHire_method();
-						JSONArray array;
-						array = new JSONArray(hire_method);
-						String string = null;
-						for (int i = 0; i < array.length(); i++) {
-							if (array.getJSONObject(i).getString("objectId")
-									.equals(hire_method_id)) {
-								string = result.getHire_price().get(i);
-								payBean.setUnit_price(string);//
 							}
+							hire_method_id = fromJson.getHire_method_id();
+							String hire_method = result.getHire_method();
+							JSONArray array;
+							array = new JSONArray(hire_method);
+							String string = null;
+							for (int i = 0; i < array.length(); i++) {
+								if (array.getJSONObject(i).getString("objectId")
+										.equals(hire_method_id)) {
+									string = result.getHire_price().get(i);
+									payBean.setUnit_price(string);//
+								}
+							}
+							String a[] = string.split("/");
+							if (a[1].equals("小时")) {
+								payBean.setHire_start("");
+								payBean.setHire_end("");
+							} else {
+								payBean.setHire_start(fromJson.getHire_start());
+								payBean.setHire_end(fromJson.getHire_end());
+							}
+							payBean.setHire_method_id(hire_method_id);
+							payBean.setPrice(fromJson.getPrice());
+							payBean.setCurb_rate(rate);
+							String json = gson.toJson(payBean);
+							doPay(json);
 						}
-						String a[] = string.split("/");
-						if (a[1].equals("小时")) {
-							payBean.setHire_start("");
-							payBean.setHire_end("");
-						} else {
-							payBean.setHire_start(fromJson.getHire_start());
-							payBean.setHire_end(fromJson.getHire_end());
-						}
-						payBean.setHire_method_id(hire_method_id);
-						payBean.setPrice(fromJson.getPrice());
-						payBean.setCurb_rate(rate);
-						String json = gson.toJson(payBean);
-						doPay(json);
 					}
+				}else{
+					ToastUtil.show(getActivity(), "计时过程中还不能支付!");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -1007,10 +1016,10 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						+ tvAddressDetail.getText().toString());// 地址
 				if (!curbStart.getText().toString().equals(" 年  月  日")
 						&& !curbEnd.getText().toString().equals(" 年  月  日")) {
-					extras.put("hire_start", curbStart.getText().toString()
-							+ " 00:00:00");// 出租截止时间和日期
-					extras.put("hire_end", curbEnd.getText().toString()
-							+ " 23:59:59");
+						extras.put("hire_start", curbStart.getText().toString()
+								+ " 00:00:00");// 出租截止时间和日期
+						extras.put("hire_end", curbEnd.getText().toString()
+								+ " 23:59:59");
 				} else {
 					extras.put("hire_start", "");// 出租截止时间和日期
 					extras.put("hire_end", "");

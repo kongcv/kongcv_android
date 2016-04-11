@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,8 +18,11 @@ import cn.jpush.android.api.JPushInterface;
 
 import com.kongcv.MyApplication;
 import com.kongcv.R;
+import com.kongcv.global.Information;
 import com.kongcv.utils.ACacheUtils;
 import com.kongcv.utils.JsonStrUtils;
+import com.kongcv.utils.PostCLientUtils;
+import com.kongcv.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
 public class WriteCommentActivity extends Activity implements OnClickListener,
@@ -88,9 +92,7 @@ public class WriteCommentActivity extends Activity implements OnClickListener,
 			obj.put("grade", ratingBar.getAlpha());
 			obj.put("mode", i.getStringExtra("MODE"));
 			Log.v("评论的数据是JsonStrUtils.JsonStr(obj)", JsonStrUtils.JsonStr(obj));
-			
-			
-			/*String doHttpsPost = PostCLientUtils.doHttpsPost(
+			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_COMMENT,
 					JsonStrUtils.JsonStr(obj));
 			Log.v("评论完了获取到的数据是doHttpsPost", doHttpsPost);
@@ -98,7 +100,7 @@ public class WriteCommentActivity extends Activity implements OnClickListener,
 			String str = object.getString("result");
 			JSONObject result= new JSONObject(str);
 			String state = result.getString("state");
-			if("ok".equals("state")){
+			if("ok".equals(state)){
 				Looper.prepare();
 				ToastUtil.show(getBaseContext(), "提交评论成功！");
 				Looper.loop();
@@ -106,7 +108,7 @@ public class WriteCommentActivity extends Activity implements OnClickListener,
 				Looper.prepare();
 				ToastUtil.show(getBaseContext(), "提交评论失败！");
 				Looper.loop();
-			}*/
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

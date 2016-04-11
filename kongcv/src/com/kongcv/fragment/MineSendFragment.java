@@ -165,9 +165,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 			if(array!=null && array.length()>0){
 				InfoBean bean;
 				JpushBean jpushBean = null;
-				if (mList != null) {
-					mList.clear();
-				}
 				mList = new ArrayList<InfoBean>();
 				jpushBeans = new ArrayList<JpushBean>();
 				for (int i = 0; i < array.length(); i++) {

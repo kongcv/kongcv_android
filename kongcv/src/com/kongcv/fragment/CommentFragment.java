@@ -1,12 +1,10 @@
 package com.kongcv.fragment;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -14,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,10 +32,7 @@ import com.kongcv.R;
 import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.activity.WriteCommentActivity;
 import com.kongcv.adapter.CommentAdapter;
-import com.kongcv.calendar.PayDialog;
-import com.kongcv.calendar.PayDialog.MyPayDialogListener;
 import com.kongcv.global.Information;
-import com.kongcv.global.JpushBean;
 import com.kongcv.global.JsonRootBean;
 import com.kongcv.global.Result;
 import com.kongcv.global.User;
@@ -67,10 +61,11 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	private TextView mUser;
 	private TextView txtFind;
 	public static String[] KEY = new String[] { "userName", "myratingbar",
-		"userImage", "tvTime", "tvSay" };
+			"userImage", "tvTime", "tvSay" };
 	private ImageLoader imageLoader;
 	private RequestQueue mQueue;
 	private CommentAdapter mAdapter;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -100,13 +95,15 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 
 		listData = new ArrayList<Map<String, Object>>();
 		listView.setAMapListViewListener(this);
-		
+
 		says = (Button) view.findViewById(R.id.says);
 		says.setOnClickListener(this);
 	}
+
 	private String mode;
 	private String park_id;
-	private int i=0;
+	private int i = 0;
+
 	private void initDate() {
 		Bundle arguments = getArguments();
 		mode = arguments.getString("mode");
@@ -114,6 +111,14 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 		ReadInfo task2 = new ReadInfo();
 		task2.execute(i);
 	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		ReadInfo task2 = new ReadInfo();
+		task2.execute(i);
+	}
+	
 	/**
 	 * 获取评论数据
 	 */
@@ -122,12 +127,12 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 		protected Void doInBackground(Integer... params) {
 			// TODO Auto-generated method stub
 			Integer skip = params[0];
-			skip=skip*10;
+			skip = skip * 10;
 			readInfo(skip);
 			return null;
 		}
 	}
-	
+
 	private void readInfo(Integer integer) {
 		// TODO Auto-generated method stub
 		try {
@@ -140,9 +145,10 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 					Information.KONGCV_GET_COMMENT,
 					JsonStrUtils.JsonStr(object));
 			Gson gson = new Gson();
-			JsonRootBean rootBean = gson.fromJson(doHttpsPost, JsonRootBean.class);
+			JsonRootBean rootBean = gson.fromJson(doHttpsPost,
+					JsonRootBean.class);
 			List<Result> result = rootBean.getResult();
-	
+
 			Message msg = handler.obtainMessage();
 			msg.what = 0;
 			msg.obj = result;
@@ -152,21 +158,23 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 			e.printStackTrace();
 		}
 	}
+
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
 				@SuppressWarnings("unchecked")
-				List<Result> result=(List<Result>) msg.obj;
-				if(result!=null && result.size()>0){
-					if(listData!=null)
-					listData.clear();
+				List<Result> result = (List<Result>) msg.obj;
+				if (result != null && result.size() > 0) {
+					if (listData != null)
+						listData.clear();
 					getInfo(result);
-				}else{
-					mAdapter = new CommentAdapter(getActivity(), listData,imageLoader);
+				} else {
+					mAdapter = new CommentAdapter(getActivity(), listData,
+							imageLoader);
 					listView.setAdapter(mAdapter);
-					if(i!=0){
+					if (i != 0) {
 						ToastUtil.show(getActivity(), "没有数据啦！");
 					}
 				}
@@ -176,40 +184,36 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 			}
 		}
 	};
-	private void getInfo(List<Result> result){
-		Gson gson=new Gson();
+
+	private void getInfo(List<Result> result) {
+		Gson gson = new Gson();
 		HashMap<String, Object> map;
-		String urlImage=null;
-		for(int i=0;i<result.size();i++){
-			map=new HashMap<String, Object>();
-			if(result.get(i).getUser()!=null){
-			String user = result.get(i).getUser();
-			User userBean = gson.fromJson(user, User.class);
-			String username = userBean.getUsername();
-			map.put("userName",username);
-			ImageUser image = userBean.getImage();
-//			String createdat = userBean.getCreatedat();
-//			if(createdat!=null){
-//				String gtmToLocal = GTMDateUtil.GTMToLocal(createdat, true);
-//				map.put("tvTime", gtmToLocal);//时间
-//			}
-			if(user.contains("url")){
-				urlImage=image.getUrl();
+		String urlImage = null;
+		for (int i = 0; i < result.size(); i++) {
+			map = new HashMap<String, Object>();
+			if (result.get(i).getUser() != null) {
+				String user = result.get(i).getUser();
+				User userBean = gson.fromJson(user, User.class);
+				String username = userBean.getUsername();
+				map.put("userName", username);
+				ImageUser image = userBean.getImage();
+				if (user.contains("url")) {
+					urlImage = image.getUrl();
+				}
 			}
-			}
-			String gtmToLocal =	GTMDateUtil.GTMToLocal(result.get(i).getCreatedAt(),true);
-			map.put("tvTime", gtmToLocal);//时间
-			map.put("tvSay", result.get(i).getComment());//评论
-			
-			map.put("myratingbar",(float) result.get(i).getGrade());//星评论
-			map.put("userImage",urlImage);//图片
+			String gtmToLocal = GTMDateUtil.GTMToLocal(result.get(i)
+					.getCreatedAt(), true);
+			map.put("tvTime", gtmToLocal);// 时间
+			map.put("tvSay", result.get(i).getComment());// 评论
+
+			map.put("myratingbar", (float) result.get(i).getGrade());// 星评论
+			map.put("userImage", urlImage);// 图片
 			listData.add(map);
 		}
-		mAdapter = new CommentAdapter(getActivity(), listData,imageLoader);
+		mAdapter = new CommentAdapter(getActivity(), listData, imageLoader);
 		listView.setAdapter(mAdapter);
 	}
-	
-	
+
 	@Override
 	public void onRatingChanged(RatingBar ratingBar, float rating,
 			boolean fromUser) {
@@ -217,7 +221,6 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	}
 
 	@Override
-	
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
 	}
@@ -232,8 +235,9 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.says://发表评论
-			Intent intent=new Intent(getActivity(), WriteCommentActivity.class);
+		case R.id.says:// 发表评论
+			Intent intent = new Intent(getActivity(),
+					WriteCommentActivity.class);
 			intent.putExtra("MODE", mode);
 			intent.putExtra("park_id", park_id);
 			startActivity(intent);
@@ -242,6 +246,7 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 			break;
 		}
 	}
+
 	/**
 	 * 刷新加载数据
 	 */
@@ -254,17 +259,32 @@ public class CommentFragment extends Fragment implements AMapListViewListener,
 
 	// 刷新
 	public void onRefresh() {
-		i++;
-		ReadInfo task2 = new ReadInfo();
-		task2.execute(i);
-		onLoad();
+		mHandler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				i = 0;
+				ReadInfo task2 = new ReadInfo();
+				task2.execute(i);
+				onLoad();
+			}
+		}, 2000);
 	}
 
 	// 加载更多
 	public void onLoadMore() {
-		i++;
-		ReadInfo task2 = new ReadInfo();
-		task2.execute(i);
-		onLoad();
+
+		mHandler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				i++;
+				ReadInfo task2 = new ReadInfo();
+				task2.execute(i);
+				onLoad();
+			}
+		}, 2000);
 	}
 }

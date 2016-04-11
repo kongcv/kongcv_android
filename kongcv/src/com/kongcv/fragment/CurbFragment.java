@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private CzCommityAdapter czdapter;
 	private View view;
 	private double price,money;
-	private int trade_state;
+	private int trade_state,check_state;
 	private List<ZyCommityAdapterBean> beansList;
 	private List<ZyCommityAdapterBean> beansList2;
 	private String[] str = new String[] { "customer", "hirer" };
@@ -196,6 +197,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 	private void doResponse(String string) {
 		// TODO Auto-generated method stub
 		try {
+			Log.d("doResponse", string+"");
 			JSONObject object = new JSONObject(string);
 			JSONArray array = object.getJSONArray("result");
 			if (array != null && array.length() > 0) {
@@ -220,6 +222,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					handsel_state=array.getJSONObject(i).getInt("handsel_state");//0没有定金1支付差额"trade_state": 1,
 					// 价钱
 					money = array.getJSONObject(i).getDouble("money");
+					check_state = array.getJSONObject(i).getInt("check_state");
 					price = array.getJSONObject(i).getDouble("price");
 					// 订单号
 					objectId = array.getJSONObject(i).getString("objectId");
@@ -246,6 +249,7 @@ public class CurbFragment extends Fragment implements AMapListViewListener {
 					mCommBean.setDevice_type(device_type);
 					
 					mCommBean.setMoney(money);
+					mCommBean.setCheck_state(check_state);
 					mCommBean.setPrice(price);
 					mCommBean.setObjectId(objectId);
 					mCommBean.setPark_curb(park_curb);

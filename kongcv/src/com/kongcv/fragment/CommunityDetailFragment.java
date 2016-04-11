@@ -217,7 +217,6 @@ public class CommunityDetailFragment extends Fragment implements
 		}
 	}
 
-	
 	private void visiblePhon3(String stringExtra) {
 		Gson gson = new Gson();
 		JpushBean fromJson = gson.fromJson(stringExtra, JpushBean.class);
@@ -230,9 +229,10 @@ public class CommunityDetailFragment extends Fragment implements
 					phoneList);
 			mListPhone.setAdapter(phoneNumberAdapter);
 			phoneNumberAdapter.notifyDataSetChanged();
-			ToastUtil.fixListViewHeight(mListPhone,-1);
+			ToastUtil.fixListViewHeight(mListPhone, -1);
 		}
 	}
+
 	/**
 	 * 出租人接收设置电话号码求租人可见
 	 */
@@ -248,7 +248,7 @@ public class CommunityDetailFragment extends Fragment implements
 					phoneList);
 			mListPhone.setAdapter(phoneNumberAdapter);
 			phoneNumberAdapter.notifyDataSetChanged();
-			ToastUtil.fixListViewHeight(mListPhone,-1);
+			ToastUtil.fixListViewHeight(mListPhone, -1);
 		}
 	}
 
@@ -324,13 +324,12 @@ public class CommunityDetailFragment extends Fragment implements
 				String a[] = s.split("&");
 				mTxtAddress.setText(a[0]);
 				detail_txt_yu.setText(a[1]);
-			
-				
-				txt_start.setText(GTMDateUtil.GTMToLocal(result
-						.getHire_start().getIso(), false));
-				txt_end.setText(GTMDateUtil.GTMToLocal(result
-						.getHire_end().getIso(), false));
-				if(mCommBean!=null){
+
+				txt_start.setText(GTMDateUtil.GTMToLocal(result.getHire_start()
+						.getIso(), false));
+				txt_end.setText(GTMDateUtil.GTMToLocal(result.getHire_end()
+						.getIso(), false));
+				if (mCommBean != null) {
 					time_pay_start.setText(mCommBean.getHire_start());
 					time_pay_end.setText(mCommBean.getHire_end());
 				}
@@ -341,7 +340,7 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_end.setVisibility(View.VISIBLE);
 					time_pay_start.setText(fromJson.getHire_start());
 					time_pay_end.setText(fromJson.getHire_end());
-					
+
 					txt_start.setText(fromJson.getHire_start());
 					txt_end.setText(fromJson.getHire_end());
 				}
@@ -378,7 +377,7 @@ public class CommunityDetailFragment extends Fragment implements
 				Data.putData("hire_method", result);
 				setAdapter(hire_time, hire_price, hire_method);
 				user = result.getUser();
-				if(user!=null){
+				if (user != null) {
 					gson = new Gson();
 					userBean = gson.fromJson(user, UserBean.class);
 					/**
@@ -386,17 +385,17 @@ public class CommunityDetailFragment extends Fragment implements
 					 */
 					payOneBean.setUser_id(mCache.getAsString("user_id"));
 					if (user.contains("license_plate")) {
-						payOneBean.setLicense_plate(userBean.getLicense_plate());// 车牌号
+						payOneBean
+								.setLicense_plate(userBean.getLicense_plate());// 车牌号
 					}
 					payOneBean.setHirer_id(userBean.getObjectId());
 				}
 				payOneBean.setPark_id(park_id);
 				payOneBean.setMode(mode);// 社区道路这个值需要传递
 				String days = DateUtils.getDays(GTMDateUtil.GTMToLocal(result
-						.getHire_start().getIso(), true),
-						GTMDateUtil.GTMToLocal(result
-								.getHire_end().getIso(), true), true);
-				
+						.getHire_start().getIso(), true), GTMDateUtil
+						.GTMToLocal(result.getHire_end().getIso(), true), true);
+
 				int dayInt = Integer.parseInt(days) + 1;
 				if (dayInt > 0) {
 					payOneBean.setExtra_flag("1");
@@ -421,10 +420,10 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
-					
-					if(stringExtra!=null){
+
+					if (stringExtra != null) {
 						visiblePhone(stringExtra);
-					}else{
+					} else {
 						visiblePhon3(mineSendFragment);
 					}
 				}
@@ -466,7 +465,7 @@ public class CommunityDetailFragment extends Fragment implements
 				} else if (CurbMineReceiver != null) {
 					bundle.putString("stringExtra", CurbMineReceiver);
 				}
-				
+
 				if (mCommBean != null) {
 					bundle.putSerializable("mCommBean", mCommBean);
 				}
@@ -549,22 +548,22 @@ public class CommunityDetailFragment extends Fragment implements
 				}
 			}
 			if (mCommBean == null) {
-				if(CurbMineReceiver!=null){
+				if (CurbMineReceiver != null) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put(KEY[0], hire_name.get(index));// 地点
 					map.put(KEY[1], hire_time.get(index).equals("0") ? ""
 							: hire_time.get(index));// 事件a
 					map.put(KEY[2], hire_price.get(index));// 价格
 					dataList.add(map);
-				}else{
-					if(strExtra!=null){
+				} else {
+					if (strExtra != null) {
 						Map<String, Object> map = new HashMap<String, Object>();
 						map.put(KEY[0], hire_name.get(index));// 地点
 						map.put(KEY[1], hire_time.get(index).equals("0") ? ""
 								: hire_time.get(index));// 事件a
 						map.put(KEY[2], hire_price.get(index));// 价格
 						dataList.add(map);
-					}else{
+					} else {
 						for (int i = 0; i < hire_price.size(); i++) {
 							Map<String, Object> map = new HashMap<String, Object>();
 							map.put(KEY[0], hire_name.get(i));// 地点
@@ -583,7 +582,7 @@ public class CommunityDetailFragment extends Fragment implements
 				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
-			
+
 			if (dataList != null) {
 				adapter = new DetailFragmentAdapter(getActivity());
 				adapter.setDataSource(dataList);
@@ -687,7 +686,7 @@ public class CommunityDetailFragment extends Fragment implements
 						}
 						data.setHire_start(jpushBean3.getHire_start());
 						data.setHire_end(jpushBean3.getHire_end());
-						
+
 						data.setPrice(jpushBean3.getPrice());
 						String json = gson3.toJson(data);
 						doPay(json);
@@ -994,22 +993,25 @@ public class CommunityDetailFragment extends Fragment implements
 	 */
 	private void doPay(String object) {
 		// TODO Auto-generated method stub
-		/*MyThread myThread = new MyThread(object);
-		myThread.start();*/
-		
-		okhttp3.Request request=new okhttp3.Request.Builder()
-		  .url(Information.KONGCV_INSERT_TRADEDATA)
-		  .headers(Information.getHeaders())
-	      .post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, object))
-	      .build();
-		
+		/*
+		 * MyThread myThread = new MyThread(object); myThread.start();
+		 */
+
+		okhttp3.Request request = new okhttp3.Request.Builder()
+				.url(Information.KONGCV_INSERT_TRADEDATA)
+				.headers(Information.getHeaders())
+				.post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN,
+						object)).build();
+
 		client.newCall(request).enqueue(new okhttp3.Callback() {
 			@Override
-			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
+			public void onResponse(Call arg0, okhttp3.Response response)
+					throws IOException {
 				// TODO Auto-generated method stub
-				if(response.isSuccessful()){
+				if (response.isSuccessful()) {
 					try {
-						JSONObject obj = new JSONObject(response.body().string());
+						JSONObject obj = new JSONObject(response.body()
+								.string());
 						String result = obj.getString("result");
 						JSONObject object = new JSONObject(result);
 						String state = object.getString("state");
@@ -1030,12 +1032,13 @@ public class CommunityDetailFragment extends Fragment implements
 					}
 				}
 			}
+
 			@Override
 			public void onFailure(Call arg0, IOException arg1) {
 				// TODO Auto-generated method stub
 				Log.e("KONGCV_INSERT_TRADEDATA", arg1.toString());
 			}
-			});
+		});
 	}
 
 	public class MyThread extends Thread {
@@ -1125,8 +1128,11 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("hire_method_field", field);
 			extras.put("address", mTxtAddress.getText().toString()
 					+ detail_txt_yu.getText().toString());
-			extras.put("hire_start", time_pay_start.getText().toString()+" 00:00:00"); // 事件和日期
-			extras.put("hire_end", time_pay_end.getText().toString()+" 23:59:59");
+
+			extras.put("hire_start", time_pay_start.getText().toString()
+					+ " 00:00:00"); // 事件和日期
+			extras.put("hire_end", time_pay_end.getText().toString()
+					+ " 23:59:59");
 			extras.put("own_device_token",
 					JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", "android");

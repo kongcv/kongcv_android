@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -282,7 +283,6 @@ public class SearchPublishActivity extends Activity implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.iv_search:
-			mList.clear();
 			searchButton();
 			break;
 		case R.id.iv_delete:// 删除时清空数据
@@ -410,6 +410,12 @@ public class SearchPublishActivity extends Activity implements
 					poiResult = result;
 					List<PoiItem> poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
 					if (poiItems != null && poiItems.size() > 0) {
+						mList.clear();
+						adapter = new SearchAdapter(SearchPublishActivity.this);
+						adapter.setDataSource(mList);
+						lv.setAdapter(adapter);
+						adapter.notifyDataSetChanged();
+						
 						ArrayList<PoiItem> pois = result.getPois();
 						for (int i = 0; i < pois.size(); i++) {
 							Map<String, Object> map = new HashMap<String, Object>();
@@ -419,6 +425,11 @@ public class SearchPublishActivity extends Activity implements
 							map.put(KEY[3], getCity(result.getPois().get(i)
 									.getCityName()));
 							mList.add(map);
+							Log.d("打印不出数据>>>",result.getPois().get(i).toString()+"<>");
+							Log.d("打印不出数据>>>", result.getPois().get(i)
+									.getCityName()+"<>");
+							Log.d("打印不出数据>>>", getCity(result.getPois().get(i)
+									.getCityName())+"<>");
 						}
 						adapter = new SearchAdapter(SearchPublishActivity.this);
 						adapter.setDataSource(mList);

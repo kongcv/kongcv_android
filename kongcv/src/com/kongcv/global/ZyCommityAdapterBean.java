@@ -27,6 +27,24 @@ public class ZyCommityAdapterBean implements Serializable{
 	private String park_curb;
 	private String device_type;
 	private String device_token;
+	private int check_state;
+	
+	
+	
+	
+	
+	public int getCheck_state() {
+		return check_state;
+	}
+	public void setCheck_state(int check_state) {
+		this.check_state = check_state;
+	}
+	public String getPark_id() {
+		return park_id;
+	}
+	public void setPark_id(String park_id) {
+		this.park_id = park_id;
+	}
 	
 	private String mode;
 	public String getMode() {

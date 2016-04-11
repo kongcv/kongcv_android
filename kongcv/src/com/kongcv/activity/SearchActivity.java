@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -307,6 +305,7 @@ public class SearchActivity extends FragmentActivity implements
 	 * 点击搜索按钮
 	 */
 	public void searchButton() {
+		
 		String newText = txtFind.getText().toString();
 		doSearchQuery(newText);
 	}
@@ -516,6 +515,11 @@ public class SearchActivity extends FragmentActivity implements
 					poiResult = result;
 					List<PoiItem> poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
 					mList.clear();
+					adapter = new SearchAdapter(SearchActivity.this);
+					adapter.setDataSource(mList);
+					lv.setAdapter(adapter);
+					adapter.notifyDataSetChanged();
+					
 					if (poiItems != null && poiItems.size() > 0) {
 						ArrayList<PoiItem> pois = result.getPois();
 						for (int i = 0; i < pois.size(); i++) {
@@ -526,7 +530,8 @@ public class SearchActivity extends FragmentActivity implements
 							map.put(KEY[3], getCity(result.getPois().get(i).getCityName()));
 							mList.add(map);
 						}
-						adapter = new SearchAdapter(SearchActivity.this);
+						Log.d("mList.size()", mList.size()+"<>");
+						//adapter = new SearchAdapter(SearchActivity.this);
 						adapter.setDataSource(mList);
 						lv.setAdapter(adapter);
 						adapter.notifyDataSetChanged();
