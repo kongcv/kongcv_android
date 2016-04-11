@@ -442,6 +442,15 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						tvCurbMoney.setText(jpushBean.getPrice() + "");
 					}
 				}
+				if (mineSendFragment != null) {
+					Gson gson = new Gson();
+					JpushBean jpushBean = gson.fromJson(mineSendFragment,
+							JpushBean.class);
+					if (jpushBean.getHire_method_field().equals(initAdapter)) {
+						index = i;
+						tvCurbMoney.setText(jpushBean.getPrice() + "");
+					}
+				}
 			}
 			if(mCommBean==null){
 				if(CurbMineReceiver!=null){
@@ -933,20 +942,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		}
 		return jsonStr;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * 点击选择
 	 */
