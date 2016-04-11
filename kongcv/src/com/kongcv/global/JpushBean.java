@@ -2,11 +2,22 @@ package com.kongcv.global;
 
 import java.io.Serializable;
 
-public class JpushBean implements Serializable{	private static final long serialVersionUID = 1401634710L;	private String address;	private String park_id;	private double price;
+public class JpushBean implements Serializable{	private static final long serialVersionUID = 1401634710L;
+	private String req_mobile;
+	
+		private String address;	private String park_id;	private double price;
 	private String own_mobile;	private String own_device_type;	private String hire_method_id;
 	private String hire_method_field;	private String message_id;	private String hire_start;	private String own_device_token;	private String hire_end;	private String push_type;	private String mode;
 	public String getAddress() {		return this.address;	}
-	public void setAddress(String address) {		this.address = address;	}
+	public String getReq_mobile() {
+		return req_mobile;
+	}
+
+	public void setReq_mobile(String req_mobile) {
+		this.req_mobile = req_mobile;
+	}
+
+	public void setAddress(String address) {		this.address = address;	}
 	public String getPark_id() {		return this.park_id;	}
 	public void setPark_id(String park_id) {		this.park_id = park_id;	}
 	

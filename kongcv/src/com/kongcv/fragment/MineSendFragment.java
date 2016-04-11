@@ -79,7 +79,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 							i.putExtra("getField", f);
 							Gson gson = new Gson();
 							String json = gson.toJson(mListJpush.get(position-1));
-							Log.d("MineSendFragment", json+"<>");
 							i.putExtra("MineSendFragment", json);
 							startActivity(i);// 未处理 跳转到详情页
 						} else if ("已接受".equals(s)) {// 跳转支付页面
@@ -160,6 +159,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 
 	private void doMRun(String str) {
 		try {
+			Log.d("str我发送的>>>", str+"<>");
 			Message msg = mHandler.obtainMessage();
 			JSONObject object = new JSONObject(str);
 			JSONArray array = object.getJSONArray("result");
@@ -175,6 +175,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 					bean = new InfoBean();
 					jpushBean = new JpushBean();
 					int state = array.getJSONObject(i).getInt("state");
+					String req_mobile = array.getJSONObject(i).optString("req_mobile");
 					String hire_method_id = array.getJSONObject(i)
 							.getJSONObject("extras").getString("hire_method_id");
 					String park_id = array.getJSONObject(i).getJSONObject("extras")
@@ -222,6 +223,8 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 					jpushBean.setOwn_device_type(own_device_type);
 					jpushBean.setPrice(price);
 
+					jpushBean.setReq_mobile(req_mobile);
+					
 					bean.setState(status);
 					bean.setHire_method_id(hire_method_id);
 					bean.setPark_id(park_id);

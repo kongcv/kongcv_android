@@ -119,13 +119,12 @@ public class TypeDialog extends Dialog implements TextWatcher,
 							ToastUtil.show(context, "起始时间相同!");
 							return;
 						} else {
+							bean.setDate(startStr+":"+endStr);
 							if (bean.getField() != null
 									&& bean.getMethod() != null
-									&& bean.getObjectId() != null
-									&& bean.getDate() != null) {
+									&& bean.getObjectId() != null) {
 								listener.refreshDate(bean);
 							} else {
-								bean.setDate(startStr+":"+endStr);
 								bean.setMethod(curbMethod.get(0));
 								bean.setObjectId(curbObjectId.get(0));
 								bean.setField(curbField.get(0));

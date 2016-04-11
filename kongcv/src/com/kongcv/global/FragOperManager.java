@@ -78,7 +78,8 @@ public class FragOperManager {
         if (isBackStack) {
             fTransaction.addToBackStack(tag);
         }
-        fTransaction.commit();
+ //       fTransaction.commit();
+        fTransaction.commitAllowingStateLoss();
     }
 
     /**
@@ -124,7 +125,8 @@ public class FragOperManager {
         if (fragment != null) {
             FragmentTransaction transaction = fManager.beginTransaction();
             transaction.hide(fragment);
-            transaction.commit();
+        //    transaction.commit();
+            transaction.commitAllowingStateLoss();
         }
     }
 

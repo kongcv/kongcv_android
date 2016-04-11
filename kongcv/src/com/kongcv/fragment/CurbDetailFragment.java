@@ -111,6 +111,10 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 		strExtra = arguments.getString("stringExtra");
 		CurbMineReceiver=arguments.getString("CurbMineReceiver");//我收到的
 		mCommBean=(ZyCommityAdapterBean) arguments.getSerializable("mCommBean");//订单管理 跳转过来的
+		
+		if(strExtra!=null){
+			visiblePhone2(strExtra);
+		}
 		if(mCommBean!=null){
 			if(mCommBean.getTrade_state()==1){
 				btnInform.setVisibility(View.GONE);
@@ -153,6 +157,21 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			mListPhone.setAdapter(phoneNumberAdapter);
 			phoneNumberAdapter.notifyDataSetChanged();
 		    ToastUtil.fixListViewHeight(mListPhone,-1);
+		}
+	}
+	private void visiblePhone2(String stringExtra) {
+		Gson gson = new Gson();
+		JpushBean fromJson = gson.fromJson(stringExtra, JpushBean.class);
+		String own_mobile = fromJson.getReq_mobile();
+		mListPhone.setVisibility(View.VISIBLE);
+		phoneList = new ArrayList<String>();
+		phoneList.add(own_mobile);
+		if (phoneList != null && phoneList.size() > 0) {
+			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(),
+					phoneList);
+			mListPhone.setAdapter(phoneNumberAdapter);
+			phoneNumberAdapter.notifyDataSetChanged();
+			ToastUtil.fixListViewHeight(mListPhone,-1);
 		}
 	}
 	/**
@@ -325,7 +344,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			case 2:
 				try {
 					String doHttpsPost=(String) msg.obj;
-					Log.d("道边>>>", "道边"+doHttpsPost);
 					JSONObject obj2 = new JSONObject(doHttpsPost);
 					String str = obj2.getString("result");
 					JSONObject objStr = new JSONObject(str);
@@ -426,15 +444,36 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				}
 			}
 			if(mCommBean==null){
-				for (int i = 0; i < hire_price.size(); i++) {
+				if(CurbMineReceiver!=null){
 					Map<String, Object> map = new HashMap<String, Object>();
-					map.put(KEY[0], hire_name.get(i));// 地点
-					map.put(KEY[1],
-							hire_time.get(i).equals("0") ? "" : hire_time.get(i));// 事件a
-					map.put(KEY[2], hire_price.get(i));// 价格
+					map.put(KEY[0], hire_name.get(index));// 地点
+					map.put(KEY[1], hire_time.get(index).equals("0") ? ""
+							: hire_time.get(index));// 事件a
+					map.put(KEY[2], hire_price.get(index));// 价格
 					dataList.add(map);
+				}else{
+					if(strExtra!=null){
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put(KEY[0], hire_name.get(index));// 地点
+						map.put(KEY[1], hire_time.get(index).equals("0") ? ""
+								: hire_time.get(index));// 事件a
+						map.put(KEY[2], hire_price.get(index));// 价格
+						dataList.add(map);
+					}else{
+						for (int i = 0; i < hire_price.size(); i++) {
+							Map<String, Object> map = new HashMap<String, Object>();
+							map.put(KEY[0], hire_name.get(i));// 地点
+							map.put(KEY[1], hire_time.get(i).equals("0") ? ""
+									: hire_time.get(i));// 事件a
+							map.put(KEY[2], hire_price.get(i));// 价格
+							dataList.add(map);
+						}
+					}
 				}
 			}else{
+				curbStart.setText(mCommBean.getHire_start());
+				curbEnd.setText(mCommBean.getHire_end());
+					
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put(KEY[0], hire_name.get(index));// 地点
 				map.put(KEY[1],
@@ -599,16 +638,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 			dialog.show();
 			break;
 		case R.id.curb_inform:// 发送jPush
-			/*Log.e("toastOrNo!!", toastOrNo+"");
-			if (!toastOrNo) {
-				Log.e("!toastOrNo!!", !toastOrNo+"");
-				start = curbStart.getText().toString();
-				end = curbEnd.getText().toString();
-				if (start.equals(" 年  月  日") || end.equals(" 年  月  日")) {
-					ToastUtil.show(getActivity(), "请先选择出租日期！");
-					return;
-				}
-			} else {*/
 				if (mCache.getAsString("USER") != null
 						&& mCache.getAsString("sessionToken") != null) {
 					sendInform();
@@ -624,7 +653,6 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						}
 					}, 2000);
 				}
-		//	}
 			break;
 		case R.id.curb_pay:// 支付
 			// 获取订单号 接着跳转到支付页面
@@ -643,9 +671,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						}else if(mineSendFragment!=null){
 							fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
 						}
-				//		if(mineSendFragment!=null){
 						if(fromJson!=null){
-				//			if(!fromJson.getHire_start().equals(" 年  月  日") && !fromJson.getHire_end().equals(" 年  月  日")){
 							String fromJsonStart=fromJson.getHire_start();
 							String fromJsonEnd=fromJson.getHire_end();
 						if(fromJsonStart!=null && fromJsonEnd!=null && !fromJsonStart.isEmpty() && !fromJsonEnd.isEmpty()){		
@@ -746,10 +772,8 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	private void pay(String str) {
 		// TODO Auto-generated method stub
 		try {
-			Log.v("道边订单请求的参数！ doHttpsPost", str);
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_TRADEDATA, str);
-			Log.v("道边订单！ doHttpsPost", doHttpsPost);
 			JSONObject obj = new JSONObject(doHttpsPost);
 			String result = obj.getString("result");
 			JSONObject object = new JSONObject(result);
@@ -930,7 +954,7 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 				+ tvAddressDetail.getText().toString());// 地址
 		if (!curbStart.getText().toString().equals(" 年  月  日") && !curbEnd.getText().toString().equals(" 年  月  日")) {
 			extras.put("hire_start", curbStart.getText().toString()+" 00:00:00");// 出租截止时间和日期
-			extras.put("hire_end", curbEnd.getText().toString()+" 00:00:00");
+			extras.put("hire_end", curbEnd.getText().toString()+" 24:00:00");
 		}else{
 			extras.put("hire_start", "");// 出租截止时间和日期
 			extras.put("hire_end", "");

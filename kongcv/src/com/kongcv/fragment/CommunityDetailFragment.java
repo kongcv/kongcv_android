@@ -217,6 +217,22 @@ public class CommunityDetailFragment extends Fragment implements
 		}
 	}
 
+	
+	private void visiblePhon3(String stringExtra) {
+		Gson gson = new Gson();
+		JpushBean fromJson = gson.fromJson(stringExtra, JpushBean.class);
+		String own_mobile = fromJson.getReq_mobile();
+		mListPhone.setVisibility(View.VISIBLE);
+		phoneList = new ArrayList<String>();
+		phoneList.add(own_mobile);
+		if (phoneList != null && phoneList.size() > 0) {
+			phoneNumberAdapter = new PhoneNumberAdapter(getActivity(),
+					phoneList);
+			mListPhone.setAdapter(phoneNumberAdapter);
+			phoneNumberAdapter.notifyDataSetChanged();
+			ToastUtil.fixListViewHeight(mListPhone,-1);
+		}
+	}
 	/**
 	 * 出租人接收设置电话号码求租人可见
 	 */
@@ -232,7 +248,7 @@ public class CommunityDetailFragment extends Fragment implements
 					phoneList);
 			mListPhone.setAdapter(phoneNumberAdapter);
 			phoneNumberAdapter.notifyDataSetChanged();
-			// ToastUtil.fixListViewHeight(mListPhone);
+			ToastUtil.fixListViewHeight(mListPhone,-1);
 		}
 	}
 
@@ -308,49 +324,27 @@ public class CommunityDetailFragment extends Fragment implements
 				String a[] = s.split("&");
 				mTxtAddress.setText(a[0]);
 				detail_txt_yu.setText(a[1]);
-				/*if (stringExtra == null) {
-					if (GTMDateUtil.GTMToLocal(result.getHire_start().getIso(),
-							false) != null
-							&& GTMDateUtil.GTMToLocal(result.getHire_end()
-									.getIso(), false) != null) {
-						txt_start.setText(GTMDateUtil.GTMToLocal(result
-								.getHire_start().getIso(), false));
-						txt_end.setText(GTMDateUtil.GTMToLocal(result
-								.getHire_end().getIso(), false));
-					} else {
-						txt_start.setText(" 年  月  日");
-						txt_end.setText(" 年  月  日");
-					}
-				} else {
-					JpushBean fromJson = gson.fromJson(stringExtra,
-							JpushBean.class);
-					time_pay_start.setText(fromJson.getHire_start());
-					time_pay_end.setText(fromJson.getHire_end());
-					txt_start.setText(GTMDateUtil.GTMToLocal(result
-							.getHire_start().getIso(), false));
-					txt_end.setText(GTMDateUtil.GTMToLocal(result
-							.getHire_end().getIso(), false));
-				}*/
+			
 				
 				txt_start.setText(GTMDateUtil.GTMToLocal(result
 						.getHire_start().getIso(), false));
 				txt_end.setText(GTMDateUtil.GTMToLocal(result
 						.getHire_end().getIso(), false));
 				if(mCommBean!=null){
-					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");
 					time_pay_start.setText(mCommBean.getHire_start());
 					time_pay_end.setText(mCommBean.getHire_end());
 				}
 				if (stringExtra != null) {
-					Log.d("发送的jpush消息为0吗?", stringExtra+"<><>");
 					JpushBean fromJson = gson.fromJson(stringExtra,
 							JpushBean.class);
 					time_pay_start.setVisibility(View.VISIBLE);
 					time_pay_end.setVisibility(View.VISIBLE);
 					time_pay_start.setText(fromJson.getHire_start());
 					time_pay_end.setText(fromJson.getHire_end());
+					
+					txt_start.setText(fromJson.getHire_start());
+					txt_end.setText(fromJson.getHire_end());
 				}
-				
 				// 不可出租日
 				List<String> no_hire = result.getNo_hire();
 				tv_not_rent.setText(StringUtils.listToString(no_hire));
@@ -384,26 +378,20 @@ public class CommunityDetailFragment extends Fragment implements
 				Data.putData("hire_method", result);
 				setAdapter(hire_time, hire_price, hire_method);
 				user = result.getUser();
-				Log.e("user", "user");
-				gson = new Gson();
-				userBean = gson.fromJson(user, UserBean.class);
-				/**
-				 * 租用时间 租用时间这个 需要处理一部分
-				 */
-			/*	payOneBean.setHire_start(GTMDateUtil.GTMToLocal(result
-						.getHire_start().getIso(), true));
-				payOneBean.setHire_end(GTMDateUtil.GTMToLocal(result
-						.getHire_end().getIso(), true));*/
-				
-				payOneBean.setUser_id(mCache.getAsString("user_id"));
-				if (user.contains("license_plate")) {
-					payOneBean.setLicense_plate(userBean.getLicense_plate());// 车牌号
+				if(user!=null){
+					gson = new Gson();
+					userBean = gson.fromJson(user, UserBean.class);
+					/**
+					 * 租用时间 租用时间这个 需要处理一部分
+					 */
+					payOneBean.setUser_id(mCache.getAsString("user_id"));
+					if (user.contains("license_plate")) {
+						payOneBean.setLicense_plate(userBean.getLicense_plate());// 车牌号
+					}
+					payOneBean.setHirer_id(userBean.getObjectId());
 				}
-				payOneBean.setHirer_id(userBean.getObjectId());
 				payOneBean.setPark_id(park_id);
 				payOneBean.setMode(mode);// 社区道路这个值需要传递
-				/*String days = DateUtils.getDays(payOneBean.getHire_start(),
-						payOneBean.getHire_end(), true);*/
 				String days = DateUtils.getDays(GTMDateUtil.GTMToLocal(result
 						.getHire_start().getIso(), true),
 						GTMDateUtil.GTMToLocal(result
@@ -433,7 +421,12 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
-					visiblePhone(stringExtra);
+					
+					if(stringExtra!=null){
+						visiblePhone(stringExtra);
+					}else{
+						visiblePhon3(mineSendFragment);
+					}
 				}
 				if (strExtra != null) {
 					JpushBean fromJson = gson.fromJson(strExtra,
@@ -443,6 +436,7 @@ public class CommunityDetailFragment extends Fragment implements
 					time_pay_start.setText(hire_start);
 					time_pay_end.setText(hire_end);
 					tv_pay_number.setText(fromJson.getPrice() + "");
+					visiblePhon3(strExtra);
 				}
 				if (CurbMineReceiver != null) {
 					JpushBean fromJson = gson.fromJson(CurbMineReceiver,
@@ -472,6 +466,7 @@ public class CommunityDetailFragment extends Fragment implements
 				} else if (CurbMineReceiver != null) {
 					bundle.putString("stringExtra", CurbMineReceiver);
 				}
+				
 				if (mCommBean != null) {
 					bundle.putSerializable("mCommBean", mCommBean);
 				}
@@ -513,7 +508,6 @@ public class CommunityDetailFragment extends Fragment implements
 			dataList = new ArrayList<Map<String, Object>>();
 			List<String> hire_name = new ArrayList<String>();
 			JSONArray array = new JSONArray(hire_method);
-
 			for (int i = 0; i < array.length(); i++) {
 				String method = array.getJSONObject(i).getString("method");
 				hire_name.add(method);
@@ -555,13 +549,31 @@ public class CommunityDetailFragment extends Fragment implements
 				}
 			}
 			if (mCommBean == null) {
-				for (int i = 0; i < hire_price.size(); i++) {
+				if(CurbMineReceiver!=null){
 					Map<String, Object> map = new HashMap<String, Object>();
-					map.put(KEY[0], hire_name.get(i));// 地点
-					map.put(KEY[1], hire_time.get(i).equals("0") ? ""
-							: hire_time.get(i));// 事件a
-					map.put(KEY[2], hire_price.get(i));// 价格
+					map.put(KEY[0], hire_name.get(index));// 地点
+					map.put(KEY[1], hire_time.get(index).equals("0") ? ""
+							: hire_time.get(index));// 事件a
+					map.put(KEY[2], hire_price.get(index));// 价格
 					dataList.add(map);
+				}else{
+					if(strExtra!=null){
+						Map<String, Object> map = new HashMap<String, Object>();
+						map.put(KEY[0], hire_name.get(index));// 地点
+						map.put(KEY[1], hire_time.get(index).equals("0") ? ""
+								: hire_time.get(index));// 事件a
+						map.put(KEY[2], hire_price.get(index));// 价格
+						dataList.add(map);
+					}else{
+						for (int i = 0; i < hire_price.size(); i++) {
+							Map<String, Object> map = new HashMap<String, Object>();
+							map.put(KEY[0], hire_name.get(i));// 地点
+							map.put(KEY[1], hire_time.get(i).equals("0") ? ""
+									: hire_time.get(i));// 事件a
+							map.put(KEY[2], hire_price.get(i));// 价格
+							dataList.add(map);
+						}
+					}
 				}
 			} else {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -571,6 +583,7 @@ public class CommunityDetailFragment extends Fragment implements
 				map.put(KEY[2], hire_price.get(index));// 价格
 				dataList.add(map);
 			}
+			
 			if (dataList != null) {
 				adapter = new DetailFragmentAdapter(getActivity());
 				adapter.setDataSource(dataList);
@@ -672,10 +685,6 @@ public class CommunityDetailFragment extends Fragment implements
 								data.setUnit_price(string);
 							}
 						}
-						/*payOneBean.setHire_start(GTMDateUtil.GTMToLocal(result
-								.getHire_start().getIso(), true));
-						payOneBean.setHire_end(GTMDateUtil.GTMToLocal(result
-								.getHire_end().getIso(), true));*/
 						data.setHire_start(jpushBean3.getHire_start()+" 00:00:00");
 						data.setHire_end(jpushBean3.getHire_end()+" 00:00:00");
 						
@@ -891,8 +900,6 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("price", jpushBean.getPrice());
 			extras.put("hire_method_field", jpushBean.getHire_method_field());
 			obj.put("extras", extras);
-			Log.d("发送jpush时间>>>", JsonStrUtils.JsonStr(obj));
-			Log.d("发送jpush时间>>>", JsonStrUtils.JsonStr(obj));
 			okhttp3.Request request = new okhttp3.Request.Builder()
 					.url(Information.KONGCV_JPUSH_MESSAGE_P2P)
 					.headers(Information.getHeaders())
@@ -987,7 +994,6 @@ public class CommunityDetailFragment extends Fragment implements
 	 */
 	private void doPay(String object) {
 		// TODO Auto-generated method stub
-		Log.e("同意之后下订单支付", object + ":");
 		MyThread myThread = new MyThread(object);
 		myThread.start();
 	}
@@ -1011,10 +1017,8 @@ public class CommunityDetailFragment extends Fragment implements
 	private void pay(String str) {
 		// TODO Auto-generated method stub
 		try {
-			Log.v("pay订单！ doHttpsPost", "获取的str" + str);
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					Information.KONGCV_INSERT_TRADEDATA, str);
-			Log.v("pay订单！ doHttpsPost", doHttpsPost);
 			JSONObject obj = new JSONObject(doHttpsPost);
 			String result = obj.getString("result");
 			JSONObject object = new JSONObject(result);
@@ -1081,12 +1085,8 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("hire_method_field", field);
 			extras.put("address", mTxtAddress.getText().toString()
 					+ detail_txt_yu.getText().toString());
-			extras.put("hire_start", time_pay_start.getText().toString()); // 事件和日期
-			extras.put("hire_end", time_pay_end.getText().toString());
-			// mCache.put("RegistrationID",
-			// JPushInterface.getRegistrationID(getActivity()));
-			// extras.put("own_device_token",
-			// mCache.getAsString("RegistrationID"));
+			extras.put("hire_start", time_pay_start.getText().toString()+" 00:00:00"); // 事件和日期
+			extras.put("hire_end", time_pay_end.getText().toString()+" 24:00:00");
 			extras.put("own_device_token",
 					JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", "android");

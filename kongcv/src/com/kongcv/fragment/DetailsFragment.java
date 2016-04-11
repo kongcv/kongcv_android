@@ -106,6 +106,7 @@ public class DetailsFragment extends Fragment implements
 				field = extras.getString("field");
 			}
 			mFragmentList = new ArrayList<Fragment>();
+			
 			stringExtra = extras.getString("MineSendFragment");
 			string = extras.getString("stringExtra");
 			CurbMineReceiver = extras.getString("CurbMineReceiver");

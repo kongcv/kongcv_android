@@ -82,12 +82,16 @@ public class DetailFragmentAdapter extends BaseAdapter {
 			holder.tvPrice.setText((CharSequence) dataList.get(position).get(
 					CommunityDetailFragment.KEY[2]));
 			
-			 if (index == position) {// 选中的条目和当前的条目是否相等
-		    	   holder.mRadioButton.setChecked(true);
-		       } else {
-		    	   holder.mRadioButton.setChecked(false);
-		      }  
-			holder.mRadioButton.setEnabled(false);
+			
+			if(dataList.size()>1){
+				if (index == position) {// 选中的条目和当前的条目是否相等
+			    	   holder.mRadioButton.setChecked(true);
+			       } else {
+			    	   holder.mRadioButton.setChecked(false);
+			      }  
+			}else{
+				holder.mRadioButton.setChecked(true);
+			}
 			return convertView;
 		}
 		public class ViewHolder {

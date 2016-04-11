@@ -69,30 +69,24 @@ public class HomeActivity extends FragmentActivity implements
 	//	newThreadToReset();
 		init();
 	}
-
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		Bundle bundle = data.getBundleExtra("bundle");
-		if (bundle != null) {
-			bean = (MineCarmanagerBean) bundle.get(
-					"MineCarmanagerBean");
-			Log.d("<Tag home>", bean.toString()+"<>");
-			if(bean!=null){
-				mPublishFragment = new PublishFragment();
-				Bundle args = new Bundle();
-				args.putSerializable("MineCarmanagerBean", bean);
-				mPublishFragment.setArguments(args);
-				rb1.setChecked(true);
-				CWGL=2;
-				Log.d("<Tag home>", bean.toString()+"<>");
-				/*manager.chHideFrag(mCarwFragment);
-				manager.chHideFrag(mMineFragment);
-				manager.chAddFrag(mPublishFragment, "mPublishFragment", false);*/
+			Bundle bundle = data.getBundleExtra("bundle");
+			if (bundle != null) {
+				bean = (MineCarmanagerBean) bundle.getSerializable(
+						"MineCarmanagerBean");
+				if(bean!=null){
+					mPublishFragment = new PublishFragment();
+					Bundle args = new Bundle();
+					args.putSerializable("MineCarmanagerBean", bean);
+					mPublishFragment.setArguments(args);
+					rb1.setChecked(true);
+					CWGL=2;
+				}
 			}
-		}
-		
 	}
 	private void initLocation() {
 		mLocationManger = LocationManagerProxy
@@ -163,23 +157,10 @@ public class HomeActivity extends FragmentActivity implements
 		rb0 = (RadioButton) findViewById(R.id.rb0);
 		rdoBtn.setOnCheckedChangeListener(this);
 		
-		manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
-		/*Bundle bundle = getIntent().getBundleExtra("bundle");
+		Bundle bundle = getIntent().getBundleExtra("bundle");
 		if (bundle == null) {
 			manager.chAddFrag(mCarwFragment, "mCarwFragment", false);
-		}else{
-			bean = (MineCarmanagerBean) bundle.get(
-					"MineCarmanagerBean");
-			if(bean!=null){
-				mPublishFragment = new PublishFragment();
-				Bundle args = new Bundle();
-				args.putSerializable("MineCarmanagerBean", bean);
-				mPublishFragment.setArguments(args);
-				rb1.setChecked(true);
-				CWGL=2;
-				Log.d("<Tag home>", bean.toString()+"<>");
-			}
-		}*/
+		}
 	}
 
 	private void newThreadToReset() {

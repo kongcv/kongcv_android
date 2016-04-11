@@ -83,12 +83,14 @@ public class PayActivity extends Activity implements OnClickListener {
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
 			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
+			Log.d("支付 mCommBean", mCommBean.toString()+"<>");
+			
 			String trade_id = extras.getString("trade_id");
 			String price =extras.getString("price");
 			String phoneNumber = extras.getString("phoneNumber");
-			
 			if(mCommBean==null){
 				String stringExtra = extras.getString("stringExtra");
+				Log.d("支付 stringExtra", stringExtra+"<>");
 				Gson gson=new Gson();
 				Pay_info info=new Pay_info();
 				if(stringExtra!=null && phoneNumber!=null){
@@ -120,7 +122,6 @@ public class PayActivity extends Activity implements OnClickListener {
 				if(mCommBean.getMode().equals("curb")){
 					if(mCommBean.getField().equals("hour_meter") && mCommBean.getHandsel_state()==0){
 						info.setPay_type("handsel");
-					//	price=mCommBean.getMoney()+"";
 					}else{
 						info.setPay_type("balance");
 						price=(mCommBean.getPrice()-mCommBean.getMoney())+"";

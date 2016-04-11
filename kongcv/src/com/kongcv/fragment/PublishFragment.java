@@ -197,6 +197,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 							typeBean.setMethod(method.get(ii));
 						}
 					}
+					
 					if(typeBean.getMethod()!=null)
 					items.add(typeBean);
 				}
@@ -212,30 +213,6 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				mListView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
 				ToastUtil.fixListViewHeight(mListView, -1);
-				/*for (int i = 0; i < hireMethodList.size(); i++) {
-					typeBean = new TypeBean();
-					for (int ii = 0; ii < objectId.size(); ii++) {
-						if (objectId.get(ii).equals(hireMethodList.get(i))) {
-							typeBean.setDate(hireTimeList.get(i).toString() == null ? ""
-									: hireTimeList.get(i).toString());
-							typeBean.setPrice(hirePriceList.get(i).toString());
-							typeBean.setMethod(method.get(ii).toString());
-						}
-					}
-					items.add(typeBean);
-				}
-				adapter = new PublishTypeAdapter(homeActivity, items,
-						new UpdateList() {
-							@Override
-							public void deteleList(
-									ArrayList<TypeBean> arrayList) {
-								// TODO Auto-generated method stub
-								items = arrayList;//删除之后的
-							}
-						});
-				mListView.setAdapter(adapter);
-				adapter.notifyDataSetChanged();
-				ToastUtil.fixListViewHeight(mListView, -1);*/
 				LocationInfo info = new LocationInfo();
 				info.set_type("GeoPoint");
 				info.setLatitude(carmanagerBean.getLatitude());
@@ -346,9 +323,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
-	
 	// ---------------------------------必要的重写方法--------------------------------------------------
 	private ArrayList<TypeBean> items=new ArrayList<TypeBean>();
 	private void typeCar() {
@@ -505,8 +480,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			Gson gson = new Gson();
 			String json = gson.toJson(bean);
 			Log.e("发布的数据是：", json);
-			MyThread thread = new MyThread(json);
-			thread.start();
+			/*MyThread thread = new MyThread(json);
+			thread.start();*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

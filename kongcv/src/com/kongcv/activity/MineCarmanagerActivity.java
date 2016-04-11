@@ -27,6 +27,7 @@ import com.kongcv.UI.AsyncImageLoader.PreReadTask;
 import com.kongcv.adapter.CarManagerAdapter;
 import com.kongcv.global.MineCarmanagerBean;
 import com.kongcv.utils.ACacheUtils;
+import com.kongcv.utils.Data;
 import com.kongcv.utils.GTMDateUtil;
 import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.PostCLientUtils;
@@ -102,7 +103,6 @@ public class MineCarmanagerActivity extends Activity implements
 	}
 
 	private ArrayList<MineCarmanagerBean> updateInfo;
-
 	private void getData(Integer integer) {
 		JSONObject jso = new JSONObject();
 		try {
@@ -114,7 +114,6 @@ public class MineCarmanagerActivity extends Activity implements
 			String doHttpsPost = PostCLientUtils.doHttpsPost(
 					com.kongcv.global.Information.KONGCV_GET_PARK_LIST,
 					JsonStrUtils.JsonStr(jso));
-			Log.d("加载出来的数据是>>>", doHttpsPost + "::");
 			JSONObject object = new JSONObject(doHttpsPost);
 			JSONArray jsonArray = object.getJSONArray("result");
 			Message msg = handler.obtainMessage();
@@ -265,6 +264,7 @@ public class MineCarmanagerActivity extends Activity implements
 					}
 				}
 				if (obj.has("hire_end")) {
+					
 					hire_end = GTMDateUtil.GTMToLocal(
 							obj.getJSONObject("hire_end").getString("iso"),
 							true);
@@ -276,7 +276,6 @@ public class MineCarmanagerActivity extends Activity implements
 				// 非出租日
 				if (obj.has("no_hire")) {
 					no_hire = obj.getString("no_hire");
-					Log.d("no_hire字段>>>", no_hire+"<>");
 					if(no_hire!=null){
 						JSONArray jsonArray = new JSONArray(no_hire);
 						List<String> list = new ArrayList<String>();
@@ -319,17 +318,12 @@ public class MineCarmanagerActivity extends Activity implements
 				String objectId = array.getJSONObject(i).getString("objectId");
 				String hire_method = array.getJSONObject(i).getString(
 						"hire_method");
-				Log.d("hire_method>>>", hire_method+"<>");
 				JSONArray arrays = new JSONArray(hire_method);
 				for (int y = 0; y < arrays.length(); y++) {
 					hire_method_id = arrays.getJSONObject(y).getString(
 							"objectId");
-					Log.d("hire_method_id>>>", hire_method_id+"<>");
 					hireMethodIdList.add(hire_method_id);
 				}
-				
-				
-				
 				carmanagerBean.setAddress(address);
 				carmanagerBean.setPark_hide(park_hide);
 				carmanagerBean.setCity(city);
@@ -366,17 +360,15 @@ public class MineCarmanagerActivity extends Activity implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		Log.d("onItemClick点击事件", position + ">>>");
-		Log.e("onItemClick点击事件", position + ">>>");
-		Log.v("onItemClick点击事件", updateInfo.get(position - 1).toString() + ">>>");
-		Log.v("onItemClick点击事件", updateInfo.get(position - 1).toString() + ">>>");
 		if(position!=0){
 			Intent data = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("MineCarmanagerBean",
 					updateInfo.get(position - 1));
 			data.putExtra("bundle", bundle);
-			setResult(HomeActivity.CWGL, data);
+			Data.putData("MineCarmanagerBean", updateInfo.get(position - 1));
+		//	setResult(HomeActivity.CWGL, data);
+			setResult(1, data);
 			finish();
 		}
 	}

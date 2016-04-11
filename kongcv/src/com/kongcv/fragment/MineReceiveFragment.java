@@ -149,6 +149,7 @@ public class MineReceiveFragment extends Fragment implements
 
 	private void doMRun(String str) {
 		try {
+			Log.d("str我 的>>>", str+"<>");
 			Message msg = mHandler.obtainMessage();
 			JSONObject object = new JSONObject(str);
 			JSONArray array = object.getJSONArray("result");
