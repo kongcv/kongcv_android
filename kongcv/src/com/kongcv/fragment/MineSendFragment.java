@@ -57,7 +57,6 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 		public void handleMessage(Message msg) {
 			JpushBeanAndInfoBean jpushBeanAndInfoBean = (JpushBeanAndInfoBean) msg.obj;
 			final ArrayList<InfoBean> mLists = jpushBeanAndInfoBean.infoList;
-			//final JpushBean jpushBean = jpushBeanAndInfoBean.jpushBean;
 			final ArrayList<JpushBean> mListJpush=jpushBeanAndInfoBean.jpushBean;
 			infoAdapter = new InfoNotifyAdapter(getActivity(), mLists);
 			lv.setAdapter(infoAdapter);
@@ -79,6 +78,7 @@ public class MineSendFragment extends Fragment implements AMapListViewListener {
 							i.putExtra("getField", f);
 							Gson gson = new Gson();
 							String json = gson.toJson(mListJpush.get(position-1));
+							Log.d("网站被攻击>>><<<", json+"<><>");
 							i.putExtra("MineSendFragment", json);
 							startActivity(i);// 未处理 跳转到详情页
 						} else if ("已接受".equals(s)) {// 跳转支付页面

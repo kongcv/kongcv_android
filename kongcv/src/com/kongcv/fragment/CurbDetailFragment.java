@@ -266,9 +266,16 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 					location = result.getLocation();
 					if(result.getPark_description()!=null)
 					curbDescribe.setText(result.getPark_description());
+					//mineSendFragment
 					if(stringExtra!=null){
 						Gson gson=new Gson();
 						CurbJpushBean fromJson = gson.fromJson(stringExtra, CurbJpushBean.class);
+						curbStart.setText(fromJson.getHire_start());
+						curbEnd.setText(fromJson.getHire_end());
+					}
+					if(mineSendFragment!=null){
+						Gson gson=new Gson();
+						CurbJpushBean fromJson = gson.fromJson(mineSendFragment, CurbJpushBean.class);
 						curbStart.setText(fromJson.getHire_start());
 						curbEnd.setText(fromJson.getHire_end());
 					}
@@ -864,61 +871,65 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 	 */
 	private String JPushInformBefore(){
 		String jsonStr=null;
-		try {
-		Gson gson=new Gson();
-		JpushBean fromJson =null;
-		if (mineSendFragment != null) {
-			fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
-			mode=fromJson.getMode();
-			hire_method_id=fromJson.getHire_method_id();
-			field=fromJson.getHire_method_field();
-		}else if(strExtra!=null){
-			fromJson = gson.fromJson(strExtra, JpushBean.class);
-			mode=fromJson.getMode();
-			hire_method_id=fromJson.getHire_method_id();
-			field=fromJson.getHire_method_field();
-		}else if(CurbMineReceiver!=null){
-			fromJson = gson.fromJson(CurbMineReceiver, JpushBean.class);
-			mode=fromJson.getMode();
-			hire_method_id=fromJson.getHire_method_id();
-			field=fromJson.getHire_method_field();
-		}
-		String data = (String) Data.getData("ResultEntityUser");
-		JSONObject user = new JSONObject(data);
-		mobilePhoneNumber = user.getString("mobilePhoneNumber");
-		String device_token = user.getString("device_token");
-		JSONObject obj = new JSONObject();
-		obj.put("mobilePhoneNumber", mobilePhoneNumber);// 对方手机号
-		obj.put("push_type", "verify_request");// 租用请求
-		obj.put("device_token", device_token);
-		obj.put("device_type", "android");
-		String asString = mCache.getAsString("user_id");
-		obj.put("user_id", asString);
-		JSONObject extras = new JSONObject();
-		extras.put("park_id", park_id);// 得到车位的objectId
-		extras.put("mode", mode);
-		extras.put("hire_method_id", hire_method_id);
-		extras.put("hire_method_field", field);
-		extras.put("address", tvAddress.getText().toString()
-				+ tvAddressDetail.getText().toString());// 地址
-		if (!curbStart.getText().toString().equals(" 年  月  日") && !curbEnd.getText().toString().equals(" 年  月  日")) {
-			extras.put("hire_start", curbStart.getText().toString()+" 00:00:00");// 出租截止时间和日期
-			extras.put("hire_end", curbEnd.getText().toString()+" 24:00:00");
+		if(!tvCurbMoney.getText().toString().equals("")){
+			ToastUtil.show(getActivity(), "未选择出租类型");
 		}else{
-			extras.put("hire_start", "");// 出租截止时间和日期
-			extras.put("hire_end", "");
-		}
-//		extras.put("own_device_token", mCache.getAsString("RegistrationID"));
-		extras.put("own_device_token",  JPushInterface.getRegistrationID(getActivity()));
-		extras.put("own_device_type", "android");
-		extras.put("own_mobile", mCache.getAsString("USER"));
-		extras.put("push_type", "verify_request");
-		extras.put("price", Double.valueOf(tvCurbMoney.getText().toString()));// 价格需要计算 等会传递
-		obj.put("extras", extras);
-		Log.v("发送jPushJPUSH!!", JsonStrUtils.JsonStr(obj));
-		jsonStr=JsonStrUtils.JsonStr(obj);
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+			Gson gson=new Gson();
+			JpushBean fromJson =null;
+			if (mineSendFragment != null) {
+				fromJson = gson.fromJson(mineSendFragment, JpushBean.class);
+				mode=fromJson.getMode();
+				hire_method_id=fromJson.getHire_method_id();
+				field=fromJson.getHire_method_field();
+			}else if(strExtra!=null){
+				fromJson = gson.fromJson(strExtra, JpushBean.class);
+				mode=fromJson.getMode();
+				hire_method_id=fromJson.getHire_method_id();
+				field=fromJson.getHire_method_field();
+			}else if(CurbMineReceiver!=null){
+				fromJson = gson.fromJson(CurbMineReceiver, JpushBean.class);
+				mode=fromJson.getMode();
+				hire_method_id=fromJson.getHire_method_id();
+				field=fromJson.getHire_method_field();
+			}
+			String data = (String) Data.getData("ResultEntityUser");
+			JSONObject user = new JSONObject(data);
+			mobilePhoneNumber = user.getString("mobilePhoneNumber");
+			String device_token = user.getString("device_token");
+			JSONObject obj = new JSONObject();
+			obj.put("mobilePhoneNumber", mobilePhoneNumber);// 对方手机号
+			obj.put("push_type", "verify_request");// 租用请求
+			obj.put("device_token", device_token);
+			obj.put("device_type", "android");
+			String asString = mCache.getAsString("user_id");
+			obj.put("user_id", asString);
+			JSONObject extras = new JSONObject();
+			extras.put("park_id", park_id);// 得到车位的objectId
+			extras.put("mode", mode);
+			extras.put("hire_method_id", hire_method_id);
+			extras.put("hire_method_field", field);
+			extras.put("address", tvAddress.getText().toString()
+					+ tvAddressDetail.getText().toString());// 地址
+			if (!curbStart.getText().toString().equals(" 年  月  日") && !curbEnd.getText().toString().equals(" 年  月  日")) {
+				extras.put("hire_start", curbStart.getText().toString()+" 00:00:00");// 出租截止时间和日期
+				extras.put("hire_end", curbEnd.getText().toString()+" 23:59:59");
+			}else{
+				extras.put("hire_start", "");// 出租截止时间和日期
+				extras.put("hire_end", "");
+			}
+//			extras.put("own_device_token", mCache.getAsString("RegistrationID"));
+			extras.put("own_device_token",  JPushInterface.getRegistrationID(getActivity()));
+			extras.put("own_device_type", "android");
+			extras.put("own_mobile", mCache.getAsString("USER"));
+			extras.put("push_type", "verify_request");
+			extras.put("price", Double.valueOf(tvCurbMoney.getText().toString()));// 价格需要计算 等会传递
+			obj.put("extras", extras);
+			Log.v("发送jPushJPUSH!!", JsonStrUtils.JsonStr(obj));
+			jsonStr=JsonStrUtils.JsonStr(obj);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return jsonStr;
 	}

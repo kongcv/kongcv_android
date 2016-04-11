@@ -685,8 +685,8 @@ public class CommunityDetailFragment extends Fragment implements
 								data.setUnit_price(string);
 							}
 						}
-						data.setHire_start(jpushBean3.getHire_start()+" 00:00:00");
-						data.setHire_end(jpushBean3.getHire_end()+" 00:00:00");
+						data.setHire_start(jpushBean3.getHire_start());
+						data.setHire_end(jpushBean3.getHire_end());
 						
 						data.setPrice(jpushBean3.getPrice());
 						String json = gson3.toJson(data);
@@ -1126,7 +1126,7 @@ public class CommunityDetailFragment extends Fragment implements
 			extras.put("address", mTxtAddress.getText().toString()
 					+ detail_txt_yu.getText().toString());
 			extras.put("hire_start", time_pay_start.getText().toString()+" 00:00:00"); // 事件和日期
-			extras.put("hire_end", time_pay_end.getText().toString()+" 24:00:00");
+			extras.put("hire_end", time_pay_end.getText().toString()+" 23:59:59");
 			extras.put("own_device_token",
 					JPushInterface.getRegistrationID(getActivity()));
 			extras.put("own_device_type", "android");
