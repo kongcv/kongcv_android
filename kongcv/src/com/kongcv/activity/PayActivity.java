@@ -83,8 +83,6 @@ public class PayActivity extends Activity implements OnClickListener {
 		Bundle extras = getIntent().getExtras();
 		if(extras!=null){
 			mCommBean=(ZyCommityAdapterBean) extras.getSerializable("mCommBean");
-			Log.d("支付 mCommBean", mCommBean.toString()+"<>");
-			
 			String trade_id = extras.getString("trade_id");
 			String price =extras.getString("price");
 			String phoneNumber = extras.getString("phoneNumber");
@@ -115,6 +113,7 @@ public class PayActivity extends Activity implements OnClickListener {
 				if(price!=null)
 				payTo(trade_id,price,params,info);
 			}else {
+				Log.d("支付 mCommBean", mCommBean.toString()+"<>");
 				Pay_info info=new Pay_info();
 				info.setMode(mCommBean.getMode());
 				info.setOpen_id("123456");
