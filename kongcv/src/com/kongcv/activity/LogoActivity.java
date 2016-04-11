@@ -110,7 +110,7 @@ public class LogoActivity extends Activity {
 	    }
 	}
 	CheckUpdate fromJson;
-	private void readServiceCode() {
+	/*private void readServiceCode() {
 			Map<String, String> params = new HashMap<String, String>();  
 			params.put("app_type", "user");  
 			RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -130,7 +130,7 @@ public class LogoActivity extends Activity {
 			        }
 			    }, params);
 			requestQueue.add(request);
-	}
+	}*/
 	private Handler mHandler=new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -314,7 +314,6 @@ public class LogoActivity extends Activity {
 						Information.KONGCV_GET_ADVERTISE,
 						JsonStrUtils.JsonStr(obj));
 				mCache.put("ReadImgTask", jsonString,ACacheUtils.TIME_DAY);
-				Log.e("得到轮播图", jsonString);
 				list = doReadImg(jsonString);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -300,6 +300,7 @@ public class CarwFragment extends Fragment implements OnClickListener,
 	/**
 	 * 获取道路和社区照片
 	 */
+	
 	public void btnImage() {
 		data = (List<ModeAndObjId>) Data.getData("objectIddoReadBtn");
 		List<String> urlList=new ArrayList<String>();

@@ -171,6 +171,8 @@ public class PublishFragment extends Fragment implements OnClickListener {
 				textstart.setText(carmanagerBean.getHire_start());
 				textend.setText(carmanagerBean.getHire_end());
 
+				
+				
 				Community community = (Community) Data.getData("community");
 				List<String> objectId = community.getObjectId();// 类型id
 				List<String> method = community.getMethod();// 类型名称'
@@ -439,7 +441,7 @@ public class PublishFragment extends Fragment implements OnClickListener {
 			}
 			if(!textend.getText().toString().equals("截止日期 ")){
 				Log.d("截止日期", textend.getText().toString());
-				bean.setHireEnd(textend.getText().toString() + " 00:00:00");
+				bean.setHireEnd(textend.getText().toString() + " 23:59:59");
 			}else{
 				ToastUtil.show(getActivity(), "截止日期不能为空!");
 				return;

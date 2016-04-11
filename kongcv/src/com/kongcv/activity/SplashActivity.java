@@ -1,8 +1,12 @@
 package com.kongcv.activity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -28,11 +32,17 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.kongcv.MyApplication;
 import com.kongcv.R;
+import com.kongcv.UI.AsyncImageLoader.PreReadTask;
+import com.kongcv.activity.LogoActivity.ModeAndObjId;
+import com.kongcv.activity.LogoActivity.ReadBtnTask;
 import com.kongcv.global.CheckUpdate;
 import com.kongcv.global.Information;
 import com.kongcv.global.UpdateService;
 import com.kongcv.utils.ACacheUtils;
+import com.kongcv.utils.Data;
+import com.kongcv.utils.JsonStrUtils;
 import com.kongcv.utils.NormalPostRequest;
+import com.kongcv.utils.PostCLientUtils;
 import com.kongcv.utils.ToastUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -55,8 +65,77 @@ public class SplashActivity extends Activity {
 		AlphaAnimation anim = new AlphaAnimation(0.3f, 1);
 		anim.setDuration(Information.time);// 动画执行时间
 		rlRoot.startAnimation(anim);// 开启动画
-		readServiceCode();
+		
+		getGridImageView();
 	}
+	/**
+	 * 加载数据
+	 */
+	private void getGridImageView(){
+		if (mCache.getAsString("ReadImgTask") == null&& mCache.getAsString("ReadBtnTask") == null) {
+			ReadBtnTask task2 = new ReadBtnTask();
+			task2.execute();
+		}else{
+			readServiceCode();
+		}
+	}
+	class ReadBtnTask extends PreReadTask<String, Void, Void> {
+		private List<ModeAndObjId> list;
+		@Override
+		protected Void doInBackground(String... arg0) {
+			try {
+				JSONObject obj = new JSONObject();
+				obj.put("{}", null);
+				String jsonStr = PostCLientUtils.doHttpsPost(
+						Information.KONGCV_GET_PARK_TYPE,
+						JsonStrUtils.JsonStr(obj));
+				// 缓存
+				mCache.put("ReadBtnTask", jsonStr,ACacheUtils.TIME_DAY);
+				list = doReadBtn(jsonStr);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Data.putData("objectIddoReadBtn", list);
+			return null;
+		}
+	}
+	private List<ModeAndObjId> doReadBtn(String jsonStr) {	
+		ModeAndObjId objId=null;
+		List<ModeAndObjId> list=null;
+		try {
+			list=new ArrayList<ModeAndObjId>();
+			JSONObject demoJson = new JSONObject(jsonStr);
+			JSONArray numberList = demoJson.getJSONArray("result");
+			for (int i = 0; i < numberList.length(); i++) {
+				String name = numberList.getJSONObject(i).getString("name");
+				JSONObject object = numberList.getJSONObject(i).getJSONObject(
+						"picture_small");
+				String __type = object.getString("__type");
+				String id = object.getString("id");
+				String url = object.getString("url");
+				// 使用另一种方式传递数据
+				String objectId = numberList.getJSONObject(i).getString(
+						"objectId");
+				objId=new ModeAndObjId(name, objectId,url);
+				list.add(objId);
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public class ModeAndObjId implements Serializable{
+		public String mode;
+		public String url;
+		public String objList;
+		public ModeAndObjId(String mode,String objList,String url){
+			this.mode=mode;
+			this.objList=objList;
+			this.url=url;
+		}
+	}
+	
 	/**
 	 * 检查服务器和本地版本
 	 */
