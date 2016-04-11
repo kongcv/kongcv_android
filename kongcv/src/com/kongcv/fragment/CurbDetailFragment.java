@@ -469,13 +469,22 @@ public class CurbDetailFragment extends Fragment implements OnClickListener,
 						map.put(KEY[2], hire_price.get(index));// 价格
 						dataList.add(map);
 					}else{
-						for (int i = 0; i < hire_price.size(); i++) {
+						if(mineSendFragment!=null){
 							Map<String, Object> map = new HashMap<String, Object>();
-							map.put(KEY[0], hire_name.get(i));// 地点
-							map.put(KEY[1], hire_time.get(i).equals("0") ? ""
-									: hire_time.get(i));// 事件a
-							map.put(KEY[2], hire_price.get(i));// 价格
+							map.put(KEY[0], hire_name.get(index));// 地点
+							map.put(KEY[1], hire_time.get(index).equals("0") ? ""
+									: hire_time.get(index));// 事件a
+							map.put(KEY[2], hire_price.get(index));// 价格
 							dataList.add(map);
+						}else{
+							for (int i = 0; i < hire_price.size(); i++) {
+								Map<String, Object> map = new HashMap<String, Object>();
+								map.put(KEY[0], hire_name.get(i));// 地点
+								map.put(KEY[1], hire_time.get(i).equals("0") ? ""
+										: hire_time.get(i));// 事件a
+								map.put(KEY[2], hire_price.get(i));// 价格
+								dataList.add(map);
+							}
 						}
 					}
 				}
