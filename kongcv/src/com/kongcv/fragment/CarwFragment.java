@@ -318,7 +318,8 @@ public class CarwFragment extends Fragment implements OnClickListener,
 			for(int i=0;i<data.size();i++){
 				urlList.add(data.get(i).url);
 			}
-			Message msg = new Message();
+			
+			Message msg = mHandler.obtainMessage();
 			msg.what = 2;
 			msg.obj = urlList;
 			mHandler.sendMessage(msg);

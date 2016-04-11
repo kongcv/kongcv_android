@@ -994,8 +994,48 @@ public class CommunityDetailFragment extends Fragment implements
 	 */
 	private void doPay(String object) {
 		// TODO Auto-generated method stub
-		MyThread myThread = new MyThread(object);
-		myThread.start();
+		/*MyThread myThread = new MyThread(object);
+		myThread.start();*/
+		
+		okhttp3.Request request=new okhttp3.Request.Builder()
+		  .url(Information.KONGCV_INSERT_TRADEDATA)
+		  .headers(Information.getHeaders())
+	      .post(RequestBody.create(Information.MEDIA_TYPE_MARKDOWN, object))
+	      .build();
+		
+		client.newCall(request).enqueue(new okhttp3.Callback() {
+			@Override
+			public void onResponse(Call arg0, okhttp3.Response response) throws IOException {
+				// TODO Auto-generated method stub
+				if(response.isSuccessful()){
+					try {
+						JSONObject obj = new JSONObject(response.body().string());
+						String result = obj.getString("result");
+						JSONObject object = new JSONObject(result);
+						String state = object.getString("state");
+						if ("ok".equals(state)) {
+							String trade_id = object.getString("trade_id");
+							Message msg = mHandler.obtainMessage();
+							msg.what = 1;
+							msg.obj = trade_id;
+							mHandler.sendMessage(msg);
+						} else {
+							Looper.prepare();
+							ToastUtil.show(getActivity(), "获取订单信息失败，请重新操作！");
+							Looper.loop();
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			@Override
+			public void onFailure(Call arg0, IOException arg1) {
+				// TODO Auto-generated method stub
+				Log.e("KONGCV_INSERT_TRADEDATA", arg1.toString());
+			}
+			});
 	}
 
 	public class MyThread extends Thread {

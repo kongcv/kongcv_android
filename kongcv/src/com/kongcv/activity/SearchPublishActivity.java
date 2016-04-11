@@ -294,13 +294,26 @@ public class SearchPublishActivity extends Activity implements
 			adapter.notifyDataSetChanged();
 			break;
 		case R.id.iv_back:// 点击回退到 fragment
+			Intent intent = new Intent(SearchPublishActivity.this,
+					PublishFragment.class);
+			setResult(RESULT_OK, intent);
 			hintKbTwo();
-			this.finish();
+			finish();
 			break;
 		default:
 			break;
 		}
 	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(SearchPublishActivity.this,
+				PublishFragment.class);
+		setResult(RESULT_OK, intent);
+		hintKbTwo();
+		finish();
+	}
+	
 	/**
 	 * 关闭软键盘
 	 */
